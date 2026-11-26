@@ -1,0 +1,233 @@
+{
+ "how": "копии протокола внутри периода обучения; клиенты, докупившие что-то новое в окне 12 недель",
+ "client_windows": 3812,
+ "reference": {
+  "ещё один товар своего семейства": {
+   "tried": 5369,
+   "confirmed": 1223,
+   "rate": 0.2277891599925498
+  },
+  "один из трёх самых частых товаров докупки": {
+   "tried": 10502,
+   "confirmed": 674,
+   "rate": 0.06417825176156923
+  }
+ },
+ "links": {
+  "новая версия": {
+   "links_in_graph": 79,
+   "checkable_family_pairs": 3,
+   "tried": 280,
+   "confirmed": 52,
+   "rate": 0.18571428571428572,
+   "pairs": [
+    {
+     "from": "ContentReader PDF 15 Business",
+     "to": "ContentReader PDF 16 Business",
+     "confirmed": 52,
+     "tried": 229
+    },
+    {
+     "from": "ContentReader PDF 15 Corporate",
+     "to": "ContentReader PDF 16 Corporate",
+     "confirmed": 0,
+     "tried": 28
+    },
+    {
+     "from": "ContentReader PDF 15 Standard",
+     "to": "ContentReader PDF 16 Standard",
+     "confirmed": 0,
+     "tried": 23
+    }
+   ]
+  },
+  "прямой аналог из таблицы замещения": {
+   "links_in_graph": 311,
+   "checkable_family_pairs": 7,
+   "tried": 510,
+   "confirmed": 20,
+   "rate": 0.0392156862745098,
+   "pairs": [
+    {
+     "from": "Adobe Acrobat Professional",
+     "to": "ContentReader PDF 16 Business",
+     "confirmed": 9,
+     "tried": 135
+    },
+    {
+     "from": "Adobe Acrobat Professional",
+     "to": "ContentReader PDF 15 Business",
+     "confirmed": 6,
+     "tried": 122
+    },
+    {
+     "from": "Adobe Acrobat Standard",
+     "to": "ContentReader PDF 16 Business",
+     "confirmed": 5,
+     "tried": 16
+    },
+    {
+     "from": "Adobe Acrobat Professional",
+     "to": "ContentReader PDF 15 Standard",
+     "confirmed": 0,
+     "tried": 135
+    },
+    {
+     "from": "Adobe Photoshop",
+     "to": "AliveColors",
+     "confirmed": 0,
+     "tried": 76
+    },
+    {
+     "from": "Adobe Acrobat Standard",
+     "to": "ContentReader PDF 15 Standard",
+     "confirmed": 0,
+     "tried": 18
+    }
+   ]
+  },
+  "старшая редакция (таблица сравнения магазина)": {
+   "links_in_graph": 18,
+   "checkable_family_pairs": 6,
+   "tried": 1677,
+   "confirmed": 16,
+   "rate": 0.009540846750149075,
+   "pairs": [
+    {
+     "from": "Kaspersky Endpoint Security для бизнеса Стандартный",
+     "to": "Kaspersky Endpoint Security для бизнеса Расширенный",
+     "confirmed": 15,
+     "tried": 585
+    },
+    {
+     "from": "Kaspersky Endpoint Security для бизнеса Стандартный",
+     "to": "Kaspersky Total Security для бизнеса",
+     "confirmed": 1,
+     "tried": 589
+    },
+    {
+     "from": "ContentReader PDF 15 Business",
+     "to": "ContentReader PDF 15 Corporate",
+     "confirmed": 0,
+     "tried": 232
+    },
+    {
+     "from": "Kaspersky Endpoint Security для бизнеса Расширенный",
+     "to": "Kaspersky Total Security для бизнеса",
+     "confirmed": 0,
+     "tried": 225
+    },
+    {
+     "from": "ContentReader PDF 15 Standard",
+     "to": "ContentReader PDF 15 Corporate",
+     "confirmed": 0,
+     "tried": 23
+    },
+    {
+     "from": "ContentReader PDF 15 Standard",
+     "to": "ContentReader PDF 15 Business",
+     "confirmed": 0,
+     "tried": 23
+    }
+   ]
+  },
+  "старшая редакция (по названиям)": {
+   "links_in_graph": 100,
+   "checkable_family_pairs": 6,
+   "tried": 73,
+   "confirmed": 0,
+   "rate": 0.0,
+   "pairs": [
+    {
+     "from": "Кибер Бэкап Стандартная редакция",
+     "to": "Кибер Бэкап Расширенная редакция",
+     "confirmed": 0,
+     "tried": 23
+    },
+    {
+     "from": "Adobe Acrobat Standard",
+     "to": "Adobe Acrobat Professional",
+     "confirmed": 0,
+     "tried": 18
+    },
+    {
+     "from": "ContentReader PDF 16 Business",
+     "to": "ContentReader PDF 16 Corporate",
+     "confirmed": 0,
+     "tried": 16
+    },
+    {
+     "from": "Kaspersky Plus + Who Calls",
+     "to": "Kaspersky Premium + Who Calls",
+     "confirmed": 0,
+     "tried": 14
+    },
+    {
+     "from": "ContentReader PDF 16 Standard",
+     "to": "ContentReader PDF 16 Corporate",
+     "confirmed": 0,
+     "tried": 1
+    },
+    {
+     "from": "ContentReader PDF 16 Standard",
+     "to": "ContentReader PDF 16 Business",
+     "confirmed": 0,
+     "tried": 1
+    }
+   ]
+  },
+  "дополнение из названия": {
+   "links_in_graph": 87,
+   "checkable_family_pairs": 0,
+   "tried": 0,
+   "confirmed": 0,
+   "rate": null,
+   "pairs": []
+  },
+  "упоминание на странице магазина": {
+   "links_in_graph": 76,
+   "checkable_family_pairs": 6,
+   "tried": 571,
+   "confirmed": 114,
+   "rate": 0.19964973730297722,
+   "pairs": [
+    {
+     "from": "Microsoft 365 Family (для семьи)",
+     "to": "Microsoft 365 Personal (Персональный)",
+     "confirmed": 68,
+     "tried": 226
+    },
+    {
+     "from": "Microsoft 365 Family (для семьи)",
+     "to": "Microsoft Office 2024 для дома и учёбы",
+     "confirmed": 26,
+     "tried": 249
+    },
+    {
+     "from": "Dr.Web Server Security Suite",
+     "to": "Dr.Web Server Security Suite Base Price",
+     "confirmed": 17,
+     "tried": 20
+    },
+    {
+     "from": "Dr.Web Server Security Suite Base Price",
+     "to": "Dr.Web Server Security Suite",
+     "confirmed": 3,
+     "tried": 27
+    },
+    {
+     "from": "Dr.Web Enterprise Security Suite",
+     "to": "Dr.Web Server Security Suite",
+     "confirmed": 0,
+     "tried": 36
+    },
+    {
+     "from": "Dr.Web Enterprise Security Suite",
+     "to": "Dr.Web Desktop Security Suite",
+     "confirmed": 0,
+     "tried": 13
+    }
+   ]
+  }
+ }
+}
