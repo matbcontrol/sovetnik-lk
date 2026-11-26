@@ -40,6 +40,10 @@ def main() -> None:
             for seg, row in rows.items():
                 organisers[method][seg] = row["precision@3"]
             breakdown[method] = {seg: part(rows[seg]) for seg in SEGMENTS if seg in rows}
+    rule = v.get("baseline_same_line") or {}
+    if rule.get("hits_breakdown"):                       # сильный базовый способ без обучения
+        breakdown["та же линейка"] = {seg: part(rule["hits_breakdown"][seg]) for seg in SEGMENTS
+                                      if seg in rule["hits_breakdown"]}
     ours = v.get("hits_breakdown") or {}
     if ours:                                             # разбивка главного режима — из того же расчёта, что и заголовок
         breakdown["наша модель"] = {seg: part(ours[seg]) for seg in SEGMENTS if seg in ours}
@@ -49,6 +53,8 @@ def main() -> None:
         "differences": v["differences"], "fill": v["fill"], "fill_all": v["fill_all"],
         "catalog": v["catalog"], "money": v["money"],
         "breakdown": breakdown, "future_information": future,
+        "same_line": {"title": rule.get("title", ""), "p3": rule.get("precision@3", {}), "ci": rule.get("ci", {}),
+                      "model_minus_rule": rule.get("model_minus_rule")} if rule else None,
     }
     path = ROOT / "site" / "data" / "report.json"
     path.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")

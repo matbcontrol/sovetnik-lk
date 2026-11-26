@@ -274,6 +274,28 @@ def catalog_coverage(st: FoldStats, offers: dict[str, dict]) -> dict:
     }
 
 
+def same_line_rule(st: FoldStats, c: str) -> list[str]:
+    """Сильный базовый способ без обучения: «возьмите другой товар той же линейки».
+
+    Кандидаты — товары той же линейки, что уже купленные (по каталогу или по названию): продление,
+    другой размер лицензии, следующая версия. Порядок: сколько раз товар брали следом за купленным,
+    затем общая частота. Свободные места добираются популярностью. Нужен, чтобы отделить вклад
+    обученной модели от простого правила про продление.
+    """
+    fold, at = st.fold, st.attrs
+    own = set(fold.history[c])
+    score: Counter = Counter()
+    for a in fold.history[c]:
+        near = set(st.line_items.get(at[a].line, ()))
+        if at[a].nline:
+            near |= set(st.nline_items.get(at[a].nline, ()))
+        for b in near - own:
+            score[b] += 1 + st.pair.get(a, EMPTY).get(b, 0)
+    ranked = sorted(score, key=lambda b: (-score[b], -st.item_rows.get(b, 0), b))
+    fill = [i for i, _ in st.item_rows.most_common(60) if i not in own and i not in score]
+    return (ranked + fill)[:3]
+
+
 def main() -> None:
     rerun_with_fixed_order("recsys.eval.value")
     sys.stdout.reconfigure(encoding="utf-8")
@@ -337,9 +359,23 @@ def main() -> None:
         c = report["regimes"][regime]["ci"]
         print(f"  {title:34} A {c['A B2B'][0]:.1%}–{c['A B2B'][1]:.1%}   B {c['B B2B'][0]:.1%}–{c['B B2B'][1]:.1%}")
     report["baseline_popularity"] = {s: pop_seg[s]["value"] for s in SEGS}
+    # ---- сильный базовый способ: правило «та же линейка» без обучения
+    rule_recs = {c: same_line_rule(off, c) for c in fold.group_a}
+    rule_seg = by_segment(task, fold, {c: len(set(rule_recs[c]) & fold.target[c]) / 3 for c in fold.group_a})
+    report["baseline_same_line"] = {
+        "title": "правило «та же линейка» без обучения",
+        "precision@3": {s: rule_seg[s]["value"] for s in SEGS},
+        "ci": {s: ci(rule_seg[s]["values"]) for s in ("A B2B", "B B2B", "A все", "B все")},
+    }
+    print(f"{'правило «та же линейка»':36}" + "".join(f"{rule_seg[s]['value']:>9.1%}" for s in SEGS))
+    full_seg = values_by["full"]
+    d = paired(full_seg["A B2B"]["values"], rule_seg["A B2B"]["values"])
+    report["baseline_same_line"]["model_minus_rule"] = d
+    print(f"  полная модель минус правило, организации A: {d}")
     # из чего состоят попадания главного режима: вариант уже купленного, другая версия, новый продукт
     from recsys.rank.breakdown import breakdown
     report["hits_breakdown"] = breakdown(task, fold, attrs, recs_by["full"])
+    report["baseline_same_line"]["hits_breakdown"] = breakdown(task, fold, attrs, rule_recs)
     part = report["hits_breakdown"].get("A B2B", {})
     if part:
         print("\nпопадания организаций (группа A) по видам: "
