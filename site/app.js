@@ -786,6 +786,7 @@
 
   // ---- запуск
   syncControls();
+  if (!priv) $("#d-on").parentElement.hidden = true;     // открытый стенд: клиентов из данных задачи в нём нет
   if (priv) setupData();
   else if (examples.length) { exSel.value = "0"; loadExample(0); }
   else render();
