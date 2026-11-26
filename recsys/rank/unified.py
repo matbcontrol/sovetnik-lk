@@ -14,10 +14,15 @@
 Два вида одного и того же порядка:
   protocol(c) — три лучших товара из продаж, без правил показа: по нему считается официальная цифра
                 (совпадает с режимом «полная модель» в recsys.eval.value);
-  cabinet(c)  — как в блоке кабинета: только то, что можно купить; продления отдельной строкой
-                (не больше двух), три места — новым советам; один совет на продукт; дополнения
-                только к купленному; не дороже самой дорогой прошлой покупки больше чем в пять раз;
-                сначала советы с собственным основанием, потом «часто берут».
+  cabinet(c)  — как в блоке кабинета: только то, что можно купить; один совет на продукт; дополнения
+                только к купленному; не дороже самой дорогой прошлой покупки больше чем в пять раз.
+                Три строки, и популярное с личным не смешивается:
+                  «Пора продлить»      — продления купленного, когда срок подходит (не больше двух);
+                  «К вашим продуктам»  — до трёх советов, у каждого основание в покупках клиента;
+                  «Часто докупают»     — продукт, который клиенты той же группы чаще всего берут впервые,
+                                         когда возвращаются за покупкой; подписан как популярный, а не
+                                         как личный совет. Одна карточка; если личных советов меньше
+                                         трёх — по числу свободных мест.
 
 Запуск:  python -m recsys.rank.unified     сверка с официальной цифрой и сводка по виду «кабинет»
 Отчёт:   reports/unified.json (только сводные числа)
@@ -30,7 +35,7 @@ import json
 import sys
 from collections import Counter, defaultdict
 import re
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from datetime import date
 from typing import Callable
 
@@ -51,6 +56,14 @@ RENEW_MAX, NEW_MAX = 2, 3
 RECENT_DAYS = 183
 DUE_MONTHS = 4          # «Пора продлить» — только когда до конца срока осталось не больше четырёх месяцев
 YEARLY = re.compile(r"\bгодов(?:ая|ой|ую)\b", re.I)
+# «Часто докупают»: продукт, который впервые взяли не меньше 5 % клиентов той же группы (организации
+# или частные лица), вернувшихся за покупкой, и не меньше десяти таких клиентов. Продления и варианты
+# уже купленного в счёт не идут, иначе «часто докупают» превращается в «часто продлевают».
+POPULAR_SHARE, POPULAR_CLIENTS = 0.05, 10
+# Домашняя лицензия (для семьи, персональная, для дома и учёбы) — не для организации. Исключение — организация,
+# которая такие лицензии уже покупала: её собственные покупки важнее правила.
+HOME = re.compile(r"\bfamily\b|\bpersonal\b|для семьи|для дома|home and student|\bhome\b(?! and business)", re.I)
+POPULAR_MIN = 1         # карточек в строке «Часто докупают»: одна, а если личных советов меньше трёх — по числу свободных мест
 # связи с измеренной поддержкой идут наравне с советами модели; слабые (редко сбываются или проверить
 # нечем) — после «часто берут», по своей оценке
 STRONG_LINKS = {"new_version", "analog_ru"}
@@ -67,6 +80,19 @@ VERIFIED = {("upgrade", "таблица сравнения магазина"), (
             ("complements", "название товара")}
 
 
+# Особые лицензии: академические, учебные, государственные, некоммерческие. Их подбираем только к такой же
+# купленной: коммерческому клиенту академическая лицензия не положена, как бы хорошо ни совпали места и срок.
+# Признак берётся из названия: поле каталога «Тип организации» ненадёжно (у половины проданных товаров
+# с пометкой «Академическая» или «Государственная» в названии ничего такого нет — например, Astra Linux).
+SPECIAL = re.compile(r"academ|академ|образоват|educat|учебн|студен|преподават|\bschool\b|government|\bgov\b"
+                     r"|государственных (?:организац|учрежд)|некоммерч|non-?profit", re.I)
+
+
+def special_licence(name: str) -> bool:
+    """Лицензия не для обычного коммерческого клиента (по названию товара)."""
+    return bool(SPECIAL.search(name or ""))
+
+
 @dataclass
 class Scored:
     item: str                       # item_id из продаж или «K:<id товара каталога>» для товара вне продаж
@@ -80,7 +106,8 @@ class Scored:
     src: str = ""                   # купленный товар, от которого идёт связь или подстановка
     evidence: str = ""              # основание связи графа
     replaces: str = ""              # недоступный товар, место которого занял этот
-    slot: str = "new"               # «renew» — продление купленного, «new» — новый совет
+    slot: str = "new"               # «renew» — продление купленного, «new» — личный совет, «popular» — «часто докупают»
+    share: float = 0.0              # для «popular»: доля вернувшихся клиентов группы, впервые взявших этот продукт
     features: dict = field(default_factory=dict, repr=False)
 
 
@@ -152,6 +179,7 @@ class Catalog:
     def pick(self, family_id: str, like: dict | None, group: str, kinds: tuple = ("base", "")) -> dict | None:
         """Товар семейства, который можно купить и который ближе всего к купленному: те же места и срок."""
         best, best_key = None, None
+        want_special = special_licence((like or {}).get("name", ""))
         band = int(like["band_lo"]) if like and like.get("band_lo") else None
         term = int(float(like["term_months"])) if like and like.get("term_months") not in ("", None) else None
         for oid in self.by_family.get(family_id, ()):
@@ -159,9 +187,8 @@ class Catalog:
             if not o["available"]:
                 continue
             kind, lo, t, user = self.parsed(oid)
-            low = o["name"].lower()
-            if "academ" in low or "образоват" in low or "educat" in low or "government" in low:
-                continue
+            if special_licence(o["name"]) != want_special:
+                continue                                    # академическая — только тому, кто такую и покупал
             if group == "B2C" and "юр" in user and "физ" not in user:
                 continue
             if group == "B2B" and "физ" in user and "юр" not in user:
@@ -180,8 +207,10 @@ class Catalog:
             return None
         want = (r.get("license_kind", ""), int(r["band_lo"]) if r.get("band_lo") else None,
                 int(float(r["term_months"])) if r.get("term_months") not in ("", None) else None)
+        special = special_licence(r.get("name", "") or self.task.names.get(item, ""))
         same = [self.offers[x] for x in self.by_family.get(fam, ())
-                if self.offers[x]["available"] and self.parsed(x)[:3] == want]
+                if self.offers[x]["available"] and self.parsed(x)[:3] == want
+                and special_licence(self.offers[x]["name"]) == special]
         return min(same, key=lambda o: self.price(o) or 1e12) if same else None
 
 
@@ -192,6 +221,48 @@ class Unified:
         self.last_sold: dict[str, date] = {}
         for r in self.fold.train:
             self.last_sold[r.item] = r.week
+        self.popular = self._popular_products()
+        self.home_items = {i for i, n in self.task.names.items() if HOME.search(n)}
+
+    def _popular_products(self) -> dict[str, dict[str, float]]:
+        """Группа клиентов -> {продукт: доля вернувшихся клиентов группы, впервые взявших его при докупке}.
+
+        Считается по обучающей части разреза. Клиент «вернулся», если покупал что-то новое позже своей
+        первой недели. Продукт засчитывается ему, только если до этой покупки у него не было ни одного
+        товара того же продукта: продления и другие варианты купленного сюда не попадают. Покупка
+        продления, поддержки или расширения тоже не в счёт, даже когда в данных она первая: такой
+        клиент владел продуктом раньше, чем начинаются данные.
+        """
+        at = self.at
+        got: dict[str, Counter] = defaultdict(Counter)
+        back = Counter()
+        for c, d in self.fold.first.items():
+            seq = sorted(d.items(), key=lambda kv: (kv[1], kv[0]))
+            start = seq[0][1]
+            if seq[-1][1] <= start:
+                continue
+            g = self.task.clients.get(c, {}).get("client_group", "")
+            back[g] += 1
+            had: set[str] = set()
+            fresh: set[str] = set()
+            i = 0
+            while i < len(seq):
+                j = i
+                while j < len(seq) and seq[j][1] == seq[i][1]:
+                    j += 1
+                week = [at[b] for b, _ in seq[i:j]]
+                if seq[i][1] > start:
+                    fresh.update(ab.nline or ab.line for ab in week if ab.kind not in ADDON_KINDS
+                                 and ab.line not in had and not (ab.nline and ab.nline in had))
+                for ab in week:
+                    had.add(ab.line)
+                    if ab.nline:
+                        had.add(ab.nline)
+                i = j
+            for k in fresh:
+                got[g][k] += 1
+        return {g: {k: n / back[g] for k, n in cnt.items() if n >= POPULAR_CLIENTS and n / back[g] >= POPULAR_SHARE}
+                for g, cnt in got.items()}
 
     def sellable(self, item: str) -> bool:
         """Можно ли предлагать товар сейчас: он есть на витрине или его покупали в последние полгода.
@@ -311,19 +382,133 @@ class Unified:
     # ---- вид «как в кабинете» ------------------------------------------------------------
 
     def cabinet(self, c: str, prices: dict[str, float] | None = None,
-                keep: Callable[[list[str], Scored], tuple[bool, str]] | None = None) -> dict:
-        """Что видит клиент в кабинете: {"renew": до двух продлений, "new": до трёх новых советов, "dropped": [...]}.
+                keep: Callable[[list[str], Scored], tuple[bool, str]] | None = None,
+                popular_keep: Callable[[list[str], Scored], tuple[bool, str]] | None = None,
+                popular_n: int | None = None) -> dict:
+        """Что видит клиент в кабинете.
 
-        keep — необязательный фильтр новых советов: функция (история клиента, кандидат) -> (оставить, причина).
+        {"renew":   до двух продлений, срок которых подходит,
+         "new":     до трёх личных советов — у каждого основание в покупках клиента,
+         "popular": строка «Часто докупают» — популярный продукт группы, честно подписанный как популярный,
+         "dropped": [{"item", "reason"}, ...]}
+
+        Личный совет — это другой вариант купленного продукта, товар по проверенной связи графа или товар,
+        который брали после купленного. Продукт из «часто докупают» личным советом не считается, даже если
+        после купленного его брали: его берут после чего угодно. Он может попасть только в свою строку.
+
+        keep — необязательный фильтр личных советов: функция (история клиента, кандидат) -> (оставить, причина).
         Через неё накладываются заранее вынесенные вердикты «нужно / уже есть / то же самое / не связано».
-        Строку продлений фильтр не трогает. Популярное в свободные места не подмешивается: если после
-        фильтра новых советов меньше трёх, их и будет меньше.
+        Когда фильтр задан, решает он: одобренный им популярный продукт идёт в личные советы (у него есть
+        «зачем»), отклонённый — остаётся кандидатом в строку «Часто докупают».
+        popular_keep — такой же необязательный фильтр для строки «Часто докупают»: им убирают популярное,
+        которое у клиента уже есть или решает ту же задачу, что купленное.
+        popular_n — сколько карточек в строке «Часто докупают»; по умолчанию одна, а если личных советов
+        меньше трёх — по числу свободных мест. Строку продлений фильтры не трогают.
         """
-        at, cat = self.at, self.cat
         h = self.fold.history[c]
-        own = {at[a].line for a in h} | {at[a].nline for a in h if at[a].nline}
-        cap = max(((prices or {}).get(a) or cat.price(cat.offer_of(a)) or 0 for a in h), default=0)
+        own = self._own(h)
+        cap = self._cap(h, prices)
         group = self.task.clients.get(c, {}).get("client_group", "")
+        no_home = self._no_home(group, h)
+        common = self.popular.get(group, {})
+        ordered, dropped = self._sellable_order(c, group)
+        seen: set[str] = set()
+        renew, new = [], []
+        for s in sorted(ordered, key=lambda s: (not s.grounded, -s.p, s.item)):   # сначала советы с собственным основанием
+            ab, line, nline = self._product(s)
+            if line in seen or (nline and nline in seen):
+                dropped.append({"item": s.item, "reason": "уже есть совет по этому продукту"})
+                continue
+            variant = bool(ab) and (ab.line in own or bool(nline and nline in own))
+            why = self._ban(s, ab, variant, cap, no_home)
+            if why:
+                dropped.append({"item": s.item, "reason": why})
+                continue
+            if s.slot == "renew":
+                left = self.months_left(c, s.replaces or s.item)
+                if left is None or left > DUE_MONTHS:
+                    dropped.append({"item": s.item, "reason": "продлевать рано: срок лицензии ещё далеко или неизвестен"})
+                    continue
+                target, limit = renew, RENEW_MAX
+            else:
+                if keep is not None:
+                    personal, why = keep(h, s)
+                    why = why or "отсеяно проверкой пары"
+                else:                                       # преемник судится как товар, который он заменил
+                    by_link = s.basis != "модель" and not s.replaces
+                    share = 0.0 if variant or not ab else common.get(nline or ab.line, 0.0)
+                    personal = by_link or variant or (s.grounded and not share)
+                    why = "популярный продукт: его место в строке «Часто докупают»" if share \
+                        else "нет основания в покупках клиента"
+                if not personal:
+                    dropped.append({"item": s.item, "reason": why})
+                    continue
+                target, limit = new, NEW_MAX
+            if len(target) >= limit:
+                continue
+            seen.add(line)
+            if nline:
+                seen.add(nline)
+            target.append(s)
+        popular = self.popular_row(c, renew + new, prices, popular_keep, popular_n, ordered)
+        return {"renew": renew, "new": new, "popular": popular, "dropped": dropped}
+
+    def popular_row(self, c: str, shown: list[Scored] | tuple = (), prices: dict[str, float] | None = None,
+                    popular_keep: Callable[[list[str], Scored], tuple[bool, str]] | None = None,
+                    n: int | None = None, ordered: list[Scored] | None = None) -> list[Scored]:
+        """Строка «Часто докупают» для клиента, которому уже показаны карточки shown.
+
+        Кандидаты — продукты, популярные в группе клиента (self.popular): их нет у клиента и нет среди
+        показанного. Порядок — по той же единой оценке; запреты те же, что у личных советов (можно
+        купить, не дополнение к чужому продукту, не намного дороже прошлых покупок). У карточек
+        slot = "popular", basis = "часто докупают", share — доля вернувшихся клиентов группы,
+        впервые взявших этот продукт: её можно показать клиенту как есть.
+
+        n — сколько карточек; по умолчанию одна, а если личных советов среди shown меньше трёх —
+        по числу свободных мест. popular_keep — необязательный фильтр (история, кандидат) -> (оставить,
+        причина): им убирают популярное, которое у клиента уже есть или решает ту же задачу.
+        Вызывается и отдельно — когда личные советы собраны снаружи в несколько шагов.
+        """
+        h = self.fold.history[c]
+        group = self.task.clients.get(c, {}).get("client_group", "")
+        common = self.popular.get(group, {})
+        room = max(POPULAR_MIN, NEW_MAX - sum(x.slot == "new" for x in shown)) if n is None else n
+        if not common or room <= 0:
+            return []
+        own, cap, no_home = self._own(h), self._cap(h, prices), self._no_home(group, h)
+        seen: set[str] = set()
+        for x in shown:
+            _, line, nline = self._product(x)
+            seen.update(k for k in (line, nline) if k)
+        if ordered is None:
+            ordered, _ = self._sellable_order(c, group)
+        row: list[Scored] = []
+        for s in sorted(ordered, key=lambda s: (-s.p, s.item)):
+            if len(row) >= room:
+                break
+            ab, line, nline = self._product(s)
+            if not ab or s.slot != "new" or ab.line in own or (nline and nline in own):
+                continue
+            share = common.get(nline or ab.line, 0.0)
+            if not share or line in seen or (nline and nline in seen) or self._ban(s, ab, False, cap, no_home):
+                continue
+            if popular_keep is not None and not popular_keep(h, s)[0]:
+                continue
+            seen.update(k for k in (line, nline) if k)
+            row.append(replace(s, slot="popular", basis="часто докупают", share=share))
+        return row
+
+    def _own(self, h: list[str]) -> set[str]:
+        at = self.at
+        return {at[a].line for a in h} | {at[a].nline for a in h if at[a].nline}
+
+    def _cap(self, h: list[str], prices: dict[str, float] | None) -> float:
+        """Самая дорогая прошлая покупка клиента: от неё считается потолок цены совета."""
+        cat = self.cat
+        return max(((prices or {}).get(a) or cat.price(cat.offer_of(a)) or 0 for a in h), default=0)
+
+    def _sellable_order(self, c: str, group: str) -> tuple[list[Scored], list[dict]]:
+        """Кандидаты клиента, которых можно купить (недоступные заменены преемниками), и убранные без преемника."""
         ordered, dropped = [], []
         for s in self.order(c):
             if not self.sellable(s.item):
@@ -333,42 +518,26 @@ class Unified:
                     continue
                 s = heir
             ordered.append(s)
-        ordered.sort(key=lambda s: (not s.grounded, -s.p, s.item))     # сначала советы с собственным основанием
-        seen: set[str] = set()
-        renew, new = [], []
-        for s in ordered:
-            ab = at.get(s.item)
-            line = (ab.pkey or ab.line) if ab else "offer:" + s.item
-            nline = ab.nline if ab else ""
-            if line in seen or (nline and nline in seen):
-                dropped.append({"item": s.item, "reason": "уже есть совет по этому продукту"})
-                continue
-            if ab and ab.kind in ADDON_KINDS and ab.line not in own and not (nline and nline in own):
-                dropped.append({"item": s.item, "reason": "дополнение к продукту, которого у клиента нет"})
-                continue
-            if cap and s.price and s.price > PRICE_CAP * cap:
-                dropped.append({"item": s.item, "reason": "намного дороже прошлых покупок клиента"})
-                continue
-            if s.slot == "renew":
-                left = self.months_left(c, s.replaces or s.item)
-                if left is None or left > DUE_MONTHS:
-                    dropped.append({"item": s.item, "reason": "продлевать рано: срок лицензии ещё далеко или неизвестен"})
-                    continue
-            elif keep is not None:
-                ok, why = keep(h, s)
-                if not ok:
-                    dropped.append({"item": s.item, "reason": why or "отсеяно проверкой пары"})
-                    continue
-            target = renew if s.slot == "renew" else new
-            if len(target) >= (RENEW_MAX if s.slot == "renew" else NEW_MAX):
-                continue
-            seen.add(line)
-            if nline:
-                seen.add(nline)
-            target.append(s)
-            if len(renew) >= RENEW_MAX and len(new) >= NEW_MAX:
-                break
-        return {"renew": renew, "new": new, "dropped": dropped}
+        return ordered, dropped
+
+    def _product(self, s: Scored) -> tuple:
+        """(признаки товара, ключ продукта, линейка по названию); преемник наследует продукт того, кого заменил."""
+        ab = self.at.get(s.item) or self.at.get(s.replaces)
+        return ab, ((ab.pkey or ab.line) if ab else "offer:" + s.item), (ab.nline if ab else "")
+
+    def _no_home(self, group: str, h: list[str]) -> bool:
+        """Организация, которая ни разу не покупала домашних лицензий: ей их и не советуем."""
+        return group == "B2B" and not any(a in self.home_items for a in h)
+
+    def _ban(self, s: Scored, ab, variant: bool, cap: float, no_home: bool) -> str:
+        """Причина, по которой карточку нельзя показывать ни в одной строке; пусто — можно."""
+        if ab and ab.kind in ADDON_KINDS and not variant:
+            return "дополнение к продукту, которого у клиента нет"
+        if cap and s.price and s.price > PRICE_CAP * cap:
+            return "намного дороже прошлых покупок клиента"
+        if no_home and ((s.replaces or s.item) in self.home_items or HOME.search(s.title)):
+            return "домашняя лицензия, а клиент — организация"
+        return ""
 
     def _heir(self, s: Scored, group: str) -> Scored | None:
         """Преемник товара, который сейчас нельзя купить: наследует его оценку."""
@@ -394,10 +563,11 @@ class Unified:
                       evidence=evidence, replaces=was.item, slot=was.slot, features=was.features)
 
 
-def cabinet_summary(uni: Unified, keep=None, prices: dict[str, float] | None = None) -> dict:
+def cabinet_summary(uni: Unified, keep=None, prices: dict[str, float] | None = None,
+                    popular_keep=None, popular_n: int | None = None) -> dict:
     """Вид «как в кабинете» на клиентах официальной проверки: сколько карточек показано и сколько сбылось.
 
-    keep — тот же необязательный фильтр новых советов, что в Unified.cabinet: так измеряется его цена.
+    keep, popular_keep, popular_n — те же необязательные настройки, что в Unified.cabinet: так измеряется их цена.
     """
     from recsys.eval.value import by_segment
 
@@ -406,22 +576,24 @@ def cabinet_summary(uni: Unified, keep=None, prices: dict[str, float] | None = N
     shown3, shown_any = {}, {}
     per: dict[str, Counter] = defaultdict(Counter)
     for c in fold.group_a:
-        cab = uni.cabinet(c, prices, keep)
-        cards = cab["renew"] + cab["new"]
+        cab = uni.cabinet(c, prices, keep, popular_keep, popular_n)
+        cards = cab["renew"] + cab["new"] + cab["popular"]
         tgt = fold.target[c]
         g = task.clients[c]["client_group"]
         cold = len(fold.history[c]) == 1
         for key in [f"A {g}", "A все"] + ([f"B {g}", "B все"] if cold else []):
             r = per[key]
             r["clients"] += 1
-            r["renew_cards"] += len(cab["renew"])
-            r["renew_hits"] += sum(x.item in tgt for x in cab["renew"])
-            r["new_cards"] += len(cab["new"])
-            r["new_hits"] += sum(x.item in tgt for x in cab["new"])
+            for row in ("renew", "new", "popular"):
+                r[f"{row}_cards"] += len(cab[row])
+                r[f"{row}_hits"] += sum(x.item in tgt for x in cab[row])
+                r[f"clients_with_{row}"] += bool(cab[row])
             r["clients_without_new"] += not cab["new"]
             r["clients_without_cards"] += not cards
         stats["клиентов"] += 1
         stats["с продлением"] += bool(cab["renew"])
+        stats["с личным советом"] += bool(cab["new"])
+        stats["со строкой «часто докупают»"] += bool(cab["popular"])
         stats["карточек"] += len(cards)
         stats["товаров вне продаж"] += sum(not x.in_sales for x in cards)
         stats["подстановок преемника"] += sum(bool(x.replaces) for x in cards)
@@ -482,13 +654,42 @@ def main() -> None:
           + " / ".join(f"{k} {cab['precision@3_of_three_best_cards'][k]:.1%}" for k in ("A B2B", "B B2B", "A B2C")))
     print("доля клиентов, у которых сбылась хотя бы одна показанная карточка: "
           + " / ".join(f"{k} {cab['clients_with_a_hit_among_shown'][k]:.1%}" for k in ("A B2B", "B B2B", "A B2C")))
+    rows = (("renew", "«Пора продлить»"), ("new", "«К вашим продуктам»"), ("popular", "«Часто докупают»"))
     for k in ("A B2B", "A B2C"):
         r = cab["cards"][k]
-        print(f"  {k}: «Пора продлить» — карточек {r['renew_cards']}, сбылось {r['renew_hits']}; новые советы — "
-              f"карточек {r['new_cards']}, сбылось {r['new_hits']}; клиентов без новых советов {r['clients_without_new']}")
+        print(f"  {k}, клиентов {r['clients']}, без единой карточки {r['clients_without_cards']}:")
+        for row, title in rows:
+            n, hit = r[f"{row}_cards"], r[f"{row}_hits"]
+            print(f"     {title:20} клиентов {r[f'clients_with_{row}']:>3}, карточек {n:>3}, "
+                  f"сбылось {hit:>3}" + (f" ({hit / n:.1%})" if n else ""))
     print("что показано:", cab["counts"])
     print("основания карточек:", cab["basis"])
     report["cabinet_view"] = cab
+    report["popular_products"] = {
+        "rule": f"продукт впервые взяли не меньше {POPULAR_SHARE:.0%} вернувшихся клиентов группы "
+                f"и не меньше {POPULAR_CLIENTS} клиентов; продления и варианты купленного не в счёт",
+        "count": {g: len(v) for g, v in sorted(uni.popular.items())},
+        "top_share": {g: round(max(v.values()), 4) for g, v in sorted(uni.popular.items()) if v},
+    }
+    print("продуктов «часто докупают»: " + ", ".join(
+        f"{g or 'без группы'} — {len(v)} (самый частый у {max(v.values()):.0%} вернувшихся)"
+        for g, v in sorted(uni.popular.items()) if v))
+
+    # 3) сколько карточек класть в строку «Часто докупают»: ни одной, одну, по свободным местам (так по умолчанию)
+    report["popular_row_size"] = {}
+    for title, n in (("без строки", 0), ("всегда одна карточка", 1), ("по свободным местам, не меньше одной", None)):
+        v = cab if n is None else cabinet_summary(uni, popular_n=n)
+        line = {}
+        for k in ("A B2B", "A B2C"):
+            r = v["cards"][k]
+            line[k] = {"popular_cards": r["popular_cards"], "popular_hits": r["popular_hits"],
+                       "clients_without_cards": r["clients_without_cards"],
+                       "clients_with_a_hit_among_shown": v["clients_with_a_hit_among_shown"][k]}
+        report["popular_row_size"][title] = line
+        print(f"  строка «Часто докупают» — {title}: " + "; ".join(
+            f"{k}: карточек {x['popular_cards']}, сбылось {x['popular_hits']}, клиентов без карточек "
+            f"{x['clients_without_cards']}, с попаданием {x['clients_with_a_hit_among_shown']:.1%}"
+            for k, x in line.items()))
     REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"отчёт: {REPORT}")
 
