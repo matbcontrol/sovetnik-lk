@@ -43,6 +43,7 @@ import numpy as np
 
 from recsys.catalog.items import license_kind, seat_band, term_months
 from recsys.config import INTERIM, ROOT
+from recsys.rank.breakdown import kind_of
 from recsys.rank.data import OFFICIAL, Task, load_task, make_fold, months_between
 from recsys.rank.features import FEATURES, FoldStats, build_attrs
 
@@ -51,6 +52,12 @@ COL = {name: i for i, name in enumerate(FEATURES)}
 # признаки «собственного основания»: совет выведен из купленного клиентом, а не из общей популярности
 OWN_GROUND = ["pair_sum", "co_sum", "same_line", "same_vkey", "fam_sum"]
 ADDON_KINDS = ("media", "support", "renewal", "extension")
+# Дополнение — товар, который без купленного продукта бесполезен: продление, расширение лицензии, поддержка,
+# медиапакет, установочный комплект, обновление до новой версии. Вид лицензии из каталога есть не у всех товаров,
+# поэтому смотрим и на название из продаж (например, «Расширение лицензии на …» без привязки к каталогу).
+ADDON_NAME = re.compile(r"продлени|renewal|расширени[ея]|медиапакет|media ?pack|дистрибутив|установочн\w* комплект"
+                        r"|сертификат на (?:техническ|сопровожд)|техническ\w* поддержк|техподдержк|сопровождени"
+                        r"|\bsupport\b|\bupgrade\b|апгрейд|лицензия на обновление|для обновления|дополнительн", re.I)
 PRICE_CAP = 5.0
 RENEW_MAX, NEW_MAX = 2, 3
 RECENT_DAYS = 183
@@ -223,6 +230,8 @@ class Unified:
             self.last_sold[r.item] = r.week
         self.popular = self._popular_products()
         self.home_items = {i for i, n in self.task.names.items() if HOME.search(n)}
+        self.addon_items = ({i for i, n in self.task.names.items() if ADDON_NAME.search(n)}
+                            | {i for i, a in self.at.items() if a.kind in ADDON_KINDS})
 
     def _popular_products(self) -> dict[str, dict[str, float]]:
         """Группа клиентов -> {продукт: доля вернувшихся клиентов группы, впервые взявших его при докупке}.
@@ -420,7 +429,7 @@ class Unified:
                 dropped.append({"item": s.item, "reason": "уже есть совет по этому продукту"})
                 continue
             variant = bool(ab) and (ab.line in own or bool(nline and nline in own))
-            why = self._ban(s, ab, variant, cap, no_home)
+            why = self._ban(s, variant, cap, no_home, h)
             if why:
                 dropped.append({"item": s.item, "reason": why})
                 continue
@@ -490,7 +499,7 @@ class Unified:
             if not ab or s.slot != "new" or ab.line in own or (nline and nline in own):
                 continue
             share = common.get(nline or ab.line, 0.0)
-            if not share or line in seen or (nline and nline in seen) or self._ban(s, ab, False, cap, no_home):
+            if not share or line in seen or (nline and nline in seen) or self._ban(s, False, cap, no_home, h):
                 continue
             if popular_keep is not None and not popular_keep(h, s)[0]:
                 continue
@@ -529,9 +538,16 @@ class Unified:
         """Организация, которая ни разу не покупала домашних лицензий: ей их и не советуем."""
         return group == "B2B" and not any(a in self.home_items for a in h)
 
-    def _ban(self, s: Scored, ab, variant: bool, cap: float, no_home: bool) -> str:
-        """Причина, по которой карточку нельзя показывать ни в одной строке; пусто — можно."""
-        if ab and ab.kind in ADDON_KINDS and not variant:
+    def _ban(self, s: Scored, variant: bool, cap: float, no_home: bool, h: list[str]) -> str:
+        """Причина, по которой карточку нельзя показывать ни в одной строке; пусто — можно.
+
+        Дополнение показываем только к своему продукту. «Свой» — по той же мерке, что в разборе попаданий
+        (recsys.rank.breakdown): то же семейство, та же линейка по названию или близкое название при том же
+        производителе. Так расширение лицензии доходит до владельца медиапакета того же антивируса, а до
+        владельца чужого продукта не доходит.
+        """
+        item = s.replaces or s.item
+        if item in self.addon_items and not variant and kind_of(item, h, self.at) == "новый продукт":
             return "дополнение к продукту, которого у клиента нет"
         if cap and s.price and s.price > PRICE_CAP * cap:
             return "намного дороже прошлых покупок клиента"
