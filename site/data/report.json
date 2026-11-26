@@ -645,11 +645,11 @@
  },
  "verdict_effect": {
   "verdicts": {
-   "same": 410,
-   "need": 219,
-   "unrelated": 4682,
-   "has": 231,
-   "kit": 964
+   "same": 435,
+   "need": 235,
+   "unrelated": 5008,
+   "has": 233,
+   "kit": 1015
   },
   "clients": 302,
   "rows": [
@@ -664,9 +664,9 @@
    },
    {
     "title": "Только «нужно»",
-    "cards": 620,
+    "cards": 619,
     "hits": 53,
-    "share": 0.0855,
+    "share": 0.0856,
     "top_share": 0.172,
     "without": 38,
     "stand": false
@@ -676,16 +676,16 @@
     "cards": 738,
     "hits": 53,
     "share": 0.0718,
-    "top_share": 0.205,
+    "top_share": 0.202,
     "without": 12,
     "stand": true
    },
    {
     "title": "«нужно» и комплект вперемешку",
-    "cards": 832,
+    "cards": 831,
     "hits": 57,
-    "share": 0.0685,
-    "top_share": 0.649,
+    "share": 0.0686,
+    "top_share": 0.646,
     "without": 8,
     "stand": false
    }
