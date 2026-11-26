@@ -56,11 +56,14 @@ def test_client_sees_a_checked_product_pair_with_verdict_need():
     edges = as_family_edges(table)
     assert [(e["dst"], e["source"]) for e in edges] == [("v/firewall", "разметка: нужно"), ("v/office", "разметка: комплект")]
     assert class_blocks(table, NODES) == [["v/antivirus", "c/backup"]]
-    recs, bans = Recommender(Graph(NODES, [dict(e) for e in edges], [], RANK)).recommend(CLIENT, 3, explain_bans=True)
-    assert [r.family for r in recs] == ["v/firewall"] and recs[0].why == "Фильтрует трафик до рабочих мест."
-    assert [(b["family"], b["reason"]) for b in bans] == [("v/office", PENDING)]       # комплект ждёт менеджера
-    ok = Recommender(Graph(NODES, [dict(e) for e in edges], [], RANK), approved={"pk|v/antivirus|v/office"})
-    assert [r.slot for r in ok.recommend(CLIENT, 3)] == ["missing", "kit"]
+    recs = Recommender(Graph(NODES, [dict(e) for e in edges], [], RANK)).recommend(CLIENT, 3)
+    # «нужно» — личным советом, «комплект» — последней карточкой
+    assert [(r.family, r.slot) for r in recs] == [("v/firewall", "missing"), ("v/office", "kit")]
+    assert recs[0].why == "Фильтрует трафик до рабочих мест."
+    assert recs[1].why == "Если ещё нет офисного пакета: документы и таблицы."
+    # менеджер может отклонить комплект: он перестаёт показываться
+    no = Recommender(Graph(NODES, [dict(e) for e in edges], [], RANK), rejected={"pk|v/antivirus|v/office"})
+    assert [r.family for r in no.recommend(CLIENT, 3)] == ["v/firewall"]
 
 
 def test_judged_pair_overrides_class_pick():

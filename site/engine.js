@@ -56,11 +56,12 @@
     analog_ru: "российский аналог", analog_class: "российский продукт того же класса", same_line: "та же линейка", popular: "часто берут",
   };
   // Связь между товарами разных линеек — вывод, а не факт каталога. Клиенту она показывается, если саму пару
-  // товаров заранее проверили по правилам и вердикт — «нужно». Всё остальное — подсказка менеджеру и ждёт
-  // его решения: «комплект», товар, подобранный по связи классов (проверена связь классов, но не пара
-  // с товаром клиента), вердикт модели, не прошедшей сверку, и замена по классу.
+  // товаров заранее проверили по правилам: «нужно» — личный совет, «комплект» — не больше одного и после
+  // остальных. Подсказка менеджеру, которая ждёт его решения: товар, подобранный по связи классов (проверена
+  // связь классов, но не пара с товаром клиента), вердикт модели, не прошедшей сверку, и замена по классу.
   const PENDING = "ждёт проверки менеджером";
   const KIT_MAX = 1;           // сколько советов «типовой набор» может быть в блоке
+  const KIT_TO_CLIENT = true;  // показывать «комплект» клиенту сразу; false — только после решения менеджера
   const VERDICT_SOURCE = { need: "разметка: нужно", kit: "разметка: комплект" };
   const RENEW_WINDOW = [-60, 120];
   const DAY = 86400000;
@@ -416,7 +417,7 @@
           if (e.source === VERDICT_SOURCE.kit) {
             const key = `pk|${fam}|${e.dst}`;
             if (this.rejected.has(key)) continue;
-            if (!(this.unverified || this.approved.has(key))) {     // комплект клиент увидит после менеджера
+            if (!(KIT_TO_CLIENT || this.unverified || this.approved.has(key))) {     // комплект — после менеджера
               bans.push({ family: e.dst, type: t, from: fam, reason: PENDING, key });
               continue;
             }
@@ -547,7 +548,7 @@
     }
   }
 
-  const api = { Graph, Recommender, SLOT, SLOT_TITLE, WEIGHT, LABEL, TYPE_TITLE, PENDING, KIT_MAX, parseDate, fmt, addMonths };
+  const api = { Graph, Recommender, SLOT, SLOT_TITLE, WEIGHT, LABEL, TYPE_TITLE, PENDING, KIT_MAX, KIT_TO_CLIENT, parseDate, fmt, addMonths };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.Engine = api;
 })(typeof window !== "undefined" ? window : globalThis);

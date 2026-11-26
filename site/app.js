@@ -253,7 +253,7 @@
     pend.hidden = !waiting;
     const w10 = waiting % 10, w100 = waiting % 100;
     const waits = w10 === 1 && w100 !== 11 ? "совет ждёт" : w10 >= 2 && w10 <= 4 && (w100 < 12 || w100 > 14) ? "совета ждут" : "советов ждут";
-    pend.innerHTML = `Ещё ${waiting} ${waits} решения менеджера — подбор по связи классов, «комплекты» и замены по классу: у них проверена не сама пара с товаром клиента. <button class="linkbtn" id="to-queue">Открыть очередь</button>`;
+    pend.innerHTML = `Ещё ${waiting} ${waits} решения менеджера — подбор по связи классов и замены по классу: у них проверена не сама пара с товаром клиента. <button class="linkbtn" id="to-queue">Открыть очередь</button>`;
     if (waiting) $("#to-queue").addEventListener("click", openQueue);
     renderContract(last.recs.map((r) => { const n = graph.nodes.get(r.family) || {}; return { link: r.url, name: r.name, vendorName: r.vendor, price: n.price || null, slot: r.slot, reason: r.why }; }));
     const ms = performance.now() - t0;
@@ -533,9 +533,9 @@
   for (const n of data.nodes) if (n.cls && n.sale !== 1 && n.ru !== 1 && n.kind !== "hardware") goneByClass[n.cls] = (goneByClass[n.cls] || 0) + 1;
   const queue = [];
   for (const e of data.edges) {
-    const kit = e[3] === "разметка: комплект";           // комплект клиент увидит только после решения менеджера
+    const kit = e[3] === "разметка: комплект";           // комплект виден клиенту сразу; менеджер может его отклонить
     queue.push({ key: kit ? `pk|${e[0]}|${e[1]}` : ekey(e), group: kit ? "kit" : "edge", type: e[2], from: nodeNameAll(e[0]), to: nodeNameAll(e[1]), source: E.LABEL[e[3]] || e[3],
-                 conf: e[4], ev: (e[5] || "").replace(/; https?:\S+$/, ""), auto: !kit, urlFrom: (allNodes.get(e[0]) || {}).url, urlTo: (allNodes.get(e[1]) || {}).url });
+                 conf: e[4], ev: (e[5] || "").replace(/; https?:\S+$/, ""), auto: kit ? E.KIT_TO_CLIENT : true, urlFrom: (allNodes.get(e[0]) || {}).url, urlTo: (allNodes.get(e[1]) || {}).url });
   }
   for (const l of data.class_links || []) {
     const labelled = l.source === "разметка";
@@ -724,9 +724,9 @@
     const sum = (o) => KINDS.reduce((a, [k]) => a + ((o || {})[k] || 0), 0);
     const cell = (o, k) => (o ? nf.format(o[k] || 0) : "—");
     let h = `<h3>Проверка пар «купил А — советовать ли Б»</h3>
-      <p class="hint">Статистика продаж не отличает «нужно» от «и так есть»: после антивируса чаще всего покупают Windows, потому что её покупают все. Поэтому каждую пару заранее судит модель по правилам хорошего менеджера. В личные советы идёт только «нужно» — с фразой «зачем»; «комплект» на истории не сбылся ни разу и остаётся подсказкой менеджеру. На обращение клиента модель не вызывается: вердикт — строка таблицы.</p>
+      <p class="hint">Статистика продаж не отличает «нужно» от «и так есть»: после антивируса чаще всего покупают Windows, потому что её покупают все. Поэтому каждую пару заранее судит модель по правилам хорошего менеджера. В личные советы идёт «нужно» — с фразой «зачем», а за ним не больше одного «комплекта» с условием «если ещё нет…». На истории комплекты пока не сбывались: это совет на вырост, поэтому он стоит последним. На обращение клиента модель не вызывается: вердикт — строка таблицы.</p>
       <table class="links"><tr><th>Вердикт</th><th class="num">Пары классов каталога</th><th class="num">Пары товаров каталога</th><th class="num">Пары линеек из продаж</th></tr>
-      ${KINDS.map(([k, t]) => `<tr><td>${t}${k === "need" ? " — идёт в личные советы" : k === "kit" ? " — ждёт решения менеджера" : ""}</td><td class="num">${cell(vs.classes, k)}</td><td class="num">${cell(vs.families, k)}</td><td class="num">${cell(lines, k)}</td></tr>`).join("")}
+      ${KINDS.map(([k, t]) => `<tr><td>${t}${k === "need" ? " — идёт в личные советы" : k === "kit" ? " — последней карточкой, не больше одной" : ""}</td><td class="num">${cell(vs.classes, k)}</td><td class="num">${cell(vs.families, k)}</td><td class="num">${cell(lines, k)}</td></tr>`).join("")}
       <tr><td><b>Всего</b></td><td class="num"><b>${nf.format(sum(vs.classes))}</b></td><td class="num"><b>${nf.format(sum(vs.families))}</b></td><td class="num"><b>${lines ? nf.format(sum(lines)) : "—"}</b></td></tr></table>`;
     const old = vs.old_links;
     if (old && old.total) {
@@ -782,7 +782,7 @@
     const vs = data.meta.verdicts;
     if (vs) html += verdictsHtml(vs);
     html += `<h3>Очередь менеджера</h3>
-      <p class="hint">Сейчас блок построен примерно на 6 000 ручных связок «товар — товар». Здесь клиент сразу видит только пары товаров, проверенные заранее и получившие вердикт «нужно»; любую из них менеджер отклоняет одним нажатием на вкладке «Связи». Решения менеджера ждёт то, где проверена не сама пара с товаром клиента или где совет не сбывается на истории: связи между классами, «комплекты» и замены по классу — сейчас ${nf.format(waitingRows().length)} строк.</p>`;
+      <p class="hint">Сейчас блок построен примерно на 6 000 ручных связок «товар — товар». Здесь клиент сразу видит пары товаров, проверенные заранее: «нужно» — личным советом, «комплект» — последней карточкой; любую из них менеджер отклоняет одним нажатием на вкладке «Связи». Решения менеджера ждёт то, где проверена не сама пара с товаром клиента: связи между классами и замены по классу — сейчас ${nf.format(waitingRows().length)} строк.</p>`;
     $("#numbers").innerHTML = html;
     $$("#numbers [data-tip]").forEach((el) => {
       el.addEventListener("mousemove", (ev) => showTip(ev, `<span>${esc(el.dataset.tip)}</span>`));
