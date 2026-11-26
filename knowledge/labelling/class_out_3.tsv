@@ -1,0 +1,156 @@
+parts/zvukovye-karty	gadgets/headphones	N	Внешняя звуковая карта раскрывает звук гарнитуры и даёт чистый вход для микрофона	
+parts/zvukovye-karty	photo-video/speaker	K	Если ещё нет колонок: звуковая карта выведет на них объёмный звук без наушников	
+peripherals/accessoires-pour-ups	peripherals/ups	H	аксессуар ставят к имеющемуся ИБП	
+peripherals/displays	peripherals/keyboards	K	Если ещё нет клавиатуры и мыши для нового рабочего места: без них монитор не подключить к работе	
+peripherals/displays	photo-video/holders	N	Кронштейн освобождает стол и позволяет поднять монитор на уровень глаз	
+peripherals/displays	parts/cables	K	Если ещё нет нужного кабеля: HDMI или DisplayPort нужной длины подключит монитор к компьютеру	
+peripherals/keyboards	peripherals/displays	K	Если собираете новое рабочее место: к клавиатуре и мыши нужен монитор	
+peripherals/keyboards	accessories_comp/prochee	N	Коврик даёт мыши ровную поверхность и точное движение курсора	
+peripherals/silovye-moduli-dlya-ibp	peripherals/ups	H	модуль ставят в имеющийся ИБП	
+peripherals/ups	peripherals/ups_battery_pack	N	Батареи ИБП изнашиваются за 3–5 лет, сменная батарея возвращает полное время автономии	
+peripherals/ups	peripherals/accessoires-pour-ups	N	Блок распределения питания и ATS подключают к ИБП несколько стоек и второй ввод	b2b
+peripherals/ups	servisnye-reseniia/texniceskaia-podderzka-oborudovaniia	K	Если ещё нет сервисного контракта: поддержка оборудования ускорит ремонт ИБП при отказе	b2b
+peripherals/ups_battery_pack	peripherals/ups	H	батарею меняют в имеющемся ИБП	
+peripherals/voltage_regulator	peripherals/ups	K	Если ещё нет ИБП: фильтр не спасёт при отключении света, ИБП даст время сохранить работу	
+photo-video/ekran	photo-video/projector	H	экран без проектора не нужен	
+photo-video/projector	photo-video/ekran	N	Экран даёт ровную белую поверхность, на нём картинка проектора чётче, чем на стене	
+photo-video/projector	photo-video/holders	N	Потолочный кронштейн закрепит проектор над залом, без штатива на столе	
+photo-video/projector	parts/cables	K	Если ещё нет длинного кабеля: HDMI нужной длины подключит ноутбук к проектору под потолком	
+photo-video/speaker	photo-video/holders	U	колонкам кронштейн обычно не нужен	
+photo-video/tvset	photo-video/holders	N	Настенный кронштейн повесит телевизор на стену и освободит тумбу	
+portable-memory/dok-stantsii	parts/hdd	H	док без диска бесполезен	
+portable-memory/externalhdd	diski-i-fayli/rezervnoe-kopirovanie	N	Программа резервного копирования сама по расписанию сохранит файлы на внешний диск	
+portable-memory/flash-memory	gadgets/smartphones	H	карту ставят в имеющееся устройство	
+portable-memory/hdd-external-case	parts/ssd	H	корпус покупают под имеющийся диск	
+portable-memory/usb-flash	antivirusi-bezopasnost/antivirusi	U	флешка не требует антивируса	
+portable/powerbank	gadgets/zaryadnye-ustroystva	H	зарядка от телефона уже есть	
+programmi-dlya-mac-os/system-programms	portable-memory/externalhdd	K	Если ещё нет внешнего диска: на нём удобно хранить образы, которые делает Hard Disk Manager	b2b
+programmi-dlya-mobilnih-ustroystv/mobilnie-ustroystva-zaschita-informatsii	antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov	S	та же защита смартфонов	
+programmirovanie/bazi-dannih	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: менеджер БД не вернёт базу после сбоя сервера, копия вернёт	b2b
+programmirovanie/razrabotka-po	programmirovanie/bazi-dannih	U	разнородные инструменты, не про БД	
+programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie	diski-i-fayli/rezervnoe-kopirovanie	N	Кибер Бэкап по расписанию сохраняет копии базы Postgres Pro и восстанавливает её после сбоя	b2b
+programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie	programmirovanie/bazi-dannih	N	EMS SQL Manager for PostgreSQL даёт удобную графическую оболочку для администрирования Postgres Pro	b2b
+programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie	servisnye-reseniia/texniceskaia-podderzka-programmnogo-obespeceniia-1	N	Сертификат поддержки СУБД даёт помощь инженеров при сбоях и обновлениях Postgres Pro	b2b
+programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie	servers/rackmount-servers	K	Если ещё нет сервера под базу: rack-сервер выдержит нагрузку промышленной СУБД	b2b
+remote-access/drugie-resheniya-udalennogo-dostupa	antivirusi-bezopasnost/antivirusi-organizatsii	U	удалённый доступ не связан с антивирусом	
+remote-access/rossiyskie-resheniya-udalennogo-dostupa-importozameshchenie	operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	U	работает на любой ОС	
+remote-access/rossiyskie-resheniya-udalennogo-dostupa-importozameshchenie	antivirusi-bezopasnost/antivirusi-organizatsii	U	удалённый доступ не связан с антивирусом	
+saas/business-managment	internet-i-set/cms	U	разнородный класс, сайт не нужен	
+saas/clouds	diski-i-fayli/rezervnoe-kopirovanie	U	облачное место, бэкап на стороне провайдера	
+saas/communications	ip-telephonia/spikerfony	U	онлайн-чат сайта, не телефония	
+saas/setevie-utiliti	antivirusi-bezopasnost/antivirusi-organizatsii	U	контроль сотрудников, не антивирус	
+san-nas/nas	parts/hdd	N	Хранилище продаётся без дисков, жёсткие диски задают его объём	
+san-nas/nas	diski-i-fayli/rezervnoe-kopirovanie	N	Кибер Бэкап по расписанию копирует компьютеры и серверы на сетевое хранилище	b2b
+san-nas/nas	peripherals/ups	N	ИБП даст хранилищу корректно выключиться при отключении света без порчи данных	
+san-nas/san-options	san-nas/san-storage	H	опции ставят в имеющуюся СХД	
+san-nas/san-storage	san-nas/san-options	N	Ленточный привод и картриджи LTO добавляют к СХД долгий архив вне дисков	b2b
+san-nas/san-storage	peripherals/ups	N	ИБП защитит систему хранения от внезапного отключения и потери записываемых данных	b2b
+san-nas/san-storage	diski-i-fayli/rezervnoe-kopirovanie	N	СХД не защищает от удаления и шифровальщика, резервная копия защищает	b2b
+san-nas/san-storage	servisnye-reseniia/texniceskaia-podderzka-oborudovaniia	K	Если ещё нет сервисного контракта: поддержка ускорит замену узлов СХД при отказе	b2b
+sapr/arhitektura	office/plotters	N	Архитектурные чертежи большого формата печатают на плоттере, офисный принтер их не выведет	
+sapr/arhitektura	sapr/dizayn-vizualizatsiya-i-animatsiya	U	в классе не архитектурные визуализаторы	
+sapr/arhitektura	peripherals/displays	K	Если ещё нет большого монитора: на нём план и фасады видны целиком без постоянного масштабирования	
+sapr/arhitektura	sapr/dokumentooborot	K	Если ещё нет электронного архива: TDMS или Pilot-BIM хранят версии проекта и согласования	b2b
+sapr/arhitektura	sapr/bazovie-produkti	H	работает поверх базовой CAD-платформы	
+sapr/bazovie-produkti	office/plotters	N	Чертежи большого формата печатают на плоттере, офисный принтер их не выведет	
+sapr/bazovie-produkti	peripherals/displays	K	Если ещё нет большого монитора: на нём чертёж виден целиком без постоянного масштабирования	
+sapr/bazovie-produkti	sapr/dokumentooborot	K	Если ещё нет электронного архива: TDMS или Pilot хранят версии чертежей и согласования	b2b
+sapr/bazovie-produkti	sapr/gibridnie-graficheskie-redaktori-i-vektorizatori	N	RasterDesk правит и векторизует сканы старых чертежей прямо в nanoCAD	
+sapr/dizayn-vizualizatsiya-i-animatsiya	peripherals/displays	K	Если ещё нет большого монитора с точной цветопередачей: на нём видна вся сцена и рендер	
+sapr/dokumentooborot	diski-i-fayli/rezervnoe-kopirovanie	N	Резервная копия сохранит архив проектной документации при сбое сервера или шифровальщике	b2b
+sapr/dokumentooborot	antivirusi-bezopasnost/bezopasnost-zaschita-informatsii	U	разнородный класс, связи нет	
+sapr/dokumentooborot	servers/rackmount-servers	K	Если ещё нет сервера: TDMS и Pilot-BIM держат общий архив проектов на сервере	b2b
+sapr/geoinformatsionnie-sistemi	karti-navigatsiya-puteshestviya/karti	K	Если ещё нет картографической основы: карты регионов РФ в SXF открываются в ГИС «Панорама»	b2b
+sapr/geoinformatsionnie-sistemi	office/plotters	N	Карты и планы большого формата печатают на плоттере, офисный принтер их не выведет	
+sapr/geoinformatsionnie-sistemi	3d-oborudovanie/3d-scanners	U	настольные сканеры деталей, не для ГИС	
+sapr/gibridnie-graficheskie-redaktori-i-vektorizatori	office/scanner	N	Сканер переводит бумажные чертежи в растр, который программа правит и векторизует	
+sapr/gibridnie-graficheskie-redaktori-i-vektorizatori	office/plotters	K	Если ещё нет плоттера: исправленные чертежи большого формата печатают только на нём	
+sapr/gibridnie-graficheskie-redaktori-i-vektorizatori	sapr/bazovie-produkti	H	RasterDesk работает внутри CAD-платформы	
+sapr/infrastruktura-iziskaniya-genplan-transport	office/plotters	N	Генпланы и профили дорог большого формата печатают на плоттере, офисный принтер их не выведет	
+sapr/infrastruktura-iziskaniya-genplan-transport	sapr/dokumentooborot	K	Если ещё нет электронного архива: TDMS или Pilot хранят версии проекта и согласования	b2b
+sapr/infrastruktura-iziskaniya-genplan-transport	sapr/geoinformatsionnie-sistemi	K	Если ещё нет ГИС: в ней ведут карту участка и данные изысканий вне проекта	b2b
+sapr/infrastruktura-iziskaniya-genplan-transport	sapr/bazovie-produkti	H	GeoniCS работает на платформе nanoCAD	
+sapr/injenerniy-soft	sapr/bazovie-produkti	U	расчёты не требуют CAD	
+sapr/injenerniy-soft	delovie-programmi/rabota-s-dokumentami	U	связи с PDF нет	
+sapr/kadastr-i-gradostroitelstvo	sapr/geoinformatsionnie-sistemi	H	работает на ГИС «Панорама»	
+sapr/kadastr-i-gradostroitelstvo	antivirusi-bezopasnost/bezopasnost-zaschita-informatsii	U	прямой связи нет	
+sapr/kadastr-i-gradostroitelstvo	office/plotters	N	Схемы и планы территорий большого формата печатают на плоттере	
+sapr/kartografiya-fotogrammetriya	sapr/geoinformatsionnie-sistemi	S	ИнГео уже сама ГИС	
+sapr/kartografiya-fotogrammetriya	sapr/infrastruktura-iziskaniya-genplan-transport	U	другая задача	
+sapr/kartografiya-fotogrammetriya	office/plotters	N	Готовые карты большого формата печатают на плоттере, офисный принтер их не выведет	
+sapr/lazernoe-skanirovanie	3d-oborudovanie/3d-scanners	U	сканеры деталей, не лазерные облака	
+sapr/lazernoe-skanirovanie	sapr/bazovie-produkti	H	модуль работает на платформе nanoCAD	
+sapr/mashinostroenie	3d-oborudovanie/3d-scanners	K	Если ещё нет 3D-сканера: он снимет форму готовой детали для обратного проектирования в КОМПАС	b2b
+sapr/mashinostroenie	peripherals/displays	K	Если ещё нет большого монитора: на нём модель и чертёж видны одновременно	
+sapr/mashinostroenie	office/plotters	N	Сборочные чертежи формата А1 и А0 печатают на плоттере, офисный принтер их не выведет	
+sapr/mebelnoe-proizvodstvo	sapr/bazovie-produkti	U	bCAD самостоятельная система	
+sapr/mebelnoe-proizvodstvo	office/plotters	K	Если ещё нет плоттера: чертежи и карты раскроя большого формата печатают на нём	b2b
+sapr/pojarnaya-bezopasnost	sapr/stroitelstvo	U	расчёт рисков, не проектирование	
+sapr/pojarnaya-bezopasnost	delovie-programmi/rabota-s-dokumentami	U	связи с PDF нет	
+sapr/science-software	sapr/bazovie-produkti	U	расчёты не требуют CAD	
+sapr/selskoe-khozyaystvo	sapr/geoinformatsionnie-sistemi	H	работает на ГИС «Панорама»	
+sapr/stroitelstvo	sapr/dokumentooborot	K	Если ещё нет электронного архива: TDMS или Pilot-BIM хранят версии проекта и согласования	b2b
+sapr/stroitelstvo	office/plotters	N	Рабочие чертежи большого формата печатают на плоттере, офисный принтер их не выведет	
+sapr/stroitelstvo	peripherals/displays	K	Если ещё нет большого монитора: на нём расчётная схема и чертёж видны целиком	
+sapr/tekhnicheskaya-podderzhka	servisnye-reseniia/texniceskaia-podderzka-programmnogo-obespeceniia-1	U	постпроцессор, не услуга поддержки	
+security/analogovye-videokamery	security/videoregistratory	U	в каталоге IP-регистраторы, аналог не подключить	
+security/domofony	security/ustroystva-kontrolya-dostupa	U	терминал доступа не вызывная панель	
+security/ip-videocams	security/videoregistratory	N	Сетевой регистратор круглосуточно пишет видео с IP-камер и хранит архив	
+security/ip-videocams	security/krepleniya	K	Если камера Hikvision: фирменное крепление поставит её на стену, угол или столб	
+security/ip-videocams	portable-memory/flash-memory	N	Карта microSD хранит запись прямо в камере, если регистратора нет или пропала сеть	
+security/ip-videocams	networking/net-equipment	N	PoE-инжектор подаёт камере питание по сетевому кабелю без отдельной розетки	
+security/ip-videocams	networking/switch	K	Если камер несколько: PoE-коммутатор питает и подключает их одним устройством	b2b
+security/umnyy-dom	security/klaviatura-dlya-upravleniya	K	Если ещё нет пульта: клавиатура и тревожная кнопка Dahua 868 МГц управляют охраной дома	
+security/ustroystva-kontrolya-dostupa	security/klaviatura-dlya-upravleniya	U	аксессуары сигнализации, не СКУД	
+security/videoregistratory	security/ip-videocams	N	Регистратор пишет видео только с IP-камер, их число задаёт охват объекта	
+security/videoregistratory	parts/hdd	N	Регистратор продаётся без диска, жёсткий диск задаёт глубину архива записи	
+servers/chassis1	servers/server-options	U	опции Dell не подходят к Supermicro и ASUS	
+servers/chassis1	parts/cpu	N	Платформа продаётся без процессора, серверный CPU нужного сокета делает её сервером	b2b
+servers/chassis1	parts/ram	N	Без серверной памяти платформа не запустится, объём RAM задаёт число задач и ВМ	b2b
+servers/chassis1	parts/ssd	N	Накопители в отсеки платформы хранят ОС и данные сервера	b2b
+servers/chassis1	operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	K	Если ещё нет серверной ОС: Astra Linux или РЕД ОС запустят собранный сервер	b2b
+servers/montazhnye-komplekty-zip	servers/rackmount-servers	H	комплект ставят в имеющийся сервер	
+servers/rackmount-servers	servers/montazhnye-komplekty-zip	U	комплекты HPE не подходят к этим серверам	
+servers/rackmount-servers	servers/server-options	U	опции Dell не подходят к этим серверам	
+servers/rackmount-servers	sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie	N	Российская виртуализация делит сервер на несколько виртуальных машин	b2b
+servers/rackmount-servers	operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	N	Серверу нужна ОС, Astra Linux или РЕД ОС подходят для госсектора и КИИ	b2b
+servers/rackmount-servers	peripherals/ups	N	ИБП даст серверу корректно завершить работу при отключении света	b2b
+servers/rackmount-servers	diski-i-fayli/rezervnoe-kopirovanie	N	Резервная копия вернёт данные сервера после отказа дисков или шифровальщика	b2b
+servers/rackmount-servers	servisnye-reseniia/texniceskaia-podderzka-oborudovaniia	K	Если ещё нет сервисного контракта: поддержка ускорит ремонт сервера при отказе	b2b
+servers/server-options	servers/rackmount-servers	H	опции ставят в имеющийся сервер	
+servisnye-reseniia/texniceskaia-podderzka-oborudovaniia	peripherals/ups	U	сертификат поддержки, ИБП не следует	
+sistemnie-programmi/nastroyka-sistemi	antivirusi-bezopasnost/antivirusi	K	Если ещё нет антивируса: оптимизатор чистит систему, но от вирусов и шифровальщиков не защищает	b2c
+sistemnie-programmi/rasshireniya-sistemi	operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	H	WINE ставят на имеющийся Linux	
+sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie	diski-i-fayli/rezervnoe-kopirovanie	N	Кибер Бэкап копирует виртуальные машины целиком и поднимает их после сбоя	b2b
+sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie	sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie	U	не связано с виртуализацией	
+sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie	servers/rackmount-servers	H	виртуализацию ставят на имеющийся сервер	
+sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie	antivirusi-bezopasnost/antivirusi-organizatsii	K	Если ещё нет защиты: каждой виртуальной машине нужен корпоративный антивирус, как обычному ПК	b2b
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie	diski-i-fayli/rezervnoe-kopirovanie	N	Кибер Бэкап по расписанию сохраняет копии базы и восстанавливает её после сбоя	b2b
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie	programmirovanie/bazi-dannih	N	EMS SQL Manager for PostgreSQL даёт удобную графическую оболочку для администрирования базы	b2b
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie	servisnye-reseniia/texniceskaia-podderzka-programmnogo-obespeceniia-1	N	Сертификат поддержки СУБД даёт помощь инженеров при сбоях и обновлениях	b2b
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie	programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie	S	тот же Postgres Pro	
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie	servers/rackmount-servers	K	Если ещё нет сервера под базу: rack-сервер выдержит нагрузку промышленной СУБД	b2b
+sistemnie-programmi/virtualizatsiya	diski-i-fayli/rezervnoe-kopirovanie	U	это миграция, не бэкап	
+sistemnie-programmi/virtualizatsiya	servers/rackmount-servers	U	миграция между имеющимися платформами	
+sistemnie-programmi/virtualizatsiya	parts/ram	U	прямой связи нет	
+sistemnie-programmi/virtualizatsiya	sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie	N	Хайстекс переносит машины на российскую платформу виртуализации, её нужно купить отдельно	b2b
+sistemnie-programmi/vneshnie-ustroystva	parts/cables	U	виртуальные порты, кабель не нужен	
+sport-and-action/action-cams	portable-memory/flash-memory	N	Экшн-камера пишет видео только на карту microSD, без неё съёмка невозможна	
+sport-and-action/action-cams	portable/powerbank	K	Если ещё нет внешнего аккумулятора: он подзарядит камеру в походе без розетки	b2c
+text/raspoznavanie-teksta-i-rechi	text/tekstovie-redaktori	S	тоже PDF-редакторы	
+text/raspoznavanie-teksta-i-rechi	office/scanner	N	Сканер даёт образ бумажного документа, который программа распознаёт в редактируемый текст	
+text/tekstovie-redaktori	text/raspoznavanie-teksta-i-rechi	S	тоже PDF-редакторы	
+text/tekstovie-redaktori	office/scanner	K	Если ещё нет сканера: он переведёт бумажные документы в PDF для правки	
+text/text-perevodchiki	text/text-slovari	K	Если ещё нет словаря: Lingvo даёт значения и примеры употребления, которых нет в машинном переводе	
+text/text-slovari	text/text-perevodchiki	K	Если ещё нет переводчика: PROMT переведёт целый документ, а не отдельные слова	
+torgovoe-oborudovanie/detektory-banknot	torgovoe-oborudovanie/schetchiki-banknot-monet	K	Если ещё нет счётчика: он пересчитывает пачки купюр, детектор проверяет их по одной	b2b
+torgovoe-oborudovanie/monobloki	torgovoe-oborudovanie/skanery-shtrikhkodov	U	сканер встроен в прайс-чекер	
+torgovoe-oborudovanie/pos-aksessuary	torgovoe-oborudovanie/terminaly-sbora-dannykh	H	аксессуар к имеющемуся ТСД	
+torgovoe-oborudovanie/printery	office/expendables	U	офисные картриджи не для этикеточных	
+torgovoe-oborudovanie/schetchiki-banknot-monet	torgovoe-oborudovanie/detektory-banknot	K	Если ещё нет детектора: он проверит подлинность купюр, которые счётчик только пересчитал	b2b
+torgovoe-oborudovanie/skanery-shtrikhkodov	torgovoe-oborudovanie/terminaly-sbora-dannykh	S	ТСД сам сканирует штрихкоды	
+torgovoe-oborudovanie/skanery-shtrikhkodov	torgovoe-oborudovanie/printery	K	Если ещё нет принтера этикеток: он напечатает штрихкоды для товаров без заводской маркировки	b2b
+torgovoe-oborudovanie/terminaly-sbora-dannykh	buhgalteriya-sklad-kadry/skladskie-programmi	N	DataMobile превращает ТСД в инструмент приёмки, инвентаризации и подбора с выгрузкой в учёт	b2b
+torgovoe-oborudovanie/terminaly-sbora-dannykh	torgovoe-oborudovanie/pos-aksessuary	K	Если терминал Urovo: запасной аккумулятор и рукоять продлят смену без подзарядки	b2b
+torgovoe-oborudovanie/terminaly-sbora-dannykh	torgovoe-oborudovanie/printery	K	Если ещё нет принтера этикеток: он напечатает штрихкоды для товаров и ячеек склада	b2b
+torgovoe-oborudovanie/vesy-skladskie	torgovoe-oborudovanie/printery	K	Если ещё нет принтера этикеток: он промаркирует взвешенный груз этикеткой с весом	b2b

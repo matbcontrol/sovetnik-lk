@@ -144,6 +144,36 @@ def examples(g: Graph, today: date = date(2026, 11, 26)) -> list[dict]:
     return out
 
 
+def verdict_summary() -> dict:
+    """Сводка проверки пар для вкладки «Цифры»: сколько чего размечено и как прошла сверка модели по API."""
+    import csv
+    from collections import Counter
+
+    from recsys.llm.pair_verdicts import CLASS_FILE, FAMILY_FILE, REPORT, TRUST, read
+
+    cls, fam = read(CLASS_FILE), read(FAMILY_FILE)
+    old = Counter()
+    p = INTERIM / "class_links.csv"
+    if p.exists():                                       # прежние связи классов, предложенные облегчённой моделью
+        with p.open(encoding="utf-8") as f:
+            for link in csv.DictReader(f):
+                v = cls.get((link["src_class"], link["dst_class"]))
+                old["total"] += 1
+                if v:
+                    old[v.verdict] += 1
+    runs = json.loads(REPORT.read_text(encoding="utf-8")).get("runs", {}) if REPORT.exists() else {}
+    return {
+        "classes": dict(Counter(v.verdict for v in cls.values())),
+        "class_sources": len({a for (a, _), v in cls.items() if v.shown}),
+        "families": dict(Counter(v.verdict for v in fam.values())),
+        "family_sources": len({a for (a, _), v in fam.items() if v.shown}),
+        "old_links": dict(old), "trust": TRUST,
+        "check": [{"model": m, "pairs": r["pairs"], "same_decision": r["same_decision"],
+                   "precision": r["api_would_show"]["precision"], "recall": r["assistant_would_show"]["recall"],
+                   "trusted": r.get("trusted", False)} for m, r in runs.items()],
+    }
+
+
 def main() -> None:
     g = Graph.load()
     edges = []
@@ -159,22 +189,22 @@ def main() -> None:
     if p.exists():
         class_names = json.loads(p.read_text(encoding="utf-8"))
     class_links = [link for links in g.class_links.values() for link in links]
-    check = {}
-    p = ROOT / "reports" / "class_links_check.json"
-    if p.exists():                                       # сводка проверки связей классов продажами
-        check = json.loads(p.read_text(encoding="utf-8"))
     data = {
         "meta": {
             "built": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "nodes": len(g.nodes), "edges": len(edges),
             "on_sale": sum(1 for f in g.nodes if g.on_sale(f)),
             "replace": replacement_coverage(g),
-            "class_check": check,
+            "verdicts": verdict_summary(),
         },
         "nodes": [node_out(n) for n in g.nodes.values()],
         "classes": class_names,
         "edges": edges,
         "class_links": class_links,
+        "veto": sorted([a, b, "has" if (a, b) in g.veto_hard else "unrelated"] for a, b in g.veto),
+        "class_veto": sorted([a, b] for a, b in g.class_veto),
+        "class_block": sorted([a, c] for a, c in g.class_block),
+        "class_picks": {k: sorted(v) for k, v in sorted(g.class_picks.items())},
         "class_rank": {k: v[:12] for k, v in g.class_rank.items()},
         "popular": g.popular,
     }

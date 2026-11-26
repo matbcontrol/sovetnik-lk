@@ -1,0 +1,292 @@
+ключ	название класса	товаров в продаже	примеры товаров
+3d-oborudovanie/3d-accessories	3D Расходники и комплектующие	20	PICASO 3D Сопло латунь 0.3, 0.4, 0.5, 0.8 мм; PICASO 3D Стекло подогреваемой платформы для лин; PICASO 3D Нагревательный блок в сборе 250
+3d-oborudovanie/3d-scanners	3D Сканеры	4	3D-сканер RangeVision Spectrum; 3D-сканер RangeVision Helix; 3D-сканер RangeVision PRIME
+accessories_comp/akkumulyatory-i-batarei	Аккумуляторы и батареи для компьютерной техники	35	Алкалиновые батарейки GP Super Alkaline 15А АA -; Аккумулятор для компьютерной техники GoPower Бат; Аккумулятор для компьютерной техники GoPower Акк
+accessories_comp/bags_for_notes	Сумки и чехлы для ноутбуков	29	Сумка Defender Ascetic 15-16; Сумка Continent CC-201GA; Сумка Continent CC-0128
+accessories_comp/covers_for_tablets	Чехлы для планшетов	2	Чехол KVADRA Чехол - книжка B001G; Чехол Kvadra K001G (Y23T01ACC003A) Чехол с клави
+accessories_comp/docking	Док-станции для ноутбуков	28	Док-станция DIGMA DS-945; Док-станция NERPA 12-в-1 (NRP046); Док-станция DIGMA DS-950
+accessories_comp/istochniki-pitaniya-dlya-noutbukov	Источники питания для ноутбуков	7	Блок питания Ippon D65U; Блок питания Ippon D90U; Блок питания Ippon E120
+accessories_comp/notebook-stand	Подставки для ноутбуков	11	Подставка Buro BU-LCP156-B214H; Подставка Buro BU-LCP156-B114; Подставка Buro BU-LCP156-B208
+accessories_comp/prochee	Прочие аксессуары	58	Defender Игровой коврик Black 50559; Razer Игровой коврик Strider Chroma RZ02-0449010; A4tech Игровой коврик Bloody B-072 B-072
+accessories_comp/usb-hub	USB-концентраторы	23	USB-концентратор Buro BU-HUB4-U2.0; USB-концентратор Buro BU-HUB4-U3.0-S; USB-концентратор Buro BU-HUB7-U2.0
+antivirusi-bezopasnost/antivirusi	Антивирусы для дома	8	Dr.Web Security Space; Kaspersky Plus + Who Calls; Kaspersky Standard
+antivirusi-bezopasnost/antivirusi-organizatsii	Антивирусы для организаций	31	PRO32 Endpoint Security Advanced; PRO32 Endpoint Security Standard; Kaspersky Endpoint Security для бизнеса Расширен
+antivirusi-bezopasnost/bezopasnost-zaschita-informatsii	Программы для защиты информации	94	Программа КриптоПро CSP 5.0; Код безопасности: Secret Net Studio 8; Криптоком «МагПро КриптоПакет»
+antivirusi-bezopasnost/kontrol-dostupa	Программное обеспечение для контроля доступа	7	ЦБИ Ревизор; РЕВЕРС 8000; Интегрированная система безопасности «Интеллект»
+antivirusi-bezopasnost/kontrol-personala	Программное обеспечение для контроля персонала	9	Octagram Flex; LanAgent Standard; LanAgent Enterprise
+antivirusi-bezopasnost/mezhsetevye-ekrany	Межсетевые экраны	4	Traffic Inspector; Traffic Inspector Anti-Virus powered by Kaspersk; Traffic Inspector Anti-Spam powered by Kaspersky
+antivirusi-bezopasnost/security-internet-i-set	Интернет и Сеть	28	Эшелон «СКАНЕР-ВС»; ORF Fusion; ЦБИ Ревизор сети
+antivirusi-bezopasnost/udalenie-informatsii	Программы для удаления информации	5	ItHelper версия Optimizer; ItHelper версия Optimizer для бизнеса; ItHelper версия Optimizer с GPT
+antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov	Защита информации для смартфонов	1	Kaspersky Secure Mobility Management
+beauty-and-health/elektrobritvy	Электробритвы	1	Электробритвы Panasonic ES-SA40-S
+beauty-and-health/irrigatory	Ирригаторы	2	Ирригатор KITFORT КТ-2913; Ирригатор KITFORT КТ-2914
+beauty-and-health/mashinki-dlya-strizhki-volos	Машинки для стрижки волос	2	Машинки для стрижки волос Panasonic ER-GY10CM520; Машинки для стрижки волос Panasonic ER217S520
+beauty-and-health/shchiptsy-dlya-zavivki-volos	Щипцы для завивки волос	1	Щипцы для завивки волос Hyundai H-HS1415
+beauty-and-health/trimmery	Триммеры	3	Триммер Panasonic ER-GB42-K520; Триммер Panasonic ER-GN30-K; Триммер Panasonic ER407
+buhgalteriya-sklad-kadry/finansi	Финансовое программное обеспечение	1	AuditIT «Ваш финансовый аналитик»
+buhgalteriya-sklad-kadry/skladskie-programmi	Складские программы	7	DataMobile.ТОИР; DataMobile; Consid.WMS
+buhgalteriya-sklad-kadry/torgovlya	Программное обеспечение для торговли	1	«СДБ Комплекс»
+buhgalteriya-sklad-kadry/upravlenie-logistikoy	Управление логистикой	1	CONSID.CTMS
+bytovaya-tekhnika/aksessuary-dlya-bytovoy-tekhniki	Аксессуары для бытовой техники	3	Соединительный кит Delonghi/ Соединительный кит ; Соединительный кит Delonghi/ Соединительный кит ; Соединительный элемент для сушильных машин серии
+bytovaya-tekhnika/blendery	Блендеры	23	Погружной блендер Hyundai HYB-H3824; Погружной блендер KITFORT КТ-3052; Стационарный блендер KITFORT КТ-1340-3
+bytovaya-tekhnika/chayniki	Чайники	11	Чайник Hyundai HYK-G3026; Чайник KITFORT КТ-6110; Чайник KITFORT КТ-616
+bytovaya-tekhnika/dukhovye-shkafy	Духовые шкафы	62	Электрический духовой шкаф Bosch CMG7241B1; Электрический духовой шкаф Bosch CSG7364B1; Электрический духовой шкаф Bosch HBA534EB3
+bytovaya-tekhnika/feny	Фены	2	Фены Philips BHD500/00; фен Dyson/ HD17 Pro Ceramic Pink/Rose Gold 11333
+bytovaya-tekhnika/khlebopechi	Хлебопечи	2	Хлебопечи Panasonic SD-B2510WTS; Хлебопечи Panasonic SD-R2520WTS
+bytovaya-tekhnika/kholodilniki	Холодильники	7	ATLANT XM-4012-022; ATLANT XM-6021-031; Встраиваемый холодильник ELECTROLUX/ Встраиваемы
+bytovaya-tekhnika/kofemashiny	Кофемашины	6	Автоматическая кофемашина DeLonghi ECAM350.35.W; Капельная кофемашина KITFORT КТ-730; Автоматическая кофемашина Philips EP2224
+bytovaya-tekhnika/kofemolki	Кофемолки	1	Электрическая кофемолка Bosch TSM6A011
+bytovaya-tekhnika/kukhonnye-kombayny	Кухонные комбайны	5	Кухонный комбайн KitchenAid 5KFC3516; Кухонный комбайн KitchenAid 5KFC3516; Кухонный комбайн KitchenAid 5KFP0719
+bytovaya-tekhnika/miasorubki	Мясорубки	3	Мясорубка Bosch/ Мясорубка Bosch, мощность 1900 ; Мясорубка BOSCH/ РОЗНИЧНЫЙ ЭКСКЛЮЗИВ!! 800/2200В; Мясорубка BOSCH/ РОЗНИЧНЫЙ ЭКСКЛЮЗИВ!! 800/2200В
+bytovaya-tekhnika/mikrovolnovye-pechi	Микроволновые печи	13	Встраиваемая микроволновая печь Electrolux KMFE1; Микроволновая печь Hyundai HYM-D3002; Electrolux KMFE264TEX
+bytovaya-tekhnika/otparivateli	Отпариватели	4	KITFORT КТ-927; KITFORT КТ-966; KITFORT КТ-977-1
+bytovaya-tekhnika/parovye-stantsii	Паровые станции	1	Пароочиститель KitFort КТ-9102-1, черный/фиолето
+bytovaya-tekhnika/posudomoechnye-mashiny	Посудомоечные машины	31	Встраиваемая посудомоечная машина Bosch SMD6ZC80; Встраиваемая посудомоечная машина Bosch SMV25AX0; Встраиваемая посудомоечная машина Bosch SMV25EX0
+bytovaya-tekhnika/pylesosy	Пылесосы	19	Напольный пылесос Kärcher VC 3; Строительный пылесос Kärcher WD 3 P; Вертикальный пылесос KITFORT КТ-535-1
+bytovaya-tekhnika/shveynye-mashiny	Швейные машины	4	Швейные машины Singer Simple 3229; Швейные машины Singer Tradition 2282; Швейные машины Janome Sew Line 500s
+bytovaya-tekhnika/sushilki-dlya-ovoshchey-i-fruktov	Сушилки для овощей и фруктов	1	Сушилки для овощей и фруктов KITFORT КТ-1904
+bytovaya-tekhnika/tostery	Тостеры	5	Тостер Bosch TAT3P423; Тостер Bosch TAT5P425; Тостер KitchenAid 5KMT221E
+bytovaya-tekhnika/utyugi	Утюги	6	Утюг Panasonic NI-M250TGTW; Утюг Hyundai H-SI01623; Утюг Scarlett SC-SI30K23
+bytovaya-tekhnika/uvlazhniteli-vozdukha	Увлажнители воздуха	1	Scarlett SC-AH986M22
+bytovaya-tekhnika/varochnye-paneli	Варочные панели	43	Газовая варочная панель Bosch PCR9A5I90M; Газовая варочная панель Bosch PGP6B6K90R; Газовая варочная панель Bosch PNP6B6K40
+computers/all-in-ones	Моноблоки	10	Моноблок HP Inc. 27-CR1002 512 ΓБ; Моноблок MSI 14M 9S6-AF8322-804 512 ΓБ; Моноблок MSI 14M-653RU 512 ΓБ
+computers/desktop	Десктопы	5	ПК IRU Planio 310H6SEV MT, 2109280; ПК SL 2487; ПК DEPO Neos DF8
+computers/nettop	МиниПК	10	МиниПК HP Inc. Elite 800 G9, C7FX9AT#BH5; МиниПК HP Inc. Pro Mini 260 G9, 9H6E6ET; МиниПК HP Inc. Pro Mini 400 G9, A54X6ET
+computers/notebook	Ноутбуки	42	Ноутбук LENOVO Thinkbook 16 G8 IRL Intel Core 5 ; Ноутбук Dell Technologies Pro 14 Intel Core Ultr; Ноутбук LENOVO IdeaPad Slim 3 Gen 8 15IRU8 Intel
+delovie-programmi/biznes-plan	Программы для бизнес-планирования	7	Apps4.Pro Planner Manager; Apps4.Pro Planner Gantt; Бизнес-аналитик 2.0
+delovie-programmi/iskusstvennyi-intellekt	ИИ	7	Удаленный рабочий стол с GPT; AlpinaGPT. Корпоративная платформа внедрения иск; Jay Copilot
+delovie-programmi/pravovoe-i-kadrovoe-obsluzivanie	Правовое и кадровое обслуживание	12	Аудит и восстановление кадрового учета и делопро; Юридическое сопровождение бизнеса по персональны; Кадровая сверка и подготовка документов под треб
+delovie-programmi/rabota-s-dokumentami	Программное обеспечение для работы с документами	26	ContentReader PDF 15 Business; ContentReader PDF 16 Business; PDF Commander
+delovie-programmi/sistemi-avtomatizatsii	Системы автоматизации	106	VR CONCEPT; GStarCAD; ГосJava
+delovie-programmi/uchet-kompyuterov	Программное обеспечение для учета компьютеров	7	PrintStore Pro; «10-Страйк: Инвентаризация Компьютеров»; «10-Страйк: Инвентаризация Компьютеров Pro»
+delovie-programmi/upravlenie-biznesom	Программное обеспечение для управления бизнесом	54	ELMA365; TeslaSCADA2; Business Studio
+delovie-programmi/vedenie-del	Программное обеспечение для ведения дел	23	Spider Project; Учет посетителей; Управление проектами
+diski-i-fayli/arhivatori	Архиваторы	1	Архиватор WinRAR 7
+diski-i-fayli/diski-i-fayli-drugie-utiliti	Другие утилиты	3	HFS+ for Windows by Paragon Software; IObit Smart Defrag; Paragon Image Mounter
+diski-i-fayli/faylovie-menedjeri	Файловые менеджеры	13	Wondershare UniConverter; Wondershare Recoverit; Цифровая платформа Nextbox
+diski-i-fayli/rezervnoe-kopirovanie	Программное обеспечение для резервного копирования	14	Кибер Бэкап Расширенная редакция; Кибер Бэкап Стандартная редакция; ruSBSS
+diski-i-fayli/vosstanovlenie-dannih	Программное обеспечение для восстановления данных	3	Wondershare Dr.Fone; EMS SQL Backup for SQL Server; ФЕНИКС
+distantsionnoe-obuchenie/edu-internet	Программное обеспечение для интернета	5	HyperMethod eClass; HyperMethod eAuthor.Cloud; HyperMethod eLearning Server 5G
+distantsionnoe-obuchenie/edu-upravlenie-proektami	Программное обеспечение для управления проектами	2	Create Version; Teach Version
+distantsionnoe-obuchenie/edu-upravlenie-v-organizatsii	Программное обеспечение для управления в организации	1	Unicraft
+distantsionnoe-obuchenie/infosecurity	Курсы по информационной безопасности	3	Kaspersky Express Course; QMULO Base; QMULO Pro
+distantsionnoe-obuchenie/personal-grading	Курсы по личному развитию	2	Teachbase; SkyTrainer
+dom-i-dacha/gazonokosilki	Газонокосилки	2	Газонокосилка роторная Patriot PT 1433E (5123092; Газонокосилка роторная Patriot PT42LS (512109004
+dom-i-dacha/generatory	Генераторы	3	Генератор Patriot 2700i 2.5кВт; Генератор Patriot 3000il 3.5кВт; Генератор Patriot GP 1000i 0.9кВт
+dom-i-dacha/minimoyki	Минимойки	3	Минимойка Karcher K 4 Power Control 1800Вт; Минимойка Karcher K 5 basic 2100Вт; Минимойка Patriot GT590 Imperial 2050Вт
+dom-i-dacha/opryskivateli	Опрыскиватели	4	Опрыскиватель Deko DKSP10 аккум. наплеч. 16л жел; Опрыскиватель Patriot PT-12AC аккум. ранц. 12л о; Опрыскиватель Patriot PT-16AC аккум. ранц. 16л о
+dom-i-dacha/snegouborshchiki	Снегоуборщики	2	Снегоуборщик бензин. Patriot СИБИРЬ 130 CЕТ 13л.; Снегоуборщик бензин. RedVerg RD-SB56/7 7л.с.
+dom-i-dacha/trimmery-sadovye	Триммеры садовые	10	Триммер электрический Makita UR3000 450Вт неразб; Триммер электрический Makita UR3500 700Вт неразб; Триммер электрический Makita UR3501 1000Вт нераз
+dom-i-dacha/vozdukhoduvki	Воздуходувки	2	Воздуходувка-пылесос Makita UB1103 600Вт пит.:от; Воздуходувка-пылесос RedVerg RD-BE2500 2500Вт пи
+elektroinstrument/aksessuary-i-nabory	Аксессуары и наборы	3	Набор принадлежностей Makita E-06270 212 предмет; Батарея аккумуляторная Makita BL1830 18В 3Ач Li-; Набор оснастки Makita B-68432 (102пред.) для шур
+elektroinstrument/dreli	Дрели	25	Безударная дрель-шуруповерт MAKITA DDF458RFE; Безударная дрель-шуруповерт РЕСАНТА ДА-18-2ЛК; Безударная дрель-шуруповерт MAKITA DF0300X1
+elektroinstrument/elektropily	Электропилы	16	Бензопила RedVerg RD-GC25-12; Сабельная пила MAKITA JR3070CT; Цепная пила MAKITA UC3041A
+elektroinstrument/elektrotochila	Электроточила	2	Электроточило Makita GB801 120Вт 2850об/мин d=20; Электроточило Patriot BG 110 100Вт 9000об/мин d=
+elektroinstrument/feny-tekhnicheskie	Фены технические	3	Технический фен Ресанта ФЭ-2000К 2000Вт темп.50/; Технический фен Ресанта ФЭ-2000ЭК 2000Вт темп.50; Технический фен Makita HG6531CK 2000Вт темп.50-6
+elektroinstrument/frezery	Фрезеры	1	Фрезер Makita RP0900 900Вт 27000об/мин макс.ход:
+elektroinstrument/lobziki	Электролобзики	7	Электролобзик FERM JSM1023; Электролобзик MAKITA 4326; Электролобзик MAKITA 4327
+elektroinstrument/perforatory	Перфораторы	10	Перфоратор РЕСАНТА П-24-650К; Перфоратор РЕСАНТА П-32-1000К; Перфоратор MAKITA DHR202RF
+elektroinstrument/rubanki	Электрорубанки	2	Рубанок Makita KP0810 850Вт 82мм 16000об/мин; Рубанок Patriot PL 110 1200Вт 110мм 15000об/мин
+elektroinstrument/shlifovalnye-mashinki	Шлифовальные машинки	18	Углошлифовальная машина MAKITA GA9050; Углошлифовальная машина MAKITA GA9020; Углошлифовальная машина РЕСАНТА УШМ-125/1100
+elektroinstrument/shurupoverty	Шуруповерты	12	Ударный шуруповерт MAKITA TD0100; Ударный гайковерт MAKITA DTW251RME; Ударный гайковерт MAKITA DTW251Z
+elektronnye-knigi/biznes-literatura	Бизнес-литература	13	Большая библиотека бизнес-аналитика и специалист; Большая библиотека по информационной безопасност; Большая библиотека по искусственному интеллекту 
+elektronnye-knigi/elektronnaya-biblioteka	Электронные библиотеки	1	Кулинарные рецепты
+gadgets/aksessuary	Аксессуары для смартфонов	97	Samsung Galaxy A22 Wits Premium Hard Case; Buro 800SH-5-B; Buro 800SH-5-W
+gadgets/chekhly-dlya-smartfonov	Чехлы для смартфонов	15	Чехол Samsung Чехол (клип-кейс) для Samsung Gala; Чехол Samsung для Samsung Galaxy Tab S10 FE+ Sma; Защитное стекло для экрана Redline черный для Re
+gadgets/game-manipulators	Игровые манипуляторы	6	Игровой манипулятор Defender Omega 64247; Игровой манипулятор Razer Gaming Controller Wolv; Игровой манипулятор Razer Gaming Controller Wolv
+gadgets/headphones	Наушники и микрофоны	177	Bluetooth-гарнитура Razer Barracuda X Headset 20; Гарнитура A4tech Bloody J200S, цвет черный; Bluetooth-гарнитура Logitech G435, цвет белый/си
+gadgets/smartphones	Смартфоны	2	Смартфон Samsung SM-G556B Galaxy XCover7 128Gb 6; Наушники мониторные Hoco Air Triumph W35 черный 
+gadgets/webcam	Вебкамеры	15	Вебкамера Logitech WebCam C930; Вебкамера A4tech PK-910P; Вебкамера Defender G-lens 2590
+gadgets/zaryadnye-ustroystva	Зарядные устройства	12	Зарядное устройство Samsung USB Type C EP-T4511X; Зарядное устройство Buro XCJ-048-EM-2A; Зарядное устройство DIGMA DGW2C
+grafika-i-dizayn/3d-grafika	Программное обеспечение для 3D графики	16	3D-IO Unwrella; D5 Render; 3D-IO BonesPro
+grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori	Графические редакторы	29	CorelDRAW Graphics Suite. Подписка 365-Day; CorelDRAW Graphics Suite 2026; ГрафБорд
+grafika-i-dizayn/grafika-i-dizayn-drugie-utiliti	Другие графические утилиты	1	«Юнион Лейбл»
+grafika-i-dizayn/projection-design	Программное обеспечение для проекционного дизайна	3	Pogumax Designer; Wondershare EdrawMax; Планоплан (Planoplan)
+grafika-i-dizayn/shabloni-i-kliparti	Шаблоны и клипарты	2	Wondershare DemoCreator; Wondershare Virbo
+grafika-i-dizayn/shemi-i-diagrammi	Схемы и диаграммы	4	Northwoods Software GoDiagram; Northwoods Software GoJS; combit List & Label
+grafika-i-dizayn/tsifrovoe-foto	Программы для обработки цифрового фото	13	ФотоМАСТЕР; CyberLink PhotoDirector 2027; Cyberlink PhotoDirector 365
+ii/gotovye-ii-modeli-i-algoritmy	Готовые ИИ-модели и алгоритмы	2	Удаленный рабочий стол с GPT; AlpinaGPT. Корпоративная платформа внедрения иск; Jay Copilot
+ii/obucenie-i-konsalting-v-sfere-ii	Обучение и консалтинг в сфере ИИ	2	ИИ-агенты для бизнеса и ИИ-ассистенты (цифровые ; Учебно-практический пакет по искусственному инте
+ii/otraslevye-reseniia	Отраслевые решения	2	Scout Argument; VoiceLab — AI-платформа анализа коммуникаций
+internet-i-set/analiticheskie-platformy	Аналитические платформы	3	Тамара; AnketologBox; МоделРиск
+internet-i-set/brauzeri-i-utiliti	Браузеры и утилиты	1	Яндекс Браузер
+internet-i-set/cms	Программное обеспечение для создания сайтов	10	1С-Битрикc: Управление сайтом; 1С-Битрикс24; Облачный сервис Битрикс24
+internet-i-set/download-menedjeri	Download-менеджеры	4	TurboFTP Server; TurboFTP SDK; TurboFTP
+internet-i-set/internet-i-set-drugie-utiliti	Другие приложения	3	Cloud Migration Solutions; Cloudiway Managed Migrations; Robovoice
+internet-i-set/java	Программное обеспечение Java	1	Enterprise DT edtFTPj
+internet-i-set/obschenie	Программное обеспечение для онлайн общения	3	Контур.Толк; CallShark; getLocus Умный
+internet-i-set/pochtovie-programmi	Почтовые клиенты	3	The Bat!; MDaemon Messaging Server; MDaemon
+internet-i-set/pochtovie-utiliti	Почтовые утилиты	8	BatPost; GSC Contacts for Gmail; MDaemon ActiveSync
+internet-i-set/programmi-dlya-seti	Сетевые утилиты	51	Фаматек Radmin 3.5; Sawmill Professional; LS Macroscop
+internet-i-set/resheniya-dopolnennoy-i-virtualnoy-realnosti-arvr	Решения дополненной и виртуальной реальности AR/VR	2	VR для образования; EV Toolbox
+internet-i-set/roditelskiy-kontrol	Программное обеспечение для родительского контроля	1	Kroha Снимки экрана
+internet-i-set/servernoe-po	Серверное ПО	40	PROMT Neural Translation Server; TCP COM Bridge; PROMT Translation Factory
+internet-i-set/svyaz	Связь	9	VentaFax 7.5; VentaFax Venta4Net 7.5; GPS Tracker Data Logger
+internet-i-set/telefoniya	ПО для IP-телефонии	11	SpRecord VoIP; Brekeke PBX; Номера и телефония
+internet-i-set/videonabludenie	ПО для видеонаблюдения	5	Cyberlink YouCam; CVS Авто; CVS-IP
+ip-telephonia/accessories_for_phones	Аксессуары для телефонов	35	Yealink CAM50 USB-камера для телефонов SIP-T58W,; Yealink UVC84 USB-видеокамера (4k, 12Х PTZ, UVC1; Yealink VP59-Teams Edition (Видеотерминал, IPS, 
+ip-telephonia/consoles	Консоли для телефонов	2	Консоль Yealink EXP50; EXP43, цветной экран, для телефонов SIP-T43U, SI
+ip-telephonia/dect	Телефоны DECT	80	Дополнительная трубка Yealink W56H; SIP-DECT телефон Gigaset 550A, 1 трубка , автоот; SIP-DECT телефон Panasonic TG2512, 2 трубки
+ip-telephonia/konferents-svyaz	Конференц-связь	23	Конференц-связь Yealink Collaboration Touch Pane; Конференц-связь Yealink CP935W; Конференц-связь Yealink UVC 85
+ip-telephonia/provodnye-telefony	Проводные телефоны	15	Проводной телефоны Gigaset DA180; Проводной телефоны RITMIX RT-002; Проводной телефоны RITMIX RT-330
+ip-telephonia/spikerfony	Спикерфоны	7	Спикерфон Plantronics SYNC 60; Спикерфон Yealink CP50; Спикерфон Yealink CP700 with dongle UC
+ip-telephonia/system-phones	Системные телефоны и факсы	2	Системный телефон Panasonic KX TGF310; Телефон проводной Gigaset DESK 600 черный
+ip-telephonia/voip-gates	VoIP-шлюзы	11	VoIP-шлюз Yeastar TA410; VoIP-шлюз Yeastar TA1610; VoIP-шлюз Yeastar TA810
+ip-telephonia/voip-telephone	IP-телефоны	104	IP-телефон Yealink SIP-T44U; IP-телефон Yealink SIP-T30; IP-телефон Yealink SIP-T33G
+karti-navigatsiya-puteshestviya/karti	Карты и сервисы	57	Карты регионов РФ в формате SXF; Навител Навигатор. Таджикистан; Навител Навигатор. Украина
+mebel-tovary-dlya-ofisa/kresla-i-stulya	Кресла и стулья	203	Кресло игровое ZOMBIE 10; Кресло руководителя Бюрократ CH-868N; Кресло игровое KNIGHT OUTRIDER
+mebel-tovary-dlya-ofisa/stellazhi	Стеллажи	9	Стеллаж Практик ES 150KD пол.:4 разборная 1450x7; Стеллаж Практик MS пол.:4 единая 1850x1000x300мм; Стеллаж Практик MS пол.:4 единая 1850x1000x400мм
+multimedia/audioredaktori	Аудиоредакторы	1	Cyberlink MyEdit Audio
+multimedia/konverteri-i-kodirovschiki	Конвертеры и кодировщики	2	ImagePrinter Pro; Мовавика Конвертер
+multimedia/pleyeri	Плееры	5	CyberLink PowerDVD 24; Сарма. Плеер для Linux; Digital Rebellion CinePlay
+multimedia/servisy-razvlecheniy	Сервисы развлечений	1	ЛитРес Абонемент
+multimedia/utiliti	Утилиты	5	Keyran; BotMek; Cerebro
+multimedia/videoredaktori	Видеоредакторы	30	Мовавика Максимум; Мовавика Супервидео; Мовавика Запись экрана
+multimedia/zapis-cd-i-dvd	Программы для записи CD и DVD	1	Cyberlink Power2Go 13
+networking/3g-routers	3G/LTE-роутеры	7	3G/LTE-роутер TP-LINK M7000; 3G/LTE-роутер ASUS N16; 3G/LTE-роутер CUDY IR02
+networking/access-point	Точки доступа	119	Точка доступа TP-LINK CPE220; Точка доступа MikroTik RB951Ui-2HnD; Точка доступа MikroTik cAPGi-5HaxD2HaxD&EG12-EA
+networking/adaptery-bluetooth	Адаптеры Bluetooth	2	Адаптер Bluetooth Logitech USB Unifying Receiver; Адаптер ASUS USB-BT540/ ASUS USB-BT540
+networking/adsl	ADSL-оборудование	4	D-LINK DSL-224; D-LINK DSL-245GR; D-LINK DSL-2640U
+networking/firewall	Проводные роутеры	30	Проводной роутер MikroTik CCR2004-16G-2S+PC; Проводной роутер TP-LINK ER8411; Проводной роутер ASUS EBG15
+networking/net-cables	Кабели	2	Кабели Buro BU-HDMI2.0-EXTND-1.5M; Кабель Apple MW2R3ZM/A, Lightning (m) - USB Type
+networking/net-equipment	Сопутствующее оборудование	36	Сопутствующее оборудование Hikvision POE LAS30-5; Сопутствующее оборудование Hikvision POE LAS60-5; Сопутствующее оборудование OSNOVO Удлинитель SW-
+networking/network-card	Сетевые карты	57	Сетевая карта ASUS USB-N10 NANO; Сетевая карта D-LINK DGE-560SX; Сетевая карта D-LINK DGE-560SX
+networking/powerline	Адаптеры PowerLine	1	Адаптер PowerLine TP-LINK TL-PA7017PKIT
+networking/routers	Wi-Fi роутеры	103	Wi-Fi роутер TP-LINK Archer AX72; Wi-Fi роутер TP-LINK Deco X50; Wi-Fi роутер ASUS RT-AC1200
+networking/switch	Коммутаторы	287	Коммутатор TP-LINK TL-SG1024D; ZYXEL Hybrid Smart Switch ZYXEL NebulaFlex XS193; Коммутатор TP-LINK TL-SG108E
+networking/transceivers	Медиаконвертеры, трансиверы	168	Трансивер D-LINK DMC-F02SC; Трансивер TP-LINK TL-SM5110-LR; Трансивер D-LINK DEM 431XT
+networking/wifi-adapters	Адаптеры Wi-Fi	36	Адаптер Wi-Fi TP-LINK TL-WN725N; Адаптер Wi-Fi TP-LINK Archer T2E; Адаптер Wi-Fi ASUS PCE-AX1800
+networking/wifi-antenna	Антенны	5	Антенна UBIQUITI AMO-5G10; Антенна UBIQUITI UACC-UK-Ultra-Panel-Antenna; Антенна UBIQUITI UMA-D
+oblachnye-resheniya-iaas/upravlenie-biznesom-iaas	Управление бизнесом (IaaS)	5	Облачная платформа Softline; Clouden; UEMaaS
+obrazovanie-i-nauka/biznes-obrazovanie	Программы для бизнес-образования	2	iMpact LMS; ВККБ БИЗНЕС-КУРС
+obrazovanie-i-nauka/meditsina	Программы для медицины	1	ПАК «Визионеро»
+obrazovanie-i-nauka/nauchnie-rascheti	Программы для научных расчетов	19	Программы серии «Эколог» по разработке проекта н; FRP Designer; Унифицированная программа расчета загрязнений ат
+obrazovanie-i-nauka/obrazovanie-i-nauka-testi	Тесты	4	SunRav TestOfficePro; SunRav WEB Class; SunRav TestOfficePro XT
+obrazovanie-i-nauka/obuchayuschie-programmi	Обучающие программы	290	Учебный комплект «‎Квадросим»; Sike. Электронный курс «Материаловедение. Строен; Sike. Электронный курс «Слесарь-ремонтник»
+obrazovanie-i-nauka/prochie-programmi	Прочие программы	4	Net Control 2 Classroom; Net Control 2 Pro; Net Control 2 SmallClass
+obrazovanie-i-nauka/programmi-dlya-vuzov	Программы для ВУЗов	1	АСУ УЗ Universys Web Server
+office/accessories_for_office	Аксессуары к офисной технике	66	КАТЮША Тумба, CBM247p; Ролик подхвата бумаги Ricoh DGP7491; Дополнительный лоток на 520 листов с тумбой XERO
+office/brochurateur	Брошюраторы	11	Брошюратор Fellowes Galaxy 500; Брошюратор GLADWORK iBind A8; Брошюратор Fellowes Pulsar E
+office/cutter	Резаки	14	Резак Kw-Trio Trio 13300; Резак Fellowes Fusion A3; Резак Fellowes Fusion A4
+office/expendables	Расходные материалы	287	Картридж пурпурный HP Inc. 712, 3ED78A; Картридж черный Canon PFI-110, 2363C001; Картридж пурпурный Canon CLI-42, 6386B001
+office/graphic_pad	Графические планшеты	3	Defender Акустическая 2.0 система Solar 7 6Вт, п; Графический планшет HUION H1060P; Графический планшет HUION Inspiroy H610X
+office/laminator	Ламинаторы	11	Ламинатор Fellowes Spectra A4; Ламинатор Гелеос ЛМ-А4К; Ламинатор Buro BU-L283
+office/mfu	Принтеры и МФУ	225	HP Inc. Designjet T1700; МФУ Kyocera Ecosys M4125idn с картриджем; HP Inc. Designjet T1700
+office/plotters	Плоттеры	12	Плоттер Canon imagePROGRAF TM-350; Плоттер HP Inc. Designjet T850; Плоттер Canon imagePROGRAF TM-255
+office/scanner	Сканеры	35	Сканер Avision AD340GN; Сканер Avision FB10; Сканер Avision FB25
+office/schreder	Шредеры	62	Шредер NEW UNITED Etalon ET-15M; Шредер Fellowes PowerShred LX50; Шредер Fellowes PowerShred LX70
+ofisnie-programmi/drugoe-ofisnoe-po	Другое офисное ПО	6	OfficeSuite Персональный; MobiOffice; OfficeSuite для семьи
+ofisnie-programmi/ms-office	Офисные пакеты программ Microsoft Office	8	Microsoft 365 Family (для семьи); Microsoft 365 Personal (Персональный); Microsoft Office 2024 для дома и учёбы
+ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	Российское офисное ПО (Импортозамещение)	14	Workspad; Яндекс 360 для бизнеса. Тариф Основной; Яндекс 360 для бизнеса
+operating-systems/os-linux-unix	Операционные системы Linux & Unix	5	LayerPie; UBLinux Desktop Enterprise; UBLinux Education
+operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	Российские операционные системы (Импортозамещение)	23	Astra Linux Special Edition; Операционная система РЕД ОС; Альт Рабочая станция 11
+operating-systems/windows-11-licenzii-home-i-pro	Windows 11: лицензии Home и Pro	2	Microsoft Windows 11 Home (Домашняя); Microsoft Windows 11 Pro (Профессиональная)
+parts/cables	Кабели, переходники, разъемы	196	AgeStar Переходник 3FBCP1; Buro Витая пара cat5E; Buro AV BHP_DPP_1.2-2
+parts/chassis	Корпуса	143	Корпус Zalman S3; Корпус Fractal Design Torrent TG; Корпус Thermaltake S300
+parts/controllers	Контроллеры	6	Контроллер LSI 9480-8i8e; DELL BOSS-N1 controller card + with 2 M.2 960GB ; HPE Smart Array E208e-p SR Gen10 (8 External Lan
+parts/coolers	Системы охлаждения	233	Вентилятор Zalman Case Fan ZM-F1 Plus; Кулер Процессорный Ablecom для CPU ACL-S20070; Кулер Процессорный Ablecom для CPU ACL-S20080
+parts/cpu	Процессоры	128	Процессор AMD EPYC 9124 OEM; Процессор Intel Core i5-12400F OEM; Процессор Intel Core i5-13400 OEM
+parts/hdd	Жесткие диски	106	Гибридный диск SEAGATE Enterprise Performance 2.; Жесткий диск ADATA 2.5 HV620 Slim 2 TB 5.4K USB ; Жесткий диск SEAGATE Barracuda 3.5 3,5" SATA3 4T
+parts/motherboard	Материнские платы	258	Материнская плата SUPERMICRO Socket SP5 System o; Материнская плата MSI Intel B760 PRO B760M-A WIF; Материнская плата ASUS AMD B650 ROG STRIX B650-A
+parts/odd	Оптические приводы	5	Оптический привод ASUS SDRW-08U8M-U; Оптический привод LG DVD ext GP57EB40; Оптический привод LG DVD ext GP57ES40
+parts/psu	Блоки питания	128	Блок питания Foxline TFX300S; Блок питания Chieftec APB 500B8; Блок питания Chieftec PPS-750FC
+parts/ram	Оперативная память	203	Оперативная память Patriot Desktop DDR3 1600МГц ; Оперативная память DIGMA DDR3L 8Gb, DGMAS3160000; Оперативная память Kingston Desktop DDR4 3200МГц
+parts/ssd	Внутренние твердотельные накопители (SSD)	143	Внутренний твердотельный накопитель Kingston A40; Внутренний твердотельный накопитель Netac PCIe 5; Внутренний твердотельный накопитель ADATA SU630 
+parts/videocards	Видеокарты	39	Видеокарта ASUS GeForce GT 1030 2 ΓБ Retail; Видеокарта MSI GeForce GT 710 2 ΓБ Retail; Видеокарта ASUS GeForce GT 1030 2 ΓБ Retail
+parts/zvukovye-karty	Звуковые карты	1	Звуковая карта CREATIVE USB Sound Blaster X4
+peripherals/accessoires-pour-ups	Аксессуары для ИБП	141	для ИБП REM Блок распределения питания R-32-8S-I; ELEMY ATS, 1U, 220B, 16A, Индикация: OLED-диспле; для ИБП REM Блок распределения питания R-10-9S-I
+peripherals/displays	Мониторы	222	Монитор ACER XV272UV3bmiiprx 27.0-inch черный; Монитор ACER EK251QP6bi 24.5-inch черный; Монитор Philips 24E2G2200 23.8-inch черный
+peripherals/keyboards	Клавиатуры, мыши, комплекты	287	Клавиатура+мышь Defender Jakarta C-805 45804, цв; Клавиатура Oklick KeyBoard 830ST 1011937, цвет ч; Клавиатура+мышь Logitech MK220 920-003169, цвет 
+peripherals/silovye-moduli-dlya-ibp	Силовые модули для ИБП	15	Батарея для ИБП Ippon Innova RT II 1000/1500 36В; Батарея для ИБП Ippon Smart Winner II 2000E BP 4; Батарея для ИБП Powercom VGD-II-C20 для VGD-II-3
+peripherals/ups	ИБП (Источники бесперебойного питания)	287	ИБП Powercom MACAN MAC MAC-10K; ИБП Powercom Spider SPD SPD-1100U LCD; ИБП СвязьИнжиниринг 2000ВА СИПБ2КА.10-11
+peripherals/ups_battery_pack	Сменные батареи для ИБП	244	Сменная батарея для ИБП Powerman CA1290; Сменная батарея для ИБП APC Батареи ИБП SMX120; Сменная батарея для ИБП Delta HR 12-7.2
+peripherals/voltage_regulator	Сетевые фильтры и стабилизаторы	152	Сетевой фильтр Powercube SPG-B-15-WHITE 5м (5 ро; Сетевой разветвитель Buro BU-PS3F-W; Сетевой фильтр Pilot S 7m
+photo-video/ekran	Экраны	1	Экран Cactus Wallscreen CS-PSW-124X221
+photo-video/holders	Кронштейны	49	Кронштейн Kromax ATLANTIS-40; Кронштейн Kromax OFFICE-5; Кронштейн Holder LCDS-5004
+photo-video/projector	Проекторы	1	Проектор INFOCUS LCD IN1024
+photo-video/speaker	Колонки	66	Колонки Яндекс Yandex Станция Лайт 2 (синий); Колонки SVEN SPS-702 (коричневый); Колонки Яндекс Яндекс.Станция Миди
+photo-video/tvset	Телевизоры	7	Телевизор POLARLINE 32PL12TC; Телевизор POLARLINE 32PL14TC-SM; Телевизор POLARLINE 32PL54TC
+photo-video/videopleery	Видеоплееры	1	Плеер DVD Hyundai H-DVD200 черный Караоке ПДУ
+portable-memory/dok-stantsii	Док-станции для накопителей	5	Док-станция для накопителей AgeStar for HDD 3UBT; Док-станция для HDD AgeStar 3UBT8 SATA III пласт; Док-станция для накопителей AgeStar for HDD 3CBT
+portable-memory/externalhdd	Внешние HDD	29	Внешний HDD Samsung T7 1TB; Внешний HDD Western Digital Elements Portable 4T; Внешний HDD ADATA DashDrive 4TB
+portable-memory/flash-memory	Карты памяти	19	Карта памяти Netac SDHC P600 16GB; Карта памяти Netac MicroSDHC P500 ECO 16GB; Карта памяти Netac MicroSDHC P500 ECO 16GB
+portable-memory/hdd-external-case	HDD external case	7	Внешний корпус для HDD AgeStar 2.5'' 3UB2P; Внешний корпус для HDD AgeStar 2.5'' 3UBCP3; Внешний корпус для HDD AgeStar 2.5'' SUBCP1
+portable-memory/usb-flash	Флешки USB	56	Флешка Netac UM1 32GB; Флешка GoPower SLIDER 4GB; Флешка GoPower TITAN 128GB
+portable/accessories_for_tablets	Аксессуары для планшетов	1	DIGMA Pro i1 Наконечники , DGSTPI1WT
+portable/powerbank	Внешние аккумуляторы	18	Внешний аккумулятор Vention 10000mAh 22.5W; Внешний аккумулятор Vention 10000mAh 22.5W; Внешний аккумулятор Vention 20000mAh 22.5W
+programmi-dlya-mac-os/system-programms	Системные программы для macOS	1	Paragon Hard Disk Manager Business
+programmi-dlya-mobilnih-ustroystv/dlya-smartfonov	Бизнес-приложения, менеджеры, органайзеры	1	Магазин 15
+programmi-dlya-mobilnih-ustroystv/mobilnie-ustroystva-zaschita-informatsii	Защита данных на смартфоне	1	SafeMobile
+programmi-dlya-mobilnih-ustroystv/pdmu-drugie-programmi	Другие программы для смартфонов	1	Filmora Mobile
+programmirovanie/activex	ActiveX	1	Steema TeeChart Pro ActiveX
+programmirovanie/bazi-dannih	Программы для работы с базами данных	85	EMS SQL Manager for PostgreSQL; ИСУБД CronosPRO; EMS SQL Management Studio for PostgreSQL
+programmirovanie/drugie-biblioteki	Другие библиотеки	9	EMS Advanced Excel Report; EMS Advanced Data Export .NET; EMS Advanced Query Builder
+programmirovanie/razrabotka-po	Программы для разработки ПО	56	ЦБИ ФИКС; Proxyman; BrowserStack App Live
+programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie	Российские базы данных (Импортозамещение)	8	Postgres Pro Standard; Postgres Pro Enterprise для 1С; Postgres Pro Enterprise
+programmirovanie/vcl	VCL	5	EMS Advanced Data Export VCL Suite; EMS Advanced Data Import VCL Suite; FastReport VCL
+reklamnye-materialy/suvenirnaia-produkciia	Сувенирная продукция	6	Аккумулятор Omni Qi 10000 мАч, ver.2, красный, б; Беспроводная Bluetooth колонка Music TWS софт-та; Значок фирменный металлический «Софтлайн», 20х20
+remote-access/drugie-resheniya-udalennogo-dostupa	Другие решения удаленного доступа	1	AnyDesk
+remote-access/rossiyskie-resheniya-udalennogo-dostupa-importozameshchenie	Российские решения удаленного доступа (Импортозамещение)	8	RuDesktop; RMS Удаленный доступ 7.1; LiteManager
+saas/business-managment	Управление бизнесом (SaaS)	6	Виртуальный офис Softline; MindMeister Business; LPgenerator
+saas/clouds	Облачные платформы (Импортозамещение)	1	Защищенное рабочее место для сотрудников
+saas/communications	Коммуникации (SaaS)	1	RedHelper
+saas/setevie-utiliti	Сетевые утилиты (SaaS)	1	EfficientLab Controlio
+saas/sistemi-avtomatizatsii_saas	Системы автоматизации (SaaS)	3	Navicat Cloud; МоиОтчеты Облако; МоиОтчеты Публикатор
+san-nas/nas	Сетевые хранилища (NAS)	30	Сетевое хранилище Synology RackStation RS1221+; Сетевое хранилище Synology RackStation RS2423+; Сетевое хранилище ASUS AS6804T
+san-nas/san-options	Опции к системам хранения	7	HPE StoreEver LTO-7 Ultrium 15000 External Tape ; HPE Ultrium LTO9 45TB bar code non custom labele; Infortrend expansion board for expansion enclosu
+san-nas/san-storage	Сетевые системы хранения данных	4	Сетевая система хранения данных ASUSTOR AS6512RD; HPE Storage MSL 1/8 Gen3 0-drive Tape Autoloader; Infortrend EonStor GS 3000T 2U/24bay U.2 NVMe AF
+sapr/arhitektura	Программы для архитекторов	1	CSoft Project StudioCS Архитектура
+sapr/bazovie-produkti	Базовые программы	33	Платформа nanoCAD 26; GEOBRIDGE Условные Знаки; PROCAD Plant Design Suite
+sapr/dizayn-vizualizatsiya-i-animatsiya	Программы для дизайна, визуализации и анимации	15	iPi Motion Capture; 3D-IO Flatiron; Power Translators
+sapr/dokumentooborot	Программы для документооборота	28	Pilot-BIM; CSoft СПДС GraphiCS 2026; CSoft TDMS
+sapr/geoinformatsionnie-sistemi	Геоинформационные системы (ГИС)	22	ГИС «Аксиома»; ГИС Панорама Мини; Профессиональная ГИС «Панорама»
+sapr/gibridnie-graficheskie-redaktori-i-vektorizatori	Редакторы и векторизаторы	12	CSoft RasterDesk; CSoft RasterID; CSoft Spotlight
+sapr/infrastruktura-iziskaniya-genplan-transport	Инфраструктура: изыскания, генплан, транспорт	52	nanoCAD GeoniCS 26; IndorCAD/Road: Проектирование автомобильных доро; ТИМ КРЕДО ГЕОТЕХНИКА
+sapr/injenerniy-soft	Инженерные калькуляторы	5	Технософт Теплос 2.1; Технософт Технолог 3.1; WaterSteamPro
+sapr/kadastr-i-gradostroitelstvo	Программы для кадастра и градостроительства	2	Комплект программ «АРМ градостроителя»; Топография
+sapr/kartografiya-fotogrammetriya	Программы для картографии и фотограмметрии	3	ГИС «ИнГео»; Конвертор крупномасштабных карт в формат DXF; Комплекс автоматизированного дешифрирования и ве
+sapr/lazernoe-skanirovanie	Лазерное сканирование	1	nanoCAD Облака точек
+sapr/mashinostroenie	Программы для машиностроения	28	КОМПАС-3D V25; КОМПАС-График V25; КОМПАС-3D HOME
+sapr/mebelnoe-proizvodstvo	Программы для мебельного производства	1	bCAD
+sapr/pojarnaya-bezopasnost	Программы для пожарной безопасности	9	FireGuard; Fenix+ 3; Fenix Server
+sapr/science-software	Расчетные системы и Научное программное обеспечение	1	SMath Studio
+sapr/selskoe-khozyaystvo	Программы для сельского хозяйства	3	Панорама АРМ кадастрового инженера; Комплект программ «АРМ агронома»; ГИС Панорама АГРО
+sapr/stroitelstvo	Строительное программное обеспечение	110	ЛИРА; Geo Cartograma; VetCAD++
+sapr/tekhnicheskaya-podderzhka	Программное обеспечение для технической поддержки	1	ГеММа-3D.Постпроцессор
+security/analogovye-videokamery	Аналоговые видеокамеры	5	Аналоговая видеокамера Dahua DH-HAC-HDBW1231RAP-; Аналоговая видеокамера Dahua DH-HAC-HDW1200CLQP-; Аналоговая видеокамера Dahua DH-HAC-HFW1231RP-Z-
+security/domofony	Домофоны	27	Домофоны Dahua Видеодомофон DHI-VTH5241DW-S2; Домофоны Dahua Видеодомофон DHI-VTH5421H(W/B)-W; Домофоны Dahua Видеодомофон DH-VTH2421F(W/B)
+security/ip-videocams	IP-видеокамеры	62	IP-камера Hikvision DS-2CD2H23G2-IZS; IP-камера Dahua Купольные камеры DH-IPC-HDW1230T; IP-камера Hikvision DS-2CD2783G2-IZS
+security/klaviatura-dlya-upravleniya	Аксессуары для систем безопасности	11	Адаптер Dahua DH-PFA111; Клавиатура Dahua DHI-ARK30T-W2(868); Кнопка тревоги Dahua DHI-ARD822-W2(868)
+security/krepleniya	Крепления	6	Крепление Hikvision DS-1280ZJ; Крепление Hikvision DS-1475ZJ; Крепление Hikvision DS-1275ZJ
+security/sredstva-radio-elektronnoi-borby-reb	Средства радио-электронной борьбы (РЭБ)	1	БПЛА ПП-А5 Антидроновое ружьё (РЭБ)
+security/umnyy-dom	Умный дом	7	Камера видеонаблюдения аналоговая Dahua DH-HAC-H; Комплект домофона HiWatch DS-D100IKWF(B) белый; Умный дом Dahua Датчик движения DHI-ARD1731-W2(8
+security/ustroystva-kontrolya-dostupa	Устройства контроля доступа	1	Терминал доступа Dahua DHI-ASI6213J-MW-V1
+security/videoregistratory	Видеорегистраторы	19	Видеорегистратор Dahua DHI-NVR; Видеорегистратор Dahua DHI-NVR; Видеорегистратор Dahua DHI-NVR
+servers/chassis1	Шасси и платформы	35	Шасси SUPERMICRO SuperServer 621P-TR; Шасси ASUS RS300-E12-PS4; Шасси ASUS RS501A-E12-RS12U
+servers/montazhnye-komplekty-zip	Монтажные комплекты, ЗИП	4	HPE DL300 Gen10+ 2U 8SFF x1Tmode U.3 Kit; HPE StoreEver 1U Generic Rack Mount Kit; Broadcom/LSI BBU-BRACKET-05 for BBU07, BBU08, BB
+servers/rackmount-servers	Rack-серверы	21	Rack-сервер SUPERMICRO SuperServer 621P-TRT; Rack-сервер DEPO Storm 3470S2A; Rack-сервер DEPO Storm 3470S2A
+servers/server-options	Серверные опции	11	DELL Power Supply 700W Single Hot-Plug, MM HLAC ; Dell Technologies Heat Sink 412-AAVEt; Dell Technologies Hot Plug Redundant Power Suppl
+servisnye-reseniia/texniceskaia-podderzka-oborudovaniia	Техническая поддержка оборудования	1	Сертификат на техническую поддержку оборудования
+servisnye-reseniia/texniceskaia-podderzka-programmnogo-obespeceniia-1	Техническая поддержка программного обеспечения	2	Сервис непрерывного обследования Softline High S; Сертификат на техническую поддержку СУБД
+sistemnie-programmi/nastroyka-sistemi	Программы для настройки системы	7	IObit Driver Booster PRO; Kerish Doctor; IObit Start Menu
+sistemnie-programmi/rasshireniya-sistemi	Расширения системы	3	WINE@Etersoft; ElcomSoft System Recovery; INN-SOL
+sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie	Российская виртуализация (Импортозамещение)	6	«Альт Виртуализация» 11 редакция PVE; VMmanager; Termidesk
+sistemnie-programmi/sistemnie-programmi-drugie-utiliti	Другие системные утилиты	3	Ibik АСТЕР; Private eazyBI; X-Formation License Statistics
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie	Системы управления базами данных (Импортозамещение)	7	Postgres Pro Enterprise (сертифицированная верси; Postgres Pro Enterprise для 1С:Предприятие (серт; СУБД Ред База Данных
+sistemnie-programmi/virtualizatsiya	Программы для виртуализации	1	Хайстекс - миграция между платформами виртуализа
+sistemnie-programmi/vneshnie-ustroystva	Внешние устройства	17	Virtual Null Modem; Advanced Serial Port Monitor; Revisor Video Management System
+sport-and-action/action-cams	Экшн-камеры	3	Экшн-камера DIGMA DiCam 810; Экшн-камера DIGMA DiCam 850; Экшн-камера Digma DiCam 880 черный DC880
+text/raspoznavanie-teksta-i-rechi	Программы для распознавания текста и речи	3	Wondershare PDFelement; СЕТЕРЕ Архиватор; СЕТЕРЕ ПДФ Редактор
+text/tekstovie-redaktori	Текстовые редакторы	10	Master Pdf Editor; ContentReader PDF 15 Standard; ContentReader PDF 15 Corporate
+text/text-drugie-utiliti	Другие утилиты для работы с текстом	1	Icecream Ebook Reader PRO
+text/text-konverteri	Текстовые конвертеры	3	RosreestrPDF; RosreestrXML; Icecream PDF Converter PRO
+text/text-perevodchiki	Переводчики	5	PROMT Professional NMT; PROMT Expert NMT; PROMT Master NMT
+text/text-slovari	Словари	4	Lingvo by Content AI Выпуск x6 Многоязычная; Сontent AI Lingvo x6 English; Lingvo x6 Европейская
+torgovoe-oborudovanie/detektory-banknot	Детекторы банкнот	23	Автоматический детектор Mertech D-20A Flash Pro ; Автоматический детектор Mertech D-20A Flash Pro ; Автоматический детектор Mertech D-20A Flash Pro 
+torgovoe-oborudovanie/monobloki	Моноблоки	3	Моноблок NEWLAND Nquire 1000 Manta III; Моноблок NEWLAND Nquire 500 Skate II; Моноблок NEWLAND Nquire 700 Stingray II
+torgovoe-oborudovanie/pos-aksessuary	POS-аксессуары	69	POS-аксессуар Urovo Чехол для DT50; POS-аксессуар Urovo Пистолетная рукоять для DT50; POS-аксессуар Urovo Аккумулятор для DT40
+torgovoe-oborudovanie/printery	Принтеры	41	Принтер iDPRT DT Label Printer iD4S; Принтер iDPRT Industrial 6" TT Printer iX6P; Принтер iDPRT TT Label Printer iE2X
+torgovoe-oborudovanie/schetchiki-banknot-monet	Счетчики банкнот, монет	23	Счетчик банкнот DORS CT1040UM; Счетчик банкнот DORS 750M1; Счетчик банкнот DORS 800 (плохая упаковка)
+torgovoe-oborudovanie/skanery-shtrikhkodov	Сканеры штрихкодов	43	Сканер штрихкодов Datalogic QuickScan Lite Handh; Сканер штрихкодов Mindeo MD6600-HD; Сканер-кольцо MERTECH X21 BLE Dongle P2D SR USB 
+torgovoe-oborudovanie/terminaly-sbora-dannykh	Терминалы сбора данных	36	Терминалы сбора данных Urovo DT40-LITE; Терминал сбора данных MERTECH SEUIC AutoID Q9C с; Терминалы сбора данных M3 Mobile PC10
+torgovoe-oborudovanie/vesy-skladskie	Весы складские	24	Весы MERCURY M-ER 333BFU-150.50 LCD; Весы M-ER 725PM-15,2 (15", USB, Ethernet, Wi-Fi); Весы M-ER 725PM-15,2 (VISION-AI, 15", USB, Ether

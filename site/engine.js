@@ -13,7 +13,7 @@
     analog_ru: "replace", analog_class: "replace",
   };
   const SLOT_TITLE = {
-    renew: "Что истекает", next: "Следующая ступень", missing: "Чего не хватает",
+    renew: "Что истекает", next: "Следующая ступень", missing: "К вашему продукту", kit: "Типовой набор",
     replace: "Замена", popular: "Часто берут",
   };
   const WEIGHT = {
@@ -43,7 +43,9 @@
     "реестр и класс": "тот же класс из реестра, ждёт проверки менеджером",
     "продажи": "подтверждено покупками",
     "модель": "предложено моделью, ждёт проверки менеджером",
-    "модель и продажи": "связь классов подтверждена покупками",
+    "разметка: нужно": "пара проверена заранее: нужно",
+    "разметка: комплект": "пара проверена заранее: комплект",
+    "разметка по API": "размечено моделью по API, ждёт проверки менеджером",
     "менеджер": "принято менеджером",
     "витрина": "порядок витрины магазина",
   };
@@ -53,10 +55,12 @@
     copurchase: "покупают вместе", next_purchase: "покупают следом", mentions: "упоминание",
     analog_ru: "российский аналог", analog_class: "российский продукт того же класса", same_line: "та же линейка", popular: "часто берут",
   };
-  // Связь по классу — вывод, а не факт каталога. Клиенту она показывается, только если её подтвердили
-  // продажи (не меньше SALES_OK клиентов) или принял менеджер; остальное ждёт в очереди на проверку.
+  // Связь между классами и между товарами разных линеек — вывод, а не факт каталога. Клиенту она показывается,
+  // если пару заранее проверили по правилам («нужно» или «комплект») или её принял менеджер. Вердикт модели,
+  // не прошедшей сверку с первой разметкой, и замена по классу ждут менеджера.
   const PENDING = "ждёт проверки менеджером";
-  const SALES_OK = 3;
+  const KIT_MAX = 1;           // сколько советов «типовой набор» может быть в блоке
+  const VERDICT_SOURCE = { need: "разметка: нужно", kit: "разметка: комплект" };
   const RENEW_WINDOW = [-60, 120];
   const DAY = 86400000;
 
@@ -94,8 +98,11 @@
       this.line = new Map();
       this.analogs = new Map();
       const add = (map, k, v) => { if (!map.has(k)) map.set(k, new Set()); map.get(k).add(v); };
+      // пары товаров, по которым вердикт уже вынесен: связь классов такой товар не подбирает, за него говорит пара
+      this.judged = new Set((data.veto || []).map((x) => x[0] + "|" + x[1]));
       for (const row of data.edges) {
         const e = { src: row[0], dst: row[1], type: row[2], source: row[3], confidence: row[4], evidence: row[5] || "" };
+        if (String(e.source || "").startsWith("разметка")) this.judged.add(e.src + "|" + e.dst);
         if (e.type === "same_line") { add(this.line, e.src, e.dst); add(this.line, e.dst, e.src); continue; }
         if (e.type === "analog_ru") { add(this.analogs, e.src, e.dst); add(this.analogs, e.dst, e.src); }
         if (!this.out.has(e.src)) this.out.set(e.src, []);
@@ -109,6 +116,16 @@
         this.classLinks.get(link.src_class).push(link);
       }
       this.classRank = data.class_rank || {};
+      // пары товаров с вердиктом «уже есть», «то же самое», «не связано»: такой товар не советуем и по связи классов
+      this.veto = new Set((data.veto || []).map((x) => x[0] + "|" + x[1]));
+      this.vetoHard = new Set((data.veto || []).filter((x) => x.length < 3 || x[2] === "has" || x[2] === "same").map((x) => x[0] + "|" + x[1]));
+      // пары классов с вердиктом «уже есть» или «то же самое»: такое не идёт и в строку «часто берут»
+      this.classVeto = new Set((data.class_veto || []).map((x) => x[0] + "|" + x[1]));
+      // «товар — класс»: первые товары класса этому товару не подошли, связь классов для него не действует
+      this.classBlock = new Set((data.class_block || []).map((x) => x[0] + "|" + x[1]));
+      // «класс А|класс Б» -> товары класса Б, прошедшие проверку пары с ходовым товаром класса А
+      this.classPicks = {};
+      for (const [k, v] of Object.entries(data.class_picks || {})) this.classPicks[k] = new Set(v);
       this.popular = data.popular || {};
       // российские продукты из реестра по классам — чем заменить снятый с продажи зарубежный продукт.
       // Порядок: сначала те, что в продаже, затем по месту на витрине класса (первые 12 мест), затем по ключу.
@@ -209,6 +226,16 @@
       const n = g.nodes.get(dst);
       if (!n || !g.available(dst, client.type)) return "нет в продаже";
       if (edgeType !== "renewal" && owned.has(dst)) return "уже куплено";
+      if (edgeType === "popular") {
+        // популярное — не личный совет, но то, что у клиента заведомо есть или решает ту же задачу, не показываем
+        const kd = g.klass(dst);
+        for (const o of owned.keys()) {
+          const ko = g.klass(o);
+          if (g.vetoHard.has(o + "|" + dst) || g.classVeto.has(ko + "|" + kd) || ko === kd) return "у клиента это уже есть или решает ту же задачу";
+        }
+      } else if (!["renewal", "upgrade", "new_version", "analog_ru", "analog_class"].includes(edgeType)) {
+        for (const o of owned.keys()) if (g.veto.has(o + "|" + dst)) return "пара проверена: уже есть, то же самое или не связано";
+      }
       const b2bOnly = (x) => x.b2b === 1;
       const homeOnly = (x) => { const c = split(x.ct); return c.size === 1 && c.has("b2c") && !b2bOnly(x); };
       const s = g.nodes.get(src) || {};
@@ -242,6 +269,9 @@
       const name = (f) => (g.nodes.get(f) || {}).name || f;
       const q = (x) => { x = String(x || "").trim(); return x.startsWith("«") && x.endsWith("»") ? x : `«${x}»`; };
       const src = q(name(edge.src)), dst = q(name(edge.dst)), t = edge.type, ev = edge.evidence || "";
+      if ((edge.source === VERDICT_SOURCE.need || edge.source === VERDICT_SOURCE.kit) && !edge.class) {
+        return `${ev.replace(/[. ]+$/, "")}.`;       // пара товаров проверена заранее: причина уже написана для клиента
+      }
       if (edge.class) {
         const cname = g.classes[edge.class] || edge.class;
         return `${ev.replace(/[. ]+$/, "")}. Подойдёт ${dst} — ${edge.rank}-е место на витрине магазина в классе «${cname}».`;
@@ -373,7 +403,12 @@
           }
           if (!g.onSale(e.dst)) s *= 0.8;
           direct = direct || t === "analog_ru";
-          push(e.dst, SLOT[t], s, e);
+          if (t === "upgrade" || t === "new_version") e = Object.assign({}, e, { group: "next:" + fam });   // на одну покупку — одна «следующая ступень»
+          if (t === "complements" && (e.source === VERDICT_SOURCE.need || e.source === VERDICT_SOURCE.kit)) {
+            // проверенная пара товаров: из одного класса в блоке один совет, как и по связи классов
+            e = Object.assign({}, e, { group: (g.nodes.get(e.dst) || {}).cls || "" });
+          }
+          push(e.dst, e.source === VERDICT_SOURCE.kit ? "kit" : SLOT[t], s, e);
         }
         // замена по классу: купленный зарубежный продукт сняли с продажи, а прямого аналога в таблице
         // замещения нет — советуем российские продукты того же класса из реестра
@@ -420,12 +455,19 @@
           const t = link.type in this.w ? link.type : "complements";
           const key = `cl|${link.src_class}|${link.dst_class}`;
           if (this.rejected.has(key)) continue;        // менеджер отклонил связь
-          const bySales = (link.sales || 0) >= SALES_OK;
-          const shown = this.unverified || bySales || this.approved.has(key);
-          const source = this.approved.has(key) ? "менеджер" : bySales ? "модель и продажи" : (link.source || "модель");
+          if (g.classBlock.has(fam + "|" + link.dst_class)) continue;   // первые товары этого класса владельцу fam не подошли
+          const verdict = link.verdict || "";
+          const labelled = link.source === "разметка" && verdict in VERDICT_SOURCE;
+          const shown = this.unverified || labelled || this.approved.has(key);
+          const source = this.approved.has(key) ? "менеджер" : labelled ? VERDICT_SOURCE[verdict] : (link.source || "модель");
           const list = (g.classRank[link.dst_class] || []).slice(0, 10);
+          const allowed = g.classPicks[link.src_class + "|" + link.dst_class];
+          const hard = node.kind === "hardware";
           for (let rank = 0; rank < list.length; rank++) {
             const dst = list[rank];
+            if (g.judged.has(fam + "|" + dst)) continue;    // по этой паре товаров есть свой вердикт
+            if (allowed && !allowed.has(dst)) continue;     // товары этого класса проверяли: берём только подошедшие
+            if (hard && (g.nodes.get(dst) || {}).kind === "hardware" && dst.split("/")[0] !== fam.split("/")[0]) continue;   // расходники — только того же вендора
             if (this._banned(client, owned, platforms, dst, t, fam)) continue;
             if (!shown) {                              // клиент не увидит совет, пока связь не принята
               bans.push({ family: dst, type: t, from: fam, reason: PENDING, key });
@@ -435,7 +477,7 @@
               src: fam, dst, type: t, source, confidence: link.confidence,
               evidence: link.reason || "", class: link.dst_class, rank: rank + 1, key,
             };
-            push(dst, "missing", (this.w[t] * link.confidence * recency) / (1 + 0.35 * rank), edge);
+            push(dst, verdict === "kit" ? "kit" : "missing", (this.w[t] * link.confidence * recency) / (1 + 0.35 * rank), edge);
           }
         }
       }
@@ -458,12 +500,20 @@
       let pool = recs.slice().sort((a, b) => b.score - a.score);
       const chosen = [];
       const used = {};
+      const usedSrc = {};                              // сколько советов уже идёт от каждой покупки клиента
+      const srcOf = (r) => (r.paths && r.paths[0] && r.paths[0].src) || "";
       while (pool.length && chosen.length < k) {
-        const val = (r) => r.score * (this.diversify ? Math.pow(0.6, used[r.slot] || 0) : 1.0);
-        let best = pool[0];
-        for (const r of pool) if (val(r) > val(best)) best = r;
+        // разнообразие: каждый следующий совет того же вида и от той же покупки весит меньше
+        const val = (r) => r.score * (this.diversify ? Math.pow(0.6, used[r.slot] || 0) * Math.pow(0.75, usedSrc[srcOf(r)] || 0) : 1.0);
+        // «типовой набор» идёт после всех остальных советов и не больше KIT_MAX раз
+        let rest = pool.filter((r) => r.slot !== "kit");
+        if (!rest.length) rest = pool.filter(() => (used.kit || 0) < KIT_MAX);
+        if (!rest.length) break;
+        let best = rest[0];
+        for (const r of rest) if (val(r) > val(best)) best = r;
         chosen.push(best);
         used[best.slot] = (used[best.slot] || 0) + 1;
+        if (srcOf(best)) usedSrc[srcOf(best)] = (usedSrc[srcOf(best)] || 0) + 1;
         const block = new Set([best.family, ...g.lineOf(best.family)]);
         if (best.slot === "renew") {
           const steps = pool.filter((r) => r.slot === "next" && block.has(r.family) && r.family !== best.family);
@@ -480,7 +530,7 @@
     }
   }
 
-  const api = { Graph, Recommender, SLOT, SLOT_TITLE, WEIGHT, LABEL, TYPE_TITLE, PENDING, SALES_OK, parseDate, fmt, addMonths };
+  const api = { Graph, Recommender, SLOT, SLOT_TITLE, WEIGHT, LABEL, TYPE_TITLE, PENDING, KIT_MAX, parseDate, fmt, addMonths };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.Engine = api;
 })(typeof window !== "undefined" ? window : globalThis);

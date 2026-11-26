@@ -162,7 +162,7 @@
   function renderOwned() {
     const ul = $("#owned");
     if (!state.purchases.length) {
-      ul.innerHTML = '<li class="owned__empty">Покупок нет — клиент без истории. Блок всё равно не останется пустым.</li>';
+      ul.innerHTML = '<li class="owned__empty">Покупок нет — клиент без истории. Личный совет дать не на чем: блок покажет только то, что чаще берут.</li>';
       return;
     }
     ul.innerHTML = state.purchases.map((p, i) => {
@@ -205,6 +205,14 @@
       <div><b>${esc(r.name)}</b><p>${esc(r.text)}</p></div>
       ${r.url ? `<a href="${esc(shopUrl(r.url, "renew", i + 1))}" target="_blank" rel="noopener">Продлить в магазине</a>` : ""}</div>`).join("");
   }
+  /** Строка «Часто докупают»: не личный совет, а то, что часто берут клиенты того же типа. Стоит отдельно от советов. */
+  function renderPopular(rows) {
+    const el = $("#popular");
+    el.hidden = !rows.length;
+    el.innerHTML = !rows.length ? "" : "<h3>Часто докупают</h3>" + rows.map((r, i) => `<div class="renew__row">
+      <div><b>${esc(r.name)}</b><p>${esc(r.text)}</p></div>
+      ${r.url ? `<a href="${esc(shopUrl(r.url, "popular", i + 1))}" target="_blank" rel="noopener">Открыть в магазине</a>` : ""}</div>`).join("");
+  }
   /** Тот же ответ в виде, который блок кабинета получает сейчас, плюс объяснение и вид совета. */
   function renderContract(rows) {
     const el = $("#contract");
@@ -229,12 +237,17 @@
   function render(keepOwned) {
     if (dstate.on) return renderData();
     const t0 = performance.now();
-    const rec = new E.Recommender(graph, recOpts({ fill: true, minConfidence: state.minConf }));
+    const rec = new E.Recommender(graph, recOpts({ fill: false, minConfidence: state.minConf }));
     const res = rec.recommend({ type: state.type, today: state.today, purchases: state.purchases }, 5);
     // продление выносим в отдельную строку, три места в блоке — для новых советов
     const renew = res.recs.filter((r) => r.slot === "renew").slice(0, 2);
     last = { recs: res.recs.filter((r) => r.slot !== "renew").slice(0, 3), bans: res.bans };
     renderRenew(renew.map((r) => ({ name: r.name, text: r.why + (r.also ? " Заодно: " + r.also : ""), url: r.url })));
+    // «часто докупают» — отдельной строкой: первый популярный товар, который не повторяет советы и не лежит у клиента
+    const filled = new E.Recommender(graph, recOpts({ fill: true, minConfidence: state.minConf }))
+      .recommend({ type: state.type, today: state.today, purchases: state.purchases }, 6);
+    const pops = filled.recs.filter((r) => r.slot === "popular").slice(0, state.purchases.length ? 1 : 3);
+    renderPopular(pops.map((r) => ({ name: r.name, text: "Не личный совет. " + r.why, url: r.url })));
     const waiting = new Set(res.bans.filter((b) => b.reason === E.PENDING).map((b) => b.key)).size;
     const pend = $("#pending");
     pend.hidden = !waiting;
@@ -247,7 +260,8 @@
     if (!keepOwned) renderOwned();
     $("#block-title").textContent = "Рекомендуем вам";
     $("#cost").innerHTML = `Обращений к модели: <b>0</b> · посчитано за ${ms < 1 ? "меньше 1" : Math.round(ms)} мс`;
-    $("#cards").innerHTML = last.recs.length ? last.recs.map(cardHtml).join("") : '<div class="empty">Для этого набора покупок советов нет.</div>';
+    $("#cards").innerHTML = (last.recs.length ? last.recs.map(cardHtml).join("") : "")
+      + (last.recs.length < 3 ? `<div class="empty">${!state.purchases.length ? "У клиента нет покупок, поэтому личных советов нет" : last.recs.length ? "Больше советов по делу нет" : "Для этого набора покупок советов по делу нет"}: показываем только то, что связано с покупками, популярное идёт отдельной строкой ниже.</div>` : "");
     $("#fact").hidden = true;
     bindCards();
     const srcs = new Set();
@@ -347,7 +361,8 @@
   ];
   const item = (id) => (priv && priv.items[id]) || { name: id, short: id, desc: "" };
   const ruDate = (iso) => E.fmt(E.parseDate(iso));
-  const hitsOf = (c) => c.recs.full.filter((x) => x.hit).length;
+  const shownOf = (c) => c.recs.full.concat((c.renew || {}).full || [], (c.popular || {}).full || []);
+  const hitsOf = (c) => shownOf(c).filter((x) => x.hit).length;
   function setClients() { const f = SETS.find((s) => s[0] === dstate.set); return f ? priv.clients.filter(f[2]) : []; }
 
   function setupData() {
@@ -382,7 +397,7 @@
   function fillClients() {
     $("#d-client").innerHTML = setClients().map((c, i) => {
       const kind = [c.type, c.segment].filter(Boolean).join(", ");
-      const fact = c.mode === "test" ? ` · сбылось ${hitsOf(c)} из 3` : "";
+      const fact = c.mode === "test" ? ` · сбылось ${hitsOf(c)} из ${shownOf(c).length}` : "";
       return `<option value="${i}">${esc(c.id)} · ${esc(kind)} · покупок: ${c.history.length}${fact}</option>`;
     }).join("");
   }
@@ -427,15 +442,19 @@
     $("#block-title").textContent = c.mode === "test" ? `Что мы посоветовали бы ${ruDate(asOf)}` : "Рекомендуем вам";
     $("#cost").innerHTML = dstate.hide
       ? "История купленных товаров <b>спрятана</b>: совет выведен только из каталога · обращений к языковой модели: <b>0</b>"
-      : "Совет выбран ранжированием по истории и каталогу · обращений к языковой модели: <b>0</b>";
-    $("#cards").innerHTML = recs.map((x, i) => dataCard(x, i, c)).join("");
+      : "Порядок — ранжирование по истории и каталогу, чужие продукты — только с проверенной парой · обращений к языковой модели: <b>0</b>";
+    $("#cards").innerHTML = recs.map((x, i) => dataCard(x, i, c)).join("")
+      + (recs.length < 3 ? `<div class="empty">${recs.length ? "Больше советов по делу нет" : "Новых советов по делу нет"}: показываем только то, что связано с покупками клиента, популярное идёт отдельной строкой ниже.</div>` : "");
     const mode = dstate.hide ? "new_item" : "full";
-    renderRenew(((c.renew || {})[mode] || []).map((x) => ({ name: item(x.item).title || item(x.item).name, text: x.why, url: item(x.item).url })));
+    const renew = (c.renew || {})[mode] || [];
+    renderRenew(renew.map((x) => ({ name: item(x.item).title || item(x.item).name, text: x.why + (x.hit ? " Сбылось: клиент купил это продление после даты совета." : ""), url: item(x.item).url })));
+    const popular = (c.popular || {})[mode] || [];
+    renderPopular(popular.map((x) => ({ name: item(x.item).title || item(x.item).name, text: x.why + (x.hit ? " Сбылось: клиент купил этот товар после даты совета." : ""), url: item(x.item).url })));
     $("#pending").hidden = true;
     renderContract(recs.map((x) => ({ link: item(x.item).url || null, name: item(x.item).name, vendorName: item(x.item).vendor || null, price: item(x.item).price || null, slot: x.slot, reason: x.why })));
     const fact = $("#fact");
     if (c.mode === "test") {
-      const named = new Set(recs.map((x) => x.item));
+      const named = new Set(recs.concat(renew, popular).map((x) => x.item));
       fact.hidden = false;
       fact.innerHTML = `<b>Что клиент купил на самом деле с ${ruDate(priv.test_from)}:</b> ` + c.target.map((t) =>
         `<span class="bought${named.has(t) ? " bought--yes" : ""}">${named.has(t) ? "✓ " : ""}${esc(item(t).short)}${item(t).desc ? ` (${esc(item(t).desc)})` : ""}</span>`).join(" ");
@@ -454,7 +473,11 @@
       return { id: h.item, name: it.short + (it.desc ? ` — ${it.desc}` : ""), note: `куплено ${ruDate(h.last)}`, idle: !srcs.has(h.item) };
     });
     renderWhy();
-    $("#bans").innerHTML = "<summary>Товары из истории клиента не предлагаются — так требует и протокол проверки.</summary>";
+    const rej = (c.rejected || {})[mode] || [], left = (c.unlabelled || {})[mode] || 0;
+    $("#bans").innerHTML = rej.length
+      ? `<summary>Что предлагала статистика, а проверка пар убрала: ${rej.length}${left ? ` · ещё ${left} без вердикта ждут разметки` : ""}</summary><ul>`
+        + rej.map((x) => `<li><b>${esc(item(x.item).title || item(x.item).short)}</b> — ${esc(x.why)}</li>`).join("") + "</ul>"
+      : "<summary>Проверка пар у этого клиента ничего не убрала. Товары из истории клиента не предлагаются.</summary>";
   }
 
   // =========================== вкладка «Товар» ===========================
@@ -510,11 +533,11 @@
                  conf: e[4], ev: (e[5] || "").replace(/; https?:\S+$/, ""), auto: true, urlFrom: (allNodes.get(e[0]) || {}).url, urlTo: (allNodes.get(e[1]) || {}).url });
   }
   for (const l of data.class_links || []) {
-    const bySales = (l.sales || 0) >= E.SALES_OK;
+    const labelled = l.source === "разметка";
     const top = ((data.class_rank || {})[l.dst_class] || [])[0];
     queue.push({ key: `cl|${l.src_class}|${l.dst_class}`, group: "class", type: l.type || "complements", from: `Класс «${clsName(l.src_class)}»`,
                  to: `Класс «${clsName(l.dst_class)}»` + (top ? ` — например, ${nodeNameAll(top)}` : ""),
-                 source: bySales ? "модель; подтверждено покупками" : "модель и критик", conf: l.confidence, ev: l.reason || "", auto: bySales });
+                 source: labelled ? (l.verdict === "kit" ? "разметка: комплект" : "разметка: нужно") : "модель по API", conf: l.confidence, ev: l.reason || "", auto: labelled });
   }
   for (const [cid, fams] of new E.Graph(data).ruByClass) {
     if (!goneByClass[cid]) continue;
@@ -688,6 +711,38 @@
         <ul class="hint">${future.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}`;
   }
 
+  /** Проверка пар «купил А — советовать ли Б»: сколько чего размечено и что это меняет в блоке. */
+  function verdictsHtml(vs) {
+    const KINDS = [["need", "нужно"], ["kit", "комплект"], ["has", "уже есть"], ["same", "то же самое"], ["unrelated", "не связано"]];
+    const ve = report && report.verdict_effect;
+    const lines = ve ? ve.verdicts : null;
+    const sum = (o) => KINDS.reduce((a, [k]) => a + ((o || {})[k] || 0), 0);
+    const cell = (o, k) => (o ? nf.format(o[k] || 0) : "—");
+    let h = `<h3>Проверка пар «купил А — советовать ли Б»</h3>
+      <p class="hint">Статистика продаж не отличает «нужно» от «и так есть»: после антивируса чаще всего покупают Windows, потому что её покупают все. Поэтому каждую пару заранее судит модель по правилам хорошего менеджера, и в блок идут только «нужно» и «комплект» — с фразой «зачем». На обращение клиента модель не вызывается: вердикт — строка таблицы.</p>
+      <table class="links"><tr><th>Вердикт</th><th class="num">Пары классов каталога</th><th class="num">Пары товаров каталога</th><th class="num">Пары линеек из продаж</th></tr>
+      ${KINDS.map(([k, t]) => `<tr><td>${t}${k === "need" || k === "kit" ? " — идёт в советы" : ""}</td><td class="num">${cell(vs.classes, k)}</td><td class="num">${cell(vs.families, k)}</td><td class="num">${cell(lines, k)}</td></tr>`).join("")}
+      <tr><td><b>Всего</b></td><td class="num"><b>${nf.format(sum(vs.classes))}</b></td><td class="num"><b>${nf.format(sum(vs.families))}</b></td><td class="num"><b>${lines ? nf.format(sum(lines)) : "—"}</b></td></tr></table>`;
+    const old = vs.old_links;
+    if (old && old.total) {
+      h += `<p class="hint">Из ${nf.format(old.total)} связей классов, которые раньше предложила облегчённая модель, проверку прошли ${nf.format((old.need || 0) + (old.kit || 0))}. Остальные сняты: «уже есть» — ${old.has || 0}, «то же самое» — ${old.same || 0}, «не связано» — ${old.unrelated || 0}. Прежняя проверка продажами такие связи подтверждала: самые продаваемые товары встречаются рядом с чем угодно, поэтому мы от неё отказались.</p>`;
+    }
+    if (ve && ve.rows && ve.rows.length) {
+      h += `<h3>Что проверка пар меняет в блоке кабинета</h3>
+        <p class="hint">Организации из проверки на истории (${ve.clients} клиентов): советы даны по покупкам до 31 августа, «сбылось» — клиент купил этот товар осенью. Строка «Пора продлить» во всех вариантах одна и та же и в таблицу не входит.</p>
+        <table class="links"><tr><th>Блок новых советов</th><th class="num">Карточек</th><th class="num">Сбылось</th><th class="num">Доля</th><th class="num">Самый частый товар видят</th><th class="num">Клиентов без новых советов</th></tr>
+        ${ve.rows.map((r) => `<tr><td>${esc(r.title)}${r.stand ? " — так на стенде" : ""}</td><td class="num">${nf.format(r.cards)}</td><td class="num">${r.hits}</td><td class="num">${pct(r.share)}</td><td class="num">${pct(r.top_share)} клиентов</td><td class="num">${r.without}</td></tr>`).join("")}</table>
+        <p class="hint">Без проверки один и тот же товар («${esc(ve.top_before)}») получали почти все; с проверкой он остаётся там, где у него есть основание. Цена — часть попаданий, которые давал совет «всем подряд»: ${esc(ve.cost)}</p>`;
+    }
+    if (vs.check && vs.check.length) {
+      h += `<h3>Разметка через API</h3>
+        <p class="hint">Первую разметку сделал ИИ-ассистент во время разработки. Новые пары в эксплуатации размечает модель по API тем же запросом (<code>python -m recsys.llm.pair_verdicts label</code>). Какой модели можно верить без менеджера, показывает сверка с первой разметкой: порог — ${pct(vs.trust)} одинаковых решений «советовать или нет».</p>
+        <table class="links"><tr><th>Модель</th><th class="num">Пар в сверке</th><th class="num">То же решение</th><th class="num">Верных среди показанного</th><th>Вывод</th></tr>
+        ${vs.check.map((c) => `<tr><td>${esc(c.model)}</td><td class="num">${c.pairs}</td><td class="num">${pct(c.same_decision)}</td><td class="num">${c.precision == null ? "—" : pct(c.precision)}</td><td>${c.trusted ? "вердикты идут клиенту сразу" : "вердикты ждут менеджера"}</td></tr>`).join("")}</table>`;
+    }
+    return h;
+  }
+
   function renderNumbers() {
     const sale = data.nodes.filter((n) => n.sale === 1);
     const linkedIds = new Set(data.edges.filter((e) => e[2] !== "same_line").map((e) => e[0]));
@@ -719,13 +774,10 @@
           <tr><td>Российский продукт того же класса, названный в таблице аналогом другого продукта того же вендора</td><td class="num">${nf.format(rp.sibling)}</td></tr>
           <tr><td>Российский продукт того же класса из реестра — самый слабый вид совета</td><td class="num">${nf.format(rp.klass)}</td></tr></table>`;
     }
-    const ck = data.meta.class_check;
-    if (ck && ck.links) {
-      html += `<h3>Проверка связей между классами</h3>
-        <p class="hint">Связи между классами предложила языковая модель, второй запрос отсеял слабые. Продажами можно проверить только те связи, оба класса которых есть в датасете: таких ${ck.checkable} из ${ck.links}. Подтвердились ${ck.confirmed}: после товара первого класса товар второго купили не меньше ${ck.min_support} клиентов. Подтверждённые связи клиент видит сразу, остальные ${nf.format(waitingRows().filter((r) => r.group === "class").length)} ждут решения менеджера.</p>`;
-    }
+    const vs = data.meta.verdicts;
+    if (vs) html += verdictsHtml(vs);
     html += `<h3>Очередь менеджера</h3>
-      <p class="hint">Сейчас блок построен примерно на 6 000 ручных связок «товар — товар». Здесь менеджеру достаточно один раз просмотреть очередь из связей между классами и замен по классу; строк в ней сейчас: ${nf.format(waitingRows().length)}. Остальное выводится из каталога.</p>`;
+      <p class="hint">Сейчас блок построен примерно на 6 000 ручных связок «товар — товар». Здесь связи между классами и между товарами разных линеек размечены заранее и показываются клиенту с подписью «пара проверена заранее»; любую из них менеджер отклоняет одним нажатием на вкладке «Связи». Проверки менеджера ждут только замены по классу и вердикты модели, не прошедшей сверку: строк в очереди сейчас ${nf.format(waitingRows().length)}.</p>`;
     $("#numbers").innerHTML = html;
     $$("#numbers [data-tip]").forEach((el) => {
       el.addEventListener("mousemove", (ev) => showTip(ev, `<span>${esc(el.dataset.tip)}</span>`));

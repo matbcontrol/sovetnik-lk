@@ -1,0 +1,97 @@
+parts/zvukovye-karty	Звуковые карты	раньше предлагалось: gadgets/headphones
+peripherals/accessoires-pour-ups	Аксессуары для ИБП	раньше предлагалось: peripherals/ups
+peripherals/displays	Мониторы	раньше предлагалось: peripherals/keyboards
+peripherals/keyboards	Клавиатуры, мыши, комплекты	раньше предлагалось: peripherals/displays
+peripherals/silovye-moduli-dlya-ibp	Силовые модули для ИБП	раньше предлагалось: peripherals/ups
+peripherals/ups	ИБП (Источники бесперебойного питания)	раньше предлагалось: peripherals/ups_battery_pack
+peripherals/ups_battery_pack	Сменные батареи для ИБП	раньше предлагалось: peripherals/ups
+peripherals/voltage_regulator	Сетевые фильтры и стабилизаторы	раньше предлагалось: peripherals/ups
+photo-video/ekran	Экраны	раньше предлагалось: photo-video/projector
+photo-video/holders	Кронштейны	раньше предлагалось: —
+photo-video/projector	Проекторы	раньше предлагалось: photo-video/ekran, photo-video/holders
+photo-video/speaker	Колонки	раньше предлагалось: photo-video/holders
+photo-video/tvset	Телевизоры	раньше предлагалось: photo-video/holders
+photo-video/videopleery	Видеоплееры	раньше предлагалось: —
+portable-memory/dok-stantsii	Док-станции для накопителей	раньше предлагалось: parts/hdd
+portable-memory/externalhdd	Внешние HDD	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie
+portable-memory/flash-memory	Карты памяти	раньше предлагалось: gadgets/smartphones
+portable-memory/hdd-external-case	HDD external case	раньше предлагалось: parts/ssd
+portable-memory/usb-flash	Флешки USB	раньше предлагалось: antivirusi-bezopasnost/antivirusi
+portable/accessories_for_tablets	Аксессуары для планшетов	раньше предлагалось: —
+portable/powerbank	Внешние аккумуляторы	раньше предлагалось: gadgets/zaryadnye-ustroystva
+programmi-dlya-mac-os/system-programms	Системные программы для macOS	раньше предлагалось: —
+programmi-dlya-mobilnih-ustroystv/dlya-smartfonov	Бизнес-приложения, менеджеры, органайзеры	раньше предлагалось: —
+programmi-dlya-mobilnih-ustroystv/mobilnie-ustroystva-zaschita-informatsii	Защита данных на смартфоне	раньше предлагалось: antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov
+programmi-dlya-mobilnih-ustroystv/pdmu-drugie-programmi	Другие программы для смартфонов	раньше предлагалось: —
+programmirovanie/activex	ActiveX	раньше предлагалось: —
+programmirovanie/bazi-dannih	Программы для работы с базами данных	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie
+programmirovanie/drugie-biblioteki	Другие библиотеки	раньше предлагалось: —
+programmirovanie/razrabotka-po	Программы для разработки ПО	раньше предлагалось: programmirovanie/bazi-dannih
+programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie	Российские базы данных (Импортозамещение)	раньше предлагалось: —
+programmirovanie/vcl	VCL	раньше предлагалось: —
+reklamnye-materialy/suvenirnaia-produkciia	Сувенирная продукция	раньше предлагалось: —
+remote-access/drugie-resheniya-udalennogo-dostupa	Другие решения удаленного доступа	раньше предлагалось: antivirusi-bezopasnost/antivirusi-organizatsii
+remote-access/rossiyskie-resheniya-udalennogo-dostupa-importozameshchenie	Российские решения удаленного доступа (Импортозамещение)	раньше предлагалось: operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie, antivirusi-bezopasnost/antivirusi-organizatsii
+saas/business-managment	Управление бизнесом (SaaS)	раньше предлагалось: internet-i-set/cms
+saas/clouds	Облачные платформы (Импортозамещение)	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie
+saas/communications	Коммуникации (SaaS)	раньше предлагалось: ip-telephonia/spikerfony
+saas/setevie-utiliti	Сетевые утилиты (SaaS)	раньше предлагалось: antivirusi-bezopasnost/antivirusi-organizatsii
+saas/sistemi-avtomatizatsii_saas	Системы автоматизации (SaaS)	раньше предлагалось: —
+san-nas/nas	Сетевые хранилища (NAS)	раньше предлагалось: parts/hdd, diski-i-fayli/rezervnoe-kopirovanie
+san-nas/san-options	Опции к системам хранения	раньше предлагалось: san-nas/san-storage
+san-nas/san-storage	Сетевые системы хранения данных	раньше предлагалось: san-nas/san-options
+sapr/arhitektura	Программы для архитекторов	раньше предлагалось: office/plotters, sapr/dizayn-vizualizatsiya-i-animatsiya, peripherals/displays
+sapr/bazovie-produkti	Базовые программы	раньше предлагалось: office/plotters, peripherals/displays, sapr/dokumentooborot
+sapr/dizayn-vizualizatsiya-i-animatsiya	Программы для дизайна, визуализации и анимации	раньше предлагалось: peripherals/displays
+sapr/dokumentooborot	Программы для документооборота	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie, antivirusi-bezopasnost/bezopasnost-zaschita-informatsii, servers/rackmount-servers
+sapr/geoinformatsionnie-sistemi	Геоинформационные системы (ГИС)	раньше предлагалось: karti-navigatsiya-puteshestviya/karti, office/plotters, 3d-oborudovanie/3d-scanners
+sapr/gibridnie-graficheskie-redaktori-i-vektorizatori	Редакторы и векторизаторы	раньше предлагалось: office/scanner, office/plotters
+sapr/infrastruktura-iziskaniya-genplan-transport	Инфраструктура: изыскания, генплан, транспорт	раньше предлагалось: office/plotters, sapr/dokumentooborot, sapr/geoinformatsionnie-sistemi
+sapr/injenerniy-soft	Инженерные калькуляторы	раньше предлагалось: sapr/bazovie-produkti, delovie-programmi/rabota-s-dokumentami
+sapr/kadastr-i-gradostroitelstvo	Программы для кадастра и градостроительства	раньше предлагалось: sapr/geoinformatsionnie-sistemi, antivirusi-bezopasnost/bezopasnost-zaschita-informatsii
+sapr/kartografiya-fotogrammetriya	Программы для картографии и фотограмметрии	раньше предлагалось: sapr/geoinformatsionnie-sistemi, sapr/infrastruktura-iziskaniya-genplan-transport
+sapr/lazernoe-skanirovanie	Лазерное сканирование	раньше предлагалось: 3d-oborudovanie/3d-scanners, sapr/bazovie-produkti
+sapr/mashinostroenie	Программы для машиностроения	раньше предлагалось: 3d-oborudovanie/3d-scanners, peripherals/displays, office/plotters
+sapr/mebelnoe-proizvodstvo	Программы для мебельного производства	раньше предлагалось: sapr/bazovie-produkti, office/plotters
+sapr/pojarnaya-bezopasnost	Программы для пожарной безопасности	раньше предлагалось: sapr/stroitelstvo, delovie-programmi/rabota-s-dokumentami
+sapr/science-software	Расчетные системы и Научное программное обеспечение	раньше предлагалось: sapr/bazovie-produkti
+sapr/selskoe-khozyaystvo	Программы для сельского хозяйства	раньше предлагалось: sapr/geoinformatsionnie-sistemi
+sapr/stroitelstvo	Строительное программное обеспечение	раньше предлагалось: sapr/dokumentooborot, office/plotters, peripherals/displays
+sapr/tekhnicheskaya-podderzhka	Программное обеспечение для технической поддержки	раньше предлагалось: servisnye-reseniia/texniceskaia-podderzka-programmnogo-obespeceniia-1
+security/analogovye-videokamery	Аналоговые видеокамеры	раньше предлагалось: security/videoregistratory
+security/domofony	Домофоны	раньше предлагалось: security/ustroystva-kontrolya-dostupa
+security/ip-videocams	IP-видеокамеры	раньше предлагалось: security/videoregistratory, security/krepleniya
+security/klaviatura-dlya-upravleniya	Аксессуары для систем безопасности	раньше предлагалось: —
+security/krepleniya	Крепления	раньше предлагалось: —
+security/sredstva-radio-elektronnoi-borby-reb	Средства радио-электронной борьбы (РЭБ)	раньше предлагалось: —
+security/umnyy-dom	Умный дом	раньше предлагалось: —
+security/ustroystva-kontrolya-dostupa	Устройства контроля доступа	раньше предлагалось: security/klaviatura-dlya-upravleniya
+security/videoregistratory	Видеорегистраторы	раньше предлагалось: security/ip-videocams, parts/hdd
+servers/chassis1	Шасси и платформы	раньше предлагалось: servers/server-options
+servers/montazhnye-komplekty-zip	Монтажные комплекты, ЗИП	раньше предлагалось: servers/rackmount-servers
+servers/rackmount-servers	Rack-серверы	раньше предлагалось: servers/montazhnye-komplekty-zip, servers/server-options
+servers/server-options	Серверные опции	раньше предлагалось: servers/rackmount-servers
+servisnye-reseniia/texniceskaia-podderzka-oborudovaniia	Техническая поддержка оборудования	раньше предлагалось: peripherals/ups
+servisnye-reseniia/texniceskaia-podderzka-programmnogo-obespeceniia-1	Техническая поддержка программного обеспечения	раньше предлагалось: —
+sistemnie-programmi/nastroyka-sistemi	Программы для настройки системы	раньше предлагалось: antivirusi-bezopasnost/antivirusi
+sistemnie-programmi/rasshireniya-sistemi	Расширения системы	раньше предлагалось: operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie
+sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie	Российская виртуализация (Импортозамещение)	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie, sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie
+sistemnie-programmi/sistemnie-programmi-drugie-utiliti	Другие системные утилиты	раньше предлагалось: —
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie	Системы управления базами данных (Импортозамещение)	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie, programmirovanie/bazi-dannih
+sistemnie-programmi/virtualizatsiya	Программы для виртуализации	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie, servers/rackmount-servers, parts/ram
+sistemnie-programmi/vneshnie-ustroystva	Внешние устройства	раньше предлагалось: parts/cables
+sport-and-action/action-cams	Экшн-камеры	раньше предлагалось: portable-memory/flash-memory
+text/raspoznavanie-teksta-i-rechi	Программы для распознавания текста и речи	раньше предлагалось: text/tekstovie-redaktori
+text/tekstovie-redaktori	Текстовые редакторы	раньше предлагалось: text/raspoznavanie-teksta-i-rechi
+text/text-drugie-utiliti	Другие утилиты для работы с текстом	раньше предлагалось: —
+text/text-konverteri	Текстовые конвертеры	раньше предлагалось: —
+text/text-perevodchiki	Переводчики	раньше предлагалось: text/text-slovari
+text/text-slovari	Словари	раньше предлагалось: —
+torgovoe-oborudovanie/detektory-banknot	Детекторы банкнот	раньше предлагалось: torgovoe-oborudovanie/schetchiki-banknot-monet
+torgovoe-oborudovanie/monobloki	Моноблоки	раньше предлагалось: torgovoe-oborudovanie/skanery-shtrikhkodov
+torgovoe-oborudovanie/pos-aksessuary	POS-аксессуары	раньше предлагалось: torgovoe-oborudovanie/terminaly-sbora-dannykh
+torgovoe-oborudovanie/printery	Принтеры	раньше предлагалось: office/expendables
+torgovoe-oborudovanie/schetchiki-banknot-monet	Счетчики банкнот, монет	раньше предлагалось: torgovoe-oborudovanie/detektory-banknot
+torgovoe-oborudovanie/skanery-shtrikhkodov	Сканеры штрихкодов	раньше предлагалось: torgovoe-oborudovanie/terminaly-sbora-dannykh
+torgovoe-oborudovanie/terminaly-sbora-dannykh	Терминалы сбора данных	раньше предлагалось: buhgalteriya-sklad-kadry/skladskie-programmi
+torgovoe-oborudovanie/vesy-skladskie	Весы складские	раньше предлагалось: torgovoe-oborudovanie/printery

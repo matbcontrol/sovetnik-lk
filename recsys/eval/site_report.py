@@ -56,6 +56,22 @@ def main() -> None:
         "same_line": {"title": rule.get("title", ""), "p3": rule.get("precision@3", {}), "ci": rule.get("ci", {}),
                       "model_minus_rule": rule.get("model_minus_rule")} if rule else None,
     }
+    p = ROOT / "reports" / "verdict_effect.json"
+    if p.exists():                                       # что проверка пар меняет в блоке кабинета (только сводные числа)
+        e = json.loads(p.read_text(encoding="utf-8"))
+        back = {"нужно": "need", "комплект": "kit", "уже есть": "has", "то же самое": "same", "не связано": "unrelated"}
+        rows, seg = [], "A B2B"
+        for title, m in e["variants"].items():
+            r = m[seg]
+            rows.append({"title": title[:1].upper() + title[1:], "cards": r["новых советов"], "hits": r["новых сбылось"],
+                         "share": r["доля сбывшихся новых советов"], "top_share": r["самый частый товар: доля клиентов"],
+                         "without": r["клиентов без новых советов"], "stand": title == e.get("stand")})
+        first, stand = e["variants"]["без проверки пар"][seg], e["variants"][e["stand"]][seg]
+        out["verdict_effect"] = {
+            "verdicts": {back[k]: n for k, n in e["verdicts"].items()}, "clients": first["клиентов"], "rows": rows,
+            "top_before": first["самые частые товары"][0][0],
+            "cost": f"{first['новых сбылось']} сбывшихся новых советов без проверки, {stand['новых сбылось']} — с проверкой.",
+        }
     path = ROOT / "site" / "data" / "report.json"
     path.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print("записано:", path)

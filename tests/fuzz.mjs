@@ -32,7 +32,7 @@ function client() {
   return { type: rnd() < 0.5 ? "b2b" : "b2c", today: rnd() < 0.95 ? "2026-11-26" : pick(["2024-01-01", "2030-01-01"]), purchases };
 }
 
-const SLOTS = new Set(["renew", "next", "missing", "replace", "popular"]);
+const SLOTS = new Set(["renew", "next", "missing", "kit", "replace", "popular"]);
 const bad = {};
 const note = (what, c, extra) => { (bad[what] = bad[what] || []).push(JSON.stringify({ c: { ...c, purchases: c.purchases.slice(0, 4) }, extra }).slice(0, 400)); };
 const engines = [new Recommender(graph, { fill: true }), new Recommender(graph, { fill: false }), new Recommender(graph, { fill: true, minConfidence: 0.8 }),

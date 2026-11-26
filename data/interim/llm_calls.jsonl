@@ -388,3 +388,8 @@
 {"time": "2026-11-26T23:48:59", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 4527, "tokens_out": 1820, "seconds": 5.26, "cached": false}
 {"time": "2026-11-26T23:49:53", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 4920, "tokens_out": 1860, "seconds": 43.87, "cached": false}
 {"time": "2026-11-26T23:49:58", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 2156, "tokens_out": 997, "seconds": 4.35, "cached": false}
+{"time": "2026-11-26T23:50:42", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 4205, "tokens_out": 1794, "seconds": 21.0, "cached": false}
+{"time": "2026-11-26T23:50:49", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 4308, "tokens_out": 1848, "seconds": 7.45, "cached": false}
+{"time": "2026-11-26T23:50:56", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 4810, "tokens_out": 1706, "seconds": 7.28, "cached": false}
+{"time": "2026-11-26T23:51:25", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 4112, "tokens_out": 1586, "seconds": 28.26, "cached": false}
+{"time": "2026-11-26T23:51:29", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 1434, "tokens_out": 293, "seconds": 4.33, "cached": false}

@@ -1,0 +1,96 @@
+3d-oborudovanie/3d-scanners	sapr/mashinostroenie	N	Облако точек со сканера переводят в 3D-модель детали в САПР — так делают обратный инжиниринг
+3d-oborudovanie/3d-scanners	computers/all-in-ones	H	сканер уже работает с компьютером
+accessories_comp/bags_for_notes	accessories_comp/notebook-stand	U	сумка для дороги, подставка для стола
+accessories_comp/docking	peripherals/displays	N	К док-станции подключают внешний монитор — ноутбук превращается в рабочее место с большим экраном
+accessories_comp/docking	peripherals/keyboards	K	Если ещё нет отдельных клавиатуры и мыши: через док-станцию они подключаются к ноутбуку одним кабелем
+accessories_comp/docking	parts/cables	K	Если ещё нет кабеля HDMI или DisplayPort: без него монитор к док-станции не подключить
+accessories_comp/docking	accessories_comp/istochniki-pitaniya-dlya-noutbukov	H	зарядка ноутбука уже есть
+accessories_comp/istochniki-pitaniya-dlya-noutbukov	accessories_comp/bags_for_notes	U	блок питания не требует сумки
+accessories_comp/notebook-stand	peripherals/keyboards	N	На подставке ноутбук стоит высоко — печатать удобнее на отдельной клавиатуре с мышью
+accessories_comp/usb-hub	accessories_comp/docking	S	та же задача: больше портов
+antivirusi-bezopasnost/antivirusi	operating-systems/windows-11-licenzii-home-i-pro	H	без ОС антивирус не поставить
+antivirusi-bezopasnost/antivirusi	diski-i-fayli/rezervnoe-kopirovanie	N	Антивирус не вернёт файлы после шифровальщика — резервная копия вернёт
+antivirusi-bezopasnost/antivirusi	internet-i-set/roditelskiy-kontrol	K	Если ещё нет родительского контроля: он покажет, что ребёнок делает за компьютером	b2c
+antivirusi-bezopasnost/antivirusi-organizatsii	diski-i-fayli/rezervnoe-kopirovanie	N	Антивирус не вернёт данные после шифровальщика — резервная копия вернёт	b2b
+antivirusi-bezopasnost/antivirusi-organizatsii	antivirusi-bezopasnost/mezhsetevye-ekrany	K	Если ещё нет защиты периметра: межсетевой экран фильтрует трафик до того, как он дойдёт до компьютеров	b2b
+antivirusi-bezopasnost/antivirusi-organizatsii	distantsionnoe-obuchenie/infosecurity	K	Если сотрудники ещё не обучены: курс научит их не открывать фишинговые письма, которые антивирус пропустит	b2b
+antivirusi-bezopasnost/bezopasnost-zaschita-informatsii	operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	H	СЗИ ставят на уже имеющуюся ОС
+antivirusi-bezopasnost/bezopasnost-zaschita-informatsii	antivirusi-bezopasnost/antivirusi-organizatsii	K	Если ещё нет сертифицированного антивируса: для аттестации системы он нужен вместе с СЗИ от НСД	b2b
+antivirusi-bezopasnost/kontrol-dostupa	security/ustroystva-kontrolya-dostupa	U	класс разнородный, совместимость не ясна
+antivirusi-bezopasnost/kontrol-dostupa	security/ip-videocams	U	класс разнородный, совместимость не ясна
+antivirusi-bezopasnost/kontrol-personala	antivirusi-bezopasnost/antivirusi-organizatsii	K	Если ещё нет корпоративного антивируса: контроль персонала видит действия сотрудников, но не останавливает вирусы	b2b
+antivirusi-bezopasnost/mezhsetevye-ekrany	antivirusi-bezopasnost/antivirusi-organizatsii	K	Если ещё нет антивируса на рабочих станциях: шлюз не проверит файлы с флешек и внутри сети	b2b
+antivirusi-bezopasnost/security-internet-i-set	networking/firewall	U	ПО не привязано к роутеру
+antivirusi-bezopasnost/udalenie-informatsii	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: нужные файлы стоит сохранить до очистки диска
+antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov	programmi-dlya-mobilnih-ustroystv/mobilnie-ustroystva-zaschita-informatsii	S	та же защита смартфона
+antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov	antivirusi-bezopasnost/antivirusi-organizatsii	K	Если ещё нет антивируса для рабочих станций: управление смартфонами не защищает компьютеры сотрудников	b2b
+beauty-and-health/elektrobritvy	beauty-and-health/trimmery	K	Если ещё нет триммера: он подравнивает бороду и виски, чего бритва не делает	b2c
+beauty-and-health/irrigatory	beauty-and-health/trimmery	U	уход за зубами, не за волосами
+beauty-and-health/mashinki-dlya-strizhki-volos	beauty-and-health/trimmery	K	Если ещё нет триммера: машинка стрижёт голову, а триммер — бороду и контуры	b2c
+beauty-and-health/trimmery	beauty-and-health/mashinki-dlya-strizhki-volos	K	Если ещё нет машинки для стрижки: триммер для бороды, а голову удобнее стричь машинкой	b2c
+buhgalteriya-sklad-kadry/finansi	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: финансовые данные восстановятся после сбоя компьютера	b2b
+buhgalteriya-sklad-kadry/skladskie-programmi	torgovoe-oborudovanie/terminaly-sbora-dannykh	N	Складские программы работают на терминалах сбора данных — кладовщик сканирует товар прямо у полки	b2b
+buhgalteriya-sklad-kadry/skladskie-programmi	torgovoe-oborudovanie/skanery-shtrikhkodov	N	На приёмке товар считывают сканером штрихкодов, а не вводят в программу вручную	b2b
+buhgalteriya-sklad-kadry/skladskie-programmi	torgovoe-oborudovanie/printery	N	Этикетки со штрихкодом для ячеек и товаров печатает принтер этикеток	b2b
+buhgalteriya-sklad-kadry/skladskie-programmi	buhgalteriya-sklad-kadry/torgovlya	U	другая задача, связь не ясна
+buhgalteriya-sklad-kadry/torgovlya	torgovoe-oborudovanie/skanery-shtrikhkodov	K	Если ещё нет сканера штрихкодов: с ним товар пробивают и принимают без ручного ввода	b2b
+buhgalteriya-sklad-kadry/torgovlya	buhgalteriya-sklad-kadry/skladskie-programmi	U	одиночный продукт, связь не ясна
+buhgalteriya-sklad-kadry/upravlenie-logistikoy	buhgalteriya-sklad-kadry/skladskie-programmi	K	Если склад ещё ведётся вручную: WMS передаёт в систему перевозок готовые к отгрузке заказы	b2b
+buhgalteriya-sklad-kadry/upravlenie-logistikoy	torgovoe-oborudovanie/terminaly-sbora-dannykh	U	TMS работает без ТСД
+bytovaya-tekhnika/dukhovye-shkafy	bytovaya-tekhnika/varochnye-paneli	K	Если ещё нет варочной панели: встраиваемую кухню собирают из духового шкафа и панели одной серии	b2c
+bytovaya-tekhnika/kofemashiny	bytovaya-tekhnika/kofemolki	U	в автоматах кофемолка встроена
+bytovaya-tekhnika/kofemolki	bytovaya-tekhnika/kofemashiny	H	где варить кофе, уже есть
+bytovaya-tekhnika/kukhonnye-kombayny	bytovaya-tekhnika/blendery	S	комбайн уже измельчает и смешивает
+bytovaya-tekhnika/mikrovolnovye-pechi	bytovaya-tekhnika/dukhovye-shkafy	U	разные покупки, не дополняет
+bytovaya-tekhnika/posudomoechnye-mashiny	bytovaya-tekhnika/aksessuary-dlya-bytovoy-tekhniki	U	аксессуары для сушильных машин
+bytovaya-tekhnika/varochnye-paneli	bytovaya-tekhnika/dukhovye-shkafy	K	Если ещё нет духового шкафа: встраиваемую кухню собирают из панели и шкафа одной серии	b2c
+computers/all-in-ones	peripherals/keyboards	K	Если в комплекте нет клавиатуры и мыши: без них моноблоком не управлять
+computers/all-in-ones	antivirusi-bezopasnost/antivirusi	N	Антивирус защищает новый компьютер от вирусов и мошеннических сайтов с первого дня	b2c
+computers/all-in-ones	antivirusi-bezopasnost/antivirusi-organizatsii	N	Корпоративный антивирус защищает новое рабочее место и управляется из одной консоли с остальными	b2b
+computers/all-in-ones	ofisnie-programmi/ms-office	N	Для документов и таблиц на новом компьютере нужен офисный пакет	b2c
+computers/all-in-ones	ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	N	Для документов, почты и таблиц на новом рабочем месте нужен офисный пакет	b2b
+computers/desktop	peripherals/displays	N	Системный блок продаётся без экрана — монитор нужен, чтобы им пользоваться
+computers/desktop	peripherals/keyboards	N	К системному блоку клавиатуру и мышь подключают отдельно, в комплекте их часто нет
+computers/desktop	antivirusi-bezopasnost/antivirusi	N	Антивирус защищает новый компьютер от вирусов и мошеннических сайтов с первого дня	b2c
+computers/desktop	antivirusi-bezopasnost/antivirusi-organizatsii	N	Корпоративный антивирус защищает новое рабочее место и управляется из одной консоли с остальными	b2b
+computers/desktop	ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	N	Для документов, почты и таблиц на новом рабочем месте нужен офисный пакет	b2b
+computers/nettop	peripherals/keyboards	N	МиниПК идёт без клавиатуры и мыши — их подключают отдельно
+computers/nettop	peripherals/displays	N	МиниПК не имеет экрана — к нему нужен монитор
+computers/nettop	antivirusi-bezopasnost/antivirusi	N	Антивирус защищает новый компьютер от вирусов и мошеннических сайтов с первого дня	b2c
+computers/nettop	antivirusi-bezopasnost/antivirusi-organizatsii	N	Корпоративный антивирус защищает новое рабочее место и управляется из одной консоли с остальными	b2b
+computers/nettop	ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	N	Для документов, почты и таблиц на новом рабочем месте нужен офисный пакет	b2b
+computers/notebook	accessories_comp/bags_for_notes	N	Сумка защищает ноутбук от ударов и влаги в дороге
+computers/notebook	antivirusi-bezopasnost/antivirusi	N	Ноутбук подключают к чужим сетям Wi-Fi — антивирус защитит его от вирусов и фишинга	b2c
+computers/notebook	antivirusi-bezopasnost/antivirusi-organizatsii	N	Корпоративный антивирус защищает ноутбук и вне офиса и управляется из одной консоли	b2b
+computers/notebook	ofisnie-programmi/ms-office	N	Для документов и таблиц на новом ноутбуке нужен офисный пакет	b2c
+computers/notebook	ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	N	Для документов, почты и таблиц на рабочем ноутбуке нужен офисный пакет	b2b
+delovie-programmi/biznes-plan	ofisnie-programmi/ms-office	H	работает поверх Microsoft 365 и Excel
+delovie-programmi/iskusstvennyi-intellekt	ii/obucenie-i-konsalting-v-sfere-ii	K	Если сотрудники ещё не обучены: курс научит ставить задачи ИИ-платформе и проверять её ответы	b2b
+delovie-programmi/pravovoe-i-kadrovoe-obsluzivanie	delovie-programmi/rabota-s-dokumentami	U	услуга не требует PDF-редактора
+delovie-programmi/rabota-s-dokumentami	office/scanner	K	Если ещё нет сканера: он переводит бумаги в PDF, которые программа распознаёт и редактирует
+delovie-programmi/rabota-s-dokumentami	antivirusi-bezopasnost/bezopasnost-zaschita-informatsii	U	разные задачи
+delovie-programmi/uchet-kompyuterov	antivirusi-bezopasnost/antivirusi-organizatsii	U	учёт ПК не связан с антивирусом
+delovie-programmi/upravlenie-biznesom	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: данные бизнес-системы восстановятся после сбоя сервера	b2b
+delovie-programmi/vedenie-del	delovie-programmi/upravlenie-biznesom	U	разные задачи, связь не прямая
+diski-i-fayli/rezervnoe-kopirovanie	san-nas/nas	N	Резервные копии надёжнее держать на отдельном сетевом хранилище, а не на том же сервере	b2b
+diski-i-fayli/rezervnoe-kopirovanie	portable-memory/externalhdd	N	Копии хранят на отдельном внешнем диске — сбой основного диска их не заденет
+diski-i-fayli/rezervnoe-kopirovanie	diski-i-fayli/vosstanovlenie-dannih	S	файлы и так вернёт бэкап
+diski-i-fayli/vosstanovlenie-dannih	diski-i-fayli/rezervnoe-kopirovanie	N	Восстановление спасает не всегда — с резервной копией файлы вернутся гарантированно
+distantsionnoe-obuchenie/infosecurity	antivirusi-bezopasnost/bezopasnost-zaschita-informatsii	U	курс не требует СЗИ
+dom-i-dacha/gazonokosilki	dom-i-dacha/trimmery-sadovye	K	Если ещё нет садового триммера: он докосит траву у забора и деревьев, куда косилка не пройдёт	b2c
+dom-i-dacha/generatory	elektroinstrument/dreli	U	генератор не связан с дрелью
+dom-i-dacha/minimoyki	dom-i-dacha/opryskivateli	U	разные задачи
+dom-i-dacha/opryskivateli	dom-i-dacha/gazonokosilki	U	разные задачи
+dom-i-dacha/trimmery-sadovye	dom-i-dacha/gazonokosilki	K	Если ещё нет газонокосилки: большой ровный газон ею скосить быстрее, чем триммером	b2c
+dom-i-dacha/vozdukhoduvki	dom-i-dacha/trimmery-sadovye	U	разные задачи
+elektroinstrument/dreli	elektroinstrument/aksessuary-i-nabory	N	Набор бит и свёрл нужен, чтобы сверлить и закручивать в разных материалах
+elektroinstrument/lobziki	elektroinstrument/aksessuary-i-nabory	U	наборы под дрель, не под лобзик
+elektroinstrument/perforatory	elektroinstrument/aksessuary-i-nabory	U	наборы под шуруповёрт, не под бур
+elektroinstrument/shlifovalnye-mashinki	elektroinstrument/aksessuary-i-nabory	U	в наборах нет кругов
+elektroinstrument/shurupoverty	elektroinstrument/aksessuary-i-nabory	N	Набор бит и головок нужен, чтобы закручивать крепёж разных размеров
+gadgets/chekhly-dlya-smartfonov	gadgets/aksessuary	S	в классе те же чехлы
+gadgets/game-manipulators	gadgets/headphones	K	Если ещё нет игровой гарнитуры: в ней слышно игру и можно говорить с командой	b2c
+gadgets/smartphones	gadgets/zaryadnye-ustroystva	N	Смартфоны часто продают без блока питания — зарядку берут отдельно
+gadgets/smartphones	gadgets/chekhly-dlya-smartfonov	N	Чехол и защитное стекло берегут корпус и экран смартфона при падении
+gadgets/smartphones	gadgets/aksessuary	K	Если ещё нет держателя или кабеля: аксессуары подобраны под модель смартфона
+gadgets/smartphones	portable/powerbank	K	Если ещё нет внешнего аккумулятора: он подзарядит смартфон в дороге без розетки

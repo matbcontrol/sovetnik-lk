@@ -1,0 +1,97 @@
+gadgets/webcam	Вебкамеры	раньше предлагалось: —
+gadgets/zaryadnye-ustroystva	Зарядные устройства	раньше предлагалось: portable/powerbank
+grafika-i-dizayn/3d-grafika	Программное обеспечение для 3D графики	раньше предлагалось: computers/desktop
+grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori	Графические редакторы	раньше предлагалось: peripherals/displays
+grafika-i-dizayn/grafika-i-dizayn-drugie-utiliti	Другие графические утилиты	раньше предлагалось: —
+grafika-i-dizayn/projection-design	Программное обеспечение для проекционного дизайна	раньше предлагалось: photo-video/projector
+grafika-i-dizayn/shabloni-i-kliparti	Шаблоны и клипарты	раньше предлагалось: multimedia/videoredaktori
+grafika-i-dizayn/shemi-i-diagrammi	Схемы и диаграммы	раньше предлагалось: programmirovanie/razrabotka-po
+grafika-i-dizayn/tsifrovoe-foto	Программы для обработки цифрового фото	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie, portable-memory/externalhdd
+ii/gotovye-ii-modeli-i-algoritmy	Готовые ИИ-модели и алгоритмы	раньше предлагалось: —
+ii/obucenie-i-konsalting-v-sfere-ii	Обучение и консалтинг в сфере ИИ	раньше предлагалось: elektronnye-knigi/biznes-literatura
+ii/otraslevye-reseniia	Отраслевые решения	раньше предлагалось: antivirusi-bezopasnost/antivirusi-organizatsii
+internet-i-set/analiticheskie-platformy	Аналитические платформы	раньше предлагалось: —
+internet-i-set/brauzeri-i-utiliti	Браузеры и утилиты	раньше предлагалось: antivirusi-bezopasnost/antivirusi
+internet-i-set/cms	Программное обеспечение для создания сайтов	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie, antivirusi-bezopasnost/mezhsetevye-ekrany
+internet-i-set/download-menedjeri	Download-менеджеры	раньше предлагалось: san-nas/nas
+internet-i-set/internet-i-set-drugie-utiliti	Другие приложения	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie
+internet-i-set/java	Программное обеспечение Java	раньше предлагалось: —
+internet-i-set/obschenie	Программное обеспечение для онлайн общения	раньше предлагалось: gadgets/headphones, gadgets/webcam, ip-telephonia/spikerfony
+internet-i-set/pochtovie-programmi	Почтовые клиенты	раньше предлагалось: antivirusi-bezopasnost/antivirusi-organizatsii
+internet-i-set/pochtovie-utiliti	Почтовые утилиты	раньше предлагалось: internet-i-set/pochtovie-programmi
+internet-i-set/programmi-dlya-seti	Сетевые утилиты	раньше предлагалось: antivirusi-bezopasnost/security-internet-i-set
+internet-i-set/resheniya-dopolnennoy-i-virtualnoy-realnosti-arvr	Решения дополненной и виртуальной реальности AR/VR	раньше предлагалось: grafika-i-dizayn/3d-grafika
+internet-i-set/roditelskiy-kontrol	Программное обеспечение для родительского контроля	раньше предлагалось: antivirusi-bezopasnost/antivirusi
+internet-i-set/servernoe-po	Серверное ПО	раньше предлагалось: antivirusi-bezopasnost/antivirusi-organizatsii, diski-i-fayli/rezervnoe-kopirovanie
+internet-i-set/svyaz	Связь	раньше предлагалось: ip-telephonia/voip-gates
+internet-i-set/telefoniya	ПО для IP-телефонии	раньше предлагалось: ip-telephonia/voip-telephone, ip-telephonia/voip-gates, gadgets/headphones
+internet-i-set/videonabludenie	ПО для видеонаблюдения	раньше предлагалось: security/ip-videocams, security/videoregistratory, san-nas/nas
+ip-telephonia/accessories_for_phones	Аксессуары для телефонов	раньше предлагалось: ip-telephonia/voip-telephone
+ip-telephonia/consoles	Консоли для телефонов	раньше предлагалось: ip-telephonia/voip-telephone
+ip-telephonia/dect	Телефоны DECT	раньше предлагалось: peripherals/voltage_regulator
+ip-telephonia/konferents-svyaz	Конференц-связь	раньше предлагалось: ip-telephonia/spikerfony
+ip-telephonia/provodnye-telefony	Проводные телефоны	раньше предлагалось: networking/net-cables
+ip-telephonia/spikerfony	Спикерфоны	раньше предлагалось: ip-telephonia/konferents-svyaz
+ip-telephonia/system-phones	Системные телефоны и факсы	раньше предлагалось: peripherals/voltage_regulator
+ip-telephonia/voip-gates	VoIP-шлюзы	раньше предлагалось: networking/switch
+ip-telephonia/voip-telephone	IP-телефоны	раньше предлагалось: ip-telephonia/accessories_for_phones
+karti-navigatsiya-puteshestviya/karti	Карты и сервисы	раньше предлагалось: portable-memory/flash-memory
+mebel-tovary-dlya-ofisa/kresla-i-stulya	Кресла и стулья	раньше предлагалось: mebel-tovary-dlya-ofisa/stellazhi
+mebel-tovary-dlya-ofisa/stellazhi	Стеллажи	раньше предлагалось: —
+multimedia/audioredaktori	Аудиоредакторы	раньше предлагалось: gadgets/headphones
+multimedia/konverteri-i-kodirovschiki	Конвертеры и кодировщики	раньше предлагалось: —
+multimedia/pleyeri	Плееры	раньше предлагалось: —
+multimedia/servisy-razvlecheniy	Сервисы развлечений	раньше предлагалось: —
+multimedia/utiliti	Утилиты	раньше предлагалось: —
+multimedia/videoredaktori	Видеоредакторы	раньше предлагалось: diski-i-fayli/rezervnoe-kopirovanie, portable-memory/externalhdd, gadgets/headphones
+multimedia/zapis-cd-i-dvd	Программы для записи CD и DVD	раньше предлагалось: —
+networking/3g-routers	3G/LTE-роутеры	раньше предлагалось: —
+networking/access-point	Точки доступа	раньше предлагалось: networking/net-cables
+networking/adaptery-bluetooth	Адаптеры Bluetooth	раньше предлагалось: gadgets/headphones
+networking/adsl	ADSL-оборудование	раньше предлагалось: —
+networking/firewall	Проводные роутеры	раньше предлагалось: peripherals/ups
+networking/net-cables	Кабели	раньше предлагалось: networking/switch
+networking/net-equipment	Сопутствующее оборудование	раньше предлагалось: peripherals/ups
+networking/network-card	Сетевые карты	раньше предлагалось: networking/net-cables
+networking/powerline	Адаптеры PowerLine	раньше предлагалось: networking/net-cables
+networking/routers	Wi-Fi роутеры	раньше предлагалось: networking/switch
+networking/switch	Коммутаторы	раньше предлагалось: networking/net-cables, peripherals/ups
+networking/transceivers	Медиаконвертеры, трансиверы	раньше предлагалось: networking/net-cables
+networking/wifi-adapters	Адаптеры Wi-Fi	раньше предлагалось: networking/routers
+networking/wifi-antenna	Антенны	раньше предлагалось: networking/net-equipment
+oblachnye-resheniya-iaas/upravlenie-biznesom-iaas	Управление бизнесом (IaaS)	раньше предлагалось: antivirusi-bezopasnost/antivirusi-organizatsii
+obrazovanie-i-nauka/biznes-obrazovanie	Программы для бизнес-образования	раньше предлагалось: —
+obrazovanie-i-nauka/meditsina	Программы для медицины	раньше предлагалось: —
+obrazovanie-i-nauka/nauchnie-rascheti	Программы для научных расчетов	раньше предлагалось: computers/desktop, parts/ram
+obrazovanie-i-nauka/obrazovanie-i-nauka-testi	Тесты	раньше предлагалось: —
+obrazovanie-i-nauka/obuchayuschie-programmi	Обучающие программы	раньше предлагалось: computers/notebook
+obrazovanie-i-nauka/prochie-programmi	Прочие программы	раньше предлагалось: distantsionnoe-obuchenie/edu-internet
+obrazovanie-i-nauka/programmi-dlya-vuzov	Программы для ВУЗов	раньше предлагалось: peripherals/displays
+office/accessories_for_office	Аксессуары к офисной технике	раньше предлагалось: —
+office/brochurateur	Брошюраторы	раньше предлагалось: office/expendables
+office/cutter	Резаки	раньше предлагалось: office/brochurateur
+office/expendables	Расходные материалы	раньше предлагалось: office/mfu
+office/graphic_pad	Графические планшеты	раньше предлагалось: —
+office/laminator	Ламинаторы	раньше предлагалось: office/expendables
+office/mfu	Принтеры и МФУ	раньше предлагалось: office/expendables
+office/plotters	Плоттеры	раньше предлагалось: office/expendables
+office/scanner	Сканеры	раньше предлагалось: delovie-programmi/rabota-s-dokumentami
+office/schreder	Шредеры	раньше предлагалось: —
+ofisnie-programmi/drugoe-ofisnoe-po	Другое офисное ПО	раньше предлагалось: delovie-programmi/rabota-s-dokumentami, antivirusi-bezopasnost/antivirusi
+ofisnie-programmi/ms-office	Офисные пакеты программ Microsoft Office	раньше предлагалось: delovie-programmi/rabota-s-dokumentami, antivirusi-bezopasnost/antivirusi, diski-i-fayli/rezervnoe-kopirovanie
+ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	Российское офисное ПО (Импортозамещение)	раньше предлагалось: operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie, antivirusi-bezopasnost/antivirusi-organizatsii, delovie-programmi/rabota-s-dokumentami
+operating-systems/os-linux-unix	Операционные системы Linux & Unix	раньше предлагалось: antivirusi-bezopasnost/antivirusi-organizatsii, diski-i-fayli/rezervnoe-kopirovanie
+operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	Российские операционные системы (Импортозамещение)	раньше предлагалось: ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie, antivirusi-bezopasnost/antivirusi-organizatsii, antivirusi-bezopasnost/bezopasnost-zaschita-informatsii
+operating-systems/windows-11-licenzii-home-i-pro	Windows 11: лицензии Home и Pro	раньше предлагалось: ofisnie-programmi/ms-office, antivirusi-bezopasnost/antivirusi
+parts/cables	Кабели, переходники, разъемы	раньше предлагалось: —
+parts/chassis	Корпуса	раньше предлагалось: parts/psu
+parts/controllers	Контроллеры	раньше предлагалось: parts/hdd
+parts/coolers	Системы охлаждения	раньше предлагалось: parts/cpu
+parts/cpu	Процессоры	раньше предлагалось: parts/coolers
+parts/hdd	Жесткие диски	раньше предлагалось: parts/cables
+parts/motherboard	Материнские платы	раньше предлагалось: parts/cpu
+parts/odd	Оптические приводы	раньше предлагалось: parts/cables
+parts/psu	Блоки питания	раньше предлагалось: parts/cables
+parts/ram	Оперативная память	раньше предлагалось: parts/motherboard, parts/cpu
+parts/ssd	Внутренние твердотельные накопители (SSD)	раньше предлагалось: parts/cables
+parts/videocards	Видеокарты	раньше предлагалось: parts/psu

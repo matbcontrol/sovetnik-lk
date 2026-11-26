@@ -7,7 +7,9 @@
 Три вида советов (слоты):
   renew   — что истекает: продление того, что уже куплено
   next    — следующая ступень: старшая редакция или новая версия
-  missing — чего не хватает: дополняющие и требуемые продукты
+  missing — чего не хватает: дополняющие и требуемые продукты; сюда же пары с вердиктом «нужно»
+  kit     — типовой набор: пары с вердиктом «комплект» (прямой связи нет, но товар из того же набора);
+            в блоке таких советов не больше одного, и идут они после остальных
   replace — замена: когда купленного зарубежного продукта больше нет в продаже — его российский аналог
             из таблицы замещения, а если прямого аналога нет — российский продукт того же класса из реестра.
             Если при этом срок лицензии подошёл, замена идёт первой: продлить такую лицензию нельзя.
@@ -34,7 +36,7 @@ SLOT = {
 }
 SLOT_TITLE = {
     "renew": "Что истекает", "next": "Следующая ступень",
-    "missing": "Чего не хватает", "replace": "Замена", "popular": "Часто берут",
+    "missing": "К вашему продукту", "kit": "Типовой набор", "replace": "Замена", "popular": "Часто берут",
 }
 # Вес вида связи. Начальные значения; после получения продаж подбираются по истории (calibrate).
 WEIGHT = {
@@ -64,14 +66,20 @@ LABEL = {
     "реестр и класс": "тот же класс из реестра, ждёт проверки менеджером",
     "продажи": "подтверждено покупками",
     "модель": "предложено моделью, ждёт проверки менеджером",
-    "модель и продажи": "связь классов подтверждена покупками",
+    "разметка: нужно": "пара проверена заранее: нужно",
+    "разметка: комплект": "пара проверена заранее: комплект",
+    "разметка по API": "размечено моделью по API, ждёт проверки менеджером",
     "менеджер": "принято менеджером",
     "витрина": "порядок витрины магазина",
 }
-# Связь по классу — вывод, а не факт каталога. Клиенту она показывается, только если её подтвердили
-# продажи (не меньше SALES_OK клиентов) или принял менеджер; остальное ждёт в очереди на проверку.
+# Связь между классами и между товарами разных линеек — вывод, а не факт каталога. Клиенту она показывается,
+# если пару заранее проверили по правилам (recsys.llm.pair_verdicts: «нужно» или «комплект») или её принял
+# менеджер. Вердикт модели, которая сверку с первой разметкой не прошла, и замена по классу ждут менеджера.
+# Проверку «связь подтверждена покупками» мы убрали: она подтверждала «к антивирусу — Windows», потому что
+# самые продаваемые товары встречаются рядом с чем угодно.
 PENDING = "ждёт проверки менеджером"
-SALES_OK = 3
+KIT_MAX = 1                  # сколько советов «типовой набор» может быть в блоке
+VERDICT_SOURCE = {"need": "разметка: нужно", "kit": "разметка: комплект"}
 RENEW_WINDOW = (-60, 120)  # дней до конца срока: от «просрочено два месяца» до «осталось четыре»
 
 
@@ -139,13 +147,29 @@ class Graph:
 
     def __init__(self, nodes: dict[str, dict], edges: list[dict],
                  class_links: list[dict] | None = None, class_rank: dict[str, list[str]] | None = None,
-                 popular: dict[str, list[dict]] | None = None, class_names: dict[str, str] | None = None):
+                 popular: dict[str, list[dict]] | None = None, class_names: dict[str, str] | None = None,
+                 veto: list | None = None, class_block: list | None = None,
+                 class_picks: dict[str, list[str]] | None = None, class_veto: list | None = None):
         self.nodes = nodes
+        # пары классов с вердиктом «уже есть» или «то же самое»: такое не идёт и в строку «часто берут»
+        self.class_veto: set[tuple[str, str]] = {(a, b) for a, b in (class_veto or [])}
+        # «класс А|класс Б» -> товары класса Б, прошедшие проверку пары с ходовым товаром класса А
+        self.class_picks: dict[str, set[str]] = {k: set(v) for k, v in (class_picks or {}).items()}
+        # пары товаров с вердиктом «уже есть», «то же самое», «не связано»: такой товар не советуем и по связи классов
+        self.veto: set[tuple[str, str]] = {(x[0], x[1]) for x in (veto or [])}
+        self.veto_hard: set[tuple[str, str]] = {(x[0], x[1]) for x in (veto or [])
+                                                if len(x) < 3 or x[2] in ("has", "same")}
+        # «товар — класс»: первые товары класса этому товару не подошли, связь классов для него не действует
+        self.class_block: set[tuple[str, str]] = {(a, c) for a, c in (class_block or [])}
         self.out: dict[str, list[dict]] = defaultdict(list)
         self.line: dict[str, set[str]] = defaultdict(set)
         self.analogs: dict[str, set[str]] = defaultdict(set)
+        # пары товаров, по которым вердикт уже вынесен: связь классов такой товар не подбирает, за него говорит пара
+        self.judged: set[tuple[str, str]] = set(self.veto)
         for e in edges:
             e["confidence"] = float(e["confidence"])
+            if str(e.get("source", "")).startswith("разметка"):
+                self.judged.add((e["src"], e["dst"]))
             if e["type"] == "same_line":
                 self.line[e["src"]].add(e["dst"])
                 self.line[e["dst"]].add(e["src"])
@@ -158,7 +182,6 @@ class Graph:
         self.class_links: dict[str, list[dict]] = defaultdict(list)
         for link in class_links or []:
             link["confidence"] = float(link["confidence"])
-            link["sales"] = int(float(link.get("sales") or 0))
             self.class_links[link["src_class"]].append(link)
         # семейства класса в порядке витрины или популярности
         self.class_rank = class_rank or {}
@@ -206,12 +229,29 @@ class Graph:
             p = folder / name
             return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
+        from recsys.llm.pair_verdicts import (CLASS_FILE, FAMILY_FILE, as_class_links, as_family_edges, class_blocks,
+                                              class_picks, read)
+
         nodes = {r["family"]: r for r in rows("graph_nodes.csv")}
-        links, support = rows("class_links.csv"), obj("class_links_support.json")
-        for link in links:                               # ступень поддержки продажами: 0, 3, 10 или 50 клиентов
-            link["sales"] = support.get(f"{link['src_class']}|{link['dst_class']}", 0)
-        return cls(nodes, rows("graph_edges.csv"), links,
-                   obj("class_rank.json"), obj("popular.json") or None, obj("class_names.json"))
+        # связи классов — из таблицы вердиктов; прежняя разметка облегчённой моделью (class_links.csv) остаётся
+        # только как запасной источник там, где таблицы вердиктов нет
+        links = as_class_links(read(CLASS_FILE)) if CLASS_FILE.exists() else rows("class_links.csv")
+        families = {p: v for p, v in read(FAMILY_FILE).items() if p[0] in nodes and p[1] in nodes}
+        base = rows("graph_edges.csv")
+        known = {(e["src"], e["dst"]) for e in base if e["type"] != "same_line"}
+        # проверенная пара добавляется связью, только если у каталога нет своей связи между этими товарами
+        line = defaultdict(set)
+        for e in base:
+            if e["type"] == "same_line":
+                line[e["src"]].add(e["dst"])
+                line[e["dst"]].add(e["src"])
+        edges = base + [e for e in as_family_edges(families, lambda a, b: b in line[a])
+                        if (e["src"], e["dst"]) not in known]
+        veto = sorted((a, b, v.verdict) for (a, b), v in families.items() if not v.shown)
+        classes = read(CLASS_FILE) if CLASS_FILE.exists() else {}
+        class_veto = sorted(p for p, v in classes.items() if v.verdict in ("has", "same"))
+        return cls(nodes, edges, links, obj("class_rank.json"), obj("popular.json") or None, obj("class_names.json"),
+                   veto, class_blocks(families, nodes), class_picks(families, nodes), class_veto)
 
     def klass(self, family: str) -> str:
         n = self.nodes.get(family) or {}
@@ -352,6 +392,17 @@ class Recommender:
             return "нет в продаже"
         if edge_type != "renewal" and dst in owned:
             return "уже куплено"
+        if edge_type == "popular":
+            # популярное — не личный совет, но то, что у клиента заведомо есть или решает ту же задачу, не показываем
+            kd = self.g.klass(dst)
+            for o in owned:
+                ko = self.g.klass(o)
+                if (o, dst) in self.g.veto_hard or (ko, kd) in self.g.class_veto or ko == kd:
+                    return "у клиента это уже есть или решает ту же задачу"
+        elif edge_type not in ("renewal", "upgrade", "new_version", "analog_ru", "analog_class"):
+            for o in owned:
+                if (o, dst) in self.g.veto:
+                    return "пара проверена: уже есть, то же самое или не связано"
 
         def b2b_only(node: dict) -> bool:
             return str(node.get("b2b_only", "0")) == "1"
@@ -391,6 +442,8 @@ class Recommender:
         src = _q(self.g.nodes.get(edge["src"], {}).get("name", edge["src"]))
         dst = _q(self.g.nodes.get(edge["dst"], {}).get("name", edge["dst"]))
         t, ev = edge["type"], edge.get("evidence", "")
+        if edge.get("source") in VERDICT_SOURCE.values() and not edge.get("class"):
+            return f"{ev.rstrip('. ')}."                 # пара товаров проверена заранее: причина уже написана для клиента
         if edge.get("class"):
             cname = self.g.class_names.get(edge["class"], edge["class"])
             return (f"{ev.rstrip('. ')}. Подойдёт {dst} — {edge['rank']}-е место на витрине магазина "
@@ -494,7 +547,12 @@ class Recommender:
                 if not self.g.on_sale(e["dst"]):
                     s *= 0.8                            # цена только по запросу: совет чуть слабее
                 direct = direct or t == "analog_ru"
-                push(e["dst"], SLOT[t], s, e, p)
+                if t in ("upgrade", "new_version"):
+                    e = {**e, "group": f"next:{fam}"}           # на одну покупку — одна «следующая ступень» в блоке
+                if t == "complements" and e.get("source") in VERDICT_SOURCE.values():
+                    # проверенная пара товаров: из одного класса в блоке один совет, как и по связи классов
+                    e = {**e, "group": (self.g.nodes.get(e["dst"]) or {}).get("class") or ""}
+                push(e["dst"], "kit" if e.get("source") == VERDICT_SOURCE["kit"] else SLOT[t], s, e, p)
 
             # замена по классу: купленный зарубежный продукт сняли с продажи, а прямого аналога в таблице
             # замещения нет — советуем российские продукты того же класса из реестра
@@ -546,11 +604,23 @@ class Recommender:
                 key = f"cl|{link['src_class']}|{link['dst_class']}"
                 if key in self.rejected:
                     continue                            # менеджер отклонил связь
-                by_sales = link.get("sales", 0) >= SALES_OK
-                shown = self.unverified or by_sales or key in self.approved
-                source = "менеджер" if key in self.approved else "модель и продажи" if by_sales \
+                if (fam, link["dst_class"]) in self.g.class_block:
+                    continue                            # первые товары этого класса владельцу fam не подошли
+                verdict = link.get("verdict", "")
+                labelled = link.get("source") == "разметка" and verdict in VERDICT_SOURCE
+                shown = self.unverified or labelled or key in self.approved
+                source = "менеджер" if key in self.approved else VERDICT_SOURCE[verdict] if labelled \
                     else link.get("source", "модель")
+                allowed = self.g.class_picks.get(f"{link['src_class']}|{link['dst_class']}")
+                hard = node.get("kind") == "hardware"
                 for rank, dst in enumerate(self.g.class_rank.get(link["dst_class"], ())[:10]):
+                    if (fam, dst) in self.g.judged:
+                        continue                        # по этой паре товаров есть свой вердикт
+                    if allowed is not None and dst not in allowed:
+                        continue                        # товары этого класса проверяли: берём только подошедшие
+                    if hard and (self.g.nodes.get(dst) or {}).get("kind") == "hardware" \
+                            and dst.split("/")[0] != fam.split("/")[0]:
+                        continue                        # расходники и опции к оборудованию — только того же вендора
                     reason = self._banned(client, owned, platforms, dst, t, fam)
                     if reason:
                         continue
@@ -563,7 +633,8 @@ class Recommender:
                         "class": link["dst_class"], "rank": rank + 1, "key": key,
                     }
                     # чем ниже товар на витрине своего класса, тем слабее совет
-                    push(dst, "missing", self.w[t] * link["confidence"] * recency / (1 + 0.35 * rank), edge, p)
+                    push(dst, "kit" if verdict == "kit" else "missing",
+                         self.w[t] * link["confidence"] * recency / (1 + 0.35 * rank), edge, p)
 
         recs = []
         for (dst, slot), c in cands.items():
@@ -586,10 +657,23 @@ class Recommender:
         pool = sorted(recs, key=lambda r: -r.score)
         chosen: list[Rec] = []
         used = Counter()
+        used_src = Counter()                           # сколько советов уже идёт от каждой покупки клиента
+
+        def src(r: Rec) -> str:
+            return r.paths[0].get("src", "") if r.paths else ""
+
         while pool and len(chosen) < k:
-            best = max(pool, key=lambda r: r.score * (0.6 ** used[r.slot] if self.diversify else 1.0))
+            # «типовой набор» идёт после всех остальных советов и не больше KIT_MAX раз
+            rest = [r for r in pool if r.slot != "kit"] or [r for r in pool if used["kit"] < KIT_MAX]
+            if not rest:
+                break
+            # разнообразие: каждый следующий совет того же вида и от той же покупки весит меньше
+            best = max(rest, key=lambda r: r.score * ((0.6 ** used[r.slot]) * (0.75 ** used_src[src(r)])
+                                                      if self.diversify else 1.0))
             chosen.append(best)
             used[best.slot] += 1
+            if src(best):
+                used_src[src(best)] += 1
             block = {best.family} | self.g.line.get(best.family, set())
             if best.slot == "renew":
                 # продление и переход выше в той же линейке — один совет, а не два места в блоке

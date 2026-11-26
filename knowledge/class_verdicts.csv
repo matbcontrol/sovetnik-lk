@@ -1,0 +1,399 @@
+a,b,verdict,reason,audience,source
+3d-oborudovanie/3d-scanners,computers/all-in-ones,has,сканер уже работает с компьютером,,ассистент
+3d-oborudovanie/3d-scanners,sapr/mashinostroenie,need,Облако точек со сканера переводят в 3D-модель детали в САПР — так делают обратный инжиниринг,,ассистент
+accessories_comp/bags_for_notes,accessories_comp/notebook-stand,unrelated,"сумка для дороги, подставка для стола",,ассистент
+accessories_comp/docking,accessories_comp/istochniki-pitaniya-dlya-noutbukov,has,зарядка ноутбука уже есть,,ассистент
+accessories_comp/docking,parts/cables,kit,Если ещё нет кабеля HDMI или DisplayPort: без него монитор к док-станции не подключить,,ассистент
+accessories_comp/docking,peripherals/displays,need,К док-станции подключают внешний монитор — ноутбук превращается в рабочее место с большим экраном,,ассистент
+accessories_comp/docking,peripherals/keyboards,kit,Если ещё нет отдельных клавиатуры и мыши: через док-станцию они подключаются к ноутбуку одним кабелем,,ассистент
+accessories_comp/istochniki-pitaniya-dlya-noutbukov,accessories_comp/bags_for_notes,unrelated,блок питания не требует сумки,,ассистент
+accessories_comp/notebook-stand,peripherals/keyboards,need,На подставке ноутбук стоит высоко — печатать удобнее на отдельной клавиатуре с мышью,,ассистент
+accessories_comp/usb-hub,accessories_comp/docking,same,та же задача: больше портов,,ассистент
+antivirusi-bezopasnost/antivirusi,diski-i-fayli/rezervnoe-kopirovanie,need,Антивирус не вернёт файлы после шифровальщика — резервная копия вернёт,,ассистент
+antivirusi-bezopasnost/antivirusi,internet-i-set/roditelskiy-kontrol,kit,"Если ещё нет родительского контроля: он покажет, что ребёнок делает за компьютером",b2c,ассистент
+antivirusi-bezopasnost/antivirusi,operating-systems/windows-11-licenzii-home-i-pro,has,без ОС антивирус не поставить,,ассистент
+antivirusi-bezopasnost/antivirusi-organizatsii,antivirusi-bezopasnost/mezhsetevye-ekrany,kit,"Если ещё нет защиты периметра: межсетевой экран фильтрует трафик до того, как он дойдёт до компьютеров",b2b,ассистент
+antivirusi-bezopasnost/antivirusi-organizatsii,diski-i-fayli/rezervnoe-kopirovanie,need,Антивирус не вернёт данные после шифровальщика — резервная копия вернёт,b2b,ассистент
+antivirusi-bezopasnost/antivirusi-organizatsii,distantsionnoe-obuchenie/infosecurity,kit,"Если сотрудники ещё не обучены: курс научит их не открывать фишинговые письма, которые антивирус пропустит",b2b,ассистент
+antivirusi-bezopasnost/bezopasnost-zaschita-informatsii,antivirusi-bezopasnost/antivirusi-organizatsii,kit,Если ещё нет сертифицированного антивируса: для аттестации системы он нужен вместе с СЗИ от НСД,b2b,ассистент
+antivirusi-bezopasnost/bezopasnost-zaschita-informatsii,operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie,has,СЗИ ставят на уже имеющуюся ОС,,ассистент
+antivirusi-bezopasnost/kontrol-dostupa,security/ip-videocams,unrelated,"класс разнородный, совместимость не ясна",,ассистент
+antivirusi-bezopasnost/kontrol-dostupa,security/ustroystva-kontrolya-dostupa,unrelated,"класс разнородный, совместимость не ясна",,ассистент
+antivirusi-bezopasnost/kontrol-personala,antivirusi-bezopasnost/antivirusi-organizatsii,kit,"Если ещё нет корпоративного антивируса: контроль персонала видит действия сотрудников, но не останавливает вирусы",b2b,ассистент
+antivirusi-bezopasnost/mezhsetevye-ekrany,antivirusi-bezopasnost/antivirusi-organizatsii,kit,Если ещё нет антивируса на рабочих станциях: шлюз не проверит файлы с флешек и внутри сети,b2b,ассистент
+antivirusi-bezopasnost/security-internet-i-set,networking/firewall,unrelated,ПО не привязано к роутеру,,ассистент
+antivirusi-bezopasnost/udalenie-informatsii,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: нужные файлы стоит сохранить до очистки диска,,ассистент
+antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov,antivirusi-bezopasnost/antivirusi-organizatsii,kit,Если ещё нет антивируса для рабочих станций: управление смартфонами не защищает компьютеры сотрудников,b2b,ассистент
+antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov,programmi-dlya-mobilnih-ustroystv/mobilnie-ustroystva-zaschita-informatsii,same,та же защита смартфона,,ассистент
+beauty-and-health/elektrobritvy,beauty-and-health/trimmery,kit,"Если ещё нет триммера: он подравнивает бороду и виски, чего бритва не делает",b2c,ассистент
+beauty-and-health/irrigatory,beauty-and-health/trimmery,unrelated,"уход за зубами, не за волосами",,ассистент
+beauty-and-health/mashinki-dlya-strizhki-volos,beauty-and-health/trimmery,kit,"Если ещё нет триммера: машинка стрижёт голову, а триммер — бороду и контуры",b2c,ассистент
+beauty-and-health/trimmery,beauty-and-health/mashinki-dlya-strizhki-volos,kit,"Если ещё нет машинки для стрижки: триммер для бороды, а голову удобнее стричь машинкой",b2c,ассистент
+buhgalteriya-sklad-kadry/finansi,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: финансовые данные восстановятся после сбоя компьютера,b2b,ассистент
+buhgalteriya-sklad-kadry/skladskie-programmi,buhgalteriya-sklad-kadry/torgovlya,unrelated,"другая задача, связь не ясна",,ассистент
+buhgalteriya-sklad-kadry/skladskie-programmi,torgovoe-oborudovanie/printery,need,Этикетки со штрихкодом для ячеек и товаров печатает принтер этикеток,b2b,ассистент
+buhgalteriya-sklad-kadry/skladskie-programmi,torgovoe-oborudovanie/skanery-shtrikhkodov,need,"На приёмке товар считывают сканером штрихкодов, а не вводят в программу вручную",b2b,ассистент
+buhgalteriya-sklad-kadry/skladskie-programmi,torgovoe-oborudovanie/terminaly-sbora-dannykh,need,Складские программы работают на терминалах сбора данных — кладовщик сканирует товар прямо у полки,b2b,ассистент
+buhgalteriya-sklad-kadry/torgovlya,buhgalteriya-sklad-kadry/skladskie-programmi,unrelated,"одиночный продукт, связь не ясна",,ассистент
+buhgalteriya-sklad-kadry/torgovlya,torgovoe-oborudovanie/skanery-shtrikhkodov,kit,Если ещё нет сканера штрихкодов: с ним товар пробивают и принимают без ручного ввода,b2b,ассистент
+buhgalteriya-sklad-kadry/upravlenie-logistikoy,buhgalteriya-sklad-kadry/skladskie-programmi,kit,Если склад ещё ведётся вручную: WMS передаёт в систему перевозок готовые к отгрузке заказы,b2b,ассистент
+buhgalteriya-sklad-kadry/upravlenie-logistikoy,torgovoe-oborudovanie/terminaly-sbora-dannykh,unrelated,TMS работает без ТСД,,ассистент
+bytovaya-tekhnika/dukhovye-shkafy,bytovaya-tekhnika/varochnye-paneli,kit,Если ещё нет варочной панели: встраиваемую кухню собирают из духового шкафа и панели одной серии,b2c,ассистент
+bytovaya-tekhnika/kofemashiny,bytovaya-tekhnika/kofemolki,unrelated,в автоматах кофемолка встроена,,ассистент
+bytovaya-tekhnika/kofemolki,bytovaya-tekhnika/kofemashiny,has,"где варить кофе, уже есть",,ассистент
+bytovaya-tekhnika/kukhonnye-kombayny,bytovaya-tekhnika/blendery,same,комбайн уже измельчает и смешивает,,ассистент
+bytovaya-tekhnika/mikrovolnovye-pechi,bytovaya-tekhnika/dukhovye-shkafy,unrelated,"разные покупки, не дополняет",,ассистент
+bytovaya-tekhnika/posudomoechnye-mashiny,bytovaya-tekhnika/aksessuary-dlya-bytovoy-tekhniki,unrelated,аксессуары для сушильных машин,,ассистент
+bytovaya-tekhnika/varochnye-paneli,bytovaya-tekhnika/dukhovye-shkafy,kit,Если ещё нет духового шкафа: встраиваемую кухню собирают из панели и шкафа одной серии,b2c,ассистент
+computers/all-in-ones,antivirusi-bezopasnost/antivirusi,need,Антивирус защищает новый компьютер от вирусов и мошеннических сайтов с первого дня,b2c,ассистент
+computers/all-in-ones,antivirusi-bezopasnost/antivirusi-organizatsii,need,Корпоративный антивирус защищает новое рабочее место и управляется из одной консоли с остальными,b2b,ассистент
+computers/all-in-ones,ofisnie-programmi/ms-office,need,Для документов и таблиц на новом компьютере нужен офисный пакет,b2c,ассистент
+computers/all-in-ones,ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie,need,"Для документов, почты и таблиц на новом рабочем месте нужен офисный пакет",b2b,ассистент
+computers/all-in-ones,peripherals/keyboards,kit,Если в комплекте нет клавиатуры и мыши: без них моноблоком не управлять,,ассистент
+computers/desktop,antivirusi-bezopasnost/antivirusi,need,Антивирус защищает новый компьютер от вирусов и мошеннических сайтов с первого дня,b2c,ассистент
+computers/desktop,antivirusi-bezopasnost/antivirusi-organizatsii,need,Корпоративный антивирус защищает новое рабочее место и управляется из одной консоли с остальными,b2b,ассистент
+computers/desktop,ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie,need,"Для документов, почты и таблиц на новом рабочем месте нужен офисный пакет",b2b,ассистент
+computers/desktop,peripherals/displays,need,"Системный блок продаётся без экрана — монитор нужен, чтобы им пользоваться",,ассистент
+computers/desktop,peripherals/keyboards,need,"К системному блоку клавиатуру и мышь подключают отдельно, в комплекте их часто нет",,ассистент
+computers/nettop,antivirusi-bezopasnost/antivirusi,need,Антивирус защищает новый компьютер от вирусов и мошеннических сайтов с первого дня,b2c,ассистент
+computers/nettop,antivirusi-bezopasnost/antivirusi-organizatsii,need,Корпоративный антивирус защищает новое рабочее место и управляется из одной консоли с остальными,b2b,ассистент
+computers/nettop,ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie,need,"Для документов, почты и таблиц на новом рабочем месте нужен офисный пакет",b2b,ассистент
+computers/nettop,peripherals/displays,need,МиниПК не имеет экрана — к нему нужен монитор,,ассистент
+computers/nettop,peripherals/keyboards,need,МиниПК идёт без клавиатуры и мыши — их подключают отдельно,,ассистент
+computers/notebook,accessories_comp/bags_for_notes,need,Сумка защищает ноутбук от ударов и влаги в дороге,,ассистент
+computers/notebook,antivirusi-bezopasnost/antivirusi,need,Ноутбук подключают к чужим сетям Wi-Fi — антивирус защитит его от вирусов и фишинга,b2c,ассистент
+computers/notebook,antivirusi-bezopasnost/antivirusi-organizatsii,need,Корпоративный антивирус защищает ноутбук и вне офиса и управляется из одной консоли,b2b,ассистент
+computers/notebook,ofisnie-programmi/ms-office,need,Для документов и таблиц на новом ноутбуке нужен офисный пакет,b2c,ассистент
+computers/notebook,ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie,need,"Для документов, почты и таблиц на рабочем ноутбуке нужен офисный пакет",b2b,ассистент
+delovie-programmi/biznes-plan,ofisnie-programmi/ms-office,has,работает поверх Microsoft 365 и Excel,,ассистент
+delovie-programmi/iskusstvennyi-intellekt,ii/obucenie-i-konsalting-v-sfere-ii,kit,Если сотрудники ещё не обучены: курс научит ставить задачи ИИ-платформе и проверять её ответы,b2b,ассистент
+delovie-programmi/pravovoe-i-kadrovoe-obsluzivanie,delovie-programmi/rabota-s-dokumentami,unrelated,услуга не требует PDF-редактора,,ассистент
+delovie-programmi/rabota-s-dokumentami,antivirusi-bezopasnost/bezopasnost-zaschita-informatsii,unrelated,разные задачи,,ассистент
+delovie-programmi/rabota-s-dokumentami,office/scanner,kit,"Если ещё нет сканера: он переводит бумаги в PDF, которые программа распознаёт и редактирует",,ассистент
+delovie-programmi/uchet-kompyuterov,antivirusi-bezopasnost/antivirusi-organizatsii,unrelated,учёт ПК не связан с антивирусом,,ассистент
+delovie-programmi/upravlenie-biznesom,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: данные бизнес-системы восстановятся после сбоя сервера,b2b,ассистент
+delovie-programmi/vedenie-del,delovie-programmi/upravlenie-biznesom,unrelated,"разные задачи, связь не прямая",,ассистент
+diski-i-fayli/rezervnoe-kopirovanie,diski-i-fayli/vosstanovlenie-dannih,same,файлы и так вернёт бэкап,,ассистент
+diski-i-fayli/rezervnoe-kopirovanie,portable-memory/externalhdd,need,Копии хранят на отдельном внешнем диске — сбой основного диска их не заденет,,ассистент
+diski-i-fayli/rezervnoe-kopirovanie,san-nas/nas,need,"Резервные копии надёжнее держать на отдельном сетевом хранилище, а не на том же сервере",b2b,ассистент
+diski-i-fayli/vosstanovlenie-dannih,diski-i-fayli/rezervnoe-kopirovanie,need,Восстановление спасает не всегда — с резервной копией файлы вернутся гарантированно,,ассистент
+distantsionnoe-obuchenie/infosecurity,antivirusi-bezopasnost/bezopasnost-zaschita-informatsii,unrelated,курс не требует СЗИ,,ассистент
+dom-i-dacha/gazonokosilki,dom-i-dacha/trimmery-sadovye,kit,"Если ещё нет садового триммера: он докосит траву у забора и деревьев, куда косилка не пройдёт",b2c,ассистент
+dom-i-dacha/generatory,elektroinstrument/dreli,unrelated,генератор не связан с дрелью,,ассистент
+dom-i-dacha/minimoyki,dom-i-dacha/opryskivateli,unrelated,разные задачи,,ассистент
+dom-i-dacha/opryskivateli,dom-i-dacha/gazonokosilki,unrelated,разные задачи,,ассистент
+dom-i-dacha/trimmery-sadovye,dom-i-dacha/gazonokosilki,kit,"Если ещё нет газонокосилки: большой ровный газон ею скосить быстрее, чем триммером",b2c,ассистент
+dom-i-dacha/vozdukhoduvki,dom-i-dacha/trimmery-sadovye,unrelated,разные задачи,,ассистент
+elektroinstrument/dreli,elektroinstrument/aksessuary-i-nabory,need,"Набор бит и свёрл нужен, чтобы сверлить и закручивать в разных материалах",,ассистент
+elektroinstrument/lobziki,elektroinstrument/aksessuary-i-nabory,unrelated,"наборы под дрель, не под лобзик",,ассистент
+elektroinstrument/perforatory,elektroinstrument/aksessuary-i-nabory,unrelated,"наборы под шуруповёрт, не под бур",,ассистент
+elektroinstrument/shlifovalnye-mashinki,elektroinstrument/aksessuary-i-nabory,unrelated,в наборах нет кругов,,ассистент
+elektroinstrument/shurupoverty,elektroinstrument/aksessuary-i-nabory,need,"Набор бит и головок нужен, чтобы закручивать крепёж разных размеров",,ассистент
+gadgets/chekhly-dlya-smartfonov,gadgets/aksessuary,same,в классе те же чехлы,,ассистент
+gadgets/game-manipulators,gadgets/headphones,kit,Если ещё нет игровой гарнитуры: в ней слышно игру и можно говорить с командой,b2c,ассистент
+gadgets/smartphones,gadgets/aksessuary,kit,Если ещё нет держателя или кабеля: аксессуары подобраны под модель смартфона,,ассистент
+gadgets/smartphones,gadgets/chekhly-dlya-smartfonov,need,Чехол и защитное стекло берегут корпус и экран смартфона при падении,,ассистент
+gadgets/smartphones,gadgets/zaryadnye-ustroystva,need,Смартфоны часто продают без блока питания — зарядку берут отдельно,,ассистент
+gadgets/smartphones,portable/powerbank,kit,Если ещё нет внешнего аккумулятора: он подзарядит смартфон в дороге без розетки,,ассистент
+gadgets/webcam,gadgets/headphones,need,"Гарнитура уберёт эхо и шум в созвонах, микрофон вебкамеры ловит всю комнату",,ассистент
+gadgets/webcam,internet-i-set/obschenie,kit,Если ещё нет сервиса видеосвязи: в Контур.Толке камера сразу работает на встречах с коллегами и клиентами,b2b,ассистент
+gadgets/zaryadnye-ustroystva,portable/powerbank,kit,"Если ещё нет внешнего аккумулятора: телефон зарядится в дороге, где нет розетки",,ассистент
+grafika-i-dizayn/3d-grafika,computers/desktop,has,3D-программе нужен компьютер,,ассистент
+grafika-i-dizayn/3d-grafika,parts/ram,kit,Если ещё нет 32 ГБ памяти: тяжёлые сцены с текстурами откроются без подвисаний,,ассистент
+grafika-i-dizayn/3d-grafika,parts/videocards,need,"Рендер и вьюпорт 3D-сцены считает видеокарта, на встроенной графике всё идёт медленно",,ассистент
+grafika-i-dizayn/3d-grafika,peripherals/displays,kit,"Если ещё нет второго монитора: на одном вьюпорт, на другом панели материалов и настроек",,ассистент
+grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori,office/graphic_pad,need,"Графический планшет даёт рисовать в редакторе пером с нажимом, мышью так не выйдет",,ассистент
+grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori,peripherals/displays,kit,Если ещё нет большого монитора: макет и панели инструментов поместятся на экране без прокрутки,,ассистент
+grafika-i-dizayn/grafika-i-dizayn-drugie-utiliti,torgovoe-oborudovanie/printery,kit,Если ещё нет принтера этикеток: макеты из Юнион Лейбл печатаются на нём рулонами,b2b,ассистент
+grafika-i-dizayn/projection-design,photo-video/projector,unrelated,"проектирование, а не проекторы",,ассистент
+grafika-i-dizayn/shabloni-i-kliparti,gadgets/headphones,kit,Если ещё нет отдельного микрофона: озвучка уроков в DemoCreator будет без шума ноутбука,,ассистент
+grafika-i-dizayn/shabloni-i-kliparti,gadgets/webcam,kit,Если ещё нет вебкамеры: DemoCreator запишет ведущего в кадре поверх экрана,,ассистент
+grafika-i-dizayn/shabloni-i-kliparti,multimedia/videoredaktori,same,тоже запись экрана и видео,,ассистент
+grafika-i-dizayn/shemi-i-diagrammi,programmirovanie/razrabotka-po,unrelated,разные инструменты разработчика,,ассистент
+grafika-i-dizayn/tsifrovoe-foto,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: фотоархив и правки сохранятся при поломке диска,,ассистент
+grafika-i-dizayn/tsifrovoe-foto,office/graphic_pad,kit,"Если ещё нет графического планшета: ретушь кистью пером точнее, чем мышью",,ассистент
+grafika-i-dizayn/tsifrovoe-foto,portable-memory/externalhdd,kit,Если ещё нет внешнего диска: фотоархив в RAW уйдёт с компьютера и освободит место,,ассистент
+ii/gotovye-ii-modeli-i-algoritmy,ii/obucenie-i-konsalting-v-sfere-ii,kit,Если ещё нет обучения команды: курс по ИИ научит сотрудников ставить задачи модели на своих данных,b2b,ассистент
+ii/obucenie-i-konsalting-v-sfere-ii,elektronnye-knigi/biznes-literatura,kit,Если ещё нет библиотеки по ИИ: книги закрепят курс и останутся у команды справочником,b2b,ассистент
+ii/obucenie-i-konsalting-v-sfere-ii,ii/gotovye-ii-modeli-i-algoritmy,need,"После курса команде нужна корпоративная ИИ-платформа, чтобы применить навыки в работе",b2b,ассистент
+ii/otraslevye-reseniia,antivirusi-bezopasnost/antivirusi-organizatsii,unrelated,нет прямой связи,,ассистент
+internet-i-set/brauzeri-i-utiliti,antivirusi-bezopasnost/antivirusi,kit,Если ещё нет антивируса: он проверит скачанные через браузер файлы до запуска,b2c,ассистент
+internet-i-set/cms,antivirusi-bezopasnost/mezhsetevye-ekrany,unrelated,"шлюз офиса, не защита сайта",,ассистент
+internet-i-set/cms,diski-i-fayli/rezervnoe-kopirovanie,need,Резервная копия вернёт сайт и базу после взлома или неудачного обновления,b2b,ассистент
+internet-i-set/download-menedjeri,san-nas/nas,unrelated,у NAS свой FTP-сервер,,ассистент
+internet-i-set/internet-i-set-drugie-utiliti,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: перед переносом почты и файлов в облако сохраните их копию,b2b,ассистент
+internet-i-set/obschenie,gadgets/headphones,need,"Гарнитура в онлайн-встречах убирает эхо, и собеседники слышат вас чётко",,ассистент
+internet-i-set/obschenie,gadgets/webcam,need,"Встречи в Контур.Толке идут с видео, а у настольного ПК своей камеры нет",,ассистент
+internet-i-set/obschenie,ip-telephonia/spikerfony,kit,"Если ещё нет спикерфона: к онлайн-встрече подключится вся переговорная, а не один человек",b2b,ассистент
+internet-i-set/pochtovie-programmi,antivirusi-bezopasnost/antivirusi,need,Антивирус проверит вложения из The Bat! до открытия и отсеет фишинговые ссылки,b2c,ассистент
+internet-i-set/pochtovie-programmi,antivirusi-bezopasnost/antivirusi-organizatsii,need,"Вложения писем — главный путь вирусов в компанию, антивирус проверит их до открытия",b2b,ассистент
+internet-i-set/pochtovie-programmi,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: архив переписки на сервере MDaemon сохранится при сбое,b2b,ассистент
+internet-i-set/pochtovie-utiliti,internet-i-set/pochtovie-programmi,has,утилиты работают поверх почты,,ассистент
+internet-i-set/programmi-dlya-seti,antivirusi-bezopasnost/security-internet-i-set,kit,"Если ещё нет сканера защищённости: он найдёт уязвимые узлы в сети, которую вы администрируете",b2b,ассистент
+internet-i-set/resheniya-dopolnennoy-i-virtualnoy-realnosti-arvr,grafika-i-dizayn/3d-grafika,kit,Если ещё нет 3D-программы: в ней готовят модели и анимацию для AR-сцен,b2b,ассистент
+internet-i-set/roditelskiy-kontrol,antivirusi-bezopasnost/antivirusi,kit,"Если ещё нет антивируса: контроль покажет экран ребёнка, а антивирус закроет опасные сайты и файлы",b2c,ассистент
+internet-i-set/servernoe-po,antivirusi-bezopasnost/antivirusi-organizatsii,kit,"Если ещё нет антивируса для организаций: он защитит сервер, на котором работает это ПО",b2b,ассистент
+internet-i-set/servernoe-po,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: сервер и его настройки восстановятся после сбоя за минуты,b2b,ассистент
+internet-i-set/svyaz,ip-telephonia/voip-gates,unrelated,факс идёт через модем,,ассистент
+internet-i-set/telefoniya,gadgets/headphones,kit,Если ещё нет гарнитуры: звонки через софтфон на компьютере пойдут без эха и с занятыми руками,b2b,ассистент
+internet-i-set/telefoniya,ip-telephonia/voip-gates,need,VoIP-шлюз подключит к IP-АТС городские линии и старые аналоговые аппараты,b2b,ассистент
+internet-i-set/telefoniya,ip-telephonia/voip-telephone,need,"IP-АТС распределяет звонки, а принимают их на IP-телефонах на столах сотрудников",b2b,ассистент
+internet-i-set/videonabludenie,san-nas/nas,kit,Если ещё нет сетевого хранилища: архив записей с камер хранится на нём неделями,b2b,ассистент
+internet-i-set/videonabludenie,security/ip-videocams,has,без камер ПО не нужно,,ассистент
+internet-i-set/videonabludenie,security/videoregistratory,same,регистратор тоже пишет архив,,ассистент
+ip-telephonia/accessories_for_phones,ip-telephonia/voip-telephone,has,аксессуар к купленному телефону,,ассистент
+ip-telephonia/consoles,ip-telephonia/voip-telephone,has,консоль к купленному телефону,,ассистент
+ip-telephonia/dect,peripherals/voltage_regulator,unrelated,база от обычной розетки,,ассистент
+ip-telephonia/konferents-svyaz,internet-i-set/obschenie,kit,Если ещё нет сервиса видеосвязи: камера и спикерфон по USB работают во встречах Контур.Толка,b2b,ассистент
+ip-telephonia/konferents-svyaz,ip-telephonia/spikerfony,same,та же задача — звук переговорной,,ассистент
+ip-telephonia/konferents-svyaz,peripherals/displays,kit,Если ещё нет экрана в переговорной: видеобар выведет участников встречи на монитор,b2b,ассистент
+ip-telephonia/provodnye-telefony,networking/net-cables,unrelated,HDMI и Lightning не к телефону,,ассистент
+ip-telephonia/spikerfony,gadgets/webcam,kit,"Если ещё нет камеры: спикерфон даст звук, а вебкамера покажет участников за столом",,ассистент
+ip-telephonia/spikerfony,internet-i-set/obschenie,kit,Если ещё нет сервиса видеосвязи: спикерфон по USB сразу работает во встречах Контур.Толка,b2b,ассистент
+ip-telephonia/spikerfony,ip-telephonia/konferents-svyaz,same,та же задача — звук переговорной,,ассистент
+ip-telephonia/system-phones,peripherals/voltage_regulator,unrelated,работает от обычной розетки,,ассистент
+ip-telephonia/voip-gates,networking/switch,has,шлюз ставят в готовую сеть,,ассистент
+ip-telephonia/voip-gates,peripherals/ups,kit,Если ещё нет ИБП: телефония офиса останется на связи при отключении света,b2b,ассистент
+ip-telephonia/voip-telephone,ip-telephonia/accessories_for_phones,need,"Камера, гарнитура или видеомодуль Yealink добавят IP-телефону видеозвонки и работу без трубки",b2b,ассистент
+ip-telephonia/voip-telephone,ip-telephonia/consoles,kit,Если ещё нет консоли: секретарь получит десятки кнопок быстрого набора к IP-телефону,b2b,ассистент
+ip-telephonia/voip-telephone,networking/net-equipment,kit,Если коммутатор без PoE: инжектор запитает IP-телефон по сетевому кабелю без адаптера,b2b,ассистент
+karti-navigatsiya-puteshestviya/karti,portable-memory/flash-memory,kit,"Если ещё нет карты памяти: карты Навител займут гигабайты, на microSD навигатора они поместятся",b2c,ассистент
+mebel-tovary-dlya-ofisa/kresla-i-stulya,mebel-tovary-dlya-ofisa/stellazhi,kit,Если ещё нет стеллажа: папки и коробки уйдут со стола и пола кабинета,b2b,ассистент
+multimedia/audioredaktori,gadgets/headphones,need,"Шумы и щелчки при чистке записи слышны в наушниках, динамики ноутбука их прячут",,ассистент
+multimedia/pleyeri,parts/odd,kit,"Если ещё нет DVD-привода: PowerDVD проиграет диски, а в новых ПК привода обычно нет",b2c,ассистент
+multimedia/videoredaktori,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: исходники и проекты монтажа не пропадут при сбое диска,,ассистент
+multimedia/videoredaktori,gadgets/headphones,need,"Звук при монтаже сводят в наушниках, динамики ноутбука прячут шумы и перепады громкости",,ассистент
+multimedia/videoredaktori,parts/videocards,kit,Если ещё нет дискретной видеокарты: экспорт видео с аппаратным ускорением пойдёт в разы быстрее,,ассистент
+multimedia/videoredaktori,portable-memory/externalhdd,need,"Видеоисходники занимают сотни гигабайт, внешний диск освободит место на компьютере",,ассистент
+networking/access-point,networking/net-cables,unrelated,HDMI и Lightning не к сети,,ассистент
+networking/access-point,networking/net-equipment,kit,Если ещё нет PoE-инжектора: точка доступа под потолком получит питание по сетевому кабелю,,ассистент
+networking/access-point,networking/switch,kit,Если ещё нет PoE-коммутатора: он запитает и соединит сразу несколько точек доступа,b2b,ассистент
+networking/adaptery-bluetooth,gadgets/headphones,need,"Адаптер даёт компьютеру Bluetooth, и к нему подключится беспроводная гарнитура",,ассистент
+networking/adaptery-bluetooth,peripherals/keyboards,kit,Если ещё нет беспроводной клавиатуры и мыши: через адаптер они работают без проводов,,ассистент
+networking/firewall,networking/access-point,kit,"Если ещё нет Wi-Fi: проводной роутер раздаёт интернет по кабелю, точка доступа добавит беспроводную сеть",b2b,ассистент
+networking/firewall,networking/switch,need,"Портов роутера мало, коммутатор подключит к нему все рабочие места офиса",b2b,ассистент
+networking/firewall,peripherals/ups,need,ИБП не даст роутеру перезагрузиться при скачке напряжения и оборвать интернет офиса,b2b,ассистент
+networking/net-cables,networking/switch,unrelated,HDMI и Lightning не к сети,,ассистент
+networking/net-equipment,peripherals/ups,kit,Если ещё нет ИБП: камеры и точки доступа на PoE не отключатся при перебоях света,b2b,ассистент
+networking/network-card,networking/net-cables,unrelated,HDMI и Lightning не к сети,,ассистент
+networking/powerline,networking/net-cables,unrelated,HDMI и Lightning не к сети,,ассистент
+networking/routers,networking/switch,kit,Если ещё нет коммутатора: портов роутера не хватит для всех проводных ПК и приставок,,ассистент
+networking/routers,networking/wifi-adapters,kit,Если у старого ПК нет Wi-Fi: адаптер подключит его к новому роутеру без кабеля,,ассистент
+networking/routers,peripherals/ups,kit,Если ещё нет ИБП: интернет и Wi-Fi не пропадут при коротком отключении света,,ассистент
+networking/switch,networking/net-cables,unrelated,HDMI и Lightning не к сети,,ассистент
+networking/switch,networking/transceivers,need,Оптические порты SFP коммутатора работают только с трансиверами нужного стандарта,b2b,ассистент
+networking/switch,parts/cables,kit,Если ещё нет витой пары: компьютеры подключают к коммутатору кабелем нужной категории и длины,,ассистент
+networking/switch,peripherals/ups,need,"ИБП удержит коммутатор при скачке напряжения, и сеть офиса не упадёт",b2b,ассистент
+networking/transceivers,networking/net-cables,unrelated,HDMI и Lightning не к оптике,,ассистент
+networking/transceivers,networking/switch,has,трансивер ставят в порт коммутатора,,ассистент
+networking/wifi-adapters,networking/routers,has,адаптер ловит существующую сеть,,ассистент
+networking/wifi-antenna,networking/net-equipment,unrelated,антенне нужна точка доступа,,ассистент
+oblachnye-resheniya-iaas/upravlenie-biznesom-iaas,antivirusi-bezopasnost/antivirusi-organizatsii,kit,"Если ещё нет антивируса для организаций: облачные серверы защищают от вредоносов так же, как офисные",b2b,ассистент
+oblachnye-resheniya-iaas/upravlenie-biznesom-iaas,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: копии облачных серверов будут храниться вне площадки провайдера,b2b,ассистент
+obrazovanie-i-nauka/nauchnie-rascheti,computers/desktop,has,расчётам нужен компьютер,,ассистент
+obrazovanie-i-nauka/nauchnie-rascheti,parts/ram,unrelated,расчёты нетяжёлые,,ассистент
+obrazovanie-i-nauka/obuchayuschie-programmi,computers/notebook,has,курс запускают на компьютере,,ассистент
+obrazovanie-i-nauka/prochie-programmi,distantsionnoe-obuchenie/edu-internet,kit,Если ещё нет системы дистанционного обучения: курсы и задания для класса публикуются в eLearning Server,b2b,ассистент
+obrazovanie-i-nauka/programmi-dlya-vuzov,peripherals/displays,unrelated,"серверное ПО, не монитор",,ассистент
+office/brochurateur,office/cutter,kit,Если ещё нет резака: края листов и обложек выровняете перед переплётом,b2b,ассистент
+office/brochurateur,office/expendables,unrelated,"картриджи, не пружины",,ассистент
+office/cutter,office/brochurateur,kit,Если ещё нет брошюратора: обрезанные листы сразу соберёте в переплетённый отчёт,b2b,ассистент
+office/expendables,office/mfu,has,картриджу нужен принтер,,ассистент
+office/graphic_pad,grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori,need,"Планшету нужна программа для рисования, в графическом редакторе перо работает с нажимом",,ассистент
+office/laminator,office/cutter,kit,Если ещё нет резака: листы обрежете в размер до и после ламинирования,b2b,ассистент
+office/laminator,office/expendables,unrelated,"картриджи, не плёнка",,ассистент
+office/mfu,delovie-programmi/rabota-s-dokumentami,kit,Если ещё нет PDF-программы: отсканированное на МФУ распознаете и отредактируете как текст,,ассистент
+office/mfu,office/accessories_for_office,kit,Если ещё нет дополнительного лотка: тумба с лотком увеличит запас бумаги МФУ для отдела,b2b,ассистент
+office/mfu,office/expendables,need,Запасной картридж нужного номера не даст печати встать посреди работы,,ассистент
+office/plotters,office/expendables,need,"Плоттер расходует картриджи большого объёма, запасной комплект не остановит печать чертежей",,ассистент
+office/scanner,delovie-programmi/rabota-s-dokumentami,need,"PDF-программа с распознаванием превратит скан в текст, который можно править и искать",,ассистент
+ofisnie-programmi/drugoe-ofisnoe-po,antivirusi-bezopasnost/antivirusi,kit,Если ещё нет антивируса: документы из почты и мессенджеров он проверит до открытия,b2c,ассистент
+ofisnie-programmi/drugoe-ofisnoe-po,delovie-programmi/rabota-s-dokumentami,same,в OfficeSuite есть PDF-модуль,,ассистент
+ofisnie-programmi/ms-office,antivirusi-bezopasnost/antivirusi,kit,Если ещё нет антивируса: документы с макросами из почты он проверит до открытия,b2c,ассистент
+ofisnie-programmi/ms-office,delovie-programmi/rabota-s-dokumentami,kit,"Если ещё нет PDF-редактора: Office сохраняет PDF, но править готовые PDF удобнее в нём",,ассистент
+ofisnie-programmi/ms-office,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: документы отдела восстановятся после шифровальщика или сбоя,b2b,ассистент
+ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie,antivirusi-bezopasnost/antivirusi-organizatsii,kit,Если ещё нет антивируса для организаций: он проверит документы из почты до открытия,b2b,ассистент
+ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie,delovie-programmi/rabota-s-dokumentami,kit,Если ещё нет PDF-редактора: сканы и PDF от контрагентов можно править и распознавать,b2b,ассистент
+ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie,operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie,kit,Если ещё нет российской ОС: вместе с офисным пакетом она закроет импортозамещение рабочего места,b2b,ассистент
+operating-systems/os-linux-unix,antivirusi-bezopasnost/antivirusi-organizatsii,need,"Linux-рабочие станции тоже атакуют, антивирус для организаций защитит их и общие файлы",b2b,ассистент
+operating-systems/os-linux-unix,diski-i-fayli/rezervnoe-kopirovanie,need,Резервная копия вернёт систему и данные после сбоя диска или неудачного обновления,b2b,ассистент
+operating-systems/os-linux-unix,ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie,kit,Если ещё нет офисного пакета под Linux: документы и таблицы откроются без Microsoft Office,b2b,ассистент
+operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie,antivirusi-bezopasnost/antivirusi-organizatsii,need,Антивирус из реестра российского ПО защитит рабочие станции и серверы на Astra и РЕД ОС,b2b,ассистент
+operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie,antivirusi-bezopasnost/bezopasnost-zaschita-informatsii,need,"Для аттестованных систем к ОС добавляют СЗИ и криптопровайдер, например КриптоПро CSP",b2b,ассистент
+operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie,diski-i-fayli/rezervnoe-kopirovanie,kit,Если ещё нет резервного копирования: Кибер Бэкап вернёт рабочие станции на Linux после сбоя,b2b,ассистент
+operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie,ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie,need,"Microsoft Office на Astra и РЕД ОС не работает, нужен офисный пакет под российскую ОС",b2b,ассистент
+operating-systems/windows-11-licenzii-home-i-pro,antivirusi-bezopasnost/antivirusi,need,"Антивирус добавит к Windows защиту от фишинга, шифровальщиков и кражи паролей",b2c,ассистент
+operating-systems/windows-11-licenzii-home-i-pro,ofisnie-programmi/ms-office,need,"Windows поставляется без Office, пакет для документов и таблиц покупают отдельно",,ассистент
+parts/chassis,parts/coolers,kit,Если ещё нет дополнительных вентиляторов: продув корпуса улучшится и температура снизится,,ассистент
+parts/chassis,parts/psu,need,"Большинство корпусов продают без блока питания, его подбирают отдельно по мощности",,ассистент
+parts/controllers,parts/hdd,need,К RAID-контроллеру подключают серверные диски и собирают из них отказоустойчивый массив,b2b,ассистент
+parts/coolers,parts/cpu,has,кулер ставят на имеющийся процессор,,ассистент
+parts/cpu,parts/coolers,need,"OEM-процессор идёт без кулера, охлаждение под его сокет покупают отдельно",,ассистент
+parts/cpu,parts/motherboard,kit,Если ещё нет подходящей платы: новому процессору нужна материнская плата с его сокетом,,ассистент
+parts/hdd,parts/cables,kit,Если ещё нет кабеля SATA: без него диск не подключить к материнской плате,,ассистент
+parts/motherboard,parts/cpu,need,"Материнская плата продаётся без процессора, его подбирают под сокет и чипсет платы",,ассистент
+parts/motherboard,parts/ram,kit,Если ещё нет памяти нужного типа: под слоты платы подходит только DDR4 или только DDR5,,ассистент
+parts/odd,multimedia/zapis-cd-i-dvd,kit,"Если ещё нет программы записи: Power2Go запишет данные, видео и музыку на диск",,ассистент
+parts/odd,parts/cables,unrelated,внешний привод с кабелем,,ассистент
+parts/psu,parts/cables,unrelated,кабели в комплекте блока,,ассистент
+parts/psu,peripherals/ups,kit,Если ещё нет ИБП: компьютер не выключится при отключении света и не потеряет несохранённое,,ассистент
+parts/ram,parts/cpu,has,процессор уже стоит в ПК,,ассистент
+parts/ram,parts/motherboard,has,память ставят в имеющуюся плату,,ассистент
+parts/ssd,parts/cables,unrelated,NVMe ставят без кабеля,,ассистент
+parts/videocards,parts/psu,kit,Если ещё нет блока питания с запасом: видеокарте нужны ватты и разъём питания PCIe,,ассистент
+parts/zvukovye-karty,gadgets/headphones,need,Внешняя звуковая карта раскрывает звук гарнитуры и даёт чистый вход для микрофона,,ассистент
+parts/zvukovye-karty,photo-video/speaker,kit,Если ещё нет колонок: звуковая карта выведет на них объёмный звук без наушников,,ассистент
+peripherals/accessoires-pour-ups,peripherals/ups,has,аксессуар ставят к имеющемуся ИБП,,ассистент
+peripherals/displays,parts/cables,kit,Если ещё нет нужного кабеля: HDMI или DisplayPort нужной длины подключит монитор к компьютеру,,ассистент
+peripherals/displays,peripherals/keyboards,kit,Если ещё нет клавиатуры и мыши для нового рабочего места: без них монитор не подключить к работе,,ассистент
+peripherals/displays,photo-video/holders,need,Кронштейн освобождает стол и позволяет поднять монитор на уровень глаз,,ассистент
+peripherals/keyboards,accessories_comp/prochee,need,Коврик даёт мыши ровную поверхность и точное движение курсора,,ассистент
+peripherals/keyboards,peripherals/displays,kit,Если собираете новое рабочее место: к клавиатуре и мыши нужен монитор,,ассистент
+peripherals/silovye-moduli-dlya-ibp,peripherals/ups,has,модуль ставят в имеющийся ИБП,,ассистент
+peripherals/ups,peripherals/accessoires-pour-ups,need,Блок распределения питания и ATS подключают к ИБП несколько стоек и второй ввод,b2b,ассистент
+peripherals/ups,peripherals/ups_battery_pack,need,"Батареи ИБП изнашиваются за 3–5 лет, сменная батарея возвращает полное время автономии",,ассистент
+peripherals/ups,servisnye-reseniia/texniceskaia-podderzka-oborudovaniia,kit,Если ещё нет сервисного контракта: поддержка оборудования ускорит ремонт ИБП при отказе,b2b,ассистент
+peripherals/ups_battery_pack,peripherals/ups,has,батарею меняют в имеющемся ИБП,,ассистент
+peripherals/voltage_regulator,peripherals/ups,kit,"Если ещё нет ИБП: фильтр не спасёт при отключении света, ИБП даст время сохранить работу",,ассистент
+photo-video/ekran,photo-video/projector,has,экран без проектора не нужен,,ассистент
+photo-video/projector,parts/cables,kit,Если ещё нет длинного кабеля: HDMI нужной длины подключит ноутбук к проектору под потолком,,ассистент
+photo-video/projector,photo-video/ekran,need,"Экран даёт ровную белую поверхность, на нём картинка проектора чётче, чем на стене",,ассистент
+photo-video/projector,photo-video/holders,need,"Потолочный кронштейн закрепит проектор над залом, без штатива на столе",,ассистент
+photo-video/speaker,photo-video/holders,unrelated,колонкам кронштейн обычно не нужен,,ассистент
+photo-video/tvset,photo-video/holders,need,Настенный кронштейн повесит телевизор на стену и освободит тумбу,,ассистент
+portable-memory/dok-stantsii,parts/hdd,has,док без диска бесполезен,,ассистент
+portable-memory/externalhdd,diski-i-fayli/rezervnoe-kopirovanie,need,Программа резервного копирования сама по расписанию сохранит файлы на внешний диск,,ассистент
+portable-memory/flash-memory,gadgets/smartphones,has,карту ставят в имеющееся устройство,,ассистент
+portable-memory/hdd-external-case,parts/ssd,has,корпус покупают под имеющийся диск,,ассистент
+portable-memory/usb-flash,antivirusi-bezopasnost/antivirusi,unrelated,флешка не требует антивируса,,ассистент
+portable/powerbank,gadgets/zaryadnye-ustroystva,has,зарядка от телефона уже есть,,ассистент
+programmi-dlya-mac-os/system-programms,portable-memory/externalhdd,kit,"Если ещё нет внешнего диска: на нём удобно хранить образы, которые делает Hard Disk Manager",b2b,ассистент
+programmi-dlya-mobilnih-ustroystv/mobilnie-ustroystva-zaschita-informatsii,antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov,same,та же защита смартфонов,,ассистент
+programmirovanie/bazi-dannih,diski-i-fayli/rezervnoe-kopirovanie,kit,"Если ещё нет резервного копирования: менеджер БД не вернёт базу после сбоя сервера, копия вернёт",b2b,ассистент
+programmirovanie/razrabotka-po,programmirovanie/bazi-dannih,unrelated,"разнородные инструменты, не про БД",,ассистент
+programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie,diski-i-fayli/rezervnoe-kopirovanie,need,Кибер Бэкап по расписанию сохраняет копии базы Postgres Pro и восстанавливает её после сбоя,b2b,ассистент
+programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie,programmirovanie/bazi-dannih,need,EMS SQL Manager for PostgreSQL даёт удобную графическую оболочку для администрирования Postgres Pro,b2b,ассистент
+programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie,servers/rackmount-servers,kit,Если ещё нет сервера под базу: rack-сервер выдержит нагрузку промышленной СУБД,b2b,ассистент
+programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie,servisnye-reseniia/texniceskaia-podderzka-programmnogo-obespeceniia-1,need,Сертификат поддержки СУБД даёт помощь инженеров при сбоях и обновлениях Postgres Pro,b2b,ассистент
+remote-access/drugie-resheniya-udalennogo-dostupa,antivirusi-bezopasnost/antivirusi-organizatsii,unrelated,удалённый доступ не связан с антивирусом,,ассистент
+remote-access/rossiyskie-resheniya-udalennogo-dostupa-importozameshchenie,antivirusi-bezopasnost/antivirusi-organizatsii,unrelated,удалённый доступ не связан с антивирусом,,ассистент
+remote-access/rossiyskie-resheniya-udalennogo-dostupa-importozameshchenie,operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie,unrelated,работает на любой ОС,,ассистент
+saas/business-managment,internet-i-set/cms,unrelated,"разнородный класс, сайт не нужен",,ассистент
+saas/clouds,diski-i-fayli/rezervnoe-kopirovanie,unrelated,"облачное место, бэкап на стороне провайдера",,ассистент
+saas/communications,ip-telephonia/spikerfony,unrelated,"онлайн-чат сайта, не телефония",,ассистент
+saas/setevie-utiliti,antivirusi-bezopasnost/antivirusi-organizatsii,unrelated,"контроль сотрудников, не антивирус",,ассистент
+san-nas/nas,diski-i-fayli/rezervnoe-kopirovanie,need,Кибер Бэкап по расписанию копирует компьютеры и серверы на сетевое хранилище,b2b,ассистент
+san-nas/nas,parts/hdd,need,"Хранилище продаётся без дисков, жёсткие диски задают его объём",,ассистент
+san-nas/nas,peripherals/ups,need,ИБП даст хранилищу корректно выключиться при отключении света без порчи данных,,ассистент
+san-nas/san-options,san-nas/san-storage,has,опции ставят в имеющуюся СХД,,ассистент
+san-nas/san-storage,diski-i-fayli/rezervnoe-kopirovanie,need,"СХД не защищает от удаления и шифровальщика, резервная копия защищает",b2b,ассистент
+san-nas/san-storage,peripherals/ups,need,ИБП защитит систему хранения от внезапного отключения и потери записываемых данных,b2b,ассистент
+san-nas/san-storage,san-nas/san-options,need,Ленточный привод и картриджи LTO добавляют к СХД долгий архив вне дисков,b2b,ассистент
+san-nas/san-storage,servisnye-reseniia/texniceskaia-podderzka-oborudovaniia,kit,Если ещё нет сервисного контракта: поддержка ускорит замену узлов СХД при отказе,b2b,ассистент
+sapr/arhitektura,office/plotters,need,"Архитектурные чертежи большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/arhitektura,peripherals/displays,kit,Если ещё нет большого монитора: на нём план и фасады видны целиком без постоянного масштабирования,,ассистент
+sapr/arhitektura,sapr/bazovie-produkti,has,работает поверх базовой CAD-платформы,,ассистент
+sapr/arhitektura,sapr/dizayn-vizualizatsiya-i-animatsiya,unrelated,в классе не архитектурные визуализаторы,,ассистент
+sapr/arhitektura,sapr/dokumentooborot,kit,Если ещё нет электронного архива: TDMS или Pilot-BIM хранят версии проекта и согласования,b2b,ассистент
+sapr/bazovie-produkti,office/plotters,need,"Чертежи большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/bazovie-produkti,peripherals/displays,kit,Если ещё нет большого монитора: на нём чертёж виден целиком без постоянного масштабирования,,ассистент
+sapr/bazovie-produkti,sapr/dokumentooborot,kit,Если ещё нет электронного архива: TDMS или Pilot хранят версии чертежей и согласования,b2b,ассистент
+sapr/bazovie-produkti,sapr/gibridnie-graficheskie-redaktori-i-vektorizatori,need,RasterDesk правит и векторизует сканы старых чертежей прямо в nanoCAD,,ассистент
+sapr/dizayn-vizualizatsiya-i-animatsiya,peripherals/displays,kit,Если ещё нет большого монитора с точной цветопередачей: на нём видна вся сцена и рендер,,ассистент
+sapr/dokumentooborot,antivirusi-bezopasnost/bezopasnost-zaschita-informatsii,unrelated,"разнородный класс, связи нет",,ассистент
+sapr/dokumentooborot,diski-i-fayli/rezervnoe-kopirovanie,need,Резервная копия сохранит архив проектной документации при сбое сервера или шифровальщике,b2b,ассистент
+sapr/dokumentooborot,servers/rackmount-servers,kit,Если ещё нет сервера: TDMS и Pilot-BIM держат общий архив проектов на сервере,b2b,ассистент
+sapr/geoinformatsionnie-sistemi,3d-oborudovanie/3d-scanners,unrelated,"настольные сканеры деталей, не для ГИС",,ассистент
+sapr/geoinformatsionnie-sistemi,karti-navigatsiya-puteshestviya/karti,kit,Если ещё нет картографической основы: карты регионов РФ в SXF открываются в ГИС «Панорама»,b2b,ассистент
+sapr/geoinformatsionnie-sistemi,office/plotters,need,"Карты и планы большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/gibridnie-graficheskie-redaktori-i-vektorizatori,office/plotters,kit,Если ещё нет плоттера: исправленные чертежи большого формата печатают только на нём,,ассистент
+sapr/gibridnie-graficheskie-redaktori-i-vektorizatori,office/scanner,need,"Сканер переводит бумажные чертежи в растр, который программа правит и векторизует",,ассистент
+sapr/gibridnie-graficheskie-redaktori-i-vektorizatori,sapr/bazovie-produkti,has,RasterDesk работает внутри CAD-платформы,,ассистент
+sapr/infrastruktura-iziskaniya-genplan-transport,office/plotters,need,"Генпланы и профили дорог большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/infrastruktura-iziskaniya-genplan-transport,sapr/bazovie-produkti,has,GeoniCS работает на платформе nanoCAD,,ассистент
+sapr/infrastruktura-iziskaniya-genplan-transport,sapr/dokumentooborot,kit,Если ещё нет электронного архива: TDMS или Pilot хранят версии проекта и согласования,b2b,ассистент
+sapr/infrastruktura-iziskaniya-genplan-transport,sapr/geoinformatsionnie-sistemi,kit,Если ещё нет ГИС: в ней ведут карту участка и данные изысканий вне проекта,b2b,ассистент
+sapr/injenerniy-soft,delovie-programmi/rabota-s-dokumentami,unrelated,связи с PDF нет,,ассистент
+sapr/injenerniy-soft,sapr/bazovie-produkti,unrelated,расчёты не требуют CAD,,ассистент
+sapr/kadastr-i-gradostroitelstvo,antivirusi-bezopasnost/bezopasnost-zaschita-informatsii,unrelated,прямой связи нет,,ассистент
+sapr/kadastr-i-gradostroitelstvo,office/plotters,need,Схемы и планы территорий большого формата печатают на плоттере,,ассистент
+sapr/kadastr-i-gradostroitelstvo,sapr/geoinformatsionnie-sistemi,has,работает на ГИС «Панорама»,,ассистент
+sapr/kartografiya-fotogrammetriya,office/plotters,need,"Готовые карты большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/kartografiya-fotogrammetriya,sapr/geoinformatsionnie-sistemi,same,ИнГео уже сама ГИС,,ассистент
+sapr/kartografiya-fotogrammetriya,sapr/infrastruktura-iziskaniya-genplan-transport,unrelated,другая задача,,ассистент
+sapr/lazernoe-skanirovanie,3d-oborudovanie/3d-scanners,unrelated,"сканеры деталей, не лазерные облака",,ассистент
+sapr/lazernoe-skanirovanie,sapr/bazovie-produkti,has,модуль работает на платформе nanoCAD,,ассистент
+sapr/mashinostroenie,3d-oborudovanie/3d-scanners,kit,Если ещё нет 3D-сканера: он снимет форму готовой детали для обратного проектирования в КОМПАС,b2b,ассистент
+sapr/mashinostroenie,office/plotters,need,"Сборочные чертежи формата А1 и А0 печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/mashinostroenie,peripherals/displays,kit,Если ещё нет большого монитора: на нём модель и чертёж видны одновременно,,ассистент
+sapr/mebelnoe-proizvodstvo,office/plotters,kit,Если ещё нет плоттера: чертежи и карты раскроя большого формата печатают на нём,b2b,ассистент
+sapr/mebelnoe-proizvodstvo,sapr/bazovie-produkti,unrelated,bCAD самостоятельная система,,ассистент
+sapr/pojarnaya-bezopasnost,delovie-programmi/rabota-s-dokumentami,unrelated,связи с PDF нет,,ассистент
+sapr/pojarnaya-bezopasnost,sapr/stroitelstvo,unrelated,"расчёт рисков, не проектирование",,ассистент
+sapr/science-software,sapr/bazovie-produkti,unrelated,расчёты не требуют CAD,,ассистент
+sapr/selskoe-khozyaystvo,sapr/geoinformatsionnie-sistemi,has,работает на ГИС «Панорама»,,ассистент
+sapr/stroitelstvo,office/plotters,need,"Рабочие чертежи большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/stroitelstvo,peripherals/displays,kit,Если ещё нет большого монитора: на нём расчётная схема и чертёж видны целиком,,ассистент
+sapr/stroitelstvo,sapr/dokumentooborot,kit,Если ещё нет электронного архива: TDMS или Pilot-BIM хранят версии проекта и согласования,b2b,ассистент
+sapr/tekhnicheskaya-podderzhka,servisnye-reseniia/texniceskaia-podderzka-programmnogo-obespeceniia-1,unrelated,"постпроцессор, не услуга поддержки",,ассистент
+security/analogovye-videokamery,security/videoregistratory,unrelated,"в каталоге IP-регистраторы, аналог не подключить",,ассистент
+security/domofony,security/ustroystva-kontrolya-dostupa,unrelated,терминал доступа не вызывная панель,,ассистент
+security/ip-videocams,networking/net-equipment,need,PoE-инжектор подаёт камере питание по сетевому кабелю без отдельной розетки,,ассистент
+security/ip-videocams,networking/switch,kit,Если камер несколько: PoE-коммутатор питает и подключает их одним устройством,b2b,ассистент
+security/ip-videocams,portable-memory/flash-memory,need,"Карта microSD хранит запись прямо в камере, если регистратора нет или пропала сеть",,ассистент
+security/ip-videocams,security/krepleniya,kit,"Если камера Hikvision: фирменное крепление поставит её на стену, угол или столб",,ассистент
+security/ip-videocams,security/videoregistratory,need,Сетевой регистратор круглосуточно пишет видео с IP-камер и хранит архив,,ассистент
+security/umnyy-dom,security/klaviatura-dlya-upravleniya,kit,Если ещё нет пульта: клавиатура и тревожная кнопка Dahua 868 МГц управляют охраной дома,,ассистент
+security/ustroystva-kontrolya-dostupa,security/klaviatura-dlya-upravleniya,unrelated,"аксессуары сигнализации, не СКУД",,ассистент
+security/videoregistratory,parts/hdd,need,"Регистратор продаётся без диска, жёсткий диск задаёт глубину архива записи",,ассистент
+security/videoregistratory,security/ip-videocams,need,"Регистратор пишет видео только с IP-камер, их число задаёт охват объекта",,ассистент
+servers/chassis1,operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie,kit,Если ещё нет серверной ОС: Astra Linux или РЕД ОС запустят собранный сервер,b2b,ассистент
+servers/chassis1,parts/cpu,need,"Платформа продаётся без процессора, серверный CPU нужного сокета делает её сервером",b2b,ассистент
+servers/chassis1,parts/ram,need,"Без серверной памяти платформа не запустится, объём RAM задаёт число задач и ВМ",b2b,ассистент
+servers/chassis1,parts/ssd,need,Накопители в отсеки платформы хранят ОС и данные сервера,b2b,ассистент
+servers/chassis1,servers/server-options,unrelated,опции Dell не подходят к Supermicro и ASUS,,ассистент
+servers/montazhnye-komplekty-zip,servers/rackmount-servers,has,комплект ставят в имеющийся сервер,,ассистент
+servers/rackmount-servers,diski-i-fayli/rezervnoe-kopirovanie,need,Резервная копия вернёт данные сервера после отказа дисков или шифровальщика,b2b,ассистент
+servers/rackmount-servers,operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie,need,"Серверу нужна ОС, Astra Linux или РЕД ОС подходят для госсектора и КИИ",b2b,ассистент
+servers/rackmount-servers,peripherals/ups,need,ИБП даст серверу корректно завершить работу при отключении света,b2b,ассистент
+servers/rackmount-servers,servers/montazhnye-komplekty-zip,unrelated,комплекты HPE не подходят к этим серверам,,ассистент
+servers/rackmount-servers,servers/server-options,unrelated,опции Dell не подходят к этим серверам,,ассистент
+servers/rackmount-servers,servisnye-reseniia/texniceskaia-podderzka-oborudovaniia,kit,Если ещё нет сервисного контракта: поддержка ускорит ремонт сервера при отказе,b2b,ассистент
+servers/rackmount-servers,sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie,need,Российская виртуализация делит сервер на несколько виртуальных машин,b2b,ассистент
+servers/server-options,servers/rackmount-servers,has,опции ставят в имеющийся сервер,,ассистент
+servisnye-reseniia/texniceskaia-podderzka-oborudovaniia,peripherals/ups,unrelated,"сертификат поддержки, ИБП не следует",,ассистент
+sistemnie-programmi/nastroyka-sistemi,antivirusi-bezopasnost/antivirusi,kit,"Если ещё нет антивируса: оптимизатор чистит систему, но от вирусов и шифровальщиков не защищает",b2c,ассистент
+sistemnie-programmi/rasshireniya-sistemi,operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie,has,WINE ставят на имеющийся Linux,,ассистент
+sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie,antivirusi-bezopasnost/antivirusi-organizatsii,kit,"Если ещё нет защиты: каждой виртуальной машине нужен корпоративный антивирус, как обычному ПК",b2b,ассистент
+sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie,diski-i-fayli/rezervnoe-kopirovanie,need,Кибер Бэкап копирует виртуальные машины целиком и поднимает их после сбоя,b2b,ассистент
+sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie,servers/rackmount-servers,has,виртуализацию ставят на имеющийся сервер,,ассистент
+sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie,sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie,unrelated,не связано с виртуализацией,,ассистент
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie,diski-i-fayli/rezervnoe-kopirovanie,need,Кибер Бэкап по расписанию сохраняет копии базы и восстанавливает её после сбоя,b2b,ассистент
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie,programmirovanie/bazi-dannih,need,EMS SQL Manager for PostgreSQL даёт удобную графическую оболочку для администрирования базы,b2b,ассистент
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie,programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie,same,тот же Postgres Pro,,ассистент
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie,servers/rackmount-servers,kit,Если ещё нет сервера под базу: rack-сервер выдержит нагрузку промышленной СУБД,b2b,ассистент
+sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie,servisnye-reseniia/texniceskaia-podderzka-programmnogo-obespeceniia-1,need,Сертификат поддержки СУБД даёт помощь инженеров при сбоях и обновлениях,b2b,ассистент
+sistemnie-programmi/virtualizatsiya,diski-i-fayli/rezervnoe-kopirovanie,unrelated,"это миграция, не бэкап",,ассистент
+sistemnie-programmi/virtualizatsiya,parts/ram,unrelated,прямой связи нет,,ассистент
+sistemnie-programmi/virtualizatsiya,servers/rackmount-servers,unrelated,миграция между имеющимися платформами,,ассистент
+sistemnie-programmi/virtualizatsiya,sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie,need,"Хайстекс переносит машины на российскую платформу виртуализации, её нужно купить отдельно",b2b,ассистент
+sistemnie-programmi/vneshnie-ustroystva,parts/cables,unrelated,"виртуальные порты, кабель не нужен",,ассистент
+sport-and-action/action-cams,portable-memory/flash-memory,need,"Экшн-камера пишет видео только на карту microSD, без неё съёмка невозможна",,ассистент
+sport-and-action/action-cams,portable/powerbank,kit,Если ещё нет внешнего аккумулятора: он подзарядит камеру в походе без розетки,b2c,ассистент
+text/raspoznavanie-teksta-i-rechi,office/scanner,need,"Сканер даёт образ бумажного документа, который программа распознаёт в редактируемый текст",,ассистент
+text/raspoznavanie-teksta-i-rechi,text/tekstovie-redaktori,same,тоже PDF-редакторы,,ассистент
+text/tekstovie-redaktori,office/scanner,kit,Если ещё нет сканера: он переведёт бумажные документы в PDF для правки,,ассистент
+text/tekstovie-redaktori,text/raspoznavanie-teksta-i-rechi,same,тоже PDF-редакторы,,ассистент
+text/text-perevodchiki,text/text-slovari,kit,"Если ещё нет словаря: Lingvo даёт значения и примеры употребления, которых нет в машинном переводе",,ассистент
+text/text-slovari,text/text-perevodchiki,kit,"Если ещё нет переводчика: PROMT переведёт целый документ, а не отдельные слова",,ассистент
+torgovoe-oborudovanie/detektory-banknot,torgovoe-oborudovanie/schetchiki-banknot-monet,kit,"Если ещё нет счётчика: он пересчитывает пачки купюр, детектор проверяет их по одной",b2b,ассистент
+torgovoe-oborudovanie/monobloki,torgovoe-oborudovanie/skanery-shtrikhkodov,unrelated,сканер встроен в прайс-чекер,,ассистент
+torgovoe-oborudovanie/pos-aksessuary,torgovoe-oborudovanie/terminaly-sbora-dannykh,has,аксессуар к имеющемуся ТСД,,ассистент
+torgovoe-oborudovanie/printery,office/expendables,unrelated,офисные картриджи не для этикеточных,,ассистент
+torgovoe-oborudovanie/schetchiki-banknot-monet,torgovoe-oborudovanie/detektory-banknot,kit,"Если ещё нет детектора: он проверит подлинность купюр, которые счётчик только пересчитал",b2b,ассистент
+torgovoe-oborudovanie/skanery-shtrikhkodov,torgovoe-oborudovanie/printery,kit,Если ещё нет принтера этикеток: он напечатает штрихкоды для товаров без заводской маркировки,b2b,ассистент
+torgovoe-oborudovanie/skanery-shtrikhkodov,torgovoe-oborudovanie/terminaly-sbora-dannykh,same,ТСД сам сканирует штрихкоды,,ассистент
+torgovoe-oborudovanie/terminaly-sbora-dannykh,buhgalteriya-sklad-kadry/skladskie-programmi,need,"DataMobile превращает ТСД в инструмент приёмки, инвентаризации и подбора с выгрузкой в учёт",b2b,ассистент
+torgovoe-oborudovanie/terminaly-sbora-dannykh,torgovoe-oborudovanie/pos-aksessuary,kit,Если терминал Urovo: запасной аккумулятор и рукоять продлят смену без подзарядки,b2b,ассистент
+torgovoe-oborudovanie/terminaly-sbora-dannykh,torgovoe-oborudovanie/printery,kit,Если ещё нет принтера этикеток: он напечатает штрихкоды для товаров и ячеек склада,b2b,ассистент
+torgovoe-oborudovanie/vesy-skladskie,torgovoe-oborudovanie/printery,kit,Если ещё нет принтера этикеток: он промаркирует взвешенный груз этикеткой с весом,b2b,ассистент

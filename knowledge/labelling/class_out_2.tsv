@@ -1,0 +1,146 @@
+gadgets/webcam	gadgets/headphones	N	Гарнитура уберёт эхо и шум в созвонах, микрофон вебкамеры ловит всю комнату	
+gadgets/webcam	internet-i-set/obschenie	K	Если ещё нет сервиса видеосвязи: в Контур.Толке камера сразу работает на встречах с коллегами и клиентами	b2b
+gadgets/zaryadnye-ustroystva	portable/powerbank	K	Если ещё нет внешнего аккумулятора: телефон зарядится в дороге, где нет розетки	
+grafika-i-dizayn/3d-grafika	computers/desktop	H	3D-программе нужен компьютер	
+grafika-i-dizayn/3d-grafika	parts/videocards	N	Рендер и вьюпорт 3D-сцены считает видеокарта, на встроенной графике всё идёт медленно	
+grafika-i-dizayn/3d-grafika	parts/ram	K	Если ещё нет 32 ГБ памяти: тяжёлые сцены с текстурами откроются без подвисаний	
+grafika-i-dizayn/3d-grafika	peripherals/displays	K	Если ещё нет второго монитора: на одном вьюпорт, на другом панели материалов и настроек	
+grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori	peripherals/displays	K	Если ещё нет большого монитора: макет и панели инструментов поместятся на экране без прокрутки	
+grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori	office/graphic_pad	N	Графический планшет даёт рисовать в редакторе пером с нажимом, мышью так не выйдет	
+grafika-i-dizayn/grafika-i-dizayn-drugie-utiliti	torgovoe-oborudovanie/printery	K	Если ещё нет принтера этикеток: макеты из Юнион Лейбл печатаются на нём рулонами	b2b
+grafika-i-dizayn/projection-design	photo-video/projector	U	проектирование, а не проекторы	
+grafika-i-dizayn/shabloni-i-kliparti	multimedia/videoredaktori	S	тоже запись экрана и видео	
+grafika-i-dizayn/shabloni-i-kliparti	gadgets/headphones	K	Если ещё нет отдельного микрофона: озвучка уроков в DemoCreator будет без шума ноутбука	
+grafika-i-dizayn/shabloni-i-kliparti	gadgets/webcam	K	Если ещё нет вебкамеры: DemoCreator запишет ведущего в кадре поверх экрана	
+grafika-i-dizayn/shemi-i-diagrammi	programmirovanie/razrabotka-po	U	разные инструменты разработчика	
+grafika-i-dizayn/tsifrovoe-foto	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: фотоархив и правки сохранятся при поломке диска	
+grafika-i-dizayn/tsifrovoe-foto	portable-memory/externalhdd	K	Если ещё нет внешнего диска: фотоархив в RAW уйдёт с компьютера и освободит место	
+grafika-i-dizayn/tsifrovoe-foto	office/graphic_pad	K	Если ещё нет графического планшета: ретушь кистью пером точнее, чем мышью	
+ii/gotovye-ii-modeli-i-algoritmy	ii/obucenie-i-konsalting-v-sfere-ii	K	Если ещё нет обучения команды: курс по ИИ научит сотрудников ставить задачи модели на своих данных	b2b
+ii/obucenie-i-konsalting-v-sfere-ii	elektronnye-knigi/biznes-literatura	K	Если ещё нет библиотеки по ИИ: книги закрепят курс и останутся у команды справочником	b2b
+ii/obucenie-i-konsalting-v-sfere-ii	ii/gotovye-ii-modeli-i-algoritmy	N	После курса команде нужна корпоративная ИИ-платформа, чтобы применить навыки в работе	b2b
+ii/otraslevye-reseniia	antivirusi-bezopasnost/antivirusi-organizatsii	U	нет прямой связи	
+internet-i-set/brauzeri-i-utiliti	antivirusi-bezopasnost/antivirusi	K	Если ещё нет антивируса: он проверит скачанные через браузер файлы до запуска	b2c
+internet-i-set/cms	diski-i-fayli/rezervnoe-kopirovanie	N	Резервная копия вернёт сайт и базу после взлома или неудачного обновления	b2b
+internet-i-set/cms	antivirusi-bezopasnost/mezhsetevye-ekrany	U	шлюз офиса, не защита сайта	
+internet-i-set/download-menedjeri	san-nas/nas	U	у NAS свой FTP-сервер	
+internet-i-set/internet-i-set-drugie-utiliti	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: перед переносом почты и файлов в облако сохраните их копию	b2b
+internet-i-set/obschenie	gadgets/headphones	N	Гарнитура в онлайн-встречах убирает эхо, и собеседники слышат вас чётко	
+internet-i-set/obschenie	gadgets/webcam	N	Встречи в Контур.Толке идут с видео, а у настольного ПК своей камеры нет	
+internet-i-set/obschenie	ip-telephonia/spikerfony	K	Если ещё нет спикерфона: к онлайн-встрече подключится вся переговорная, а не один человек	b2b
+internet-i-set/pochtovie-programmi	antivirusi-bezopasnost/antivirusi-organizatsii	N	Вложения писем — главный путь вирусов в компанию, антивирус проверит их до открытия	b2b
+internet-i-set/pochtovie-programmi	antivirusi-bezopasnost/antivirusi	N	Антивирус проверит вложения из The Bat! до открытия и отсеет фишинговые ссылки	b2c
+internet-i-set/pochtovie-programmi	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: архив переписки на сервере MDaemon сохранится при сбое	b2b
+internet-i-set/pochtovie-utiliti	internet-i-set/pochtovie-programmi	H	утилиты работают поверх почты	
+internet-i-set/programmi-dlya-seti	antivirusi-bezopasnost/security-internet-i-set	K	Если ещё нет сканера защищённости: он найдёт уязвимые узлы в сети, которую вы администрируете	b2b
+internet-i-set/resheniya-dopolnennoy-i-virtualnoy-realnosti-arvr	grafika-i-dizayn/3d-grafika	K	Если ещё нет 3D-программы: в ней готовят модели и анимацию для AR-сцен	b2b
+internet-i-set/roditelskiy-kontrol	antivirusi-bezopasnost/antivirusi	K	Если ещё нет антивируса: контроль покажет экран ребёнка, а антивирус закроет опасные сайты и файлы	b2c
+internet-i-set/servernoe-po	antivirusi-bezopasnost/antivirusi-organizatsii	K	Если ещё нет антивируса для организаций: он защитит сервер, на котором работает это ПО	b2b
+internet-i-set/servernoe-po	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: сервер и его настройки восстановятся после сбоя за минуты	b2b
+internet-i-set/svyaz	ip-telephonia/voip-gates	U	факс идёт через модем	
+internet-i-set/telefoniya	ip-telephonia/voip-telephone	N	IP-АТС распределяет звонки, а принимают их на IP-телефонах на столах сотрудников	b2b
+internet-i-set/telefoniya	ip-telephonia/voip-gates	N	VoIP-шлюз подключит к IP-АТС городские линии и старые аналоговые аппараты	b2b
+internet-i-set/telefoniya	gadgets/headphones	K	Если ещё нет гарнитуры: звонки через софтфон на компьютере пойдут без эха и с занятыми руками	b2b
+internet-i-set/videonabludenie	security/ip-videocams	H	без камер ПО не нужно	
+internet-i-set/videonabludenie	security/videoregistratory	S	регистратор тоже пишет архив	
+internet-i-set/videonabludenie	san-nas/nas	K	Если ещё нет сетевого хранилища: архив записей с камер хранится на нём неделями	b2b
+ip-telephonia/accessories_for_phones	ip-telephonia/voip-telephone	H	аксессуар к купленному телефону	
+ip-telephonia/consoles	ip-telephonia/voip-telephone	H	консоль к купленному телефону	
+ip-telephonia/dect	peripherals/voltage_regulator	U	база от обычной розетки	
+ip-telephonia/konferents-svyaz	ip-telephonia/spikerfony	S	та же задача — звук переговорной	
+ip-telephonia/konferents-svyaz	peripherals/displays	K	Если ещё нет экрана в переговорной: видеобар выведет участников встречи на монитор	b2b
+ip-telephonia/konferents-svyaz	internet-i-set/obschenie	K	Если ещё нет сервиса видеосвязи: камера и спикерфон по USB работают во встречах Контур.Толка	b2b
+ip-telephonia/provodnye-telefony	networking/net-cables	U	HDMI и Lightning не к телефону	
+ip-telephonia/spikerfony	ip-telephonia/konferents-svyaz	S	та же задача — звук переговорной	
+ip-telephonia/spikerfony	internet-i-set/obschenie	K	Если ещё нет сервиса видеосвязи: спикерфон по USB сразу работает во встречах Контур.Толка	b2b
+ip-telephonia/spikerfony	gadgets/webcam	K	Если ещё нет камеры: спикерфон даст звук, а вебкамера покажет участников за столом	
+ip-telephonia/system-phones	peripherals/voltage_regulator	U	работает от обычной розетки	
+ip-telephonia/voip-gates	networking/switch	H	шлюз ставят в готовую сеть	
+ip-telephonia/voip-gates	peripherals/ups	K	Если ещё нет ИБП: телефония офиса останется на связи при отключении света	b2b
+ip-telephonia/voip-telephone	ip-telephonia/accessories_for_phones	N	Камера, гарнитура или видеомодуль Yealink добавят IP-телефону видеозвонки и работу без трубки	b2b
+ip-telephonia/voip-telephone	ip-telephonia/consoles	K	Если ещё нет консоли: секретарь получит десятки кнопок быстрого набора к IP-телефону	b2b
+ip-telephonia/voip-telephone	networking/net-equipment	K	Если коммутатор без PoE: инжектор запитает IP-телефон по сетевому кабелю без адаптера	b2b
+karti-navigatsiya-puteshestviya/karti	portable-memory/flash-memory	K	Если ещё нет карты памяти: карты Навител займут гигабайты, на microSD навигатора они поместятся	b2c
+mebel-tovary-dlya-ofisa/kresla-i-stulya	mebel-tovary-dlya-ofisa/stellazhi	K	Если ещё нет стеллажа: папки и коробки уйдут со стола и пола кабинета	b2b
+multimedia/audioredaktori	gadgets/headphones	N	Шумы и щелчки при чистке записи слышны в наушниках, динамики ноутбука их прячут	
+multimedia/pleyeri	parts/odd	K	Если ещё нет DVD-привода: PowerDVD проиграет диски, а в новых ПК привода обычно нет	b2c
+multimedia/videoredaktori	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: исходники и проекты монтажа не пропадут при сбое диска	
+multimedia/videoredaktori	portable-memory/externalhdd	N	Видеоисходники занимают сотни гигабайт, внешний диск освободит место на компьютере	
+multimedia/videoredaktori	gadgets/headphones	N	Звук при монтаже сводят в наушниках, динамики ноутбука прячут шумы и перепады громкости	
+multimedia/videoredaktori	parts/videocards	K	Если ещё нет дискретной видеокарты: экспорт видео с аппаратным ускорением пойдёт в разы быстрее	
+networking/access-point	networking/net-cables	U	HDMI и Lightning не к сети	
+networking/access-point	networking/net-equipment	K	Если ещё нет PoE-инжектора: точка доступа под потолком получит питание по сетевому кабелю	
+networking/access-point	networking/switch	K	Если ещё нет PoE-коммутатора: он запитает и соединит сразу несколько точек доступа	b2b
+networking/adaptery-bluetooth	gadgets/headphones	N	Адаптер даёт компьютеру Bluetooth, и к нему подключится беспроводная гарнитура	
+networking/adaptery-bluetooth	peripherals/keyboards	K	Если ещё нет беспроводной клавиатуры и мыши: через адаптер они работают без проводов	
+networking/firewall	peripherals/ups	N	ИБП не даст роутеру перезагрузиться при скачке напряжения и оборвать интернет офиса	b2b
+networking/firewall	networking/switch	N	Портов роутера мало, коммутатор подключит к нему все рабочие места офиса	b2b
+networking/firewall	networking/access-point	K	Если ещё нет Wi-Fi: проводной роутер раздаёт интернет по кабелю, точка доступа добавит беспроводную сеть	b2b
+networking/net-cables	networking/switch	U	HDMI и Lightning не к сети	
+networking/net-equipment	peripherals/ups	K	Если ещё нет ИБП: камеры и точки доступа на PoE не отключатся при перебоях света	b2b
+networking/network-card	networking/net-cables	U	HDMI и Lightning не к сети	
+networking/powerline	networking/net-cables	U	HDMI и Lightning не к сети	
+networking/routers	networking/switch	K	Если ещё нет коммутатора: портов роутера не хватит для всех проводных ПК и приставок	
+networking/routers	peripherals/ups	K	Если ещё нет ИБП: интернет и Wi-Fi не пропадут при коротком отключении света	
+networking/routers	networking/wifi-adapters	K	Если у старого ПК нет Wi-Fi: адаптер подключит его к новому роутеру без кабеля	
+networking/switch	networking/net-cables	U	HDMI и Lightning не к сети	
+networking/switch	peripherals/ups	N	ИБП удержит коммутатор при скачке напряжения, и сеть офиса не упадёт	b2b
+networking/switch	networking/transceivers	N	Оптические порты SFP коммутатора работают только с трансиверами нужного стандарта	b2b
+networking/switch	parts/cables	K	Если ещё нет витой пары: компьютеры подключают к коммутатору кабелем нужной категории и длины	
+networking/transceivers	networking/net-cables	U	HDMI и Lightning не к оптике	
+networking/transceivers	networking/switch	H	трансивер ставят в порт коммутатора	
+networking/wifi-adapters	networking/routers	H	адаптер ловит существующую сеть	
+networking/wifi-antenna	networking/net-equipment	U	антенне нужна точка доступа	
+oblachnye-resheniya-iaas/upravlenie-biznesom-iaas	antivirusi-bezopasnost/antivirusi-organizatsii	K	Если ещё нет антивируса для организаций: облачные серверы защищают от вредоносов так же, как офисные	b2b
+oblachnye-resheniya-iaas/upravlenie-biznesom-iaas	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: копии облачных серверов будут храниться вне площадки провайдера	b2b
+obrazovanie-i-nauka/nauchnie-rascheti	computers/desktop	H	расчётам нужен компьютер	
+obrazovanie-i-nauka/nauchnie-rascheti	parts/ram	U	расчёты нетяжёлые	
+obrazovanie-i-nauka/obuchayuschie-programmi	computers/notebook	H	курс запускают на компьютере	
+obrazovanie-i-nauka/prochie-programmi	distantsionnoe-obuchenie/edu-internet	K	Если ещё нет системы дистанционного обучения: курсы и задания для класса публикуются в eLearning Server	b2b
+obrazovanie-i-nauka/programmi-dlya-vuzov	peripherals/displays	U	серверное ПО, не монитор	
+office/brochurateur	office/expendables	U	картриджи, не пружины	
+office/brochurateur	office/cutter	K	Если ещё нет резака: края листов и обложек выровняете перед переплётом	b2b
+office/cutter	office/brochurateur	K	Если ещё нет брошюратора: обрезанные листы сразу соберёте в переплетённый отчёт	b2b
+office/expendables	office/mfu	H	картриджу нужен принтер	
+office/graphic_pad	grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori	N	Планшету нужна программа для рисования, в графическом редакторе перо работает с нажимом	
+office/laminator	office/expendables	U	картриджи, не плёнка	
+office/laminator	office/cutter	K	Если ещё нет резака: листы обрежете в размер до и после ламинирования	b2b
+office/mfu	office/expendables	N	Запасной картридж нужного номера не даст печати встать посреди работы	
+office/mfu	office/accessories_for_office	K	Если ещё нет дополнительного лотка: тумба с лотком увеличит запас бумаги МФУ для отдела	b2b
+office/mfu	delovie-programmi/rabota-s-dokumentami	K	Если ещё нет PDF-программы: отсканированное на МФУ распознаете и отредактируете как текст	
+office/plotters	office/expendables	N	Плоттер расходует картриджи большого объёма, запасной комплект не остановит печать чертежей	
+office/scanner	delovie-programmi/rabota-s-dokumentami	N	PDF-программа с распознаванием превратит скан в текст, который можно править и искать	
+ofisnie-programmi/drugoe-ofisnoe-po	delovie-programmi/rabota-s-dokumentami	S	в OfficeSuite есть PDF-модуль	
+ofisnie-programmi/drugoe-ofisnoe-po	antivirusi-bezopasnost/antivirusi	K	Если ещё нет антивируса: документы из почты и мессенджеров он проверит до открытия	b2c
+ofisnie-programmi/ms-office	delovie-programmi/rabota-s-dokumentami	K	Если ещё нет PDF-редактора: Office сохраняет PDF, но править готовые PDF удобнее в нём	
+ofisnie-programmi/ms-office	antivirusi-bezopasnost/antivirusi	K	Если ещё нет антивируса: документы с макросами из почты он проверит до открытия	b2c
+ofisnie-programmi/ms-office	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: документы отдела восстановятся после шифровальщика или сбоя	b2b
+ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	K	Если ещё нет российской ОС: вместе с офисным пакетом она закроет импортозамещение рабочего места	b2b
+ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	antivirusi-bezopasnost/antivirusi-organizatsii	K	Если ещё нет антивируса для организаций: он проверит документы из почты до открытия	b2b
+ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	delovie-programmi/rabota-s-dokumentami	K	Если ещё нет PDF-редактора: сканы и PDF от контрагентов можно править и распознавать	b2b
+operating-systems/os-linux-unix	antivirusi-bezopasnost/antivirusi-organizatsii	N	Linux-рабочие станции тоже атакуют, антивирус для организаций защитит их и общие файлы	b2b
+operating-systems/os-linux-unix	diski-i-fayli/rezervnoe-kopirovanie	N	Резервная копия вернёт систему и данные после сбоя диска или неудачного обновления	b2b
+operating-systems/os-linux-unix	ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	K	Если ещё нет офисного пакета под Linux: документы и таблицы откроются без Microsoft Office	b2b
+operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie	N	Microsoft Office на Astra и РЕД ОС не работает, нужен офисный пакет под российскую ОС	b2b
+operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	antivirusi-bezopasnost/antivirusi-organizatsii	N	Антивирус из реестра российского ПО защитит рабочие станции и серверы на Astra и РЕД ОС	b2b
+operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	antivirusi-bezopasnost/bezopasnost-zaschita-informatsii	N	Для аттестованных систем к ОС добавляют СЗИ и криптопровайдер, например КриптоПро CSP	b2b
+operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет резервного копирования: Кибер Бэкап вернёт рабочие станции на Linux после сбоя	b2b
+operating-systems/windows-11-licenzii-home-i-pro	ofisnie-programmi/ms-office	N	Windows поставляется без Office, пакет для документов и таблиц покупают отдельно	
+operating-systems/windows-11-licenzii-home-i-pro	antivirusi-bezopasnost/antivirusi	N	Антивирус добавит к Windows защиту от фишинга, шифровальщиков и кражи паролей	b2c
+parts/chassis	parts/psu	N	Большинство корпусов продают без блока питания, его подбирают отдельно по мощности	
+parts/chassis	parts/coolers	K	Если ещё нет дополнительных вентиляторов: продув корпуса улучшится и температура снизится	
+parts/controllers	parts/hdd	N	К RAID-контроллеру подключают серверные диски и собирают из них отказоустойчивый массив	b2b
+parts/coolers	parts/cpu	H	кулер ставят на имеющийся процессор	
+parts/cpu	parts/coolers	N	OEM-процессор идёт без кулера, охлаждение под его сокет покупают отдельно	
+parts/cpu	parts/motherboard	K	Если ещё нет подходящей платы: новому процессору нужна материнская плата с его сокетом	
+parts/hdd	parts/cables	K	Если ещё нет кабеля SATA: без него диск не подключить к материнской плате	
+parts/motherboard	parts/cpu	N	Материнская плата продаётся без процессора, его подбирают под сокет и чипсет платы	
+parts/motherboard	parts/ram	K	Если ещё нет памяти нужного типа: под слоты платы подходит только DDR4 или только DDR5	
+parts/odd	parts/cables	U	внешний привод с кабелем	
+parts/odd	multimedia/zapis-cd-i-dvd	K	Если ещё нет программы записи: Power2Go запишет данные, видео и музыку на диск	
+parts/psu	parts/cables	U	кабели в комплекте блока	
+parts/psu	peripherals/ups	K	Если ещё нет ИБП: компьютер не выключится при отключении света и не потеряет несохранённое	
+parts/ram	parts/motherboard	H	память ставят в имеющуюся плату	
+parts/ram	parts/cpu	H	процессор уже стоит в ПК	
+parts/ssd	parts/cables	U	NVMe ставят без кабеля	
+parts/videocards	parts/psu	K	Если ещё нет блока питания с запасом: видеокарте нужны ватты и разъём питания PCIe	

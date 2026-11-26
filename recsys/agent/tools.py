@@ -39,9 +39,15 @@ class Catalog:
             for e in csv.DictReader(f):
                 if e["type"] != "same_line":
                     self.edges[e["src"]].append(e)
+        # спутники класса — из таблицы вердиктов пар; прежняя разметка облегчённой моделью — запасной источник
+        from recsys.llm.pair_verdicts import CLASS_FILE, as_class_links, read
+
         self.class_links: dict[str, list[dict]] = defaultdict(list)
         p = INTERIM / "class_links.csv"
-        if p.exists():
+        if CLASS_FILE.exists():
+            for link in as_class_links(read(CLASS_FILE)):
+                self.class_links[link["src_class"]].append(link)
+        elif p.exists():
             with p.open(encoding="utf-8") as f:
                 for link in csv.DictReader(f):
                     self.class_links[link["src_class"]].append(link)
