@@ -35,7 +35,8 @@ function client() {
 const SLOTS = new Set(["renew", "next", "missing", "replace", "popular"]);
 const bad = {};
 const note = (what, c, extra) => { (bad[what] = bad[what] || []).push(JSON.stringify({ c: { ...c, purchases: c.purchases.slice(0, 4) }, extra }).slice(0, 400)); };
-const engines = [new Recommender(graph, { fill: true }), new Recommender(graph, { fill: false }), new Recommender(graph, { fill: true, minConfidence: 0.8 })];
+const engines = [new Recommender(graph, { fill: true }), new Recommender(graph, { fill: false }), new Recommender(graph, { fill: true, minConfidence: 0.8 }),
+                 new Recommender(graph, { fill: true, unverified: true })];
 let total = 0, withThree = 0, empty = 0, worst = 0, crashes = 0;
 const t0 = process.hrtime.bigint();
 for (let i = 0; i < N; i++) {

@@ -45,9 +45,10 @@ def parity_clients(g: Graph, n: int = 300, seed: int = 5) -> list[dict]:
     linked = [f for f in g.out if f in g.nodes]
     everything = list(g.nodes)
     today = date(2026, 11, 26)
-    rec = Recommender(g, fill=True)
+    engines = {False: Recommender(g, fill=True), True: Recommender(g, fill=True, unverified=True)}
     out = []
     for i in range(n):
+        preview = i % 2 == 1                  # половина клиентов — глазами менеджера, с непроверенными связями
         ctype = rnd.choice(["b2b", "b2b", "b2c"])
         purchases = []
         for _ in range(rnd.choice([0, 1, 1, 2, 3, 5])):
@@ -56,11 +57,12 @@ def parity_clients(g: Graph, n: int = 300, seed: int = 5) -> list[dict]:
             term = rnd.choice([None, None, 12, 12, 24, 36, 0])
             purchases.append(Purchase(fam, d, term))
         client = Client(ctype, purchases, today=today)
-        recs = rec.recommend(client)
+        recs = engines[preview].recommend(client)
         out.append({
             "client": {"type": ctype, "today": today.isoformat(),
                        "purchases": [{"family": p.family, "date": p.date.isoformat() if p.date else None,
                                       "term": p.term_months} for p in purchases]},
+            "unverified": preview,
             "expect": [{"family": r.family, "slot": r.slot, "score": r.score, "why": r.why,
                         "also": r.also_family} for r in recs],
         })
@@ -74,7 +76,7 @@ def replacement_coverage(g: Graph, today: date = date(2026, 11, 26)) -> dict:
     sibling — российский продукт того же класса, названный в таблице аналогом другого продукта того же вендора;
     klass   — российский продукт того же класса из реестра (самый слабый вид).
     """
-    rec = Recommender(g)
+    rec = Recommender(g, unverified=True)      # считаем и то, что ждёт проверки менеджером
     out = {"gone": 0, "direct": 0, "sibling": 0, "klass": 0}
     for fam, n in g.nodes.items():
         if g.on_sale(fam) or str(n.get("ru", "0")) == "1" or n.get("kind", "software") == "hardware":
@@ -157,12 +159,17 @@ def main() -> None:
     if p.exists():
         class_names = json.loads(p.read_text(encoding="utf-8"))
     class_links = [link for links in g.class_links.values() for link in links]
+    check = {}
+    p = ROOT / "reports" / "class_links_check.json"
+    if p.exists():                                       # сводка проверки связей классов продажами
+        check = json.loads(p.read_text(encoding="utf-8"))
     data = {
         "meta": {
             "built": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "nodes": len(g.nodes), "edges": len(edges),
             "on_sale": sum(1 for f in g.nodes if g.on_sale(f)),
             "replace": replacement_coverage(g),
+            "class_check": check,
         },
         "nodes": [node_out(n) for n in g.nodes.values()],
         "classes": class_names,

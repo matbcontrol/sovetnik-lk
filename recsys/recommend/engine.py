@@ -58,11 +58,17 @@ LABEL = {
     "названия": "выведено из названий",
     "название товара": "сказано в названии товара",
     "таблица замещения АРПП": "реестр российского ПО",
-    "реестр и класс": "реестр российского ПО, тот же класс",
+    "реестр и класс": "тот же класс из реестра, ждёт проверки менеджером",
     "продажи": "подтверждено покупками",
-    "модель": "предложено моделью, проверено критиком",
+    "модель": "предложено моделью, ждёт проверки менеджером",
+    "модель и продажи": "связь классов подтверждена покупками",
+    "менеджер": "принято менеджером",
     "витрина": "порядок витрины магазина",
 }
+# Связь по классу — вывод, а не факт каталога. Клиенту она показывается, только если её подтвердили
+# продажи (не меньше SALES_OK клиентов) или принял менеджер; остальное ждёт в очереди на проверку.
+PENDING = "ждёт проверки менеджером"
+SALES_OK = 3
 RENEW_WINDOW = (-60, 120)  # дней до конца срока: от «просрочено два месяца» до «осталось четыре»
 
 
@@ -149,6 +155,7 @@ class Graph:
         self.class_links: dict[str, list[dict]] = defaultdict(list)
         for link in class_links or []:
             link["confidence"] = float(link["confidence"])
+            link["sales"] = int(float(link.get("sales") or 0))
             self.class_links[link["src_class"]].append(link)
         # семейства класса в порядке витрины или популярности
         self.class_rank = class_rank or {}
@@ -197,7 +204,10 @@ class Graph:
             return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
         nodes = {r["family"]: r for r in rows("graph_nodes.csv")}
-        return cls(nodes, rows("graph_edges.csv"), rows("class_links.csv"),
+        links, support = rows("class_links.csv"), obj("class_links_support.json")
+        for link in links:                               # ступень поддержки продажами: 0, 3, 10 или 50 клиентов
+            link["sales"] = support.get(f"{link['src_class']}|{link['dst_class']}", 0)
+        return cls(nodes, rows("graph_edges.csv"), links,
                    obj("class_rank.json"), obj("popular.json") or None, obj("class_names.json"))
 
     def klass(self, family: str) -> str:
@@ -221,13 +231,17 @@ class Graph:
 class Recommender:
     def __init__(self, graph: Graph, weights: dict[str, float] | None = None,
                  min_confidence: float = 0.0, diversify: bool = True,
-                 renew_window: tuple[int, int] = RENEW_WINDOW, fill: bool = False):
+                 renew_window: tuple[int, int] = RENEW_WINDOW, fill: bool = False,
+                 unverified: bool = False, approved: set[str] | None = None, rejected: set[str] | None = None):
         self.g = graph
         self.w = {**WEIGHT, **(weights or {})}
         self.min_confidence = min_confidence   # ползунок «охват — точность»
         self.diversify = diversify
         self.renew_window = renew_window
         self.fill = fill                       # добирать блок до трёх советов тем, что «чаще всего берут»
+        self.unverified = unverified           # показывать и связи по классу, которые ещё никто не проверил
+        self.approved = approved or set()      # ключи связей по классу, принятых менеджером
+        self.rejected = rejected or set()      # ключи связей по классу, отклонённых менеджером
 
     # ---- запасной уровень ----------------------------------------------------------------
 
@@ -496,12 +510,19 @@ class Recommender:
                 for rank, (dst, sib) in enumerate(pool[:CLASS_ANALOG_TOP]):
                     if self._banned(client, owned, platforms, dst, "analog_class", fam):
                         continue
+                    key = f"cr|{cls}|{dst}"
+                    if key in self.rejected:
+                        continue
+                    if not (self.unverified or key in self.approved):
+                        bans.append({"family": dst, "type": "analog_class", "from": fam, "reason": PENDING, "key": key})
+                        break
                     s = min(0.95, self.w["analog_class"] * CLASS_ANALOG_CONFIDENCE * recency * 2.0)
                     if lapse:
                         s = max(s, LAPSE_CLASS)
                     if not self.g.on_sale(dst):
                         s *= 0.8
-                    edge = {"src": fam, "dst": dst, "type": "analog_class", "source": "реестр и класс",
+                    edge = {"src": fam, "dst": dst, "type": "analog_class", "key": key,
+                            "source": "менеджер" if key in self.approved else "реестр и класс",
                             "confidence": CLASS_ANALOG_CONFIDENCE, "evidence": "", "lapse": lapse,
                             "of_class": cls, "group": f"replace:{fam}", "sibling": sib}
                     push(dst, "replace", s / (1 + 0.35 * rank), edge, p)
@@ -513,14 +534,24 @@ class Recommender:
                 if link.get("audience", "any") not in ("any", "", client.client_type):
                     continue                            # совет адресован другому типу клиента
                 t = link.get("type") if link.get("type") in self.w else "complements"
+                key = f"cl|{link['src_class']}|{link['dst_class']}"
+                if key in self.rejected:
+                    continue                            # менеджер отклонил связь
+                by_sales = link.get("sales", 0) >= SALES_OK
+                shown = self.unverified or by_sales or key in self.approved
+                source = "менеджер" if key in self.approved else "модель и продажи" if by_sales \
+                    else link.get("source", "модель")
                 for rank, dst in enumerate(self.g.class_rank.get(link["dst_class"], ())[:10]):
                     reason = self._banned(client, owned, platforms, dst, t, fam)
                     if reason:
                         continue
+                    if not shown:                       # клиент не увидит совет, пока связь не принята
+                        bans.append({"family": dst, "type": t, "from": fam, "reason": PENDING, "key": key})
+                        break
                     edge = {
-                        "src": fam, "dst": dst, "type": t, "source": link.get("source", "модель"),
+                        "src": fam, "dst": dst, "type": t, "source": source,
                         "confidence": link["confidence"], "evidence": link.get("reason", ""),
-                        "class": link["dst_class"], "rank": rank + 1,
+                        "class": link["dst_class"], "rank": rank + 1, "key": key,
                     }
                     # чем ниже товар на витрине своего класса, тем слабее совет
                     push(dst, "missing", self.w[t] * link["confidence"] * recency / (1 + 0.35 * rank), edge, p)

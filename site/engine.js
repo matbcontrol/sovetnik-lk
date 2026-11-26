@@ -37,9 +37,11 @@
     "названия": "выведено из названий",
     "название товара": "сказано в названии товара",
     "таблица замещения АРПП": "реестр российского ПО",
-    "реестр и класс": "реестр российского ПО, тот же класс",
+    "реестр и класс": "тот же класс из реестра, ждёт проверки менеджером",
     "продажи": "подтверждено покупками",
-    "модель": "предложено моделью, проверено критиком",
+    "модель": "предложено моделью, ждёт проверки менеджером",
+    "модель и продажи": "связь классов подтверждена покупками",
+    "менеджер": "принято менеджером",
     "витрина": "порядок витрины магазина",
   };
   const TYPE_TITLE = {
@@ -48,6 +50,10 @@
     copurchase: "покупают вместе", next_purchase: "покупают следом", mentions: "упоминание",
     analog_ru: "российский аналог", analog_class: "российский продукт того же класса", same_line: "та же линейка", popular: "часто берут",
   };
+  // Связь по классу — вывод, а не факт каталога. Клиенту она показывается, только если её подтвердили
+  // продажи (не меньше SALES_OK клиентов) или принял менеджер; остальное ждёт в очереди на проверку.
+  const PENDING = "ждёт проверки менеджером";
+  const SALES_OK = 3;
   const RENEW_WINDOW = [-60, 120];
   const DAY = 86400000;
 
@@ -134,6 +140,9 @@
       this.diversify = opts.diversify !== false;
       this.renewWindow = opts.renewWindow || RENEW_WINDOW;
       this.fill = !!opts.fill;
+      this.unverified = !!opts.unverified;             // показывать и связи по классу, которые никто не проверил
+      this.approved = opts.approved || new Set();      // ключи связей по классу, принятых менеджером
+      this.rejected = opts.rejected || new Set();      // ключи связей по классу, отклонённых менеджером
     }
 
     _term(p) {
@@ -376,32 +385,50 @@
           let pool = (g.ruByClass.get(cls) || []).filter((d) => d !== fam && !mine.has(d)).map((d) => [d, sibling(d)]);
           // сначала те, кого таблица замещения называет аналогом другого продукта того же вендора
           pool = pool.filter((x) => x[1]).concat(pool.filter((x) => !x[1])).slice(0, CLASS_ANALOG_TOP);
-          pool.forEach(([dst, sib], rank) => {
-            if (this._banned(client, owned, platforms, dst, "analog_class", fam)) return;
+          for (let rank = 0; rank < pool.length; rank++) {
+            const [dst, sib] = pool[rank];
+            if (this._banned(client, owned, platforms, dst, "analog_class", fam)) continue;
+            const key = `cr|${cls}|${dst}`;
+            if (this.rejected.has(key)) continue;
+            if (!(this.unverified || this.approved.has(key))) {
+              bans.push({ family: dst, type: "analog_class", from: fam, reason: PENDING, key });
+              break;
+            }
             let s = Math.min(0.95, this.w.analog_class * CLASS_ANALOG_CONFIDENCE * recency * 2.0);
             if (lapse) s = Math.max(s, LAPSE_CLASS);
             if (!g.onSale(dst)) s *= 0.8;
             const edge = {
-              src: fam, dst, type: "analog_class", source: "реестр и класс", confidence: CLASS_ANALOG_CONFIDENCE,
+              src: fam, dst, type: "analog_class", key, source: this.approved.has(key) ? "менеджер" : "реестр и класс",
+              confidence: CLASS_ANALOG_CONFIDENCE,
               evidence: "", lapse, of_class: cls, group: "replace:" + fam, sibling: sib,
             };
             push(dst, "replace", s / (1 + 0.35 * rank), edge);
-          });
+          }
         }
         for (const link of g.classLinks.get(g.klass(fam)) || []) {
           if (link.confidence < this.minConfidence) continue;
           const aud = link.audience || "any";
           if (aud !== "any" && aud !== client.type) continue;
           const t = link.type in this.w ? link.type : "complements";
+          const key = `cl|${link.src_class}|${link.dst_class}`;
+          if (this.rejected.has(key)) continue;        // менеджер отклонил связь
+          const bySales = (link.sales || 0) >= SALES_OK;
+          const shown = this.unverified || bySales || this.approved.has(key);
+          const source = this.approved.has(key) ? "менеджер" : bySales ? "модель и продажи" : (link.source || "модель");
           const list = (g.classRank[link.dst_class] || []).slice(0, 10);
-          list.forEach((dst, rank) => {
-            if (this._banned(client, owned, platforms, dst, t, fam)) return;
+          for (let rank = 0; rank < list.length; rank++) {
+            const dst = list[rank];
+            if (this._banned(client, owned, platforms, dst, t, fam)) continue;
+            if (!shown) {                              // клиент не увидит совет, пока связь не принята
+              bans.push({ family: dst, type: t, from: fam, reason: PENDING, key });
+              break;
+            }
             const edge = {
-              src: fam, dst, type: t, source: link.source || "модель", confidence: link.confidence,
-              evidence: link.reason || "", class: link.dst_class, rank: rank + 1,
+              src: fam, dst, type: t, source, confidence: link.confidence,
+              evidence: link.reason || "", class: link.dst_class, rank: rank + 1, key,
             };
             push(dst, "missing", (this.w[t] * link.confidence * recency) / (1 + 0.35 * rank), edge);
-          });
+          }
         }
       }
 
@@ -445,7 +472,7 @@
     }
   }
 
-  const api = { Graph, Recommender, SLOT, SLOT_TITLE, WEIGHT, LABEL, TYPE_TITLE, parseDate, fmt, addMonths };
+  const api = { Graph, Recommender, SLOT, SLOT_TITLE, WEIGHT, LABEL, TYPE_TITLE, PENDING, SALES_OK, parseDate, fmt, addMonths };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.Engine = api;
 })(typeof window !== "undefined" ? window : globalThis);

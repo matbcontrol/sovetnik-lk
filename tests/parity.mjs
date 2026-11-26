@@ -8,11 +8,12 @@ const { Graph, Recommender } = require("../site/engine.js");
 
 const graph = new Graph(JSON.parse(readFileSync(new URL("../site/data/graph.json", import.meta.url), "utf8")));
 const cases = JSON.parse(readFileSync(new URL("../site/data/parity.json", import.meta.url), "utf8"));
-const rec = new Recommender(graph, { fill: true });
+// половина контрольных клиентов считается «глазами менеджера» — с непроверенными связями по классу
+const engines = { false: new Recommender(graph, { fill: true }), true: new Recommender(graph, { fill: true, unverified: true }) };
 
 let bad = 0, withAdvice = 0;
 for (const [i, c] of cases.entries()) {
-  const got = rec.recommend(c.client, 3).recs;
+  const got = engines[!!c.unverified].recommend(c.client, 3).recs;
   if (c.expect.length) withAdvice++;
   const same = got.length === c.expect.length && got.every((r, j) => {
     const e = c.expect[j];

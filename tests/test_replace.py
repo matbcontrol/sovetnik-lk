@@ -25,8 +25,9 @@ def graph() -> Graph:
 
 
 def advise(family, bought, term=12, client_type="b2b", k=3, **opts):
+    """Совет глазами менеджера: вместе со связями по классу, которые ещё никто не проверил."""
     client = Client(client_type, [Purchase(family, bought, term)], today=TODAY)
-    return Recommender(graph(), **opts).recommend(client, k)
+    return Recommender(graph(), **{"unverified": True, **opts}).recommend(client, k)
 
 
 def test_expired_licence_of_withdrawn_product_gets_replacement_first():
@@ -56,7 +57,7 @@ def test_direct_analogue_wins_over_class_replacement():
 def test_on_request_russian_product_is_only_for_organisations():
     b2b = {r.family for r in advise("other/tool", date(2025, 11, 23), k=5)}
     assert not b2b                                                   # в классе нет российских продуктов — совета нет
-    fams = lambda t: [r.family for r in Recommender(graph()).recommend(        # noqa: E731
+    fams = lambda t: [r.family for r in Recommender(graph(), unverified=True).recommend(        # noqa: E731
         Client(t, [Purchase("acme/suite", date(2025, 11, 23), 12), Purchase("rus/kraski", date(2026, 1, 1), 0),
                    Purchase("rus/plakat", date(2026, 1, 1), 0)], today=TODAY), 5)]
     assert fams("b2b") == ["rus/zakaz"] and fams("b2c") == []
@@ -64,3 +65,30 @@ def test_on_request_russian_product_is_only_for_organisations():
 
 def test_strict_mode_hides_class_replacement():
     assert advise("acme/suite", date(2025, 11, 23), min_confidence=0.6) == []
+
+
+def test_client_does_not_see_class_replacement_until_manager_accepts():
+    client = Client("b2b", [Purchase("acme/suite", date(2025, 11, 23), 12)], today=TODAY)
+    recs, bans = Recommender(graph()).recommend(client, 3, explain_bans=True)
+    assert recs == []                                                # клиенту ничего не показано
+    assert [(b["family"], b["reason"]) for b in bans] == [("rus/kraski", "ждёт проверки менеджером")]
+    key = bans[0]["key"]
+    accepted = Recommender(graph(), approved={key}).recommend(client, 3)
+    assert accepted[0].family == "rus/kraski" and accepted[0].label == "принято менеджером"
+    assert Recommender(graph(), unverified=True, rejected={key}).recommend(client, 3)[0].family == "rus/plakat"
+
+
+def test_class_link_is_shown_when_sales_confirm_it():
+    nodes = {f: {"family": f, "name": f, "vendor": "v", "class": c, "on_sale": "1", "kind": "software"}
+             for f, c in [("v/antivirus", "c/av"), ("v/backup", "c/backup")]}
+    link = {"src_class": "c/av", "dst_class": "c/backup", "type": "complements", "audience": "any",
+            "confidence": "0.8", "reason": "К антивирусу нужно резервное копирование", "source": "модель"}
+    client = Client("b2b", [Purchase("v/antivirus", date(2026, 6, 1), 0)], today=TODAY)
+
+    def advice(sales):
+        g = Graph(nodes, [], [dict(link, sales=sales)], class_rank={"c/backup": ["v/backup"]})
+        return Recommender(g).recommend(client, 3)
+
+    assert advice(0) == []                                           # модель предложила, никто не подтвердил
+    shown = advice(10)
+    assert shown[0].family == "v/backup" and shown[0].label == "связь классов подтверждена покупками"
