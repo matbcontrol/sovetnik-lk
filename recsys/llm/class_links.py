@@ -88,11 +88,13 @@ def batches(keys: list[str], small: int = 12, small_part: int = 60, big: int = 3
     return out + [rest[i:i + big] for i in range(0, len(rest), big)]
 
 
-def propose(llm, classes: dict[str, dict]) -> list[dict]:
+def propose(llm, classes: dict[str, dict], only: list[str] | None = None) -> list[dict]:
+    """Предложение связей. only — разметить только эти классы (дозаполнение), порциями по 12."""
     keys, links = list(classes), []
     catalog = catalog_text(classes)
     done = 0
-    for batch in batches(keys):
+    plan = batches(keys) if only is None else [only[i:i + 12] for i in range(0, len(only), 12)]
+    for batch in plan:
         done += len(batch)
         i, batch_size = done - len(batch), len(batch)
         data = llm.json(PROPOSE_SYSTEM, PROPOSE_USER.format(catalog=catalog, batch=", ".join(batch)),
@@ -138,6 +140,8 @@ def criticize(llm, classes: dict[str, dict], links: list[dict], batch_size: int 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true", help="показать запрос и объём, модель не вызывать")
+    ap.add_argument("--only-missing", action="store_true",
+                    help="дозаполнить: разметить только классы, у которых связей ещё нет, и добавить к готовым")
     args = ap.parse_args()
     classes = load_classes()
     catalog = catalog_text(classes)
@@ -150,15 +154,23 @@ def main() -> None:
         return
     from recsys.llm.client import LLM, usage_summary
     llm = LLM()
-    links = propose(llm, classes)
-    kept = criticize(llm, classes, links)
     path = INTERIM / "class_links.csv"
+    old_links: list[dict] = []
+    only = None
+    if args.only_missing and path.exists():
+        with path.open(encoding="utf-8") as f:
+            old_links = list(csv.DictReader(f))
+        have = {l["src_class"] for l in old_links}
+        only = [k for k in classes if k not in have]
+        print(f"дозаполнение: классов без связей {len(only)}")
+    links = propose(llm, classes, only)
+    kept = old_links + criticize(llm, classes, links)
     with path.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=["src_class", "dst_class", "type", "audience", "confidence", "reason", "critic", "source"])
         w.writeheader()
         w.writerows(kept)
     covered = len({l["src_class"] for l in kept})
-    print(f"предложено {len(links)}, после проверки {len(kept)}; классов со связями {covered} из {len(classes)} -> {path}")
+    print(f"предложено {len(links)}, всего после проверки {len(kept)}; классов со связями {covered} из {len(classes)} -> {path}")
     print("расход:", json.dumps(usage_summary(), ensure_ascii=False))
 
 
