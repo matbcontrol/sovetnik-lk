@@ -75,6 +75,7 @@ def keeper(at: dict, verdicts: Verdicts, allow: tuple[str, ...] = SHOWN, popular
     """
     steps: set[tuple[str, str]] = set()                # по одному совету «следующая ступень» и «замена» на покупку
     foreign: list[str] = []                            # чужие линейки в порядке оценки: дальше горизонта не смотрим
+    shown: list[str] = []                              # чужие линейки, уже принятые в блок
 
     def keep(history: list[str], s: Scored) -> tuple[bool, str]:
         ab = at.get(s.replaces or s.item)
@@ -101,7 +102,16 @@ def keeper(at: dict, verdicts: Verdicts, allow: tuple[str, ...] = SHOWN, popular
                 return False, "предыдущая версия уже купленного продукта"
         if tier == "kit" and ab is not None and (ab.nline or ab.line) in popular:
             return False, "комплект из числа популярных: идёт строкой «Часто докупают»"
-        if tier == "line" or tier in allow:
+        if tier == "line":
+            return True, ""
+        if tier in allow and ab is not None:
+            # два совета, которые по вердикту пары — одно и то же (две программы подписи файлов), не нужны
+            for k in shown:
+                for pair in ((k, ab.line), (ab.line, k)):
+                    v = verdicts.get(*pair)
+                    if v is not None and v.verdict == "same":
+                        return False, "то же самое, что уже показанный совет"
+            shown.append(ab.line)
             return True, ""
         return False, f"{MARK}{tier}|{by}"
     return keep

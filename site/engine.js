@@ -120,6 +120,7 @@
       // пары товаров с вердиктом «уже есть», «то же самое», «не связано»: такой товар не советуем и по связи классов
       this.veto = new Set((data.veto || []).map((x) => x[0] + "|" + x[1]));
       this.vetoHard = new Set((data.veto || []).filter((x) => x.length < 3 || x[2] === "has" || x[2] === "same").map((x) => x[0] + "|" + x[1]));
+      this.vetoSame = new Set((data.veto || []).filter((x) => x[2] === "same").map((x) => x[0] + "|" + x[1]));
       // пары классов с вердиктом «уже есть» или «то же самое»: такое не идёт и в строку «часто берут»
       this.classVeto = new Set((data.class_veto || []).map((x) => x[0] + "|" + x[1]));
       // «товар — класс»: первые товары класса этому товару не подошли, связь классов для него не действует
@@ -407,8 +408,10 @@
           direct = direct || t === "analog_ru";
           if (t === "upgrade" || t === "new_version") e = Object.assign({}, e, { group: "next:" + fam });   // на одну покупку — одна «следующая ступень»
           if (t === "complements" && (e.source === VERDICT_SOURCE.need || e.source === VERDICT_SOURCE.kit)) {
-            // проверенная пара товаров: из одного класса в блоке один совет, как и по связи классов
-            e = Object.assign({}, e, { group: (g.nodes.get(e.dst) || {}).cls || "" });
+            // проверенная пара товаров: из чужого класса в блоке один совет (два антивируса к одной системе
+            // не нужны). В своём классе у продукта бывает несколько разных дополнений: их не склеиваем.
+            const dstClass = (g.nodes.get(e.dst) || {}).cls || "";
+            if (dstClass !== ((g.nodes.get(fam) || {}).cls || "")) e = Object.assign({}, e, { group: dstClass });
           }
           if (e.source === VERDICT_SOURCE.kit) {
             const key = `pk|${fam}|${e.dst}`;
@@ -536,7 +539,9 @@
             best.alsoFamily = step.family;
           }
         }
-        pool = pool.filter((r) => !block.has(r.family) && !(best.viaClass && r.viaClass === best.viaClass));
+        // в блоке нет двух товаров, которые по вердикту пары — одно и то же (две редакции одного продукта)
+        pool = pool.filter((r) => !block.has(r.family) && !(best.viaClass && r.viaClass === best.viaClass)
+          && !g.vetoSame.has(best.family + "|" + r.family) && !g.vetoSame.has(r.family + "|" + best.family));
       }
       return chosen;
     }

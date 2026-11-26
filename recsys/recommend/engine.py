@@ -161,6 +161,7 @@ class Graph:
         self.veto: set[tuple[str, str]] = {(x[0], x[1]) for x in (veto or [])}
         self.veto_hard: set[tuple[str, str]] = {(x[0], x[1]) for x in (veto or [])
                                                 if len(x) < 3 or x[2] in ("has", "same")}
+        self.veto_same: set[tuple[str, str]] = {(x[0], x[1]) for x in (veto or []) if len(x) > 2 and x[2] == "same"}
         # «товар — класс»: первые товары класса этому товару не подошли, связь классов для него не действует
         self.class_block: set[tuple[str, str]] = {(a, c) for a, c in (class_block or [])}
         self.out: dict[str, list[dict]] = defaultdict(list)
@@ -554,8 +555,12 @@ class Recommender:
                 if t in ("upgrade", "new_version"):
                     e = {**e, "group": f"next:{fam}"}           # на одну покупку — одна «следующая ступень» в блоке
                 if t == "complements" and e.get("source") in VERDICT_SOURCE.values():
-                    # проверенная пара товаров: из одного класса в блоке один совет, как и по связи классов
-                    e = {**e, "group": (self.g.nodes.get(e["dst"]) or {}).get("class") or ""}
+                    # проверенная пара товаров: из чужого класса в блоке один совет (два антивируса к одной
+                    # системе не нужны). В своём классе у продукта бывает несколько разных дополнений
+                    # (к криптопровайдеру — служба штампов времени и TLS-сервер): их не склеиваем.
+                    dst_class = (self.g.nodes.get(e["dst"]) or {}).get("class") or ""
+                    if dst_class != ((self.g.nodes.get(fam) or {}).get("class") or ""):
+                        e = {**e, "group": dst_class}
                 if e.get("source") == VERDICT_SOURCE["kit"]:
                     key = f"pk|{fam}|{e['dst']}"
                     if key in self.rejected:
@@ -694,6 +699,9 @@ class Recommender:
                 if steps:
                     step = max(steps, key=lambda r: r.score)
                     best.also, best.also_family = step.why, step.family
+            # в блоке нет двух товаров, которые по вердикту пары — одно и то же (две редакции одного продукта)
+            twin = self.g.veto_same
             pool = [r for r in pool if r.family not in block
-                    and not (best.via_class and r.via_class == best.via_class)]
+                    and not (best.via_class and r.via_class == best.via_class)
+                    and (best.family, r.family) not in twin and (r.family, best.family) not in twin]
         return chosen

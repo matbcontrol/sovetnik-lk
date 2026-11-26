@@ -201,7 +201,8 @@ def main() -> None:
         "classes": class_names,
         "edges": edges,
         "class_links": class_links,
-        "veto": sorted([a, b, "has" if (a, b) in g.veto_hard else "unrelated"] for a, b in g.veto),
+        "veto": sorted([a, b, "same" if (a, b) in g.veto_same else "has" if (a, b) in g.veto_hard else "unrelated"]
+                       for a, b in g.veto),
         "class_veto": sorted([a, b] for a, b in g.class_veto),
         "class_block": sorted([a, c] for a, c in g.class_block),
         "class_picks": {k: sorted(v) for k, v in sorted(g.class_picks.items())},
