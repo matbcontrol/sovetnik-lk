@@ -48,6 +48,61 @@ CATALOG = ["fam_sum", "fam_max", "fam_t", "cls_max", "same_line", "n_owned_in_li
            "kind_b", "kind_a", "kind_tr", "band_rel", "band_ratio", "term_same", "term_b", "period_delta",
            "same_vkey", "version_delta", "name_sim", "share_in_line", "edu_b", "cert_b"]
 COL = {name: i for i, name in enumerate(FEATURES)}
+CLASS_LINKS = INTERIM / "class_links.csv"
+LINK_REGIMES = {
+    "full_links": "полная модель + связи классов от ИИ",
+    "new_item_links": "товар-новичок + связи классов от ИИ",
+}
+
+
+class ClassLinks:
+    """Связи между классами каталога (разметка моделью с проверкой) в терминах товаров из продаж.
+
+    Для клиента дают кандидатов из других линеек: самые ходовые товары тех классов, которые,
+    по разметке, обычно берут вместе с классами его покупок. Сами связи получены без данных продаж.
+    """
+
+    def __init__(self, task: Task):
+        names = json.loads((INTERIM / "class_names.json").read_text(encoding="utf-8"))
+        slug_of = {}
+        for slug, name in names.items():
+            slug_of.setdefault(name.strip().lower(), slug)
+        self.slug = {i: slug_of.get((r.get("subcategory") or "").strip().lower(), "") for i, r in task.items.items()}
+        self.links: dict[str, list[tuple[str, float, str, str]]] = defaultdict(list)
+        with CLASS_LINKS.open(encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                self.links[r["src_class"]].append((r["dst_class"], float(r["confidence"]), r["type"], r.get("audience") or "any"))
+        self._by_class: dict[int, dict[str, list[str]]] = {}
+
+    def items_of(self, st: FoldStats) -> dict[str, list[str]]:
+        key = id(st)
+        if key not in self._by_class:
+            by: dict[str, list[str]] = defaultdict(list)
+            for item, _ in st.owners.most_common():           # по убыванию числа покупателей до даты разреза
+                if self.slug.get(item):
+                    by[self.slug[item]].append(item)
+            self._by_class[key] = by
+        return self._by_class[key]
+
+    def candidates(self, st: FoldStats, c: str, per_class: int = 5) -> dict[str, tuple[float, int]]:
+        h = st.fold.history[c]
+        owned = set(h)
+        group = "b2b" if st.task.clients.get(c, {}).get("client_group") == "B2B" else "b2c"
+        by = self.items_of(st)
+        out: dict[str, tuple[float, int]] = {}
+        for src in {self.slug.get(a, "") for a in h} - {""}:
+            for dst, conf, typ, aud in self.links.get(src, ()):
+                if aud not in ("any", "", group):
+                    continue
+                w = conf * (1.3 if typ == "requires" else 1.0)
+                for b in by.get(dst, [])[:per_class]:
+                    if b not in owned:
+                        cur = out.get(b, (0.0, 0))
+                        out[b] = (max(cur[0], w), cur[1] + 1)
+        return out
+
+
+LINKS: ClassLinks | None = None
 SEGS = ["A все", "A B2B", "A B2C", "B все", "B B2B", "B B2C"]
 
 
@@ -91,13 +146,26 @@ def in_regime(st: FoldStats, h: list[str], regime: str):
 
 def rows_in_regime(st: FoldStats, c: str, regime: str) -> dict[str, list[float]]:
     """Кандидаты и признаки клиента в заданном режиме."""
-    with in_regime(st, st.fold.history[c], regime):
-        rows = st.rows(c)
-    if regime in ("no_catalog", "new_item_no_catalog"):
+    with_links = regime.endswith("_links")
+    base = regime[: -len("_links")] if with_links else regime
+    extra = LINKS.candidates(st, c) if with_links and LINKS else {}
+    with in_regime(st, st.fold.history[c], base):
+        keep = st.pop_top
+        if extra:                                              # кандидаты из связанных классов
+            st.pop_top = keep + [b for b in extra if b not in keep]
+        try:
+            rows = st.rows(c)
+        finally:
+            st.pop_top = keep
+    if base in ("no_catalog", "new_item_no_catalog"):
         idx = [COL[n] for n in CATALOG]
         for vec in rows.values():
             for i in idx:
                 vec[i] = 0.0
+    if with_links:                                             # два признака: сила связи классов и число связей
+        for b, vec in rows.items():
+            conf, n = extra.get(b, (0.0, 0))
+            vec.extend([conf, float(n)])
     return rows
 
 
@@ -116,7 +184,8 @@ class Prep:
                 self.items.append(b)
                 X.append(vec)
                 y.append(1 if b in tgt else 0)
-        self.X = np.array(X, dtype=np.float32) if X else np.zeros((0, len(FEATURES)), dtype=np.float32)
+        width = len(FEATURES) + (2 if regime.endswith("_links") else 0)
+        self.X = np.array(X, dtype=np.float32) if X else np.zeros((0, width), dtype=np.float32)
         self.y = np.array(y, dtype=np.int8)
 
     def recommend(self, scores: np.ndarray, top: int = 3) -> dict[str, list[str]]:
@@ -228,7 +297,13 @@ def main() -> None:
 
     report: dict = {"protocol": {"train_until": OFFICIAL[1], "test_from": OFFICIAL[2]}, "regimes": {}}
     recs_by, values_by = {}, {}
-    for regime, title in REGIMES.items():
+    regimes = dict(REGIMES)
+    if CLASS_LINKS.exists():
+        global LINKS
+        LINKS = ClassLinks(task)
+        regimes.update(LINK_REGIMES)
+        print(f"связей между классами (разметка моделью): {sum(len(v) for v in LINKS.links.values())}")
+    for regime, title in regimes.items():
         train = [Prep(st, regime) for st in stats.values()]
         model = fit(train)
         test = Prep(off, regime)
@@ -254,21 +329,25 @@ def main() -> None:
     print("\n== 2–3. Precision@3 по протоколу организаторов ==")
     print(f"{'':36}" + "".join(f"{s:>9}" for s in SEGS))
     print(f"{'популярность (организаторы)':36}" + "".join(f"{pop_seg[s]['value']:>9.1%}" for s in SEGS))
-    for regime, title in REGIMES.items():
+    for regime, title in regimes.items():
         r = report["regimes"][regime]["precision@3"]
         print(f"{title:36}" + "".join(f"{r[s]:>9.1%}" for s in SEGS))
     print("\n95% интервалы для организаций (группа A / группа B):")
-    for regime, title in REGIMES.items():
+    for regime, title in regimes.items():
         c = report["regimes"][regime]["ci"]
         print(f"  {title:34} A {c['A B2B'][0]:.1%}–{c['A B2B'][1]:.1%}   B {c['B B2B'][0]:.1%}–{c['B B2B'][1]:.1%}")
     report["baseline_popularity"] = {s: pop_seg[s]["value"] for s in SEGS}
 
     print("\nразница на одних и тех же клиентах (организации), в процентных пунктах:")
     diffs = {}
-    for name, a, b in [("знания каталога при полной истории", "full", "no_catalog"),
-                       ("знания каталога для товара-новичка", "new_item", "new_item_no_catalog"),
-                       ("цена потери истории товара", "new_item", "full"),
-                       ("цена потери истории семейства", "new_family", "full")]:
+    pairs = [("знания каталога при полной истории", "full", "no_catalog"),
+             ("знания каталога для товара-новичка", "new_item", "new_item_no_catalog"),
+             ("цена потери истории товара", "new_item", "full"),
+             ("цена потери истории семейства", "new_family", "full")]
+    if "full_links" in regimes:
+        pairs += [("связи классов от ИИ при полной истории", "full_links", "full"),
+                  ("связи классов от ИИ для товара-новичка", "new_item_links", "new_item")]
+    for name, a, b in pairs:
         diffs[name] = {}
         for s in ("A B2B", "B B2B"):
             d, lo, hi = paired(values_by[a][s]["values"], values_by[b][s]["values"])
