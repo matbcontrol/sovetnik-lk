@@ -207,3 +207,36 @@ figcaption { font-size: 13px; color: var(--ink-2); margin-bottom: 10px; font-wei
 .bars__ci::after { right: 0; }
 .bars__val { font-variant-numeric: tabular-nums; font-size: 13px; text-align: right; color: var(--ink); }
 .bars__row:hover .bars__bar { filter: brightness(0.92); }
+
+/* ---- вкладка «Агент» ---- */
+.exam { margin: 14px 0 0; display: grid; gap: 8px; }
+.exam div { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--ink-2); border-bottom: 1px dotted var(--hair); padding-bottom: 4px; }
+.exam dd { margin: 0; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.runs { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.runs li { border: 1px solid var(--hair); border-radius: 8px; padding: 7px 10px; cursor: pointer; background: #fff; font-size: 14px; }
+.runs li:hover { border-color: var(--axis); }
+.runs li.is-cur { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.runs small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.mark { font-weight: 600; }
+.mark--yes { color: var(--good); }
+.mark--no { color: var(--muted); }
+.agent h3 { margin-top: 20px; }
+.agent__card { background: #f0efec; border-radius: 8px; padding: 10px 12px; color: var(--ink-2); font-size: 14px; }
+.agent__card b { color: var(--ink); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.steps li { border-left: 3px solid var(--axis); padding: 2px 0 2px 12px; }
+.steps .ask { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.steps code { background: #f0efec; border-radius: 4px; padding: 1px 5px; font-size: 13px; }
+.steps .found { color: var(--ink-2); font-size: 13px; margin-top: 2px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 900px) { .pair { grid-template-columns: 1fr; } }
+.pair > div { border: 1px solid var(--ring); border-radius: 8px; padding: 10px 12px; background: #fff; }
+.pair h4 { margin: 0 0 6px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+.pair p { margin: 3px 0; }
+.kept li, .cut li { margin: 5px 0; }
+.kept, .cut { margin: 0; padding-left: 18px; }
+.cut { color: var(--ink-2); }
+.cut li::marker { color: var(--bad); }
+
+textarea { font: inherit; color: var(--ink); border: 1px solid var(--axis); border-radius: 6px; padding: 7px 9px; background: #fff; width: 100%; resize: vertical; }
+.btn[disabled] { opacity: .5; cursor: default; }

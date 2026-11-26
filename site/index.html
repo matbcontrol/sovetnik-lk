@@ -19,6 +19,7 @@
 <nav class="tabs" role="tablist">
   <button class="tab is-active" data-tab="client" role="tab">Клиент</button>
   <button class="tab" data-tab="product" role="tab">Товар</button>
+  <button class="tab" data-tab="agent" role="tab">Агент</button>
   <button class="tab" data-tab="links" role="tab">Связи на проверку</button>
   <button class="tab" data-tab="numbers" role="tab">Цифры</button>
 </nav>
@@ -115,6 +116,30 @@
         <ul class="suggest" id="prod-list"></ul>
       </div>
       <div id="prod-view" class="prod"></div>
+    </div>
+  </section>
+
+  <!-- Агент -->
+  <section class="pane" id="pane-agent">
+    <div class="split">
+      <aside class="panel">
+        <h2>Вынь и вставь</h2>
+        <p class="hint small" style="margin-top:6px">Товар прячут из каталога и дают агенту только карточку — как будто его только что завели. Агент сам ходит по каталогу и ставит товар на место; потом ответ сверяется со спрятанным.</p>
+        <dl class="exam" id="agent-exam"></dl>
+        <div id="agent-live" hidden>
+          <h3>Завести новый товар</h3>
+          <label class="field"><span>Название</span><input type="search" id="a-name" placeholder="например, V-Ray for Blender"></label>
+          <label class="field" style="margin-top:8px"><span>Вендор</span><input type="search" id="a-vendor" placeholder="Chaos Group"></label>
+          <label class="field" style="margin-top:8px"><span>Описание из карточки</span><textarea id="a-text" rows="4" placeholder="Что делает товар, для чего нужен"></textarea></label>
+          <button class="btn" id="a-run" style="margin-top:10px;width:100%">Поставить в граф</button>
+          <p class="hint small" id="a-status"></p>
+        </div>
+        <h3>Прогоны</h3>
+        <ul class="runs" id="agent-runs"></ul>
+      </aside>
+      <div class="main">
+        <div class="panel" id="agent-view"></div>
+      </div>
     </div>
   </section>
 

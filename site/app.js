@@ -20,6 +20,7 @@
   const examples = (await getJson("data/examples.json")) || [];
   const report = await getJson("data/report.json");
   const priv = await getJson("data/private.json");
+  const agent = await getJson("data/agent_runs.json");
 
   // ---- решения менеджера по связям: хранятся в браузере, отклонённая связь сразу выпадает из советов
   const VOTES_KEY = "sovetnik.votes.v1";
@@ -69,6 +70,7 @@
     $$(".pane").forEach((p) => p.classList.toggle("is-active", p.id === "pane-" + b.dataset.tab));
     if (b.dataset.tab === "client") drawWhy();
     if (b.dataset.tab === "links") renderLinks();
+    if (b.dataset.tab === "agent") renderAgent();
     if (b.dataset.tab === "numbers") renderNumbers();
   }));
 
@@ -591,6 +593,153 @@
       el.addEventListener("mouseleave", hideTip);
     });
   }
+
+  // =========================== вкладка «Агент» ===========================
+  const TOOL_RU = { find_classes: "поиск класса", search_catalog: "поиск по каталогу", get_product: "карточка товара", class_companions: "спутники класса", "итог": "итог" };
+  const LINK_RU = { addon_for: "дополнение к", requires: "нужен для работы", complements: "стоит предложить вместе", upgrade_of: "редакция в линейке с", new_version_of: "версия в линейке с", analog_of: "российский аналог для" };
+  let agentIdx = 0;
+  function foundText(st) {
+    const r = st.result;
+    if (st.tool === "итог") return "паспорт товара и связи";
+    if (Array.isArray(r)) {
+      if (!r.length) return "ничего не найдено";
+      const names = r.map((x) => x.name).filter(Boolean).slice(0, 4).map((x) => (x.length > 46 ? x.slice(0, 44) + "…" : x));
+      return `найдено ${r.length}: ${names.join("; ")}`;
+    }
+    if (r && r.error) return r.error;
+    if (r && r.name) return `${r.name}${r.class ? " · " + r.class : ""}${r.sale ? " · " + r.sale : ""}`;
+    return "";
+  }
+  function renderAgent() {
+    const view = $("#agent-view");
+    if (!agent || !agent.runs.length) {
+      view.innerHTML = '<p class="note">Журналов агента пока нет: <code>python -m recsys.agent.exam</code>, затем <code>python -m recsys.agent.site</code>.</p>';
+      return;
+    }
+    const e = agent.exam || {}, pr = agent.per_run;
+    const rows = [];
+    if (e.runs) {
+      rows.push(["Прогонов в экзамене", e.runs]);
+      rows.push(["Класс совпал с магазином", pct(e.class_exact, 0)]);
+      const k = e.by_kind || {};
+      if (k["дополнение"]) rows.push(["Дополнения: агент нашёл базовый продукт", `${k["дополнение"].agent} из ${k["дополнение"].runs}`]);
+      if (k["линейка"]) rows.push(["Линейки: сосед найден агентом или правилом", `${k["линейка"].agent_or_rule} из ${k["линейка"].runs}`]);
+      else if (e.related_found != null) rows.push([`Связанный товар найден (из ${e.related_runs})`, pct(e.related_found, 0)]);
+      rows.push(["Запросов к модели на товар", String(e.requests_per_run.toFixed(1)).replace(".", ",")]);
+      rows.push(["Секунд на товар, медиана", Math.round(e.seconds_median || e.seconds_per_run)]);
+    }
+    if (pr) rows.push([`Стоимость прогона (${pr.price})`, String(pr.rub).replace(".", ",") + " ₽"]);
+    $("#agent-exam").innerHTML = rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+    $("#agent-runs").innerHTML = agent.runs.map((r, i) => {
+      const t = r.truth || {};
+      const okClass = t.class && r.passport.class_name === t.class;
+      return `<li data-i="${i}" class="${i === agentIdx ? "is-cur" : ""}">${esc(r.card.name)}
+        <small>${t.kind ? esc(t.kind) + " · " : ""}<span class="mark mark--${okClass ? "yes" : "no"}">${okClass ? "класс совпал" : "класс другой"}</span> · связей ${r.links.length} · ${r.requests || "?"} запр., ${Math.round(r.seconds)} с</small></li>`;
+    }).join("");
+    $$("#agent-runs li").forEach((li) => li.addEventListener("click", () => { agentIdx = +li.dataset.i; renderAgent(); }));
+    const r = agent.runs[agentIdx], t = r.truth || {}, p = r.passport;
+    let ask = -1;
+    const steps = r.steps.map((st) => {
+      const n = st.ask || 0;
+      const head = n === ask ? "" : (n === 0
+        ? '<div class="ask">без модели — поиск по названию товара</div>'
+        : `<div class="ask">запрос к модели № ${n}${st.thought ? " — " + esc(st.thought) : ""}</div>`);
+      ask = n;
+      const args = Object.values(st.args || {}).filter(Boolean).join(", ");
+      return `<li>${head}<code>${esc(TOOL_RU[st.tool] || st.tool)}</code>${args ? " «" + esc(args) + "»" : ""}<div class="found">${esc(foundText(st))}</div></li>`;
+    }).join("");
+    const kept = r.links.map((l) => `<li><b>${esc(LINK_RU[l.type] || l.type)}</b> «${esc(l.dst_name)}» — ${esc(l.reason)}${l.quote ? ` <span class="chip">из карточки: «${esc(l.quote.slice(0, 80))}»</span>` : ""}<br><small style="color:var(--muted)">критик: ${esc(l.critic || "")}</small></li>`).join("");
+    const cut = r.dropped.map((l) => `<li>«${esc(l.dst_name || l.dst || "")}» — ${esc(l.why)}</li>`).join("");
+    view.className = "panel agent";
+    view.innerHTML = `
+      <div class="panel__head"><h2>${esc(r.card.name)}</h2><span class="cost">запросов к модели: <b>${r.requests || "?"}</b> · ${Math.round(r.seconds)} с${pr ? ` · около ${String(pr.rub).replace(".", ",")} ₽ один раз` : ""}</span></div>
+      <div class="agent__card"><b>Что получил агент.</b> Название: ${esc(r.card.name)}. Вендор: ${esc(r.card.vendor || "—")}. Описание: ${esc((r.card.description || "—").slice(0, 380))}${(r.card.description || "").length > 380 ? "…" : ""}</div>
+      <h3>Шаги агента</h3>
+      <ul class="steps">${steps}</ul>
+      <h3>Что получилось</h3>
+      <div class="pair">
+        <div><h4>Агент</h4>
+          <p><b>Класс:</b> ${esc(p.class_name || "не назван")} <span class="chip">${esc(p.class_source === "соседи по каталогу"
+            ? `по соседям в каталоге, уверенность ${String((p.neighbors || {}).confidence || "").replace(".", ",")}` : "определил агент")}</span></p>
+          <p><b>Что делает:</b> ${esc(p.does || "—")}</p>
+          <p><b>Что нужно для работы:</b> ${esc((p.needs || []).join("; ") || "из карточки не видно")}</p>
+          <p><b>Для кого:</b> ${esc({ b2b: "организации", b2c: "частные лица", any: "все" }[p.audience] || p.audience)}</p></div>
+        <div><h4>Было спрятано</h4>
+          <p><b>Класс в магазине:</b> ${esc(t.class || "—")}</p>
+          <p><b>Связанные товары в каталоге:</b> ${esc((t.related || []).join("; ") || "не отмечены")}</p></div>
+      </div>
+      <h3>Связи, прошедшие проверку (${r.links.length})</h3>
+      ${kept ? `<ul class="kept">${kept}</ul>` : '<p class="hint">Нет.</p>'}
+      <h3>Отброшено (${r.dropped.length})</h3>
+      ${cut ? `<ul class="cut">${cut}</ul>` : '<p class="hint">Ничего.</p>'}
+      <h3>Кому теперь посоветуем этот товар</h3>
+      ${whoGets(r)}
+      <h3>Что теперь увидит покупатель этого товара</h3>
+      <div class="cards">${afterPlacement(r)}</div>
+      <p class="hint" style="margin-top:8px">Совет посчитан на этой странице по графу, в который товар только что поставлен: по классу и по связям, найденным агентом. Модель при этом не вызывается.</p>`;
+  }
+  /** Входящие связи нового товара: чьим владельцам он теперь будет предложен. */
+  function whoGets(r) {
+    const hidden = (r.truth && r.truth.id) || "";
+    const kind = { complements: "как дополнение", upgrade: "как старшую редакцию", new_version: "как новую версию", analog_ru: "как российский аналог", requires: "как необходимое для работы" };
+    const rows = (r.edges || []).filter((e) => e.dst === "new" && kind[e.type] && e.src !== hidden)
+      .map((e) => `<li>владельцам «${esc(nodeNameAll(e.src))}» — ${kind[e.type]}</li>`);
+    return rows.length ? `<ul class="kept">${rows.join("")}</ul>` : '<p class="hint">Таких связей агент не нашёл: товар будет предлагаться по связям своего класса.</p>';
+  }
+  /** Товар, поставленный агентом, как временный узел графа: какие советы получит его покупатель. */
+  function afterPlacement(r) {
+    const id = "agent/new";
+    const p = r.passport;
+    const node = { id, name: r.card.name, vendor: r.card.vendor || "", cls: p.class_id || "", sale: 1,
+                   b2b: p.audience === "b2b" ? 1 : 0, kind: "software" };
+    const extra = (r.edges || []).map((e) => [e.src === "new" ? id : e.src, e.dst === "new" ? id : e.dst, e.type, "агент", 0.75, e.why || ""])
+      .filter((e) => e[2] !== "same_line");
+    const line = (r.edges || []).filter((e) => e.type === "same_line").map((e) => [e.src === "new" ? id : e.src, e.dst === "new" ? id : e.dst, "same_line", "агент", 0.7, ""]);
+    const hidden = (r.truth && r.truth.id) || "";
+    const g2 = new E.Graph(Object.assign({}, data, {
+      nodes: data.nodes.filter((n) => n.id !== hidden).concat([node]),
+      edges: data.edges.filter((e) => e[0] !== hidden && e[1] !== hidden && votes[ekey(e)] !== "no").concat(extra, line),
+    }));
+    const res = new E.Recommender(g2, { fill: false }).recommend(
+      { type: p.audience === "b2c" ? "b2c" : "b2b", today: state.today, purchases: [{ family: id, date: isoShift(state.today, -2), term: null }] }, 3);
+    if (!res.recs.length) return '<div class="empty">Для этого класса связей пока нет — совет появится, когда класс будет размечен.</div>';
+    return res.recs.map((x, i) => {
+      const n = g2.nodes.get(x.family) || {};
+      return `<article class="card" style="--slot:${slotVar(x.slot)}"><div class="card__slot"><i class="dot"></i>${esc(x.slotTitle)}</div>
+        <div class="card__name">${esc(x.name)}</div><div class="card__vendor">${esc([x.vendor, className(n)].filter(Boolean).join(" · "))}</div>
+        <p class="card__why">${esc(x.why)}</p><div class="card__foot"><span class="chip">${esc(x.label)}</span></div></article>`;
+    }).join("");
+  }
+  // живой запуск агента: доступен, когда стенд открыт через локальный сервер (python -m recsys.server)
+  (async function setupLive() {
+    const ping = await getJson("api/ping");
+    if (!ping || !ping.agent) return;
+    $("#agent-live").hidden = false;
+    $("#a-run").addEventListener("click", async () => {
+      const body = { name: $("#a-name").value.trim(), vendor: $("#a-vendor").value.trim(), description: $("#a-text").value.trim() };
+      if (body.name.length < 3) { $("#a-status").textContent = "Нужно название товара."; return; }
+      $("#a-run").disabled = true;
+      const t0 = performance.now();
+      const timer = setInterval(() => { $("#a-status").textContent = `Агент работает: ${Math.round((performance.now() - t0) / 1000)} с…`; }, 500);
+      try {
+        const resp = await fetch("api/place", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+        const res = await resp.json();
+        if (!resp.ok) throw new Error(res.error || "ошибка агента");
+        const run = { card: res.card, truth: null, passport: res.passport, steps: res.steps, links: res.links, edges: res.edges || [],
+                      dropped: res.dropped, seconds: res.seconds, requests: res.model_requests };
+        if (!agent) return;
+        agent.runs.unshift(run);
+        agentIdx = 0;
+        $("#a-status").textContent = `Готово: ${Math.round(res.seconds)} с, запросов к модели: ${res.model_requests}.`;
+        renderAgent();
+      } catch (err) {
+        $("#a-status").textContent = "Не получилось: " + err.message;
+      } finally {
+        clearInterval(timer);
+        $("#a-run").disabled = false;
+      }
+    });
+  })();
 
   // ---- запуск
   syncControls();
