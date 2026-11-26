@@ -40,6 +40,10 @@ class Handler(SimpleHTTPRequestHandler):
         if "/api/" in (args[0] if args else ""):
             super().log_message(fmt, *args)
 
+    def end_headers(self) -> None:                         # данные стенда пересобираются — кеш браузера не нужен
+        self.send_header("Cache-Control", "no-store")
+        super().end_headers()
+
     def _json(self, code: int, body: dict) -> None:
         data = json.dumps(body, ensure_ascii=False).encode("utf-8")
         self.send_response(code)
@@ -75,6 +79,8 @@ class Handler(SimpleHTTPRequestHandler):
                 res = place(LLM(), cat, card)
             except LLMError as e:
                 return self._json(503, {"error": str(e)[:300]})
+            except Exception as e:                         # любой сбой агента — понятный ответ странице, а не обрыв связи
+                return self._json(500, {"error": f"сбой агента: {type(e).__name__}: {str(e)[:200]}"})
             finally:
                 cat.hidden = set()
         self._json(200, res)

@@ -49,24 +49,12 @@ def main() -> None:
     p = ROOT / "reports" / "agent_exam.json"
     if p.exists():
         exam = json.loads(p.read_text(encoding="utf-8")).get("summary", {})
-    # средний расход токенов на прогон — из журнала вызовов модели
-    calls = INTERIM / "llm_calls.jsonl"
-    t_in = t_out = n_final = 0
-    if calls.exists():
-        for line in calls.read_text(encoding="utf-8").splitlines():
-            try:
-                c = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            if c["purpose"].startswith("агент") and not c["cached"]:
-                t_in += c["tokens_in"]
-                t_out += c["tokens_out"]
-                n_final += c["purpose"] == "агент: критик"
+    # средний расход токенов на товар — из экзамена: каждый прогон сам считает свои токены
     per_run = None
-    if n_final:
-        per_run = {"tokens_in": round(t_in / n_final), "tokens_out": round(t_out / n_final),
-                   "rub": round((t_in / n_final) / 1000 * PRICE["in"] + (t_out / n_final) / 1000 * PRICE["out"], 2),
-                   "price": PRICE["name"]}
+    if exam.get("tokens_in_per_run"):
+        t_in, t_out = exam["tokens_in_per_run"], exam["tokens_out_per_run"]
+        per_run = {"tokens_in": t_in, "tokens_out": t_out, "price": PRICE["name"],
+                   "rub": round(t_in / 1000 * PRICE["in"] + t_out / 1000 * PRICE["out"], 2)}
     out = ROOT / "site" / "data" / "agent_runs.json"
     out.write_text(json.dumps({"exam": exam, "per_run": per_run, "runs": runs}, ensure_ascii=False, separators=(",", ":")),
                    encoding="utf-8")

@@ -354,7 +354,7 @@
       : '<p class="card__fact">Клиент этот товар за три месяца не купил.</p>');
     return `<article class="card" data-rec="${i}" style="--slot:${slotVar(x.slot)}">
       <div class="card__slot"><i class="dot"></i>${esc(x.title)}</div>
-      <div class="card__name">${esc(it.name.length > 130 ? it.name.slice(0, 128) + "…" : it.name)}</div>
+      <div class="card__name" title="${esc(it.name)}">${esc(it.title || (it.name.length > 130 ? it.name.slice(0, 128) + "…" : it.name))}</div>
       <div class="card__vendor">${esc([it.vendor, it.cls, x.desc || it.desc].filter(Boolean).join(" · "))}</div>
       <p class="card__why">${esc(x.why)}</p>
       ${x.also ? `<p class="card__also"><b>Ещё основание.</b> ${esc(x.also)}</p>` : ""}
@@ -375,7 +375,7 @@
     $("#owned").innerHTML = c.history.map((h) => {
       const it = item(h.item);
       const when = h.first === h.last ? `куплено ${ruDate(h.last)}` : `покупки с ${ruDate(h.first)} по ${ruDate(h.last)}`;
-      return `<li><div class="owned__name"><span>${esc(it.name.length > 110 ? it.name.slice(0, 108) + "…" : it.name)}</span></div>
+      return `<li><div class="owned__name"><span title="${esc(it.name)}">${esc(it.title || (it.name.length > 110 ? it.name.slice(0, 108) + "…" : it.name))}</span></div>
         <div class="owned__meta">${esc([it.vendor, it.cls, it.desc, when].filter(Boolean).join(" · "))}</div></li>`;
     }).join("");
     $("#block-title").textContent = c.mode === "test" ? `Что мы посоветовали бы ${ruDate(asOf)}` : "Рекомендуем вам";
@@ -634,7 +634,7 @@
       const t = r.truth || {};
       const okClass = t.class && r.passport.class_name === t.class;
       return `<li data-i="${i}" class="${i === agentIdx ? "is-cur" : ""}">${esc(r.card.name)}
-        <small>${t.kind ? esc(t.kind) + " · " : ""}<span class="mark mark--${okClass ? "yes" : "no"}">${okClass ? "класс совпал" : "класс другой"}</span> · связей ${r.links.length} · ${r.requests || "?"} запр., ${Math.round(r.seconds)} с</small></li>`;
+        <small>${t.kind ? esc(t.kind) + " · " : ""}${r.truth ? `<span class="mark mark--${okClass ? "yes" : "no"}">${okClass ? "класс совпал" : "класс другой"}</span>` : '<span class="mark mark--yes">живой запуск</span>'} · связей ${r.links.length} · ${r.requests || "?"} запр., ${Math.round(r.seconds)} с</small></li>`;
     }).join("");
     $$("#agent-runs li").forEach((li) => li.addEventListener("click", () => { agentIdx = +li.dataset.i; renderAgent(); }));
     const r = agent.runs[agentIdx], t = r.truth || {}, p = r.passport;
@@ -659,14 +659,17 @@
       <h3>Что получилось</h3>
       <div class="pair">
         <div><h4>Агент</h4>
-          <p><b>Класс:</b> ${esc(p.class_name || "не назван")} <span class="chip">${esc(p.class_source === "соседи по каталогу"
-            ? `по соседям в каталоге, уверенность ${String((p.neighbors || {}).confidence || "").replace(".", ",")}` : "определил агент")}</span></p>
+          <p><b>Класс:</b> ${esc(p.class_name || "в каталоге нет подходящего класса — товар уходит на проверку менеджеру")} ${p.class_name ? `<span class="chip">${esc(p.class_source === "соседи по каталогу"
+            ? `по соседям в каталоге, уверенность ${String((p.neighbors || {}).confidence || "").replace(".", ",")}` : "определил агент")}</span>` : ""}</p>
           <p><b>Что делает:</b> ${esc(p.does || "—")}</p>
           <p><b>Что нужно для работы:</b> ${esc((p.needs || []).join("; ") || "из карточки не видно")}</p>
           <p><b>Для кого:</b> ${esc({ b2b: "организации", b2c: "частные лица", any: "все" }[p.audience] || p.audience)}</p></div>
-        <div><h4>Было спрятано</h4>
+        ${r.truth ? `<div><h4>Было спрятано</h4>
           <p><b>Класс в магазине:</b> ${esc(t.class || "—")}</p>
-          <p><b>Связанные товары в каталоге:</b> ${esc((t.related || []).join("; ") || "не отмечены")}</p></div>
+          <p><b>Связанные товары в каталоге:</b> ${esc((t.related || []).join("; ") || "не отмечены")}</p></div>`
+          : `<div><h4>Проверка</h4>
+          <p>Товар заведён вручную, готового ответа у стенда нет. Каждую связь проверил второй запрос к модели; связи с товарами, которых нет в каталоге, отбрасывает код.</p>
+          <p>Последнее слово остаётся за менеджером: связи попадают в очередь на проверку.</p></div>`}
       </div>
       <h3>Связи, прошедшие проверку (${r.links.length})</h3>
       ${kept ? `<ul class="kept">${kept}</ul>` : '<p class="hint">Нет.</p>'}

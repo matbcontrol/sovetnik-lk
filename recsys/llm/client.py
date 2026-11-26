@@ -87,6 +87,11 @@ class LLM:
         return [m["id"] for m in r.json().get("data", [])]
 
     def _log(self, purpose: str, tokens_in: int, tokens_out: int, seconds: float, cached: bool) -> None:
+        spent = self.__dict__.setdefault("spent", [0, 0, 0])    # счётчик этого объекта: токены на вход, на выход, вызовы
+        if not cached:
+            spent[0] += tokens_in
+            spent[1] += tokens_out
+            spent[2] += 1
         CALLS.parent.mkdir(parents=True, exist_ok=True)
         with CALLS.open("a", encoding="utf-8") as f:
             f.write(json.dumps({

@@ -110,7 +110,11 @@ class Catalog:
         примерно в 9 случаях из 10 (проверено на 600 товарах, спрятанных по одному).
         """
         v = set(tokens(vendor))
+        q = set(tokens(f"{name} {vendor}"))
+        rare = max(self.idf.values(), default=1.0)             # слово, которого нет в каталоге, весит как самое редкое
+        q_weight = sum(self.idf.get(w, rare) for w in q) or 1.0
         votes: Counter = Counter()
+        alike: dict[str, float] = {}
         near = []
         for rank, h in enumerate(self.search_catalog(f"{name} {vendor}", limit=top)):
             n = self.nodes[h["id"]]
@@ -118,11 +122,16 @@ class Catalog:
                 continue
             same_vendor = bool(v and v & set(tokens(n.get("vendor", "")))) or bool(v & set(tokens(n["vendor_slug"].replace("-", " "))))
             votes[n["class"]] += (1.5 if same_vendor else 1.0) / (1 + 0.3 * rank)
+            share = sum(self.idf.get(w, rare) for w in q & set(self.tok[h["id"]])) / q_weight
+            alike[n["class"]] = max(alike.get(n["class"], 0.0), share)
             near.append({"id": h["id"], "name": h["name"], "class": n.get("class_name", "")})
         if not votes:
-            return {"class_id": "", "confidence": 0.0, "near": []}
+            return {"class_id": "", "confidence": 0.0, "similarity": 0.0, "near": []}
         (cid, w), total = votes.most_common(1)[0], sum(votes.values())
-        return {"class_id": cid, "name": self.class_names.get(cid, ""), "confidence": round(w / total, 2), "near": near[:3]}
+        # similarity — какая доля слов нового товара (по весу) нашлась у самого похожего соседа этого класса:
+        # единодушие соседей ничего не значит, если сами соседи на товар не похожи
+        return {"class_id": cid, "name": self.class_names.get(cid, ""), "confidence": round(w / total, 2),
+                "similarity": round(alike[cid], 2), "near": near[:3]}
 
     def line_edges(self, name: str, vendor: str = "") -> list[dict]:
         """Соседи по линейке для нового товара — правило по названию, без модели.

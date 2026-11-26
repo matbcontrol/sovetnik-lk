@@ -74,6 +74,7 @@ def grade(cat: Catalog, task: dict, res: dict) -> dict:
         "class_category": bool(cls) and cls.split("/")[0] == node["class"].split("/")[0],
         "links": len(res["links"]), "dropped": len(res["dropped"]),
         "requests": res["model_requests"], "seconds": res["seconds"],
+        "tokens_in": (res.get("tokens") or {}).get("in", 0), "tokens_out": (res.get("tokens") or {}).get("out", 0),
     }
     if task["kind"] in ("дополнение", "линейка"):
         out["found"] = bool(dsts & lines)                     # нашёл сам агент
@@ -113,6 +114,7 @@ def main() -> None:
         return
     n = len(rows)
     rel = [r for r in rows if "found" in r]
+    fresh = [r for r in rows if r["tokens_in"] > 0]
     summary = {
         "runs": n, "seed": args.seed,
         "class_by_neighbors": sum(r["class_source"] == "соседи по каталогу" for r in rows) / n,
@@ -124,6 +126,13 @@ def main() -> None:
         "requests_per_run": sum(r["requests"] for r in rows) / n,
         "seconds_per_run": sum(r["seconds"] for r in rows) / n,
         "links_kept": sum(r["links"] for r in rows), "links_dropped": sum(r["dropped"] for r in rows),
+        "seconds_median": sorted(r["seconds"] for r in rows)[n // 2],
+        # расход токенов на товар: только по прогонам, где ответы модели не взяты из кеша
+        "tokens_in_per_run": round(sum(r["tokens_in"] for r in fresh) / len(fresh)) if fresh else None,
+        "tokens_out_per_run": round(sum(r["tokens_out"] for r in fresh) / len(fresh)) if fresh else None,
+        "by_kind": {kind: {"runs": len(part), "agent": sum(r["found"] for r in part),
+                           "agent_or_rule": sum(r["found_with_rules"] for r in part)}
+                    for kind in ("дополнение", "линейка") if (part := [r for r in rel if r["kind"] == kind])},
     }
     print(f"\nпрогонов {n}: класс точно {summary['class_exact']:.0%}, в той же категории {summary['class_category']:.0%}; "
           + (f"связанный товар найден в {summary['related_found']:.0%} из {len(rel)}; " if rel else "")
