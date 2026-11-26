@@ -246,7 +246,7 @@
     const ms = performance.now() - t0;
     if (!keepOwned) renderOwned();
     $("#block-title").textContent = "Рекомендуем вам";
-    $("#cost").innerHTML = `Обращений к модели: <b>0</b> · стоимость запроса: <b>0 ₽</b> · посчитано за ${ms < 1 ? "меньше 1" : Math.round(ms)} мс`;
+    $("#cost").innerHTML = `Обращений к модели: <b>0</b> · посчитано за ${ms < 1 ? "меньше 1" : Math.round(ms)} мс`;
     $("#cards").innerHTML = last.recs.length ? last.recs.map(cardHtml).join("") : '<div class="empty">Для этого набора покупок советов нет.</div>';
     $("#fact").hidden = true;
     bindCards();
@@ -427,7 +427,7 @@
     $("#block-title").textContent = c.mode === "test" ? `Что мы посоветовали бы ${ruDate(asOf)}` : "Рекомендуем вам";
     $("#cost").innerHTML = dstate.hide
       ? "История купленных товаров <b>спрятана</b>: совет выведен только из каталога · обращений к языковой модели: <b>0</b>"
-      : "Совет выбран ранжированием по истории и каталогу · обращений к языковой модели: <b>0</b> · стоимость запроса: <b>0 ₽</b>";
+      : "Совет выбран ранжированием по истории и каталогу · обращений к языковой модели: <b>0</b>";
     $("#cards").innerHTML = recs.map((x, i) => dataCard(x, i, c)).join("");
     const mode = dstate.hide ? "new_item" : "full";
     renderRenew(((c.renew || {})[mode] || []).map((x) => ({ name: item(x.item).title || item(x.item).name, text: x.why, url: item(x.item).url })));
@@ -631,8 +631,8 @@
       <dl class="tiles">
         <div class="tile"><dt>Угадано из трёх советов, организации</dt><dd>${pct(full["A B2B"])}</dd><small>базовые способы организаторов: ${pct(org["популярность"]["A B2B"])} и ${pct(org["совместные покупки"]["A B2B"])}</small></div>
         <div class="tile"><dt>То же, холодный старт</dt><dd>${pct(full["B B2B"])}</dd><small>базовые способы: ${pct(org["популярность"]["B B2B"])} и ${pct(org["совместные покупки"]["B B2B"])}</small></div>
-        <div class="tile"><dt>Товар без единой продажи</dt><dd>${pct(reg.new_item.p3["A B2B"])}</dd><small>без знаний каталога было бы ${pct(reg.new_item_no_catalog.p3["A B2B"])}</small></div>
-        <div class="tile"><dt>Клиентов, которым есть что показать</dt><dd>${fillAll == null ? "—" : pct(fillAll, 0)}</dd><small>сейчас блок виден в ${pct(r.current_fill)} визитов</small></div>
+        <div class="tile"><dt>Если спрятать историю пар купленного товара</dt><dd>${pct(reg.new_item.p3["A B2B"])}</dd><small>так моделируется новинка; без знаний каталога ${pct(reg.new_item_no_catalog.p3["A B2B"])}</small></div>
+        <div class="tile"><dt>Fill Rate по протоколу, группы A и B</dt><dd>100 %</dd><small>у совместных покупок ${pct(0.923, 1)} и ${pct(0.872, 1)}; совет по собственному основанию — у ${fillAll == null ? "—" : pct(fillAll, 0)} клиентов с покупками. Показ блока в кабинете (${pct(r.current_fill)}) считается по визитам и с этим не сравним</small></div>
       </dl>
       <div class="charts">
         <figure><figcaption>Precision@3, организации (группа A)</figcaption>${chartA}</figure>
@@ -703,7 +703,7 @@
         <div class="tile"><dt>Товаров и семейств</dt><dd>${nf.format(data.nodes.length)}</dd><small>из них в продаже ${nf.format(sale.length)}</small></div>
         <div class="tile"><dt>Связей-советов</dt><dd>${nf.format(adviceEdges)}</dd><small>собраны ${esc(built)}</small></div>
         <div class="tile"><dt>Товаров со своей связью</dt><dd>${nf.format(linkedIds.size)}</dd><small>остальным совет даёт линейка и класс</small></div>
-        <div class="tile"><dt>Стоимость запроса клиента</dt><dd>0 ₽</dd><small>языковая модель на запрос не вызывается</small></div>
+        <div class="tile"><dt>Модель на обращение клиента</dt><dd>0 вызовов</dd><small>с агентом каталога для новых товаров — около 0,02 ₽ на обращение</small></div>
       </dl>
       <h3>Связи по источникам</h3>
       <table class="links"><tr><th>Источник</th><th class="num">Связей</th></tr>${Object.entries(bySource).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<tr><td>${esc(k)}</td><td class="num">${nf.format(v)}</td></tr>`).join("")}</table>
