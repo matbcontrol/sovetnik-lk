@@ -8,7 +8,9 @@
   renew   — что истекает: продление того, что уже куплено
   next    — следующая ступень: старшая редакция или новая версия
   missing — чего не хватает: дополняющие и требуемые продукты
-  replace — замена: российский аналог, когда купленного больше нет в продаже
+  replace — замена: когда купленного зарубежного продукта больше нет в продаже — его российский аналог
+            из таблицы замещения, а если прямого аналога нет — российский продукт того же класса из реестра.
+            Если при этом срок лицензии подошёл, замена идёт первой: продлить такую лицензию нельзя.
 """
 from __future__ import annotations
 
@@ -28,7 +30,7 @@ SLOT = {
     "upgrade": "next", "new_version": "next",
     "requires": "missing", "complements": "missing", "compatible": "missing",
     "copurchase": "missing", "next_purchase": "missing", "mentions": "missing",
-    "analog_ru": "replace",
+    "analog_ru": "replace", "analog_class": "replace",
 }
 SLOT_TITLE = {
     "renew": "Что истекает", "next": "Следующая ступень",
@@ -38,8 +40,14 @@ SLOT_TITLE = {
 WEIGHT = {
     "renewal": 1.0, "requires": 0.85, "upgrade": 0.7, "new_version": 0.6,
     "copurchase": 0.65, "next_purchase": 0.65, "complements": 0.55, "compatible": 0.5,
-    "analog_ru": 0.45, "mentions": 0.25,
+    "analog_ru": 0.45, "analog_class": 0.45, "mentions": 0.25,
 }
+# Замена по классу — вывод слабее прямого аналога: тот же класс ещё не значит «то же самое».
+CLASS_ANALOG_CONFIDENCE = 0.5
+CLASS_ANALOG_TOP = 5         # сколько российских продуктов класса рассматриваем
+# Срок лицензии подошёл, а продлить её нельзя: замена так же срочна, как продление.
+LAPSE_ANALOG = 0.9           # нижняя граница оценки прямого аналога, умножается на уверенность связи
+LAPSE_CLASS = 0.75           # нижняя граница оценки замены по классу
 LABEL = {
     "таблица сравнения магазина": "подтверждено магазином",
     "типы лицензий на странице": "подтверждено магазином",
@@ -50,6 +58,7 @@ LABEL = {
     "названия": "выведено из названий",
     "название товара": "сказано в названии товара",
     "таблица замещения АРПП": "реестр российского ПО",
+    "реестр и класс": "реестр российского ПО, тот же класс",
     "продажи": "подтверждено покупками",
     "модель": "вывод модели, проверен",
     "витрина": "порядок витрины магазина",
@@ -144,6 +153,15 @@ class Graph:
         # семейства класса в порядке витрины или популярности
         self.class_rank = class_rank or {}
         self.class_names: dict[str, str] = class_names or {}
+        # российские продукты из реестра по классам — чем заменить снятый с продажи зарубежный продукт.
+        # Порядок: сначала те, что в продаже, затем по месту на витрине класса (первые 12 мест), затем по ключу.
+        self.ru_by_class: dict[str, list[str]] = defaultdict(list)
+        for f, n in nodes.items():
+            if n.get("class") and str(n.get("ru", "0")) == "1" and n.get("kind", "software") != "hardware":
+                self.ru_by_class[n["class"]].append(f)
+        for cid, fams in self.ru_by_class.items():
+            pos = {f: i for i, f in enumerate(self.class_rank.get(cid, [])[:12])}
+            fams.sort(key=lambda f: (0 if self.on_sale(f) else 1, pos.get(f, 10 ** 6), f))
         # «чаще всего берут» по сегменту: {"b2b": [...], "b2c": [...], "b2b|отрасль": [...]}
         self.popular: dict[str, list[dict]] = popular or self._popular_from_store()
 
@@ -286,6 +304,27 @@ class Recommender:
         }
         return edge, self.w["renewal"] * strength
 
+    def _lapsing(self, client: Client, p: Purchase) -> str:
+        """Срок лицензии подошёл, а продлить её нельзя: продукт клиенту не продаётся и новой версии нет.
+
+        Возвращает пояснение для клиента («куплена …, на 12 мес., истекла …») или пустую строку.
+        """
+        term, assumed = self._term(p)
+        if not term or not p.date:
+            return ""
+        end = _add_months(p.date, term)
+        left = (end - client.today).days
+        if not self.renew_window[0] <= left <= self.renew_window[1]:
+            return ""
+        if self.g.available(p.family, client.client_type):
+            return ""
+        if any(e["type"] == "new_version" and self.g.available(e["dst"], client.client_type)
+               for e in self.g.out.get(p.family, ())):
+            return ""
+        when = f"истекает {end:%d.%m.%Y}" if left >= 0 else f"истекла {end:%d.%m.%Y}"
+        about = "обычно на" if assumed else "на"
+        return f"куплена {p.date:%d.%m.%Y}, {about} {term} мес., {when}"
+
     # ---- запреты -------------------------------------------------------------------------
 
     def _banned(self, client: Client, owned: dict[str, Purchase], platforms: set[str],
@@ -350,16 +389,30 @@ class Recommender:
             return f"У вас {src}. Следующая редакция в этой линейке — {dst}."
         if t == "new_version":
             return f"У вас {src}. В продаже есть более новая версия — {dst}."
-        if t == "analog_ru":
+        if t in ("analog_ru", "analog_class"):
+            on_request = str(self.g.nodes.get(edge["src"], {}).get("on_request", "0")) == "1"
+            if t == "analog_ru":
+                reg = ev.split("(реестр № ")[1].split(")")[0] if "(реестр № " in ev else ""
+                tail = f" (реестр российского ПО, запись № {reg})" if reg else ""
+                target = f"Российский аналог: {dst}{tail}."
+            else:
+                cname = self.g.class_names.get(edge.get("of_class", ""), "")
+                where = f" («{cname}»)" if cname else ""
+                sib = edge.get("sibling", "")
+                via = (f"; в таблице замещения он назван аналогом {_q(self.g.nodes.get(sib, {}).get('name', sib))}"
+                       if sib else "")
+                target = f"Российский продукт того же класса{where} из реестра — {dst}{via}."
+            lapse = edge.get("lapse", "")
+            if lapse:                                   # срок подошёл, а продлить лицензию нельзя
+                state = "продаётся только по запросу" if on_request else "снят с продажи"
+                return f"Лицензия {src}: {lapse}. Продлить её в магазине нельзя: продукт {state}. {target}"
             if self.g.on_sale(edge["src"]):
                 gone = ""
-            elif str(self.g.nodes.get(edge["src"], {}).get("on_request", "0")) == "1":
+            elif on_request:
                 gone = ", который теперь продаётся только по запросу"
             else:
                 gone = ", которого больше нет в продаже"
-            reg = ev.split("(реестр № ")[1].split(")")[0] if "(реестр № " in ev else ""
-            tail = f" (реестр российского ПО, запись № {reg})" if reg else ""
-            return f"{src} — зарубежный продукт{gone}. Российский аналог: {dst}{tail}."
+            return f"{src} — зарубежный продукт{gone}. {target}"
         if t == "requires":
             return f"Для работы {src} нужен {dst}. {ev}".strip()
         if t in ("copurchase", "next_purchase"):
@@ -389,6 +442,7 @@ class Recommender:
         for fam, p in owned.items():
             age = (client.today - p.date).days if p.date else None
             recency = 0.7 if age is None else max(0.3, math.exp(-max(age, 0) / 730))
+            lapse = self._lapsing(client, p)            # срок подошёл, а продлить нельзя: замена срочная
             renewal = self._renewal(client, p)
             if renewal:
                 edge, s = renewal
@@ -397,6 +451,7 @@ class Recommender:
                     bans.append({"family": edge["dst"], "type": "renewal", "from": fam, "reason": reason})
                 else:
                     push(edge["dst"], "renew", s, edge, p)
+            direct = False                              # у продукта нашёлся прямой российский аналог
             for e in self.g.out.get(fam, ()):
                 t = e["type"]
                 if t == "renewal" or e["confidence"] < self.min_confidence or t not in self.w:
@@ -408,9 +463,46 @@ class Recommender:
                 s = self.w[t] * e["confidence"] * recency
                 if t == "analog_ru" and not self.g.on_sale(fam):
                     s = min(0.95, s * 2.0)              # купленного больше не продают: замена важнее
+                    if lapse:
+                        s = max(s, LAPSE_ANALOG * e["confidence"])
+                        e = {**e, "lapse": lapse}
                 if not self.g.on_sale(e["dst"]):
                     s *= 0.8                            # цена только по запросу: совет чуть слабее
+                direct = direct or t == "analog_ru"
                 push(e["dst"], SLOT[t], s, e, p)
+
+            # замена по классу: купленный зарубежный продукт сняли с продажи, а прямого аналога в таблице
+            # замещения нет — советуем российские продукты того же класса из реестра
+            node = self.g.nodes.get(fam) or {}
+            cls = node.get("class") or ""
+            if (cls and not direct and not self.g.on_sale(fam) and str(node.get("ru", "0")) != "1"
+                    and node.get("kind", "software") != "hardware"
+                    and CLASS_ANALOG_CONFIDENCE >= self.min_confidence):
+                vendor = fam.split("/")[0]
+
+                def sibling(d: str) -> str:
+                    """Продукт того же вендора и класса, аналогом которого d назван в таблице замещения."""
+                    for x in sorted(self.g.analogs.get(d, ())):
+                        if x != fam and x.split("/")[0] == vendor and (self.g.nodes.get(x) or {}).get("class") == cls:
+                            return x
+                    return ""
+
+                pool = [(d, sibling(d)) for d in self.g.ru_by_class.get(cls, ())
+                        if d != fam and d not in self.g.analogs.get(fam, ())]
+                # сначала те, кого таблица замещения называет аналогом другого продукта того же вендора
+                pool = [x for x in pool if x[1]] + [x for x in pool if not x[1]]
+                for rank, (dst, sib) in enumerate(pool[:CLASS_ANALOG_TOP]):
+                    if self._banned(client, owned, platforms, dst, "analog_class", fam):
+                        continue
+                    s = min(0.95, self.w["analog_class"] * CLASS_ANALOG_CONFIDENCE * recency * 2.0)
+                    if lapse:
+                        s = max(s, LAPSE_CLASS)
+                    if not self.g.on_sale(dst):
+                        s *= 0.8
+                    edge = {"src": fam, "dst": dst, "type": "analog_class", "source": "реестр и класс",
+                            "confidence": CLASS_ANALOG_CONFIDENCE, "evidence": "", "lapse": lapse,
+                            "of_class": cls, "group": f"replace:{fam}", "sibling": sib}
+                    push(dst, "replace", s / (1 + 0.35 * rank), edge, p)
 
             # запасной уровень: связи между классами
             for link in self.g.class_links.get(self.g.klass(fam), ()):
@@ -439,7 +531,8 @@ class Recommender:
                 family=dst, name=n["name"], vendor=n.get("vendor", ""), url=n.get("url", ""),
                 slot=slot, slot_title=SLOT_TITLE[slot], score=round(1.0 - c["miss"], 4),
                 why=self._why(edge, p, client), label=LABEL.get(edge.get("source", ""), edge.get("source", "")),
-                paths=sorted(c["paths"], key=lambda x: -x["score"])[:4], via_class=edge.get("class", ""),
+                paths=sorted(c["paths"], key=lambda x: -x["score"])[:4],
+                via_class=edge.get("class", "") or edge.get("group", ""),
             ))
         top = self._pick(recs, k)
         if self.fill and len(top) < k:

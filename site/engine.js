@@ -10,7 +10,7 @@
     renewal: "renew", upgrade: "next", new_version: "next",
     requires: "missing", complements: "missing", compatible: "missing",
     copurchase: "missing", next_purchase: "missing", mentions: "missing",
-    analog_ru: "replace",
+    analog_ru: "replace", analog_class: "replace",
   };
   const SLOT_TITLE = {
     renew: "Что истекает", next: "Следующая ступень", missing: "Чего не хватает",
@@ -19,8 +19,14 @@
   const WEIGHT = {
     renewal: 1.0, requires: 0.85, upgrade: 0.7, new_version: 0.6,
     copurchase: 0.65, next_purchase: 0.65, complements: 0.55, compatible: 0.5,
-    analog_ru: 0.45, mentions: 0.25,
+    analog_ru: 0.45, analog_class: 0.45, mentions: 0.25,
   };
+  // Замена по классу — вывод слабее прямого аналога: тот же класс ещё не значит «то же самое».
+  const CLASS_ANALOG_CONFIDENCE = 0.5;
+  const CLASS_ANALOG_TOP = 5;
+  // Срок лицензии подошёл, а продлить её нельзя: замена так же срочна, как продление.
+  const LAPSE_ANALOG = 0.9;
+  const LAPSE_CLASS = 0.75;
   const LABEL = {
     "таблица сравнения магазина": "подтверждено магазином",
     "типы лицензий на странице": "подтверждено магазином",
@@ -31,6 +37,7 @@
     "названия": "выведено из названий",
     "название товара": "сказано в названии товара",
     "таблица замещения АРПП": "реестр российского ПО",
+    "реестр и класс": "реестр российского ПО, тот же класс",
     "продажи": "подтверждено покупками",
     "модель": "вывод модели, проверен",
     "витрина": "порядок витрины магазина",
@@ -39,7 +46,7 @@
     renewal: "продление", upgrade: "старшая редакция", new_version: "новая версия",
     requires: "требуется", complements: "дополняет", compatible: "совместимо",
     copurchase: "покупают вместе", next_purchase: "покупают следом", mentions: "упоминание",
-    analog_ru: "российский аналог", same_line: "та же линейка", popular: "часто берут",
+    analog_ru: "российский аналог", analog_class: "российский продукт того же класса", same_line: "та же линейка", popular: "часто берут",
   };
   const RENEW_WINDOW = [-60, 120];
   const DAY = 86400000;
@@ -94,6 +101,22 @@
       }
       this.classRank = data.class_rank || {};
       this.popular = data.popular || {};
+      // российские продукты из реестра по классам — чем заменить снятый с продажи зарубежный продукт.
+      // Порядок: сначала те, что в продаже, затем по месту на витрине класса (первые 12 мест), затем по ключу.
+      this.ruByClass = new Map();
+      for (const n of data.nodes) {
+        if (!n.cls || n.ru !== 1 || n.kind === "hardware") continue;
+        if (!this.ruByClass.has(n.cls)) this.ruByClass.set(n.cls, []);
+        this.ruByClass.get(n.cls).push(n.id);
+      }
+      for (const [cid, fams] of this.ruByClass) {
+        const pos = new Map((this.classRank[cid] || []).slice(0, 12).map((f, i) => [f, i]));
+        const key = (f) => [this.onSale(f) ? 0 : 1, pos.has(f) ? pos.get(f) : 1e6];
+        fams.sort((a, b) => {
+          const ka = key(a), kb = key(b);
+          return ka[0] - kb[0] || ka[1] - kb[1] || (a < b ? -1 : a > b ? 1 : 0);
+        });
+      }
     }
     onSale(f) { const n = this.nodes.get(f); return !!(n && n.sale === 1); }
     byRequest(f) { const n = this.nodes.get(f); return !!(n && n.sale !== 1 && n.req === 1 && n.ru === 1); }
@@ -155,6 +178,20 @@
       return [edge, this.w.renewal * strength];
     }
 
+    /** Срок лицензии подошёл, а продлить её нельзя: продукт клиенту не продаётся и новой версии нет.
+     *  Возвращает пояснение для клиента или пустую строку. */
+    _lapsing(client, p) {
+      const [term, assumed] = this._term(p);
+      if (!term || p.dateMs === null) return "";
+      const end = addMonths(p.dateMs, term);
+      const left = Math.round((end - client.todayMs) / DAY);
+      if (!(this.renewWindow[0] <= left && left <= this.renewWindow[1])) return "";
+      if (this.g.available(p.family, client.type)) return "";
+      if ((this.g.out.get(p.family) || []).some((e) => e.type === "new_version" && this.g.available(e.dst, client.type))) return "";
+      const when = left >= 0 ? `истекает ${fmt(end)}` : `истекла ${fmt(end)}`;
+      return `куплена ${fmt(p.dateMs)}, ${assumed ? "обычно на" : "на"} ${term} мес., ${when}`;
+    }
+
     _banned(client, owned, platforms, dst, edgeType, src) {
       const g = this.g;
       const n = g.nodes.get(dst);
@@ -209,12 +246,24 @@
           : `У вас ${src}. Следующая редакция в этой линейке — ${dst}.`;
       }
       if (t === "new_version") return `У вас ${src}. В продаже есть более новая версия — ${dst}.`;
-      if (t === "analog_ru") {
-        const sn = g.nodes.get(edge.src) || {};
-        const gone = g.onSale(edge.src) ? "" : (sn.req === 1 ? ", который теперь продаётся только по запросу" : ", которого больше нет в продаже");
-        const reg = ev.includes("(реестр № ") ? ev.split("(реестр № ")[1].split(")")[0] : "";
-        const tail = reg ? ` (реестр российского ПО, запись № ${reg})` : "";
-        return `${src} — зарубежный продукт${gone}. Российский аналог: ${dst}${tail}.`;
+      if (t === "analog_ru" || t === "analog_class") {
+        const onRequest = (g.nodes.get(edge.src) || {}).req === 1;
+        let target;
+        if (t === "analog_ru") {
+          const reg = ev.includes("(реестр № ") ? ev.split("(реестр № ")[1].split(")")[0] : "";
+          const tail = reg ? ` (реестр российского ПО, запись № ${reg})` : "";
+          target = `Российский аналог: ${dst}${tail}.`;
+        } else {
+          const cname = g.classes[edge.of_class] || "";
+          const via = edge.sibling ? `; в таблице замещения он назван аналогом ${q(name(edge.sibling))}` : "";
+          target = `Российский продукт того же класса${cname ? ` («${cname}»)` : ""} из реестра — ${dst}${via}.`;
+        }
+        if (edge.lapse) {                              // срок подошёл, а продлить лицензию нельзя
+          const state = onRequest ? "продаётся только по запросу" : "снят с продажи";
+          return `Лицензия ${src}: ${edge.lapse}. Продлить её в магазине нельзя: продукт ${state}. ${target}`;
+        }
+        const gone = g.onSale(edge.src) ? "" : (onRequest ? ", который теперь продаётся только по запросу" : ", которого больше нет в продаже");
+        return `${src} — зарубежный продукт${gone}. ${target}`;
       }
       if (t === "requires") return `Для работы ${src} нужен ${dst}. ${ev}`.trim();
       if (t === "copurchase" || t === "next_purchase") return `Клиенты, купившие ${src}, берут и ${dst}. ${ev}`.trim();
@@ -227,7 +276,7 @@
       return {
         family: dst, name: n.name, vendor: n.vendor || "", url: n.url || "", slot, slotTitle: SLOT_TITLE[slot],
         score, why: "", label: LABEL[edge.source] || edge.source || "", paths, fallback: !!fallback, also: "", alsoFamily: "",
-        viaClass: edge.class || "",
+        viaClass: edge.class || edge.group || "",
       };
     }
 
@@ -284,6 +333,7 @@
       for (const [fam, p] of owned) {
         const age = p.dateMs === null ? null : Math.round((client.todayMs - p.dateMs) / DAY);
         const recency = age === null ? 0.7 : Math.max(0.3, Math.exp(-Math.max(age, 0) / 730));
+        const lapse = this._lapsing(client, p);        // срок подошёл, а продлить нельзя: замена срочная
         const renewal = this._renewal(client, p);
         if (renewal) {
           const [edge, s] = renewal;
@@ -291,15 +341,51 @@
           if (reason) bans.push({ family: edge.dst, type: "renewal", from: fam, reason });
           else push(edge.dst, "renew", s, edge);
         }
-        for (const e of g.out.get(fam) || []) {
+        let direct = false;                            // у продукта нашёлся прямой российский аналог
+        for (const e0 of g.out.get(fam) || []) {
+          let e = e0;
           const t = e.type;
           if (t === "renewal" || e.confidence < this.minConfidence || !(t in this.w)) continue;
           const reason = this._banned(client, owned, platforms, e.dst, t, fam);
           if (reason) { bans.push({ family: e.dst, type: t, from: fam, reason }); continue; }
           let s = this.w[t] * e.confidence * recency;
-          if (t === "analog_ru" && !g.onSale(fam)) s = Math.min(0.95, s * 2.0);
+          if (t === "analog_ru" && !g.onSale(fam)) {
+            s = Math.min(0.95, s * 2.0);
+            if (lapse) { s = Math.max(s, LAPSE_ANALOG * e.confidence); e = Object.assign({}, e, { lapse }); }
+          }
           if (!g.onSale(e.dst)) s *= 0.8;
+          direct = direct || t === "analog_ru";
           push(e.dst, SLOT[t], s, e);
+        }
+        // замена по классу: купленный зарубежный продукт сняли с продажи, а прямого аналога в таблице
+        // замещения нет — советуем российские продукты того же класса из реестра
+        const node = g.nodes.get(fam) || {};
+        const cls = node.cls || "";
+        if (cls && !direct && !g.onSale(fam) && node.ru !== 1 && node.kind !== "hardware"
+            && CLASS_ANALOG_CONFIDENCE >= this.minConfidence) {
+          const vendor = fam.split("/")[0];
+          const mine = g.analogs.get(fam) || new Set();
+          // продукт того же вендора и класса, аналогом которого d назван в таблице замещения
+          const sibling = (d) => {
+            for (const x of Array.from(g.analogs.get(d) || []).sort()) {
+              if (x !== fam && x.split("/")[0] === vendor && ((g.nodes.get(x) || {}).cls || "") === cls) return x;
+            }
+            return "";
+          };
+          let pool = (g.ruByClass.get(cls) || []).filter((d) => d !== fam && !mine.has(d)).map((d) => [d, sibling(d)]);
+          // сначала те, кого таблица замещения называет аналогом другого продукта того же вендора
+          pool = pool.filter((x) => x[1]).concat(pool.filter((x) => !x[1])).slice(0, CLASS_ANALOG_TOP);
+          pool.forEach(([dst, sib], rank) => {
+            if (this._banned(client, owned, platforms, dst, "analog_class", fam)) return;
+            let s = Math.min(0.95, this.w.analog_class * CLASS_ANALOG_CONFIDENCE * recency * 2.0);
+            if (lapse) s = Math.max(s, LAPSE_CLASS);
+            if (!g.onSale(dst)) s *= 0.8;
+            const edge = {
+              src: fam, dst, type: "analog_class", source: "реестр и класс", confidence: CLASS_ANALOG_CONFIDENCE,
+              evidence: "", lapse, of_class: cls, group: "replace:" + fam, sibling: sib,
+            };
+            push(dst, "replace", s / (1 + 0.35 * rank), edge);
+          });
         }
         for (const link of g.classLinks.get(g.klass(fam)) || []) {
           if (link.confidence < this.minConfidence) continue;
