@@ -28,11 +28,23 @@
   try { votes = JSON.parse(localStorage.getItem(VOTES_KEY) || "{}"); } catch (e) { votes = {}; }
   const ekey = (e) => `${e[0]}|${e[1]}|${e[2]}`;
   let graph;
+  // решения менеджера по связям классов и заменам по классу: ключи «cl|класс|класс» и «cr|класс|товар»
+  let approved = new Set(), rejected = new Set();
   function rebuild() {
     const edges = data.edges.filter((e) => votes[ekey(e)] !== "no");
     graph = new E.Graph(Object.assign({}, data, { edges }));
+    const byClass = (v) => new Set(Object.keys(votes).filter((k) => votes[k] === v && /^c[lr]\|/.test(k)));
+    approved = byClass("ok");
+    rejected = byClass("no");
   }
   rebuild();
+  /** Настройки движка: что клиент видит. Непроверенные связи по классу — только если включён просмотр менеджера. */
+  const recOpts = (extra) => Object.assign({ unverified: state.unverified, approved, rejected }, extra);
+  /** Ссылка в магазин с метками перехода — такими же, какие ставит блок кабинета. */
+  function shopUrl(url, slot, pos) {
+    if (!url) return "";
+    return url + (url.includes("?") ? "&" : "?") + `utm_source=lk.softline.ru&utm_medium=internal&utm_campaign=reco&utm_content=sovetnik_${slot}&utm_term=${pos}`;
+  }
 
   const slotOf = (type) => E.SLOT[type] || "popular";
   const slotVar = (slot) => `var(--${slot})`;
@@ -118,7 +130,7 @@
   }
 
   // =========================== вкладка «Клиент» ===========================
-  const state = { type: "b2b", today: new Date().toISOString().slice(0, 10), purchases: [], minConf: 0 };
+  const state = { type: "b2b", today: new Date().toISOString().slice(0, 10), purchases: [], minConf: 0, unverified: false };
   let last = { recs: [], bans: [] };       // что сейчас показано: советы и их пути
   let ownedView = [];                      // левая колонка схемы: [{id, name, note}]
 
@@ -135,6 +147,7 @@
   exSel.addEventListener("change", () => { if (exSel.value !== "") loadExample(+exSel.value); });
   $$("#ctype button").forEach((b) => b.addEventListener("click", () => { state.type = b.dataset.v; syncControls(); render(); }));
   $("#today").addEventListener("change", (ev) => { if (ev.target.value) { state.today = ev.target.value; render(); } });
+  $("#unverified").addEventListener("change", (ev) => { state.unverified = ev.target.checked; render(); });
   $("#minconf").addEventListener("input", (ev) => { state.minConf = +ev.target.value; $("#minconf-v").textContent = state.minConf.toFixed(2).replace(".", ","); render(); });
   bindSearch($("#add-q"), $("#add-list"), (n) => {
     state.purchases.push({ family: n.id, date: isoShift(state.today, -11), term: null });
@@ -180,8 +193,29 @@
       <p class="card__why">${esc(r.why)}</p>
       ${r.also ? `<p class="card__also"><b>Заодно.</b> ${esc(r.also)}</p>` : ""}
       ${n.promo ? `<p class="card__promo">Условие магазина: ${esc(n.promo)}</p>` : ""}
-      <div class="card__foot"><span class="chip">${esc(r.label)}</span>${price}${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">Открыть в магазине</a>` : ""}</div>
+      <div class="card__foot"><span class="chip">${esc(r.label)}</span>${price}${r.url ? `<a href="${esc(shopUrl(r.url, r.slot, i + 1))}" target="_blank" rel="noopener">Открыть в магазине</a>` : ""}</div>
     </article>`;
+  }
+
+  /** Строка «Пора продлить»: продление — не совет, а напоминание, поэтому оно стоит отдельно от трёх советов. */
+  function renderRenew(rows) {
+    const el = $("#renew");
+    el.hidden = !rows.length;
+    el.innerHTML = !rows.length ? "" : "<h3>Пора продлить</h3>" + rows.map((r, i) => `<div class="renew__row">
+      <div><b>${esc(r.name)}</b><p>${esc(r.text)}</p></div>
+      ${r.url ? `<a href="${esc(shopUrl(r.url, "renew", i + 1))}" target="_blank" rel="noopener">Продлить в магазине</a>` : ""}</div>`).join("");
+  }
+  /** Тот же ответ в виде, который блок кабинета получает сейчас, плюс объяснение и вид совета. */
+  function renderContract(rows) {
+    const el = $("#contract");
+    el.hidden = false;
+    el.innerHTML = `<summary>Ответ в формате кабинета (JSON)</summary>
+      <p class="hint small" style="margin-top:6px">Поля link, name, vendorName и price блок кабинета получает и сейчас; reason и slot — новые: объяснение совета и его вид.</p>
+      <pre>${esc(JSON.stringify({ status: rows.length ? "shown" : "hidden", data: rows }, null, 1))}</pre>`;
+  }
+  function openQueue() {
+    $("#f-type").value = "pending"; $("#f-state").value = "";
+    $$(".tab").find((b) => b.dataset.tab === "links").click();
   }
 
   function bindCards() {
@@ -195,8 +229,20 @@
   function render(keepOwned) {
     if (dstate.on) return renderData();
     const t0 = performance.now();
-    const rec = new E.Recommender(graph, { fill: true, minConfidence: state.minConf });
-    last = rec.recommend({ type: state.type, today: state.today, purchases: state.purchases }, 3);
+    const rec = new E.Recommender(graph, recOpts({ fill: true, minConfidence: state.minConf }));
+    const res = rec.recommend({ type: state.type, today: state.today, purchases: state.purchases }, 5);
+    // продление выносим в отдельную строку, три места в блоке — для новых советов
+    const renew = res.recs.filter((r) => r.slot === "renew").slice(0, 2);
+    last = { recs: res.recs.filter((r) => r.slot !== "renew").slice(0, 3), bans: res.bans };
+    renderRenew(renew.map((r) => ({ name: r.name, text: r.why + (r.also ? " Заодно: " + r.also : ""), url: r.url })));
+    const waiting = new Set(res.bans.filter((b) => b.reason === E.PENDING).map((b) => b.key)).size;
+    const pend = $("#pending");
+    pend.hidden = !waiting;
+    const w10 = waiting % 10, w100 = waiting % 100;
+    const waits = w10 === 1 && w100 !== 11 ? "связь по классу ждёт" : w10 >= 2 && w10 <= 4 && (w100 < 12 || w100 > 14) ? "связи по классу ждут" : "связей по классу ждут";
+    pend.innerHTML = `Ещё ${waiting} ${waits} проверки менеджера: клиент не увидит такие советы, пока связь не принята. <button class="linkbtn" id="to-queue">Открыть очередь</button>`;
+    if (waiting) $("#to-queue").addEventListener("click", openQueue);
+    renderContract(last.recs.map((r) => { const n = graph.nodes.get(r.family) || {}; return { link: r.url, name: r.name, vendorName: r.vendor, price: n.price || null, slot: r.slot, reason: r.why }; }));
     const ms = performance.now() - t0;
     if (!keepOwned) renderOwned();
     $("#block-title").textContent = "Рекомендуем вам";
@@ -359,7 +405,7 @@
       <p class="card__why">${esc(x.why)}</p>
       ${x.also ? `<details class="card__more"><summary>Ещё основание</summary><p class="card__also">${esc(x.also)}</p></details>` : ""}
       ${fact}
-      <div class="card__foot"><span class="chip">${esc(x.label)}</span>${price}${it.url ? `<a href="${esc(it.url)}" target="_blank" rel="noopener">Открыть в магазине</a>` : ""}</div>
+      <div class="card__foot"><span class="chip">${esc(x.label)}</span>${price}${it.url ? `<a href="${esc(shopUrl(it.url, x.slot, i + 1))}" target="_blank" rel="noopener">Открыть в магазине</a>` : ""}</div>
     </article>`;
   }
 
@@ -383,6 +429,10 @@
       ? "История купленных товаров <b>спрятана</b>: совет выведен только из каталога · обращений к языковой модели: <b>0</b>"
       : "Совет выбран ранжированием по истории и каталогу · обращений к языковой модели: <b>0</b> · стоимость запроса: <b>0 ₽</b>";
     $("#cards").innerHTML = recs.map((x, i) => dataCard(x, i, c)).join("");
+    const mode = dstate.hide ? "new_item" : "full";
+    renderRenew(((c.renew || {})[mode] || []).map((x) => ({ name: item(x.item).title || item(x.item).name, text: x.why, url: item(x.item).url })));
+    $("#pending").hidden = true;
+    renderContract(recs.map((x) => ({ link: item(x.item).url || null, name: item(x.item).name, vendorName: item(x.item).vendor || null, price: item(x.item).price || null, slot: x.slot, reason: x.why })));
     const fact = $("#fact");
     if (c.mode === "test") {
       const named = new Set(recs.map((x) => x.item));
@@ -423,7 +473,7 @@
     const out = graph.out.get(n.id) || [], inc = graph.inc.get(n.id) || [];
     const line = Array.from(graph.lineOf(n.id));
     const [st, cls] = saleState(n);
-    const rec = new E.Recommender(graph, { fill: false });
+    const rec = new E.Recommender(graph, recOpts({ fill: false }));
     const res = rec.recommend({ type: n.b2b === 1 ? "b2b" : "b2c", today: state.today, purchases: [{ family: n.id, date: isoShift(state.today, -11), term: null }] }, 3);
     const head = '<tr><th>Вид связи</th><th>Товар</th><th>Источник</th><th class="num">Уверенность</th><th>Основание</th></tr>';
     $("#prod-view").innerHTML = `
@@ -444,59 +494,98 @@
   }
 
   // =========================== вкладка «Связи на проверку» ===========================
+  // В очереди три вида строк. Связи «товар — товар» из каталога, таблиц магазина и таблицы замещения клиент
+  // видит сразу, менеджер может отклонить. Связи между классами (от модели) и замены по классу — вывод:
+  // клиент не увидит их, пока менеджер не примет. Исключение — связи классов, подтверждённые покупками.
   const PAGE = 50;
   let page = 0;
-  const types = Array.from(new Set(data.edges.map((e) => e[2])));
-  const sources = Array.from(new Set(data.edges.map((e) => e[3])));
-  $("#f-type").innerHTML = '<option value="advice">все советы (без «той же линейки»)</option><option value="">все</option>' + types.map((t) => `<option value="${esc(t)}">${esc(E.TYPE_TITLE[t] || t)}</option>`).join("");
-  $("#f-source").innerHTML = '<option value="">любой</option>' + sources.map((s) => `<option value="${esc(s)}">${esc(E.LABEL[s] || s)}</option>`).join("");
-  ["f-type", "f-source", "f-state", "f-q"].forEach((id) => $("#" + id).addEventListener("input", () => { page = 0; renderLinks(); }));
   const allNodes = new Map(data.nodes.map((n) => [n.id, n]));
   const nodeNameAll = (id) => (allNodes.get(id) || {}).name || id;
+  const clsName = (c) => data.classes[c] || c;
+  const goneByClass = {};
+  for (const n of data.nodes) if (n.cls && n.sale !== 1 && n.ru !== 1 && n.kind !== "hardware") goneByClass[n.cls] = (goneByClass[n.cls] || 0) + 1;
+  const queue = [];
+  for (const e of data.edges) {
+    queue.push({ key: ekey(e), group: "edge", type: e[2], from: nodeNameAll(e[0]), to: nodeNameAll(e[1]), source: E.LABEL[e[3]] || e[3],
+                 conf: e[4], ev: (e[5] || "").replace(/; https?:\S+$/, ""), auto: true, urlFrom: (allNodes.get(e[0]) || {}).url, urlTo: (allNodes.get(e[1]) || {}).url });
+  }
+  for (const l of data.class_links || []) {
+    const bySales = (l.sales || 0) >= E.SALES_OK;
+    const top = ((data.class_rank || {})[l.dst_class] || [])[0];
+    queue.push({ key: `cl|${l.src_class}|${l.dst_class}`, group: "class", type: l.type || "complements", from: `Класс «${clsName(l.src_class)}»`,
+                 to: `Класс «${clsName(l.dst_class)}»` + (top ? ` — например, ${nodeNameAll(top)}` : ""),
+                 source: bySales ? "модель; подтверждено покупками" : "модель и критик", conf: l.confidence, ev: l.reason || "", auto: bySales });
+  }
+  for (const [cid, fams] of new E.Graph(data).ruByClass) {
+    if (!goneByClass[cid]) continue;
+    for (const dst of fams) {
+      queue.push({ key: `cr|${cid}|${dst}`, group: "replace", type: "analog_class", from: `Класс «${clsName(cid)}»: зарубежные программы, снятые с продажи (${goneByClass[cid]})`,
+                   to: nodeNameAll(dst), source: "реестр российского ПО", conf: 0.5, ev: "", auto: false, urlTo: (allNodes.get(dst) || {}).url });
+    }
+  }
+  const waitingRows = () => queue.filter((r) => !r.auto && !votes[r.key]);
+  const statusOf = (r) => (votes[r.key] === "ok" ? "принято" : votes[r.key] === "no" ? "отклонено" : r.auto ? "показывается клиенту" : "ждёт проверки");
+  const types = Array.from(new Set(data.edges.map((e) => e[2])));
+  const sources = Array.from(new Set(queue.map((r) => r.source)));
+  $("#f-type").innerHTML = '<option value="pending">ждут проверки менеджера</option><option value="class">связи между классами</option><option value="replace">замены по классу</option>'
+    + '<option value="advice">связи товаров (без «той же линейки»)</option><option value="">все</option>'
+    + types.map((t) => `<option value="${esc(t)}">товары: ${esc(E.TYPE_TITLE[t] || t)}</option>`).join("");
+  $("#f-source").innerHTML = '<option value="">любой</option>' + sources.map((x) => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
+  ["f-type", "f-source", "f-state", "f-q"].forEach((id) => $("#" + id).addEventListener("input", () => { page = 0; renderLinks(); }));
   function filteredLinks() {
-    const t = $("#f-type").value, s = $("#f-source").value, st = $("#f-state").value, q = $("#f-q").value.trim().toLowerCase();
-    return data.edges.filter((e) => {
-      if (t === "advice" ? e[2] === "same_line" : t && e[2] !== t) return false;
-      if (s && e[3] !== s) return false;
-      const v = votes[ekey(e)] || "new";
-      if (st && v !== st) return false;
-      if (q && !(`${nodeNameAll(e[0])} ${nodeNameAll(e[1])}`.toLowerCase().includes(q))) return false;
+    const t = $("#f-type").value, src = $("#f-source").value, st = $("#f-state").value, q = $("#f-q").value.trim().toLowerCase();
+    return queue.filter((r) => {
+      const v = votes[r.key];
+      if (t === "pending") { if (r.auto || v) return false; }
+      else if (t === "class" || t === "replace") { if (r.group !== t) return false; }
+      else if (t === "advice") { if (r.group !== "edge" || r.type === "same_line") return false; }
+      else if (t && (r.group !== "edge" || r.type !== t)) return false;
+      if (src && r.source !== src) return false;
+      if (st && (v || "new") !== st) return false;
+      if (q && !(`${r.from} ${r.to}`.toLowerCase().includes(q))) return false;
       return true;
     });
+  }
+  function saveVotes() {
+    localStorage.setItem(VOTES_KEY, JSON.stringify(votes));
+    rebuild(); renderLinks(); render();
   }
   function renderLinks() {
     const rows = filteredLinks();
     const pages = Math.max(1, Math.ceil(rows.length / PAGE));
     page = Math.min(page, pages - 1);
     const part = rows.slice(page * PAGE, page * PAGE + PAGE);
+    const kind = (r) => (r.group === "class" ? "классы: " : r.group === "replace" ? "" : "") + (E.TYPE_TITLE[r.type] || r.type);
     $("#links").innerHTML = '<tr><th>Откуда</th><th>Вид связи</th><th>Куда</th><th>Источник</th><th class="num">Уверенность</th><th>Основание</th><th>Решение</th></tr>' +
-      part.map((e) => {
-        const v = votes[ekey(e)] || "";
-        return `<tr class="${v === "no" ? "is-no" : ""}"><td>${esc(nodeNameAll(e[0]))}</td>
-          <td><span class="typ" style="--slot:${slotVar(slotOf(e[2]))}"><i class="dot"></i>${esc(E.TYPE_TITLE[e[2]] || e[2])}</span></td>
-          <td>${esc(nodeNameAll(e[1]))}</td><td>${esc(E.LABEL[e[3]] || e[3])}</td><td class="num">${String(e[4]).replace(".", ",")}</td>
-          <td class="ev">${esc((e[5] || "").replace(/; https?:\S+$/, ""))}</td>
-          <td><span class="vote"><button data-k="${esc(ekey(e))}" data-v="ok" class="${v === "ok" ? "is-ok" : ""}" title="Принять связь">принять</button><button data-k="${esc(ekey(e))}" data-v="no" class="${v === "no" ? "is-no" : ""}" title="Отклонить связь">отклонить</button></span></td></tr>`;
+      part.map((r) => {
+        const v = votes[r.key] || "";
+        return `<tr class="${v === "no" ? "is-no" : ""}"><td>${esc(r.from)}</td>
+          <td><span class="typ" style="--slot:${slotVar(slotOf(r.type))}"><i class="dot"></i>${esc(kind(r))}</span></td>
+          <td>${esc(r.to)}</td><td>${esc(r.source)}</td><td class="num">${String(r.conf).replace(".", ",")}</td>
+          <td class="ev">${esc(r.ev)}</td>
+          <td><span class="vote"><button data-k="${esc(r.key)}" data-v="ok" class="${v === "ok" ? "is-ok" : ""}" title="Принять связь">принять</button><button data-k="${esc(r.key)}" data-v="no" class="${v === "no" ? "is-no" : ""}" title="Отклонить связь">отклонить</button></span>
+            <div class="status${statusOf(r) === "ждёт проверки" ? " status--wait" : ""}">${statusOf(r)}</div></td></tr>`;
       }).join("");
     const done = Object.values(votes);
-    $("#pager").innerHTML = `<span>Связей по отбору: ${nf.format(rows.length)} · принято ${done.filter((x) => x === "ok").length} · отклонено ${done.filter((x) => x === "no").length}</span>
+    $("#pager").innerHTML = `<span>По отбору: ${nf.format(rows.length)} · ждут проверки всего: ${nf.format(waitingRows().length)} · принято ${done.filter((x) => x === "ok").length} · отклонено ${done.filter((x) => x === "no").length}</span>
       <span><button class="btn" id="pg-prev"${page ? "" : " disabled"}>Назад</button> стр. ${page + 1} из ${pages} <button class="btn" id="pg-next"${page < pages - 1 ? "" : " disabled"}>Вперёд</button></span>`;
     $("#pg-prev").onclick = () => { page--; renderLinks(); };
     $("#pg-next").onclick = () => { page++; renderLinks(); };
     $$("#links .vote button").forEach((b) => b.addEventListener("click", () => {
-      votes[b.dataset.k] = votes[b.dataset.k] === b.dataset.v ? undefined : b.dataset.v;
-      if (!votes[b.dataset.k]) delete votes[b.dataset.k];
-      localStorage.setItem(VOTES_KEY, JSON.stringify(votes));
-      rebuild(); renderLinks(); render();
+      if (votes[b.dataset.k] === b.dataset.v) delete votes[b.dataset.k]; else votes[b.dataset.k] = b.dataset.v;
+      saveVotes();
     }));
   }
+  $("#accept-all").addEventListener("click", () => {
+    for (const r of filteredLinks()) if (!votes[r.key]) votes[r.key] = "ok";
+    saveVotes();
+  });
   $("#export-links").addEventListener("click", () => {
-    const q = (s) => `"${String(s == null ? "" : s).replace(/"/g, '""')}"`;
+    const q = (x) => `"${String(x == null ? "" : x).replace(/"/g, '""')}"`;
     const lines = [["откуда", "адрес", "вид связи", "куда", "адрес", "источник", "уверенность", "основание", "решение"].join(";")];
-    for (const e of data.edges) {
-      if (e[2] === "same_line" || votes[ekey(e)] === "no") continue;
-      const a = allNodes.get(e[0]) || {}, b = allNodes.get(e[1]) || {};
-      lines.push([q(a.name || e[0]), q(a.url), q(E.TYPE_TITLE[e[2]] || e[2]), q(b.name || e[1]), q(b.url), q(E.LABEL[e[3]] || e[3]), String(e[4]).replace(".", ","), q(e[5]), q(votes[ekey(e)] === "ok" ? "принято" : "не рассмотрено")].join(";"));
+    for (const r of queue) {
+      if (r.type === "same_line" || votes[r.key] === "no") continue;
+      lines.push([q(r.from), q(r.urlFrom), q(E.TYPE_TITLE[r.type] || r.type), q(r.to), q(r.urlTo), q(r.source), String(r.conf).replace(".", ","), q(r.ev), q(statusOf(r))].join(";"));
     }
     const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
@@ -526,6 +615,7 @@
     const chartA = bars([
       { name: "Популярность (организаторы)", value: org["популярность"]["A B2B"] },
       { name: "Совместные покупки (организаторы)", value: org["совместные покупки"]["A B2B"] },
+      ...(r.same_line && r.same_line.p3 ? [{ name: "Правило «та же линейка», без обучения", value: r.same_line.p3["A B2B"], ci: (r.same_line.ci || {})["A B2B"], note: "сильный базовый способ: продление, другой размер лицензии, следующая версия" }] : []),
       { name: "Наша модель без знаний каталога", value: reg.no_catalog.p3["A B2B"], ci: reg.no_catalog.ci["A B2B"], ours: true },
       { name: "Наша модель", value: full["A B2B"], ci: reg.full.ci["A B2B"], ours: true },
     ], 0.2);
@@ -552,6 +642,7 @@
       <h3>Все группы</h3>
       <div class="tablewrap"><table class="links"><tr><th>Способ</th>${head.map((h) => `<th class="num">${h}</th>`).join("")}</tr>
         ${row("Популярность (организаторы)", org["популярность"])}${row("Совместные покупки (организаторы)", org["совместные покупки"])}
+        ${r.same_line && r.same_line.p3 ? row("Правило «та же линейка», без обучения", r.same_line.p3) : ""}
         ${Object.keys(reg).map((k) => row(reg[k].title[0].toUpperCase() + reg[k].title.slice(1), reg[k].p3, k === "full")).join("")}
       </table></div>
       <p class="hint" style="margin-top:8px">Частных лиц в проверке всего несколько десятков — их цифры шумные, главных выводов по ним не делаем.</p>
@@ -570,10 +661,10 @@
   /** Из чего состоят попадания: вариант уже купленного продукта, другая версия или новый для клиента продукт. */
   function breakdownHtml(r) {
     const b = r.breakdown || {};
-    const order = ["популярность", "совместные покупки", "наша модель"].filter((k) => b[k] && b[k]["A B2B"]);
+    const order = ["популярность", "совместные покупки", "та же линейка", "наша модель"].filter((k) => b[k] && b[k]["A B2B"]);
     if (!order.length) return "";
     const KINDS = [["вариант", "Другой вариант уже купленного"], ["версия", "Другая версия или редакция"], ["новый продукт", "Новый для клиента продукт"]];
-    const title = { "популярность": "Популярность (организаторы)", "совместные покупки": "Совместные покупки (организаторы)", "наша модель": "<b>Наша модель</b>" };
+    const title = { "популярность": "Популярность (организаторы)", "совместные покупки": "Совместные покупки (организаторы)", "та же линейка": "Правило «та же линейка», без обучения", "наша модель": "<b>Наша модель</b>" };
     const sum = (o) => KINDS.reduce((a, [k]) => a + o[k], 0);
     const targets = b[order[0]]["A B2B"].targets;
     const row = (k) => {
@@ -583,7 +674,8 @@
     };
     const ours = b["наша модель"] && b["наша модель"]["A B2B"], pop = b["популярность"] && b["популярность"]["A B2B"];
     const note = ours && pop
-      ? `На новых для клиента продуктах наша модель угадала ${ours.hits["новый продукт"]} покупок из ${targets["новый продукт"]}, популярность — ${pop.hits["новый продукт"]}.` : "";
+      ? `На новых для клиента продуктах наша модель угадала ${ours.hits["новый продукт"]} покупок из ${targets["новый продукт"]}, популярность — ${pop.hits["новый продукт"]}`
+        + (b["та же линейка"] ? `, правило «та же линейка» — ${b["та же линейка"]["A B2B"].hits["новый продукт"]}. Простое правило почти не уступает модели на продлениях и других вариантах купленного; прибавка модели — новые продукты.` : ".") : "";
     const future = r.future_information || [];
     return `<h3>Из чего состоят попадания, организации (группа A)</h3>
       <p class="hint">Разные артикулы одного продукта в проверке считаются разными товарами, поэтому попадание бывает трёх видов. В ячейке — число угаданных покупок и их вклад в Precision@3; вклады в сумме дают общую цифру.</p>
@@ -621,12 +713,19 @@
     if (rp && rp.gone) {
       const found = rp.direct + rp.sibling + rp.klass;
       html += `<h3>Замена зарубежных программ, снятых с продажи</h3>
-        <p class="hint">В кабинете магазина кнопка «Подобрать замену» отправляет заявку менеджеру с ответом через 1–2 рабочих дня. Здесь замена находится сразу — для ${nf.format(found)} программ из ${nf.format(rp.gone)} (${pct(found / rp.gone, 0)}).</p>
+        <p class="hint">В кабинете магазина кнопка «Подобрать замену» отправляет заявку менеджеру с ответом через 1–2 рабочих дня. Здесь замена готова для ${nf.format(found)} программ из ${nf.format(rp.gone)} (${pct(found / rp.gone, 0)}). Клиент сразу видит только прямые аналоги; замены по классу показываются после того, как их примет менеджер.</p>
         <table class="links"><tr><th>Откуда замена</th><th class="num">Программ</th></tr>
           <tr><td>Прямой российский аналог из таблицы замещения</td><td class="num">${nf.format(rp.direct)}</td></tr>
           <tr><td>Российский продукт того же класса, названный в таблице аналогом другого продукта того же вендора</td><td class="num">${nf.format(rp.sibling)}</td></tr>
           <tr><td>Российский продукт того же класса из реестра — самый слабый вид совета</td><td class="num">${nf.format(rp.klass)}</td></tr></table>`;
     }
+    const ck = data.meta.class_check;
+    if (ck && ck.links) {
+      html += `<h3>Проверка связей между классами</h3>
+        <p class="hint">Связи между классами предложила языковая модель, второй запрос отсеял слабые. Продажами можно проверить только те связи, оба класса которых есть в датасете: таких ${ck.checkable} из ${ck.links}. Подтвердились ${ck.confirmed}: после товара первого класса товар второго купили не меньше ${ck.min_support} клиентов. Подтверждённые связи клиент видит сразу, остальные ${nf.format(waitingRows().filter((r) => r.group === "class").length)} ждут решения менеджера.</p>`;
+    }
+    html += `<h3>Очередь менеджера</h3>
+      <p class="hint">Сейчас блок построен примерно на 6 000 ручных связок «товар — товар». Здесь менеджеру достаточно один раз просмотреть очередь из связей между классами и замен по классу; строк в ней сейчас: ${nf.format(waitingRows().length)}. Остальное выводится из каталога.</p>`;
     $("#numbers").innerHTML = html;
     $$("#numbers [data-tip]").forEach((el) => {
       el.addEventListener("mousemove", (ev) => showTip(ev, `<span>${esc(el.dataset.tip)}</span>`));
@@ -719,7 +818,7 @@
       ${whoGets(r)}
       <h3>Что теперь увидит покупатель этого товара</h3>
       <div class="cards">${afterPlacement(r)}</div>
-      <p class="hint" style="margin-top:8px">Совет посчитан на этой странице по графу, в который товар только что поставлен: по классу и по связям, найденным агентом. Модель при этом не вызывается.</p>`;
+      <p class="hint" style="margin-top:8px">Так блок будет выглядеть после проверки менеджером: совет посчитан на этой странице по графу, в который товар только что поставлен. Связи по классу, которые менеджер ещё не принял, клиент не видит. Модель при расчёте не вызывается.</p>`;
   }
   /** Входящие связи нового товара: чьим владельцам он теперь будет предложен. */
   function whoGets(r) {
@@ -743,7 +842,7 @@
       nodes: data.nodes.filter((n) => n.id !== hidden).concat([node]),
       edges: data.edges.filter((e) => e[0] !== hidden && e[1] !== hidden && votes[ekey(e)] !== "no").concat(extra, line),
     }));
-    const res = new E.Recommender(g2, { fill: false }).recommend(
+    const res = new E.Recommender(g2, { fill: false, unverified: true, rejected }).recommend(
       { type: p.audience === "b2c" ? "b2c" : "b2b", today: state.today, purchases: [{ family: id, date: isoShift(state.today, -2), term: null }] }, 3);
     if (!res.recs.length) return '<div class="empty">Для этого класса связей пока нет — совет появится, когда класс будет размечен.</div>';
     return res.recs.map((x, i) => {

@@ -114,16 +114,30 @@ def client_card(st: FoldStats, c: str, recs: dict[str, dict[str, list[str]]], mo
         "history": [{"item": a, "first": fold.first[c][a].isoformat(), "last": fold.last[c][a].isoformat()}
                     for a in fold.history[c]],
         "target": sorted(fold.target.get(c, ())) if mode == "test" else [],
-        "recs": {},
+        "recs": {}, "renew": {},
     }
     for regime in REGIMES:
         with in_regime(st, fold.history[c], regime):
             cards = [advice(st, c, b) for b in recs[regime][c]]
-        if mode == "today":
-            # в кабинете сначала советы с настоящим основанием; «часто берут» и единичные совпадения — добор
-            strong = [x for x in cards if x["strength"] >= 1.0]
-            fill = sorted((x for x in cards if x["strength"] < 1.0), key=lambda x: x["kind"] == "следом")
-            cards = (strong + fill)[:3]
+            if mode == "today":
+                # в кабинете сначала советы с настоящим основанием; «часто берут» и единичные совпадения — добор
+                strong = [x for x in cards if x["strength"] >= 1.0]
+                fill = sorted((x for x in cards if x["strength"] < 1.0), key=lambda x: x["kind"] == "следом")
+                ordered = strong + fill
+                # продление — напоминание, а не совет: оно идёт отдельной строкой «Пора продлить»,
+                # а три места в блоке остаются новым советам
+                out["renew"][regime] = [x for x in ordered if x["slot"] == "renew"][:2]
+                cards = [x for x in ordered if x["slot"] != "renew"][:3]
+                have = {x["item"] for x in ordered} | set(fold.history[c])
+                for b in st.pop_top:                     # новых советов не хватило — добор тем, что берут следом
+                    if len(cards) == 3:
+                        break
+                    if b in have:
+                        continue
+                    have.add(b)
+                    card = advice(st, c, b)
+                    if card["slot"] != "renew":
+                        cards.append(card)
         for card in cards:
             card["hit"] = card["item"] in fold.target.get(c, ()) if mode == "test" else None
         out["recs"][regime] = cards

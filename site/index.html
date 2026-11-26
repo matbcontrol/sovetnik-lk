@@ -78,6 +78,7 @@
             <input type="range" id="minconf" min="0" max="0.95" step="0.05" value="0">
             <small>Левее — шире охват, правее — только подтверждённые связи.</small>
           </label>
+          <label class="check"><input type="checkbox" id="unverified"> <span>Показать и то, что ждёт проверки менеджера</span></label>
         </div>
       </aside>
 
@@ -87,8 +88,11 @@
             <h2 id="block-title">Рекомендуем вам</h2>
             <span class="cost" id="cost"></span>
           </div>
+          <div class="renew" id="renew" hidden></div>
           <div class="cards" id="cards"></div>
+          <p class="hint pending" id="pending" hidden></p>
           <div class="fact" id="fact" hidden></div>
+          <details class="contract" id="contract" hidden></details>
         </div>
         <div class="panel">
           <div class="panel__head">
@@ -149,10 +153,11 @@
       <div class="panel__head">
         <h2>Связи на проверку</h2>
         <div class="actions">
-          <button class="btn" id="export-links">Выгрузить принятые связи (CSV)</button>
+          <button class="btn" id="accept-all">Принять все по отбору</button>
+          <button class="btn" id="export-links">Выгрузить связи (CSV)</button>
         </div>
       </div>
-      <p class="hint">Это файл связей для блока ручных правил: менеджер принимает или отклоняет связь одним нажатием. Отклонённая связь перестаёт участвовать в советах сразу.</p>
+      <p class="hint">Связи «товар — товар» взяты из каталога, таблиц магазина и таблицы замещения: клиент видит их сразу, менеджер может отклонить. Связи между классами и замены по классу — вывод, а не факт: клиент не увидит их, пока менеджер не примет. Исключение — связи классов, которые подтверждаются покупками.</p>
       <div class="filters">
         <label class="field"><span>Вид связи</span><select id="f-type"></select></label>
         <label class="field"><span>Источник</span><select id="f-source"></select></label>

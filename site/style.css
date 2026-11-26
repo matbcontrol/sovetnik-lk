@@ -259,3 +259,18 @@ textarea { font: inherit; color: var(--ink); border: 1px solid var(--axis); bord
 
 .card__more summary { cursor: pointer; color: var(--muted); font-size: 12px; }
 .card__more .card__also { margin-top: 4px; }
+
+/* строка «Пора продлить» над советами, очередь на проверку, ответ в формате кабинета */
+.renew { border: 1px solid var(--hair); border-left: 3px solid var(--renew); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; background: #fff; }
+.renew h3 { margin: 0 0 6px; }
+.renew__row { display: flex; gap: 14px; justify-content: space-between; align-items: flex-start; padding: 6px 0; border-top: 1px dotted var(--hair); }
+.renew__row:first-of-type { border-top: 0; }
+.renew__row p { color: var(--ink-2); font-size: 14px; margin-top: 2px; }
+.renew__row a { white-space: nowrap; }
+.pending { margin-top: 12px; }
+.contract { margin-top: 12px; }
+.contract summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+.contract pre { margin: 8px 0 0; padding: 10px 12px; background: #f6f5f1; border-radius: 6px; font-size: 12px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
+.status { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.status--wait { color: #9a6700; }
+@media (max-width: 640px) { .renew__row { flex-direction: column; gap: 4px; } }
