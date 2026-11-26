@@ -54,6 +54,11 @@ LAPSE_CLASS = 0.75           # нижняя граница оценки заме
 # Таблица замещения называет аналогами и продукты другого назначения (к AutoCAD — геоинформационную
 # систему). Аналог из другого класса каталога идёт после аналога того же класса.
 OTHER_CLASS_ANALOG = 0.8
+# Совет не должен быть в разы дороже того, что клиент покупал: по данным продаж следующая покупка дороже
+# самой дорогой прошлой больше чем в пять раз лишь в 5,5 % случаев. То же правило действует в блоке
+# кабинета (recsys.rank.unified). Замены снятых с продажи программ и продления под него не попадают.
+PRICE_CAP = 5.0
+PRICE_FLOOR = 5000.0         # у дешёвой покупки потолок считается от этой суммы: к утилите за 300 ₽ антивирус советовать можно
 LABEL = {
     "таблица сравнения магазина": "подтверждено магазином",
     "типы лицензий на странице": "подтверждено магазином",
@@ -428,6 +433,11 @@ class Recommender:
         np_ = {p.strip().lower() for x in _split(n.get("platforms", "")) for p in x.split(",") if p.strip()}
         if edge_type != "renewal" and platforms and np_ and not (platforms & np_):
             return "не та платформа"
+        if edge_type not in ("renewal", "analog_ru", "analog_class", "popular"):
+            paid = [self._price(self.g.nodes.get(o) or {}) for o in owned]
+            top, cost = max([x for x in paid if x] or [0.0]), self._price(n)
+            if top and cost and cost > PRICE_CAP * max(top, PRICE_FLOOR):
+                return "намного дороже прошлых покупок клиента"
         if edge_type not in ("upgrade", "new_version", "renewal"):
             for o in owned:
                 if dst in self.g.line.get(o, ()):
@@ -444,6 +454,14 @@ class Recommender:
         return ""
 
     # ---- объяснения ----------------------------------------------------------------------
+
+    @staticmethod
+    def _price(node: dict) -> float:
+        """Цена «от» на витрине; 0 — цены нет."""
+        try:
+            return float(node.get("price_from") or 0)
+        except (TypeError, ValueError):
+            return 0.0
 
     def _why(self, edge: dict, p: Purchase | None, client: Client) -> str:
         src = _q(self.g.nodes.get(edge["src"], {}).get("name", edge["src"]))

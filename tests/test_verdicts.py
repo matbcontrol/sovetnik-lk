@@ -115,3 +115,16 @@ def test_judge_over_all_purchases():
     assert v.judge(["a"], "z").verdict == "unrelated"
     assert v.judge(["a", "b"], "z").verdict == ""                # пара (b, z) не размечена: не советуем, ждёт разметки
     assert ("b", "z") in v.missing
+
+
+def test_advice_is_not_many_times_dearer_than_what_the_client_bought():
+    # техподдержка за четверть миллиона клиенту с лицензией за 2,8 тыс. — реклама, а не совет
+    nodes = {"v/av": dict(node("v/av", "c/av"), price_from="2800"),
+             "v/edr": dict(node("v/edr", "c/av"), price_from="2695"),
+             "v/support": dict(node("v/support", "c/av"), price_from="262824")}
+    edges = [{"src": "v/av", "dst": d, "type": "complements", "confidence": 0.85, "evidence": "Добавляет к защите",
+              "source": "разметка: нужно"} for d in ("v/edr", "v/support")]
+    client = Client("b2b", [Purchase("v/av", date(2026, 6, 1), 0)], today=TODAY)
+    recs, bans = Recommender(Graph(nodes, edges, [], {})).recommend(client, 3, explain_bans=True)
+    assert [r.family for r in recs] == ["v/edr"]
+    assert [(b["family"], b["reason"]) for b in bans] == [("v/support", "намного дороже прошлых покупок клиента")]

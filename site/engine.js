@@ -30,6 +30,10 @@
   // Таблица замещения называет аналогами и продукты другого назначения (к AutoCAD — геоинформационную
   // систему). Аналог из другого класса каталога идёт после аналога того же класса.
   const OTHER_CLASS_ANALOG = 0.8;
+  // Совет не должен быть в разы дороже того, что клиент покупал: по данным продаж следующая покупка дороже
+  // самой дорогой прошлой больше чем в пять раз лишь в 5,5 % случаев. Замены и продления под правило не попадают.
+  const PRICE_CAP = 5.0;
+  const PRICE_FLOOR = 5000.0;  // у дешёвой покупки потолок считается от этой суммы
   const LABEL = {
     "таблица сравнения магазина": "подтверждено магазином",
     "типы лицензий на странице": "подтверждено магазином",
@@ -249,6 +253,12 @@
       const np = new Set();
       for (const x of split(n.pf)) for (const p of x.split(",")) if (p.trim()) np.add(p.trim().toLowerCase());
       if (edgeType !== "renewal" && platforms.size && np.size && ![...platforms].some((p) => np.has(p))) return "не та платформа";
+      if (!["renewal", "analog_ru", "analog_class", "popular"].includes(edgeType)) {
+        let top = 0;
+        for (const o of owned.keys()) { const x = Number((g.nodes.get(o) || {}).price) || 0; if (x > top) top = x; }
+        const cost = Number(n.price) || 0;
+        if (top && cost && cost > PRICE_CAP * Math.max(top, PRICE_FLOOR)) return "намного дороже прошлых покупок клиента";
+      }
       if (!inLine) {
         for (const o of owned.keys()) {
           if (g.lineOf(o).has(dst)) return "та же линейка, что уже куплена";
