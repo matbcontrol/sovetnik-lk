@@ -26,7 +26,7 @@ from datetime import date, datetime, timezone
 from recsys.config import DATA, INTERIM, ROOT
 from recsys.eval.value import Prep, in_regime
 from recsys.rank.data import OFFICIAL, Fold, load_task, make_fold
-from recsys.rank.explain import advice, describe, short_name, title_name
+from recsys.rank.explain import advice, card_title, describe, short_name
 from recsys.rank.features import FoldStats, build_attrs
 from recsys.rank.ltr import copies, fit
 from recsys.stable import rerun_with_fixed_order
@@ -37,7 +37,29 @@ REGIMES = ["full", "new_item"]
 TODAY_SAMPLE = 240
 
 
-def recommend(st: FoldStats, model, clients: list[str], regime: str, diverse: bool = False) -> dict[str, list[str]]:
+PRICE_CAP = 5.0        # во сколько раз совет может быть дороже самой дорогой покупки клиента (режим кабинета)
+
+
+def item_prices(task) -> dict[str, float]:
+    """Цена товара по витрине магазина; товары без цены в словарь не попадают."""
+    offer = {}
+    with gzip.open(INTERIM / "feed_offers.jsonl.gz", "rt", encoding="utf-8") as f:
+        for line in f:
+            o = json.loads(line)
+            try:
+                offer[o["offer_id"]] = float(o["price"])
+            except (TypeError, ValueError):
+                continue
+    out = {}
+    for item, r in task.items.items():
+        p = offer.get((r or {}).get("offer_id") or "")
+        if p and p > 0:
+            out[item] = p
+    return out
+
+
+def recommend(st: FoldStats, model, clients: list[str], regime: str, diverse: bool = False,
+              prices: dict[str, float] | None = None) -> dict[str, list[str]]:
     """Три товара каждому клиенту из списка (клиент должен иметь покупки в обучающей части разреза).
 
     diverse=False — ровно как в протоколе проверки: три лучших по оценке.
@@ -59,17 +81,26 @@ def recommend(st: FoldStats, model, clients: list[str], regime: str, diverse: bo
     out = {}
     for c, items in ranked.items():
         seen, picked = set(), []
+        own = {at[a].line for a in fold.history[c]} | {at[a].nline for a in fold.history[c] if at[a].nline}
+        cap = max((prices.get(a, 0) for a in fold.history[c]), default=0) if prices else 0
         for b in items:
             line = at[b].pkey or at[b].line
-            if line in seen:
+            if line in seen or (at[b].nline and at[b].nline in seen):
+                continue
+            # дистрибутив, техподдержка, продление и расширение имеют смысл только к продукту, который у клиента есть
+            if at[b].kind in ("media", "support", "renewal", "extension") and at[b].line not in own                     and not (at[b].nline and at[b].nline in own):
+                continue
+            # не предлагаем товар, который в разы дороже всего, что клиент покупал: по данным организаторов
+            # следующая покупка дороже самой дорогой прошлой более чем в 5 раз лишь в 5,5 % случаев
+            if cap and prices.get(b, 0) > PRICE_CAP * cap:
                 continue
             seen.add(line)
+            if at[b].nline:
+                seen.add(at[b].nline)                # один совет на продукт: и по каталогу, и по названию
             picked.append(b)
-            if len(picked) == 3:
-                break
         if len(picked) < 3:                          # разных линеек не хватило: добираем следующими по оценке
             picked += [b for b in items if b not in picked][: 3 - len(picked)]
-        out[c] = picked
+        out[c] = picked                              # кандидаты по порядку; три карточки выберет client_card
     return out
 
 
@@ -88,6 +119,11 @@ def client_card(st: FoldStats, c: str, recs: dict[str, dict[str, list[str]]], mo
     for regime in REGIMES:
         with in_regime(st, fold.history[c], regime):
             cards = [advice(st, c, b) for b in recs[regime][c]]
+        if mode == "today":
+            # в кабинете сначала советы с настоящим основанием; «часто берут» и единичные совпадения — добор
+            strong = [x for x in cards if x["strength"] >= 1.0]
+            fill = sorted((x for x in cards if x["strength"] < 1.0), key=lambda x: x["kind"] == "следом")
+            cards = (strong + fill)[:3]
         for card in cards:
             card["hit"] = card["item"] in fold.target.get(c, ()) if mode == "test" else None
         out["recs"][regime] = cards
@@ -130,7 +166,8 @@ def main() -> None:
     b2b = [c for c in pool if task.clients[c]["client_group"] == "B2B"][: TODAY_SAMPLE // 2]
     b2c = [c for c in pool if task.clients[c]["client_group"] == "B2C"][: TODAY_SAMPLE // 2]
     today = b2b + b2c
-    recs_now = {r: recommend(now_stats, models_now[r], today, r, diverse=True) for r in REGIMES}
+    prices = item_prices(task)
+    recs_now = {r: recommend(now_stats, models_now[r], today, r, diverse=True, prices=prices) for r in REGIMES}
     cards_now = [client_card(now_stats, c, recs_now, "today", len(now.history[c]) == 1) for c in today]
     print(f"сегодня ({last}): клиентов {len(cards_now)} (организаций {len(b2b)}, частных лиц {len(b2c)})")
 
@@ -154,7 +191,11 @@ def main() -> None:
         except ValueError:
             p = 0.0
         items[i] = {
-            "name": task.names.get(i, i), "title": title_name(task, i), "short": short_name(task, i),
+            # заголовок карточки — название продукта из каталога (параметры лицензии идут строкой ниже);
+            # полное название из продаж остаётся в подсказке. Так карточка и объяснение называют товар одинаково.
+            "name": task.names.get(i, i),
+            "title": card_title(task, i),
+            "short": short_name(task, i),
             "desc": describe(task, i, attrs[i]),
             "vendor": r.get("vendor", ""), "cls": r.get("subcategory", ""), "url": url.get(off_id, r.get("url", "")),
             "price": p if p > 0 else None,

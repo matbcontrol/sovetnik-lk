@@ -256,3 +256,6 @@ textarea { font: inherit; color: var(--ink); border: 1px solid var(--axis); bord
   .pager { flex-wrap: wrap; gap: 8px; }
   .chip { white-space: normal; }
 }
+
+.card__more summary { cursor: pointer; color: var(--muted); font-size: 12px; }
+.card__more .card__also { margin-top: 4px; }

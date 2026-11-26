@@ -357,7 +357,7 @@
       <div class="card__name" title="${esc(it.name)}">${esc(it.title || (it.name.length > 130 ? it.name.slice(0, 128) + "…" : it.name))}</div>
       <div class="card__vendor">${esc([it.vendor, it.cls, x.desc || it.desc].filter(Boolean).join(" · "))}</div>
       <p class="card__why">${esc(x.why)}</p>
-      ${x.also ? `<p class="card__also"><b>Ещё основание.</b> ${esc(x.also)}</p>` : ""}
+      ${x.also ? `<details class="card__more"><summary>Ещё основание</summary><p class="card__also">${esc(x.also)}</p></details>` : ""}
       ${fact}
       <div class="card__foot"><span class="chip">${esc(x.label)}</span>${price}${it.url ? `<a href="${esc(it.url)}" target="_blank" rel="noopener">Открыть в магазине</a>` : ""}</div>
     </article>`;

@@ -37,3 +37,14 @@ def test_difference_keeps_edition_names_and_drops_scraps():
 
 def test_ordinal_stops_after_third_place():
     assert e.ordinal(1) == "самая частая" and e.ordinal(3) == "третья по частоте" and e.ordinal(4) == ""
+
+
+def test_word_programma_is_kept_when_it_is_part_of_the_name():
+    name = "Программа фиксации и контроля исходного состояния программного комплекса ФИКС"
+    assert e.clean_name(name, 120) == name
+
+
+def test_licence_end_month():
+    from datetime import date
+    end = e.end_of(date(2026, 7, 6), 12)
+    assert (end.year, end.month) == (2027, 7) and e.MONTH_GEN[end.month - 1] == "июля"

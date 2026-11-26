@@ -45,7 +45,9 @@ LEGAL = re.compile(
     r"^(?:(?:простая\s+)?(?:не)?исключительн\w+\s+)?"
     r"(?:право\s+(?:на\s+)?использовани[ея](?:\s+(?:программы\s+для\s+эвм|программного\s+обеспечения|по))?"
     r"|лицензия\s+на\s+право\s+использования(?:\s+(?:программы\s+для\s+эвм|по))?"
-    r"|программа\s+для\s+эвм|программа)\s+", re.I)
+    r"|программа\s+для\s+эвм)\s+", re.I)
+# «Программа КриптоПро CSP» — слово лишнее; «Программа фиксации и контроля…» — это часть названия
+BARE_PROGRAM = re.compile(r"^Программа\s+(?=[A-ZА-ЯЁ«\"0-9])")
 SKU_HEAD = re.compile(r"^(?:[A-Z0-9]{2,}(?:-[A-Z0-9]+)+,\s*|[A-Z0-9]{2,}(?:-[A-Z0-9]+){2,}\s+)")
 CODE_TAIL = re.compile(r"[.,]?\s+[А-ЯA-Z]{2,6}\.\d{3,}[\d.\-]*.*$")
 SLOT_TITLE = {"renew": "Что истекает", "next": "Следующая ступень", "missing": "Чего не хватает",
@@ -53,6 +55,16 @@ SLOT_TITLE = {"renew": "Что истекает", "next": "Следующая с
 LABEL = {"линейка": "каталог: та же линейка", "следом": "покупки других клиентов",
          "семейство": "покупки по линейке", "класс": "покупки по классу",
          "сегмент": "докупки вашего сегмента", "общее": "частые докупки"}
+
+
+MONTH_GEN = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
+             "октября", "ноября", "декабря"]
+
+
+def end_of(bought: date, term: int) -> date:
+    """Месяц, в котором кончается лицензия: дата покупки плюс срок в месяцах."""
+    y, m = divmod(bought.month - 1 + term, 12)
+    return date(bought.year + y, m + 1, 1)
 
 
 def when(d: date) -> str:
@@ -90,7 +102,7 @@ def clean_name(name: str, limit: int) -> str:
     prev = None
     while prev != name:
         prev = name
-        name = LEGAL.sub("", name).strip(" .,")
+        name = BARE_PROGRAM.sub("", LEGAL.sub("", name).strip(" .,"))
     name = CODE_TAIL.sub("", name).strip(" .,") or prev
     if len(name) > limit:
         head = name[:limit]
@@ -110,6 +122,24 @@ def short_name(task: Task, item: str, limit: int = 64) -> str:
 def title_name(task: Task, item: str) -> str:
     """Заголовок карточки: полное название из продаж без служебных слов."""
     return clean_name(task.names.get(item, item), 120)
+
+
+VARIANT_TAIL = re.compile(r"\s((?:на|для)\s+[а-яё][а-яё0-9\s-]{2,40}?)(?:\s*\([^)]*\))?$")
+
+
+def card_title(task: Task, item: str) -> str:
+    """Заголовок карточки. Если товар привязан к каталогу — название продукта оттуда: так карточка
+    и объяснение называют товар одинаково, а артикульные хвосты вроде «AllLng Sub PK Lic» не видны.
+    Хвост названия, который отличает вариант («на сервере», «на одном рабочем месте»), сохраняется.
+    """
+    r = task.items.get(item) or {}
+    if not (r.get("family") or "").strip():
+        return title_name(task, item)
+    title = short_name(task, item, 90)
+    m = VARIANT_TAIL.search(clean_name(task.names.get(item, ""), 300))
+    if m and m.group(1).lower() not in title.lower():
+        title += " " + m.group(1).strip()
+    return title
 
 
 def q(name: str) -> str:
@@ -143,12 +173,23 @@ def band(task: Task, item: str, a: Attr) -> str:
     return f"{numbers(sz)} {plural(sz[1], *sz[2])}" if sz else ""
 
 
+def term_of(task: Task, item: str, a: Attr) -> int | None:
+    """Срок лицензии в месяцах для показа клиенту; 0 — бессрочная.
+
+    В каталоге «годовая» лицензия иногда числится бессрочной или без срока — тогда верим её названию.
+    """
+    if not a.term and re.search(r"\bгодов(?:ая|ой|ую)\b", task.names.get(item, ""), re.I):
+        return 12
+    return a.term
+
+
 def describe(task: Task, item: str, a: Attr) -> str:
     """Параметры лицензии одной строкой: «продление, 25–49 узлов, 12 мес.»"""
     parts = [KIND_RU.get(a.kind, "")]
     parts.append(band(task, item, a))
-    if a.term is not None:
-        parts.append("бессрочно" if a.term == 0 else f"{a.term} мес.")
+    term = term_of(task, item, a)
+    if term is not None:
+        parts.append("бессрочно" if term == 0 else f"{term} мес.")
     m = re.search(r"\((\d+)/(\d+)", task.names.get(item, ""))
     if m:
         parts.append(f"платёж {m.group(1)} из {m.group(2)}")
@@ -207,7 +248,8 @@ def relation(task: Task, a: str, aa: Attr, b: str, ab: Attr) -> tuple[str, str]:
     scale = ""
     if sa and sb:
         scale = f" на {band(task, b, ab)} вместо {numbers(sa)}" if differ else " на тот же размер"
-    term = f", на {ab.term} мес. вместо {aa.term}" if aa.term and ab.term and aa.term != ab.term else ""
+    ta, tb = term_of(task, a, aa), term_of(task, b, ab)
+    term = f", на {tb} мес. вместо {ta}" if ta and tb and ta != tb else ""
     if ab.kind == "renewal":
         return "renew", f"продление этой лицензии{scale}{term}"
     if ab.kind == "media":
@@ -218,13 +260,19 @@ def relation(task: Task, a: str, aa: Attr, b: str, ab: Attr) -> tuple[str, str]:
         return "next", "расширение вашей лицензии"
     if ab.kind in ("upgrade", "migration") or (aa.version is not None and ab.version is not None and ab.version > aa.version):
         return "next", "переход на более новую версию"
+    if ta and tb == 0 and not differ:
+        return "next", f"бессрочная лицензия вместо срочной на {ta} мес."
     if differ:
         more = "большее" if sb[0] > sa[0] else "другое"
         return "next", f"та же лицензия на {more} число мест: {band(task, b, ab)} вместо {numbers(sa)}{term}"
     if aa.kind == "renewal" and ab.kind == "base":
         return "renew", f"новая лицензия той же линейки{scale}{term}"
     diff = difference(task.names.get(a, ""), task.names.get(b, ""))
-    return "next", "другая лицензия той же линейки" + (f": {q(diff)}" if diff else "") + term
+    if not term and ta == 0 and tb:
+        term = f", на {tb} мес."                    # у клиента бессрочная, а совет — срочная лицензия
+    if diff:
+        return "next", f"другой вариант этого же продукта: {q(diff)}{term}"
+    return "next", f"ещё одна лицензия этого же продукта{term}"
 
 
 def ordinal(k: int) -> str:
@@ -264,13 +312,14 @@ def reasons(st: FoldStats, c: str, b: str) -> list[dict]:
     # 1) та же линейка — знание каталога
     near = [a for a in h if at[a].line == ab.line] or [a for a in h if at[a].nline and at[a].nline == ab.nline]
     if near:
-        a = min(near, key=lambda x: since[x])
+        # опираемся на последнюю покупку линейки; при равной дате — на саму лицензию, а не на дистрибутив к ней
+        a = min(near, key=lambda x: (since[x], at[x].kind in ("media", "support")))
         aa = at[a]
         slot, phrase = relation(task, a, aa, b, ab)
         text = f"У вас есть {q(short_name(task, a))}"
         da = describe(task, a, aa)
         text += f" ({da})" if da else ""
-        text += f", куплено {when(fold.last[c][a])}. Этот товар — {phrase}."
+        text += f", куплено {when(fold.last[c][a])}. Этот товар — {phrase.rstrip('.')}."
         n, m = st.pair.get(a, EMPTY).get(b, 0), st.owners[a]
         nf = st.fam.get(aa.line, EMPTY).get(b, 0)
         if n >= 2 and n / max(m, 1) >= 0.05:
@@ -280,12 +329,17 @@ def reasons(st: FoldStats, c: str, b: str) -> list[dict]:
         elif nf >= 2:
             text += f" Его потом {took(nf)} {clients(nf)} с продуктами этой линейки."
         k = int(round(since[a]))
-        if slot == "renew" and aa.term:
-            left = aa.term - k
-            text += (f" Срок лицензии — {aa.term} мес., с покупки прошло {k} мес."
-                     if left >= 0 else f" Срок лицензии ({aa.term} мес.) уже истёк: с покупки прошло {k} мес.")
+        owned_term = term_of(task, a, aa)
+        due = False                                  # срок действительно подходит: осталось не больше четырёх месяцев
+        if slot == "renew" and owned_term:
+            left = owned_term - k
+            due = left <= 4
+            end = end_of(fold.last[c][a], owned_term)
+            text += (f" Ваша лицензия на {owned_term} мес. действует до {MONTH_GEN[end.month - 1]} {end.year}."
+                     if left >= 0 else f" Ваша лицензия на {owned_term} мес. истекла {when(end)}.")
         out.append({"type": "линейка", "slot": slot, "src": a, "edge": phrase.split(":")[0].split(",")[0],
-                    "text": text, "strength": 3.0 + min(n, 20) / 100})
+                    "text": text, "strength": 3.0 + min(n, 20) / 100, "due": due,
+                    "payment": phrase.startswith("следующий платёж")})
 
     # 2) что брали следом за тем же товаром
     best = None
@@ -361,16 +415,21 @@ def advice(st: FoldStats, c: str, b: str) -> dict:
     rs = reasons(st, c, b)
     task = st.task
     if not rs:
-        return {"item": b, "slot": "popular", "title": SLOT_TITLE["popular"],
+        return {"item": b, "slot": "popular", "title": SLOT_TITLE["popular"], "kind": "общее", "strength": 0.1,
                 "why": "Этот товар часто берут клиенты того же типа.", "label": LABEL["общее"], "paths": []}
     main = rs[0]
     label = LABEL[main["type"]]
     if main["type"] == "линейка" and ("Так поступили" in main["text"] or " потом взял" in main["text"]):
         label = "каталог и покупки других клиентов"
     extra = [r["text"] for r in rs[1:3] if r["type"] in ("следом", "семейство", "класс")]
+    title = SLOT_TITLE[main["slot"]]
+    if main["slot"] == "renew" and not main.get("due"):
+        # «Что истекает» — только когда срок правда подходит; иначе это продление заранее или очередной платёж
+        title = "Следующий платёж" if main.get("payment") else "Продление"
     return {
-        "item": b, "slot": main["slot"], "title": SLOT_TITLE[main["slot"]],
+        "item": b, "slot": main["slot"], "title": title,
         "why": main["text"], "also": " ".join(extra[:1]), "label": label,
+        "kind": main["type"], "strength": round(main["strength"], 2),
         "desc": describe(task, b, st.attrs[b]),
         "paths": [{"src": r["src"], "type": r["edge"], "kind": r["type"], "text": r["text"]} for r in rs[:3] if r["src"]],
     }

@@ -33,7 +33,8 @@ def test_expired_licence_of_withdrawn_product_gets_replacement_first():
     recs = advise("acme/suite", date(2025, 11, 23))                 # истекла три дня назад, продлить нельзя
     first = recs[0]
     assert (first.family, first.slot, first.score) == ("rus/kraski", "replace", 0.75)
-    assert "истекла 23.11.2026" in first.why and "Продлить её в магазине нельзя" in first.why
+    assert "истекла 23.11.2026" in first.why and "только по запросу цены у менеджера" in first.why
+    assert "Полной замены в таблице замещения нет" in first.why
     assert "«Графические редакторы»" in first.why and "назван аналогом «Acme Photo»" in first.why
     assert [r.slot for r in recs].count("replace") == 1            # одна замена на один продукт
 
@@ -49,7 +50,7 @@ def test_direct_analogue_wins_over_class_replacement():
     recs = advise("acme/photo", date(2025, 11, 23), k=5)
     assert [r.family for r in recs if r.slot == "replace"] == ["rus/kraski"]
     assert "Российский аналог: «Краски» (реестр российского ПО, запись № 123)" in recs[0].why
-    assert "Продлить её в магазине нельзя" in recs[0].why and recs[0].score >= 0.72
+    assert "только по запросу цены у менеджера" in recs[0].why and recs[0].score >= 0.72
 
 
 def test_on_request_russian_product_is_only_for_organisations():
