@@ -23,7 +23,7 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 
 from recsys.config import DATASET, ROOT, TASK_DIR
 from recsys.eval import official as org
-from recsys.rank.breakdown import breakdown, text
+from recsys.rank.breakdown import breakdown, calibration, text
 from recsys.rank.data import OFFICIAL, Fold, Task, load_task, make_fold
 from recsys.rank.features import FEATURES, FoldStats, build_attrs
 from recsys.stable import rerun_with_fixed_order
@@ -181,8 +181,10 @@ def main() -> None:
     report = {
         "dataset": DATASET.name, "split": {"train_until": OFFICIAL[1], "test_from": OFFICIAL[2]},
         "kinds": {"вариант": "другой артикул продукта, который у клиента уже есть (то же семейство)",
-                  "версия": "тот же продукт в другой версии или редакции",
-                  "новый продукт": "у клиента не было ничего из этой линейки"},
+                  "версия": "тот же продукт в другой версии, редакции или комплекте: та же линейка по названию "
+                            "либо название близко к купленному (и производитель не другой)",
+                  "новый продукт": "ничего похожего у клиента не было"},
+        "name_similarity": calibration(attrs),
         "methods": {},
     }
     print("\nиз чего состоят попадания:")
@@ -195,13 +197,15 @@ def main() -> None:
     for key in ("A B2B", "B B2B", "A B2C"):
         print(" ", text("обученное ранжирование", ours, key))
     a = ours["A все"]
-    print(f"\nцели группы A: вариант {a['targets']['вариант']}, версия {a['targets']['версия']}, "
+    print(f"\nцели группы A: вариант {a['targets']['вариант']}, версия или редакция {a['targets']['версия']}, "
           f"новый продукт {a['targets']['новый продукт']}; холодных товаров (не продавались в обучении) "
           f"{a['cold_targets']} ({a['cold_target_share']:.1%} целей, у {a['clients_with_cold_target']} клиентов)")
     report["future_information"] = [
         "семейство и класс товара берутся из текущего фида магазина (снимка каталога на дату разреза нет)",
         "вид лицензии и срок частично берутся из параметров текущего фида",
         "привязка товара продаж к каталогу сделана по текущему фиду",
+        "профиль клиента (группа, тип, отрасль, сегмент) взят из листа «Клиенты» как есть: это состояние "
+        "на дату выгрузки, а не на дату разреза; по нему считаются признаки клиента и докупки «таких же» клиентов",
     ]
     BREAKDOWN_FILE.parent.mkdir(exist_ok=True)
     BREAKDOWN_FILE.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")

@@ -39,6 +39,7 @@ class Attr:
     line: str = ""            # семейство каталога, а если товара в каталоге нет — линейка по названию
     nline: str = ""           # линейка по названию без версии и параметров лицензии
     cls: str = ""             # класс (подкатегория каталога)
+    vendor: str = ""          # производитель по каталогу; пусто — товар к каталогу не привязан (в признаки не входит)
     kind: str = ""
     band_lo: int | None = None
     band_hi: int | None = None
@@ -60,6 +61,7 @@ def build_attrs(task: Task) -> dict[str, Attr]:
         a.nline = r.get("line") or " ".join(tokens(name)[:6])
         a.line = r.get("family_id") or ("L:" + a.nline)
         a.cls = r.get("class_id") or ""
+        a.vendor = (r.get("vendor") or "").strip()
         a.kind = r.get("license_kind") or ""
         a.band_lo = int(r["band_lo"]) if r.get("band_lo") else None
         a.band_hi = int(r["band_hi"]) if r.get("band_hi") else None
