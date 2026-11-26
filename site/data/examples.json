@@ -1,5 +1,34 @@
 [
  {
+  "title": "Тестовый клиент из кабинета Softline: четыре продукта",
+  "client": {
+   "type": "b2b",
+   "today": "2026-11-26",
+   "purchases": [
+    {
+     "family": "kaspersky/kaspersky-endpoint-security-dlya-biznesa-standartnyiy",
+     "date": "2026-05-11",
+     "term": 12
+    },
+    {
+     "family": "adobe/adobe-creative-cloud",
+     "date": "2025-11-23",
+     "term": 12
+    },
+    {
+     "family": "drweb/drweb-desktop-security-suite",
+     "date": "2026-05-11",
+     "term": 12
+    },
+    {
+     "family": "microsoft/microsoft-365-personal",
+     "date": "2026-04-30",
+     "term": 12
+    }
+   ]
+  }
+ },
+ {
   "title": "Организация: лицензия истекает, есть старшая редакция",
   "client": {
    "type": "b2b",

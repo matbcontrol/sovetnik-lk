@@ -81,6 +81,17 @@ def examples(g: Graph, today: date = date(2026, 11, 26)) -> list[dict]:
                    for e in g.out.get(fam, ()))
 
     out = []
+    # Клиент из тестового кабинета магазина (учётная запись, которую организаторы выдали участникам):
+    # четыре продукта со страницы «Продукты» кабинета на 26.11.2026 и даты, выведенные из сроков истечения.
+    # Это не строка датасета. В кабинете блок «Вам может подойти» показывает ему шесть товаров без объяснений.
+    cabinet = [("kaspersky/kaspersky-endpoint-security-dlya-biznesa-standartnyiy", "2026-05-11"),
+               ("adobe/adobe-creative-cloud", "2025-11-23"),
+               ("drweb/drweb-desktop-security-suite", "2026-05-11"),
+               ("microsoft/microsoft-365-personal", "2026-04-30")]
+    if all(f in g.nodes for f, _ in cabinet):
+        out.append({"title": "Тестовый клиент из кабинета Softline: четыре продукта",
+                    "client": {"type": "b2b", "today": today.isoformat(),
+                               "purchases": [{"family": f, "date": d, "term": 12} for f, d in cabinet]}})
     ladder = first(lambda f: g.on_sale(f) and has(f, "upgrade", "таблица сравнения магазина")) \
         or first(lambda f: g.on_sale(f) and has(f, "upgrade"))
     gone = [f for f in g.nodes if not g.on_sale(f) and has(f, "analog_ru")]
