@@ -1,0 +1,158 @@
+{
+ "card": {
+  "name": "IObit Advanced SystemCare PRO",
+  "vendor": "IObit",
+  "description": "Advanced SystemCare PRO предназначен для оптимизации системы компьютера. С помощью технологии ИИ программа делает компьютер более производительным: сканирует и очищает ПК от ненужных файлов, записей реестра и других объектов, которые замедляют ПК. Используйте Advanced SystemCare PRO и добивайтесь высокой скорости работы своего компьютера за счет оптимизации системы. Основные преимущества Сканирование на базе нейросети ИИ помогает корректно анализировать те модули, которые, как правило, замедляют работу системы. Детальная очистка системы Приложение помогает удалить ненужные файлы реестра, чтобы избежать зависаний в будущем. Конфиденциальность Автоматизированное устранение онлайн-следов и блок ненадежного доступа с целью предотвратить утечку данных и проникновение вирусов. Быстрый веб-серфинг Качественная оптимизация настроек браузера позволяет ускорить работу с веб-объектами до 300%. Высокая скорость работы Интеллектуальное администрирование элементами автозагрузки и автоматизированная очистка ARM помогут увеличить скорость ПК до 200 раз. Приобретайте Advanced SystemCare PRO и работайте без скоростных ограничений и зависаний на своем ПК."
+ },
+ "passport": {
+  "class_id": "sistemnie-programmi/nastroyka-sistemi",
+  "class_name": "Программы для настройки системы",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "Программы для настройки системы",
+  "neighbors": {
+   "class_id": "sistemnie-programmi/nastroyka-sistemi",
+   "name": "Программы для настройки системы",
+   "confidence": 0.87,
+   "similarity": 0.86,
+   "near": [
+    {
+     "id": "iobit/advanced-systemcare-ultimate-s-antivirusom",
+     "name": "IObit Advanced SystemCare Ultimate",
+     "class": "Программы для настройки системы"
+    },
+    {
+     "id": "iobit/iobit-advanced-systemcare-pro",
+     "name": "IObit Advanced SystemCare Ultimate (с Антивирусом)",
+     "class": "Программы для настройки системы"
+    },
+    {
+     "id": "iobit/iobit-uninstaller",
+     "name": "IObit Uninstaller PRO",
+     "class": "Программы для настройки системы"
+    }
+   ]
+  },
+  "does": "Оптимизирует и ускоряет работу компьютера, очищает систему от ненужных файлов и защищает конфиденциальность.",
+  "needs": [],
+  "audience": "b2c"
+ },
+ "links": [
+  {
+   "dst": "iobit/advanced-systemcare-ultimate-s-antivirusom",
+   "type": "upgrade_of",
+   "reason": "Базовая или другая редакция программы Advanced SystemCare",
+   "quote": "",
+   "dst_name": "IObit Advanced SystemCare Ultimate",
+   "critic": "Advanced SystemCare Ultimate является расширенной версией продукта, включающей антивирусный модуль."
+  }
+ ],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "iobit/advanced-systemcare-ultimate-s-antivirusom",
+   "type": "upgrade",
+   "why": "Базовая или другая редакция программы Advanced SystemCare"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "new",
+   "dst": "iobit/advanced-systemcare-ultimate-s-antivirusom",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "IObit Advanced SystemCare Ultimate"
+  }
+ ],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "IObit Advanced SystemCare PRO"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "iobit/advanced-systemcare-ultimate-s-antivirusom",
+     "name": "IObit Advanced SystemCare Ultimate",
+     "vendor": "IObit",
+     "class": "Программы для настройки системы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "iobit/iobit-advanced-systemcare-pro",
+     "name": "IObit Advanced SystemCare Ultimate (с Антивирусом)",
+     "vendor": "",
+     "class": "Программы для настройки системы",
+     "sale": "по запросу"
+    },
+    {
+     "id": "iobit/iobit-uninstaller",
+     "name": "IObit Uninstaller PRO",
+     "vendor": "IObit",
+     "class": "Программы для настройки системы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "iobit/iobit-driver-booster-pro",
+     "name": "IObit Driver Booster PRO",
+     "vendor": "IObit",
+     "class": "Программы для настройки системы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "iobit/iobit-malware-fighter",
+     "name": "IObit Malware Fighter PRO",
+     "vendor": "IObit",
+     "class": "Антивирусы для организаций",
+     "sale": "в продаже"
+    },
+    {
+     "id": "filemaker-inc/filemaker-professional-advanced-18",
+     "name": "FileMaker Professional Advanced 18",
+     "vendor": "",
+     "class": "Программы для разработки ПО",
+     "sale": "по запросу"
+    },
+    {
+     "id": "iobit/iobit-smart-defrag",
+     "name": "IObit Smart Defrag",
+     "vendor": "IObit",
+     "class": "Другие утилиты",
+     "sale": "в продаже"
+    },
+    {
+     "id": "iobit/iobit-protected-folder",
+     "name": "IObit Protected Folder",
+     "vendor": "IObit",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс и потенциальные родственные продукты IObit уже найдены в каталоге, сформируем итоговый объект.",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 2,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "iobit/advanced-systemcare-pro",
+  "class": "Программы для настройки системы",
+  "kind": "линейка",
+  "related": [
+   "IObit Advanced SystemCare Ultimate"
+  ]
+ }
+}

@@ -1,0 +1,211 @@
+{
+ "card": {
+  "name": "CSoft Spotlight",
+  "vendor": "CSoft Development",
+  "description": "Программное обеспечение CSoft Spotlight является профессиональным гибридным графическим инструментом редактирования растровых монохромных, полутоновых и цветных изображений: отсканированных чертежей, карт, схем и других графических материалов. Базовая редакция графического редактора CSoft Spotlight позволяет повышать качество отсканированного изображения, редактировать растровую и векторную графику, векторизовать растровое изображение в полуавтоматическом режиме. Возможности CSoft Spotlight: Сканирование. Модуль WiseScan LE дает возможность работать с широкоформатными монохромными и цветными сканерами. Управление сканером выполняется на аппаратном уровне или посредством TWAIN-интерфейса. Фильтрация монохромных изображений. Применение монохромных фильтров помогает повышать качество черно-белой графики и уменьшать объем растровых файлов. Коррекция геометрических искажений. Функция позволяет исправлять разнообразные геометрические искажения монохромных, цветных и полутоновых растровых изображений. Калибровка. При помощи калибровки можно корректировать ошибки сканирования и искажения, возникшие вследствие деформации исходных графических материалов. Выделение объектов по типу и размеру. Опция позволяет переносить определенные объекты растрового изображения (штриховки, текст, линейные объекты и объекты по размеру) на новые растровые изображения, помещенные на указанные слои. Бинаризация и разделение цветов. Процедуры бинаризации и разделения цветов позволяют получать из цветных и п"
+ },
+ "passport": {
+  "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+  "class_name": "Редакторы и векторизаторы",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Редакторы и векторизаторы",
+  "neighbors": {
+   "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+   "name": "Редакторы и векторизаторы",
+   "confidence": 0.45,
+   "similarity": 1.0,
+   "near": [
+    {
+     "id": "csoft-development/csoft-spotlight-pro",
+     "name": "CSoft Spotlight Pro",
+     "class": "Редакторы и векторизаторы"
+    },
+    {
+     "id": "csoft-development/csoft-geonics",
+     "name": "CSoft GeoniCS",
+     "class": "Инфраструктура: изыскания, генплан, транспорт"
+    },
+    {
+     "id": "csoft-development/csoft-tdms",
+     "name": "CSoft TDMS",
+     "class": "Программы для документооборота"
+    }
+   ]
+  },
+  "does": "профессиональный гибридный графический инструмент редактирования растровых и векторных изображений, чертежей и карт",
+  "needs": [],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "csoft-development/csoft-spotlight-pro",
+   "type": "upgrade_of",
+   "reason": "CSoft Spotlight Pro является старшей редакцией по отношению к базовой версии CSoft Spotlight",
+   "quote": "Базовая редакция графического редактора CSoft Spotlight",
+   "dst_name": "CSoft Spotlight Pro",
+   "critic": "CSoft Spotlight Pro является старшей редакцией для данного продукта"
+  }
+ ],
+ "edges": [
+  {
+   "src": "csoft-development/csoft-spotlight-pro",
+   "dst": "new",
+   "type": "same_line",
+   "why": "CSoft Spotlight Pro является старшей редакцией по отношению к базовой версии CSoft Spotlight"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "csoft-development/csoft-spotlight-pro",
+   "dst": "new",
+   "type": "same_line",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "CSoft Spotlight Pro"
+  }
+ ],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "CSoft Spotlight"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "csoft-development/csoft-spotlight-pro",
+     "name": "CSoft Spotlight Pro",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-geonics",
+     "name": "CSoft GeoniCS",
+     "vendor": "CSoft Development",
+     "class": "Инфраструктура: изыскания, генплан, транспорт",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-tdms",
+     "name": "CSoft TDMS",
+     "vendor": "CSoft Development",
+     "class": "Программы для документооборота",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-rasterdesk",
+     "name": "CSoft RasterDesk",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-mechanics",
+     "name": "CSoft MechaniCS",
+     "vendor": "CSoft Development",
+     "class": "Программы для машиностроения",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-tdm365",
+     "name": "CSoft TDM365",
+     "vendor": "CSoft Development",
+     "class": "Программы для документооборота",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-reclouds",
+     "name": "CSoft ReCloudS",
+     "vendor": "CSoft Development",
+     "class": "Программы для дизайна, визуализации и анимации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-rasterid",
+     "name": "CSoft RasterID",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "Редакторы и векторизаторы"
+   },
+   "thought": "Класс очевиден из подсказки и поиска: редакторы и векторизаторы. Найдем класс для точного кода.",
+   "result": [
+    {
+     "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+     "name": "Редакторы и векторизаторы",
+     "examples": [
+      "CSoft RasterDesk",
+      "CSoft RasterID",
+      "CSoft RasterDesk Pro"
+     ]
+    },
+    {
+     "class_id": "internet-i-set/html-redaktori",
+     "name": "HTML-редакторы",
+     "examples": [
+      "KWizCom Tagging Feature"
+     ]
+    },
+    {
+     "class_id": "karti-navigatsiya-puteshestviya/redaktori-kart",
+     "name": "Редакторы карт",
+     "examples": [
+      "Golden Software Surfer",
+      "Golden Software Grapher",
+      "Инструментарий для MapInfo"
+     ]
+    },
+    {
+     "class_id": "text/tekstovie-redaktori",
+     "name": "Текстовые редакторы",
+     "examples": [
+      "Master Pdf Editor",
+      "ContentReader PDF 15 Standard",
+      "ContentReader PDF 15 Corporate"
+     ]
+    },
+    {
+     "class_id": "grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori",
+     "name": "Графические редакторы",
+     "examples": [
+      "CorelDRAW Graphics Suite. Подписка 365-Day",
+      "CorelDRAW Graphics Suite 2026",
+      "ГрафБорд"
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс найден, в каталоге есть CSoft Spotlight Pro, который является старшей редакцией для базовой редакции CSoft Spotlight.",
+   "result": "паспорт и связи",
+   "ask": 2
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 3,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "csoft-development/csoft-spotlight",
+  "class": "Редакторы и векторизаторы",
+  "kind": "линейка",
+  "related": [
+   "CSoft Spotlight Pro"
+  ]
+ }
+}

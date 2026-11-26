@@ -1,0 +1,228 @@
+{
+ "card": {
+  "name": "IObit Advanced SystemCare PRO",
+  "vendor": "IObit",
+  "description": "Advanced SystemCare PRO предназначен для оптимизации системы компьютера. С помощью технологии ИИ программа делает компьютер более производительным: сканирует и очищает ПК от ненужных файлов, записей реестра и других объектов, которые замедляют ПК. Используйте Advanced SystemCare PRO и добивайтесь высокой скорости работы своего компьютера за счет оптимизации системы. Основные преимущества Сканирование на базе нейросети ИИ помогает корректно анализировать те модули, которые, как правило, замедляют работу системы. Детальная очистка системы Приложение помогает удалить ненужные файлы реестра, чтобы избежать зависаний в будущем. Конфиденциальность Автоматизированное устранение онлайн-следов и блок ненадежного доступа с целью предотвратить утечку данных и проникновение вирусов. Быстрый веб-серфинг Качественная оптимизация настроек браузера позволяет ускорить работу с веб-объектами до 300%. Высокая скорость работы Интеллектуальное администрирование элементами автозагрузки и автоматизированная очистка ARM помогут увеличить скорость ПК до 200 раз. Приобретайте Advanced SystemCare PRO и работайте без скоростных ограничений и зависаний на своем ПК."
+ },
+ "passport": {
+  "class_id": "",
+  "class_name": "",
+  "class_seen": false,
+  "class_note": "подходящего класса в каталоге нет: товар уходит на проверку менеджеру",
+  "class_source": "не определён",
+  "class_agent": "",
+  "neighbors": {
+   "class_id": "",
+   "confidence": 0.0,
+   "similarity": 0.0,
+   "near": []
+  },
+  "does": "Оптимизирует работу операционной системы, очищает компьютер от мусора и повышает производительность.",
+  "needs": [],
+  "audience": "b2c"
+ },
+ "links": [],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "iobit/advanced-systemcare-ultimate-s-antivirusom",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "IObit Advanced SystemCare Ultimate"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "new",
+   "dst": "iobit/advanced-systemcare-ultimate-s-antivirusom",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "IObit Advanced SystemCare Ultimate"
+  }
+ ],
+ "dropped": [
+  {
+   "dst": "iobit/advanced-systemcare-ultimate-s-antivirusom",
+   "type": "upgrade_of",
+   "reason": "Это редакция PRO в линейке продуктов Advanced SystemCare от IObit",
+   "quote": "",
+   "dst_name": "IObit Advanced SystemCare Ultimate",
+   "critic": "Advanced SystemCare Ultimate является расширенной версией линейки, включающей антивирусный модуль.",
+   "why": "класс товара не определён — связи не ставим"
+  }
+ ],
+ "steps": [
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "оптимизация системы"
+   },
+   "thought": "Ищу класс для программы оптимизации ПК и проверяю наличие базовой или свободной версии в каталоге",
+   "result": [
+    {
+     "class_id": "saas/crm-sistemi",
+     "name": "CRM системы",
+     "examples": [
+      "«Простой бизнес» (электронная версия)"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/esmcsp-sistemy",
+     "name": "ESM/CSP-системы",
+     "examples": [
+      "Directum RX"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/sistemi-avtomatizatsii",
+     "name": "Системы автоматизации",
+     "examples": [
+      "VR CONCEPT",
+      "GStarCAD",
+      "ГосJava"
+     ]
+    },
+    {
+     "class_id": "grafika-i-dizayn/izdatelskie-sistemi",
+     "name": "Издательские системы",
+     "examples": [
+      "Markzware Q2ID",
+      "TEKLYNX CODESOFT",
+      "FinePrint"
+     ]
+    },
+    {
+     "class_id": "sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie",
+     "name": "Системы управления базами данных (Импортозамещение)",
+     "examples": [
+      "Postgres Pro Enterprise (сертифицированная версия)",
+      "Postgres Pro Enterprise для 1С:Предприятие (сертиф",
+      "СУБД Ред База Данных"
+     ]
+    },
+    {
+     "class_id": "operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie",
+     "name": "Российские операционные системы (Импортозамещение)",
+     "examples": [
+      "Astra Linux Special Edition",
+      "Операционная система РЕД ОС",
+      "Альт Рабочая станция 11"
+     ]
+    },
+    {
+     "class_id": "sapr/science-software",
+     "name": "Расчетные системы и Научное программное обеспечение",
+     "examples": [
+      "SMath Studio",
+      "Stata 19 для студентов",
+      "Origin Pro"
+     ]
+    },
+    {
+     "class_id": "sapr/geoinformatsionnie-sistemi",
+     "name": "Геоинформационные системы (ГИС)",
+     "examples": [
+      "ГИС «Аксиома»",
+      "ГИС Панорама Мини",
+      "Профессиональная ГИС «Панорама»"
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "Advanced SystemCare"
+   },
+   "thought": "Ищу класс для программы оптимизации ПК и проверяю наличие базовой или свободной версии в каталоге",
+   "result": [
+    {
+     "id": "iobit/advanced-systemcare-ultimate-s-antivirusom",
+     "name": "IObit Advanced SystemCare Ultimate",
+     "vendor": "IObit",
+     "class": "Программы для настройки системы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "iobit/iobit-advanced-systemcare-pro",
+     "name": "IObit Advanced SystemCare Ultimate (с Антивирусом)",
+     "vendor": "",
+     "class": "Программы для настройки системы",
+     "sale": "по запросу"
+    },
+    {
+     "id": "joint/joint-advanced",
+     "name": "Joint Advanced",
+     "vendor": "Joint",
+     "class": "Российские решения удаленного доступа (Импортозаме",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-advanced-localizer",
+     "name": "EMS Advanced Localizer",
+     "vendor": "EMS",
+     "class": "Программы для разработки ПО",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-advanced-pdf-generator",
+     "name": "EMS Advanced PDF Generator",
+     "vendor": "EMS",
+     "class": "Другие библиотеки",
+     "sale": "в продаже"
+    },
+    {
+     "id": "pro32/pro32-endpoint-security",
+     "name": "PRO32 Endpoint Security Advanced",
+     "vendor": "PRO32",
+     "class": "Антивирусы для организаций",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-advanced-excel-report",
+     "name": "EMS Advanced Excel Report",
+     "vendor": "EMS",
+     "class": "Другие библиотеки",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-advanced-query-builder",
+     "name": "EMS Advanced Query Builder",
+     "vendor": "EMS",
+     "class": "Другие библиотеки",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "find_classes",
+   "args": {},
+   "thought": "Ищу класс для настройки и оптимизации системы",
+   "result": [],
+   "ask": 2
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс найден (Программы для настройки системы), в поиске найдена старшая редакция IObit Advanced SystemCare Ultimate. Установим связь new_version_of или upgrade_of.",
+   "result": "паспорт и связи",
+   "ask": 3
+  }
+ ],
+ "seconds": 10.9,
+ "model_requests": 4,
+ "tokens": {
+  "in": 5947,
+  "out": 416
+ },
+ "truth": {
+  "id": "iobit/advanced-systemcare-pro",
+  "class": "Программы для настройки системы",
+  "kind": "линейка",
+  "related": [
+   "IObit Advanced SystemCare Ultimate"
+  ]
+ }
+}

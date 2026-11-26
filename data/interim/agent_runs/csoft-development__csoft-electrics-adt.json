@@ -1,0 +1,132 @@
+{
+ "card": {
+  "name": "CSoft ElectriCS ADT",
+  "vendor": "CSoft Development",
+  "description": "Программное обеспечение CSoft ElectriCS ADT предназначено для автоматизированного проектирования систем электроснабжения промышленных предприятий и других организаций. САПР CSoft ElectriCS ADT помогает инженеру-проектировщику повышать производительность своего труда и улучшать качество проектирования систем электроснабжения. Ключевые возможности САПР CSoft ElectriCS ADT: Определение нагрузок по коэффициентам расчетной мощности в соответствии с «Указаниями по расчету электрических нагрузок РТМ 36.18.32.4–92». Синтез структуры проектируемой системы с выбором оборудования (кабелей, защитных аппаратов — блоков НКУ, автоматов и т. д.) в соответствии с результатами расчета нагрузок и справочной информацией, доступной в базе решения. Автоматическое присвоение проектных позиций элементов (кабелей, блоков НКУ, автоматов и т. д.) в соответствии с правилами, принятыми в отрасли или в данной организации. Вычисление потерь напряжения в нормальных режимах и в ходе пусков двигателей. Расчет токов короткого замыкания (в соответствии с ГОСТ 28249–93). Расчет температуры нагрева кабелей и проверка их на термическую стойкость (в соответствии с ГОСТ 30323–95 и циркуляром РАО ЕЭС России №Ц-02–98(Э)). Проверка защитных аппаратов по расчетным и пусковым (пиковым) токам. Проверка защитных аппаратов по чувствительности к минимальным токам коротких замыканий. Проверка селективности защитных аппаратов и построение карт селективности. Построение списка кабелей (силовых и контрольных) и потребителей в фо"
+ },
+ "passport": {
+  "class_id": "sapr/stroitelstvo",
+  "class_name": "Строительное программное обеспечение",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "Строительное программное обеспечение",
+  "neighbors": {
+   "class_id": "sapr/stroitelstvo",
+   "name": "Строительное программное обеспечение",
+   "confidence": 1.0,
+   "similarity": 0.66,
+   "near": [
+    {
+     "id": "csoft-development/csoft-electrics-professional",
+     "name": "CSoft ElectriCS Professional",
+     "class": "Строительное программное обеспечение"
+    },
+    {
+     "id": "csoft-development/csoft-electrics-3d",
+     "name": "CSoft Electrics 3D",
+     "class": "Строительное программное обеспечение"
+    },
+    {
+     "id": "csoft-development/csoft-electrics-storm",
+     "name": "CSoft ElectriCS Storm",
+     "class": "Строительное программное обеспечение"
+    }
+   ]
+  },
+  "does": "Автоматизированное проектирование систем электроснабжения промышленных и других предприятий.",
+  "needs": [],
+  "audience": "b2b"
+ },
+ "links": [],
+ "edges": [],
+ "rule_edges": [],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "CSoft ElectriCS ADT"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "csoft-development/csoft-electrics-professional",
+     "name": "CSoft ElectriCS Professional",
+     "vendor": "CSoft Development",
+     "class": "Строительное программное обеспечение",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-electrics-3d",
+     "name": "CSoft Electrics 3D",
+     "vendor": "CSoft Development",
+     "class": "Строительное программное обеспечение",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-electrics-storm",
+     "name": "CSoft ElectriCS Storm",
+     "vendor": "CSoft Development",
+     "class": "Строительное программное обеспечение",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-electrics-light",
+     "name": "CSoft ElectriCS Light",
+     "vendor": "CSoft Development",
+     "class": "Строительное программное обеспечение",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-electrics-ecp",
+     "name": "CSoft ElectriCS ECP",
+     "vendor": "CSoft Development",
+     "class": "Строительное программное обеспечение",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-geonics",
+     "name": "CSoft GeoniCS",
+     "vendor": "CSoft Development",
+     "class": "Инфраструктура: изыскания, генплан, транспорт",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-tdms",
+     "name": "CSoft TDMS",
+     "vendor": "CSoft Development",
+     "class": "Программы для документооборота",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-spotlight",
+     "name": "CSoft Spotlight",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс известен (sapr/stroitelstvo), это САПР электроснабжения. Другие редакции CSoft ElectriCS уже найдены в каталоге, но связи new_version_of или upgrade_of здесь нет — это разные специализированные конфигурации и модули линейки ElectriCS (ADT, Professional, 3D, Storm, Light, ECP). Связывать их как версии или апгрейды нельзя. Дополнительных требований в описании нет.",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 1,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "csoft-development/csoft-electrics-adt",
+  "class": "Строительное программное обеспечение",
+  "kind": "обычный",
+  "related": []
+ }
+}

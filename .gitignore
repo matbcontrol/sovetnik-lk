@@ -6,10 +6,29 @@ __pycache__/
 .env.*
 !.env.example
 
-# сырые и промежуточные данные (собираются скриптами, в репозиторий не кладём)
+# сырые данные обхода и данные организаторов в репозиторий не кладём
 data/raw/
-data/interim/
 data/private/
+
+# Промежуточные данные: открытые файлы каталога, журнал расхода модели и прогоны агента лежат в репозитории,
+# чтобы замеры и стенд воспроизводились без многочасового обхода магазина. Не публикуются служебные журналы,
+# кеш ответов модели (в нём бывают пары, добытые из продаж) и class_links_support.json — он посчитан
+# по продажам из датасета организаторов (recsys.eval.class_support).
+data/interim/*
+!data/interim/feed_offers.jsonl.gz
+!data/interim/feed_categories.csv
+!data/interim/sitemap_urls.csv
+!data/interim/category_listing.jsonl
+!data/interim/families.jsonl
+!data/interim/arpp_replacements.csv
+!data/interim/graph_nodes.csv
+!data/interim/graph_edges.csv
+!data/interim/class_names.json
+!data/interim/class_rank.json
+!data/interim/class_links.csv
+!data/interim/llm_calls.jsonl
+!data/interim/agent_runs/
+!data/interim/agent_runs_nohints/
 
 # локальные базы и кеши
 *.sqlite

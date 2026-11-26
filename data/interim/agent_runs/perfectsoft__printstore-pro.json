@@ -1,0 +1,229 @@
+{
+ "card": {
+  "name": "PrintStore Pro",
+  "vendor": "PerfectSoft",
+  "description": "Программное обеспечение PrintStore Pro представляет собой систему учета расходных материалов и оборудования для крупных компаний. С помощью PrintStore Pro можно отслеживать состояние каждого расходного материала в любом принтере (МФУ, копире, факсе), при этом время тратится только на указание моментов замены расходников. Особое внимание в программе уделено возможности одновременной работы большого количества пользователей, что достигается использованием SQL-сервера для хранения базы данных. Решение использует встроенный редактор шаблонов отчетов, который позволяет изменить внешний вид любого отчета в программе и при необходимости привести его к фирменному стилю компании. Основные возможности: Учет оборудования: приход, перемещение, ремонты, списание. Учет картриджей: приход, перемещение, расход на оборудование, списание, отображение оперативных остатков. Расчет скорости расхода по каждому расходному материалу и времени, на которое хватит существующего запаса, позволяет оптимизировать количества на складах. Мониторинг оборудования: сбор информации с принтеров, МФУ и других сетевых устройств по протоколу SNMP и отображение в реальном времени. Собираются данные по остаткам ресурсов, счетчикам печати, размещению, версии firmware и т.д. Отслеживание счетчиков печати позволяет привязывать информацию о текущем значении счетчика принтера к операциям замены расходных материалов, а также ремонта самого аппарата. Скоро этот функционал будет доработан и данные будут автоматически браться"
+ },
+ "passport": {
+  "class_id": "delovie-programmi/uchet-kompyuterov",
+  "class_name": "Программное обеспечение для учета компьютеров",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Программное обеспечение для учета компьютеров",
+  "neighbors": {
+   "class_id": "internet-i-set/programmi-dlya-seti",
+   "name": "Сетевые утилиты",
+   "confidence": 0.3,
+   "similarity": 0.15,
+   "near": [
+    {
+     "id": "sawmill/sawmill-professional",
+     "name": "Sawmill Professional",
+     "class": "Сетевые утилиты"
+    },
+    {
+     "id": "renga/renga-professional",
+     "name": "Renga Professional",
+     "class": "Базовые программы"
+    },
+    {
+     "id": "netsoftware-1/net-control-pro",
+     "name": "Net Control 2 Pro",
+     "class": "Прочие программы"
+    }
+   ]
+  },
+  "does": "Система учета расходных материалов и оборудования для крупных компаний",
+  "needs": [
+   "SQL-сервер"
+  ],
+  "audience": "b2b"
+ },
+ "links": [],
+ "edges": [],
+ "rule_edges": [],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "PrintStore Pro"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "sawmill/sawmill-professional",
+     "name": "Sawmill Professional",
+     "vendor": "Sawmill",
+     "class": "Сетевые утилиты",
+     "sale": "в продаже"
+    },
+    {
+     "id": "renga/renga-professional",
+     "name": "Renga Professional",
+     "vendor": "Renga",
+     "class": "Базовые программы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "netsoftware-1/net-control-pro",
+     "name": "Net Control 2 Pro",
+     "vendor": "Net Software",
+     "class": "Прочие программы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "postgrespro/postgres-pro-enterprise",
+     "name": "Postgres Pro Enterprise",
+     "vendor": "Postgres Professional",
+     "class": "Российские базы данных (Импортозамещение)",
+     "sale": "в продаже"
+    },
+    {
+     "id": "postgrespro/postgres-pro-standard",
+     "name": "Postgres Pro Standard",
+     "vendor": "Postgres Professional",
+     "class": "Российские базы данных (Импортозамещение)",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ubiquiti/uvc-g5-pro-520443",
+     "name": "Ubiquiti G5 Pro",
+     "vendor": "UBIQUITI",
+     "class": "IP-видеокамеры",
+     "sale": "в продаже"
+    },
+    {
+     "id": "signalcom/file-pro",
+     "name": "File-PRO",
+     "vendor": "SignalCOM",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "promt/promt-professional-nmt",
+     "name": "PROMT Professional NMT",
+     "vendor": "PROMT",
+     "class": "Переводчики",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "PrintStore Pro Программное обеспечение PrintStore Pro представляет собой систему учета расходных материалов и оборудован"
+   },
+   "thought": "без модели: класс по словам карточки",
+   "result": [
+    {
+     "class_id": "programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie",
+     "name": "Российские базы данных (Импортозамещение)",
+     "examples": [
+      "Postgres Pro Standard",
+      "Postgres Pro Enterprise для 1С",
+      "Postgres Pro Enterprise"
+     ]
+    },
+    {
+     "class_id": "sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie",
+     "name": "Системы управления базами данных (Импортозамещение)",
+     "examples": [
+      "Postgres Pro Enterprise (сертифицированная версия)",
+      "Postgres Pro Enterprise для 1С:Предприятие (сертиф",
+      "СУБД Ред База Данных"
+     ]
+    },
+    {
+     "class_id": "office/mfu",
+     "name": "Принтеры и МФУ",
+     "examples": [
+      "HP Inc. Designjet T1700",
+      "МФУ Kyocera Ecosys M4125idn с картриджем",
+      "HP Inc. Designjet T1700"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/uchet-kompyuterov",
+     "name": "Программное обеспечение для учета компьютеров",
+     "examples": [
+      "«10-Страйк: Инвентаризация Компьютеров»",
+      "«10-Страйк: Инвентаризация Компьютеров Pro»",
+      "«10-Страйк: Учет Программного Обеспечения Pro»"
+     ]
+    },
+    {
+     "class_id": "operating-systems/windows-11-licenzii-home-i-pro",
+     "name": "Windows 11: лицензии Home и Pro",
+     "examples": [
+      "Microsoft Windows 11 Home (Домашняя)",
+      "Microsoft Windows 11 Pro (Профессиональная)"
+     ]
+    },
+    {
+     "class_id": "buhgalteriya-sklad-kadry/kadroviy-uchet",
+     "name": "Программы для кадрового учета",
+     "examples": [
+      "e-staff",
+      "БОСС-Кадровик",
+      "OfficeWork OrgChart Professional"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/biznes-plan",
+     "name": "Программы для бизнес-планирования",
+     "examples": [
+      "Apps4.Pro Planner Manager",
+      "Apps4.Pro Planner Gantt",
+      "Бизнес-аналитик 2.0"
+     ]
+    },
+    {
+     "class_id": "buhgalteriya-sklad-kadry/torgovlya",
+     "name": "Программное обеспечение для торговли",
+     "examples": [
+      "«СДБ Комплекс»",
+      "Microinvest Barcode Printer Pro",
+      "Microinvest Склад Pro Light"
+     ]
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "find_classes",
+   "args": {},
+   "thought": "Поиск классов для программного обеспечения учета компьютеров и оборудования",
+   "result": [],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {},
+   "thought": "Поиск классов для программного обеспечения учета компьютеров и оборудования",
+   "result": [],
+   "ask": 1
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс 'Программное обеспечение для учета компьютеров' отлично подходит для системы учета оборудования и оргтехники. Поищем в каталоге товары этого класса для поиска потенциальных аналогов или связей.",
+   "result": "паспорт и связи",
+   "ask": 2
+  }
+ ],
+ "seconds": 2.7,
+ "model_requests": 2,
+ "tokens": {
+  "in": 4408,
+  "out": 194
+ },
+ "truth": {
+  "id": "perfectsoft/printstore-pro",
+  "class": "Программное обеспечение для учета компьютеров",
+  "kind": "обычный",
+  "related": []
+ }
+}

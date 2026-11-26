@@ -1,0 +1,148 @@
+{
+ "card": {
+  "name": "Severcart. Тип лицензии Облачная",
+  "vendor": "Severcart",
+  "description": "Severcart - программа для учета и инвентаризации ИТ-активов. Возможности продукта: Учет компьютеров и программного обеспечения: обновление данных о компьютерах и установленном ПО производится в режиме реального времени с помощью программы-агента. Учет принтеров и МФУ: данные о составе, местонахождении и точных характеристиках оборудования. Учет картриджей: контроль за наличием расходных материалов. Многопользовательская система: возможность разграничить права доступа для групп пользователей, защищая от возможности удаления информации и ввода недостоверных данных. Интеграция с Active Directory: возможность синхронизации пользователей и групп безопасности из службы каталогов с последующей аутентификацией. Ведение договоров поставки/обслуживания: ведение структурированного реестра договоров, связанного с поставкой и обслуживанием техники (номер, дата заключения, контрагент, предмет договоров). Web-интерфейс: доступ к приложению с любого компьютера, используя браузер."
+ },
+ "passport": {
+  "class_id": "delovie-programmi/uchet-kompyuterov",
+  "class_name": "Программное обеспечение для учета компьютеров",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Программное обеспечение для учета компьютеров",
+  "neighbors": {
+   "class_id": "delovie-programmi/uchet-kompyuterov",
+   "name": "Программное обеспечение для учета компьютеров",
+   "confidence": 0.39,
+   "similarity": 0.75,
+   "near": [
+    {
+     "id": "severcart/severcart-tip-litsenzii-professionalnaya",
+     "name": "Severcart. Тип лицензии Профессиональная",
+     "class": "Программное обеспечение для учета компьютеров"
+    },
+    {
+     "id": "softline/softline-cloud",
+     "name": "Облачная платформа Softline",
+     "class": "Управление бизнесом (IaaS)"
+    },
+    {
+     "id": "powerman/powerman-battery-12v-100ah-542170",
+     "name": "Батарея POWERMAN Battery CA121000, напряжение 12В, емкость 100Ач, макс. ток разряда 800А, ",
+     "class": "Сменные батареи для ИБП"
+    }
+   ]
+  },
+  "does": "Программа для учета и инвентаризации ИТ-активов в облачном исполнении",
+  "needs": [],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "severcart/severcart-tip-litsenzii-professionalnaya",
+   "type": "upgrade_of",
+   "reason": "Другая редакция или вариант лицензии продукта Severcart",
+   "quote": "Severcart. Тип лицензии Облачная",
+   "dst_name": "Severcart. Тип лицензии Профессиональная",
+   "critic": "Оба товара являются вариантами лицензирования одного и того же программного продукта Severcart."
+  }
+ ],
+ "edges": [
+  {
+   "src": "severcart/severcart-tip-litsenzii-professionalnaya",
+   "dst": "new",
+   "type": "same_line",
+   "why": "Другая редакция или вариант лицензии продукта Severcart"
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "Severcart. Тип лицензии Облачная"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "severcart/severcart-tip-litsenzii-professionalnaya",
+     "name": "Severcart. Тип лицензии Профессиональная",
+     "vendor": "Severcart",
+     "class": "Программное обеспечение для учета компьютеров",
+     "sale": "в продаже"
+    },
+    {
+     "id": "softline/softline-cloud",
+     "name": "Облачная платформа Softline",
+     "vendor": "Softline",
+     "class": "Управление бизнесом (IaaS)",
+     "sale": "в продаже"
+    },
+    {
+     "id": "powerman/powerman-battery-12v-100ah-542170",
+     "name": "Батарея POWERMAN Battery CA121000, напряжение 12В, емкость 100Ач, макс. ток разряда 800А, ",
+     "vendor": "Powerman",
+     "class": "Сменные батареи для ИБП",
+     "sale": "в продаже"
+    },
+    {
+     "id": "moya-komanda/oblachnaya-hr-platforma",
+     "name": "Облачная HR-платформа",
+     "vendor": "",
+     "class": "Системы автоматизации",
+     "sale": "не продаётся"
+    },
+    {
+     "id": "yandex/yandex-cloud",
+     "name": "Облачная платформа Yandex Cloud",
+     "vendor": "",
+     "class": "Управление бизнесом (SaaS)",
+     "sale": "по запросу"
+    },
+    {
+     "id": "space/space-vm",
+     "name": "Корпоративная облачная платформа SpaceVM",
+     "vendor": "",
+     "class": "Российская виртуализация (Импортозамещение)",
+     "sale": "по запросу"
+    },
+    {
+     "id": "microsoft/office-3651",
+     "name": "Облачная платформа Microsoft 365 Business Basic",
+     "vendor": "",
+     "class": "Офисные пакеты программ Microsoft Office",
+     "sale": "по запросу"
+    },
+    {
+     "id": "microsoft/microsoft-project-professional-2024",
+     "name": "Microsoft Project Professional 2024",
+     "vendor": "Программы и лицензии Microsoft Corporati",
+     "class": "Офисные пакеты программ Microsoft Office",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс определен по аналогии с другими лицензиями Severcart, товар является вариантом лицензии.",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 2,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "severcart/severcart-tip-litsenzii-oblachnaya",
+  "class": "Программное обеспечение для учета компьютеров",
+  "kind": "обычный",
+  "related": []
+ }
+}

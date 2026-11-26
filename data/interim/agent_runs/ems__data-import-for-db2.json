@@ -1,0 +1,232 @@
+{
+ "card": {
+  "name": "EMS Data Import for DB2",
+  "vendor": "EMS",
+  "description": "Программное обеспечение EMS Data Import for DB2 является мощным решением для быстрого импорта данных в таблицы DB2 из файлов Microsoft Excel 97-2007, Microsoft Access, DBF, XML, TXT, CSV, Microsoft Word 2007, RTF, ODF и HTML. Приложение EMS Data Import for DB2 предусматривает настраиваемые параметры импорта, такие как исходные форматы для всех полей, конечные форматы данных DB2 для выбранных полей, параметры фиксации данных, количество пропускаемых записей и многие другие. В состав EMS Data Import for DB2 входит мастер настройки для визуальной установки параметров для различных файлов и консольное приложение для быстрого импорта данных в таблицы DB2. Ключевые возможности EMS Data Import for DB2: Импорт из 10 наиболее популярных форматов: Microsoft Excel 97-2007, Microsoft Access, XML, DBF, TXT, CSV, Microsoft Word 2007, OpenDocument Format и HTML. Импорт данных в одну или несколько таблиц или представлений из нескольких баз данных. Доступ к нескольким режимам импортирования – вставить все, вставить новые, вставка или обновление и другие. Настройка параметров импорта для каждого исходного файла. Сохранение всех параметров импорта активного сеанса в файл конфигурации. Автоматическое создание структуры таблицы. Использование комплексной утилиты для быстрого импорта данных с помощью файла конфигурации. Мощный модуль настройки внешнего вида системы. Бесплатная подписка на один год сопровождения ПО. Бесплатные обновления на период действия обслуживания. Бесплатная неограниченная те"
+ },
+ "passport": {
+  "class_id": "programmirovanie/bazi-dannih",
+  "class_name": "Программы для работы с базами данных",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "Программы для работы с базами данных",
+  "neighbors": {
+   "class_id": "programmirovanie/bazi-dannih",
+   "name": "Программы для работы с базами данных",
+   "confidence": 1.0,
+   "similarity": 0.72,
+   "near": [
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/data-export-for-db2",
+     "name": "EMS Data Export for DB2",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "class": "Программы для работы с базами данных"
+    }
+   ]
+  },
+  "does": "Быстрый импорт данных из различных форматов файлов в таблицы базы данных DB2",
+  "needs": [
+   "IBM DB2"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "ibm/ibm-db2",
+   "type": "requires",
+   "reason": "Для работы утилиты импорта необходима СУБД IBM DB2",
+   "quote": "импорта данных в таблицы DB2",
+   "dst_name": "IBM DB2",
+   "critic": "СУБД IBM DB2 необходима для работы утилиты импорта данных."
+  },
+  {
+   "dst": "ems/ems-sql-manager-for-db2",
+   "type": "complements",
+   "reason": "Программа для администрирования DB2 хорошо дополняет утилиту импорта",
+   "quote": "",
+   "dst_name": "EMS SQL Manager for DB2",
+   "critic": "Инструменты администрирования баз данных логично дополняют средства импорта."
+  }
+ ],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "ibm/ibm-db2",
+   "type": "requires",
+   "why": "Для работы утилиты импорта необходима СУБД IBM DB2"
+  },
+  {
+   "src": "new",
+   "dst": "ems/ems-sql-manager-for-db2",
+   "type": "complements",
+   "why": "Программа для администрирования DB2 хорошо дополняет утилиту импорта"
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS Data Import for DB2"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-export-for-db2",
+     "name": "EMS Data Export for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-import-for-oracle-",
+     "name": "EMS Data Import for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-import-for-mysql",
+     "name": "EMS Data Import for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-import-for-postgresql",
+     "name": "EMS Data Import for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-import-for-sql-server",
+     "name": "EMS Data Import for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-import-for-interbase_firebird",
+     "name": "Data Import for InterBase/Firebird",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "DB2"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "ems/ems-sql-manager-for-db2",
+     "name": "EMS SQL Manager for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-export-for-db2",
+     "name": "EMS Data Export for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-db2",
+     "name": "EMS SQL Query for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ibm/ibm-db2",
+     "name": "IBM DB2",
+     "vendor": "",
+     "class": "Программы для работы с базами данных",
+     "sale": "по запросу"
+    },
+    {
+     "id": "ems/db-extract-for-db2",
+     "name": "EMS DB Extract for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "niceit/nice-db2-management-pack",
+     "name": "NiCE DB2 Management Pack",
+     "vendor": "",
+     "class": "Программы для работы с базами данных",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 2,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "ems/data-import-for-db2",
+  "class": "Программы для работы с базами данных",
+  "kind": "дополнение",
+  "related": [
+   "IBM DB2"
+  ]
+ }
+}

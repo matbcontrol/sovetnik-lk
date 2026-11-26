@@ -1,0 +1,190 @@
+{
+ "card": {
+  "name": "Chaos Group V-Ray for SketchUp",
+  "vendor": "",
+  "description": "Программное обеспечение V-Ray for SketchUp предназначено для быстрого и качественного рендеринга любого материала – от дизайнерских моделей до самых подробных 3D-сцен. Решение использует CPU, GPU и гибридный рендеринг и включает интеллектуальный интерфейс с поддержкой мониторов 4K. Отслеживать историю рендеринга можно через кадровый буфер; также инструмент обеспечивает рендеринг фотореалистичных помещений и интерьеров с мощным и быстрым глобальным освещением, имитацию дневного света, неба, различных текстур, дымки и т. д. Новое в V-Ray Next for SketchUp: Новые и улучшенные инструменты управления активами позволяют искать, выбирать и просматривать ресурсы из одного места. V-Ray Next для SketchUp добавляет новые и улучшенные инструменты, которые помогут управлять сценой, настраивать стили окна просмотра и импортировать сцены V-Ray из других 3D-приложений. Новые интуитивно понятные настройки камеры облегчают рендеринг Обновленный макет элементов управления камерой позволяет одновременно управлять быстрыми и расширенными параметрами. Теперь в V-Ray Next для SketchUp стандартный материал V-Ray совместим с металлическими отражениями PBR, Новые опции «Автоматическая экспозиция» и «Баланс белого». Adaptive Dome Light может автоматически увеличить скорость рендеринга до 7 раз быстрее, в зависимости от сцены. ADL исключительно быстр при работе с интерьерами и устраняет необходимость в добавлении подсветки портала в окна и проемы. Более быстрый рендеринг. С новым NVIDIA AI Denoiser можн"
+ },
+ "passport": {
+  "class_id": "grafika-i-dizayn/3d-grafika",
+  "class_name": "Программное обеспечение для 3D графики",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "Программное обеспечение для 3D графики",
+  "neighbors": {
+   "class_id": "grafika-i-dizayn/3d-grafika",
+   "name": "Программное обеспечение для 3D графики",
+   "confidence": 1.0,
+   "near": [
+    {
+     "id": "chaos-group/chaos-group-v-ray",
+     "name": "Chaos Group V-Ray",
+     "class": "Программное обеспечение для 3D графики"
+    },
+    {
+     "id": "chaos-group/chaos-group-v-ray-for-revit",
+     "name": "Chaos Group V-Ray for Revit",
+     "class": "Программное обеспечение для 3D графики"
+    },
+    {
+     "id": "chaos-group/chaos-group-v-ray-collection",
+     "name": "Chaos Group V-Ray Collection",
+     "class": "Программное обеспечение для 3D графики"
+    }
+   ]
+  },
+  "does": "Обеспечивает фотореалистичный рендеринг и глобальное освещение для работы в 3D-моделировщике SketchUp.",
+  "needs": [
+   "SketchUp"
+  ],
+  "audience": "any"
+ },
+ "links": [
+  {
+   "dst": "sketchup/sketchup-professional",
+   "type": "addon_for",
+   "reason": "Это дополнение для системы SketchUp",
+   "quote": "V-Ray for SketchUp",
+   "dst_name": "SketchUp Pro",
+   "critic": "V-Ray for SketchUp физически является плагином и дополнением к программе SketchUp."
+  },
+  {
+   "dst": "chaos-group/chaos-group-v-ray",
+   "type": "addon_for",
+   "reason": "Является специализированной версией движка V-Ray для интеграции в SketchUp",
+   "quote": "Chaos Group V-Ray for SketchUp",
+   "dst_name": "Chaos Group V-Ray",
+   "critic": "Это специализированная версия того же самого программного обеспечения V-Ray."
+  }
+ ],
+ "edges": [
+  {
+   "src": "sketchup/sketchup-professional",
+   "dst": "new",
+   "type": "complements",
+   "why": "Это дополнение для системы SketchUp"
+  },
+  {
+   "src": "chaos-group/chaos-group-v-ray",
+   "dst": "new",
+   "type": "complements",
+   "why": "Является специализированной версией движка V-Ray для интеграции в SketchUp"
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "Chaos Group V-Ray for SketchUp"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "chaos-group/chaos-group-v-ray",
+     "name": "Chaos Group V-Ray",
+     "vendor": "",
+     "class": "Программное обеспечение для 3D графики",
+     "sale": "по запросу"
+    },
+    {
+     "id": "chaos-group/chaos-group-v-ray-for-revit",
+     "name": "Chaos Group V-Ray for Revit",
+     "vendor": "",
+     "class": "Программное обеспечение для 3D графики",
+     "sale": "по запросу"
+    },
+    {
+     "id": "chaos-group/chaos-group-v-ray-collection",
+     "name": "Chaos Group V-Ray Collection",
+     "vendor": "",
+     "class": "Программное обеспечение для 3D графики",
+     "sale": "по запросу"
+    },
+    {
+     "id": "chaos-group/chaos-group-v-ray-for-maya",
+     "name": "Chaos Group V-Ray for Maya",
+     "vendor": "",
+     "class": "Программное обеспечение для 3D графики",
+     "sale": "по запросу"
+    },
+    {
+     "id": "chaos-group/chaos-group-v-ray-for-unreal",
+     "name": "Chaos Group V-Ray for Unreal",
+     "vendor": "",
+     "class": "Программное обеспечение для 3D графики",
+     "sale": "по запросу"
+    },
+    {
+     "id": "chaos-group/chaos-group-v-ray-for-softimage",
+     "name": "Chaos Group V-Ray for Softimage",
+     "vendor": "",
+     "class": "Программное обеспечение для 3D графики",
+     "sale": "по запросу"
+    },
+    {
+     "id": "chaos-group/chaos-group-v-ray-for-rhino",
+     "name": "Chaos Group V-Ray for Rhino",
+     "vendor": "",
+     "class": "Программное обеспечение для 3D графики",
+     "sale": "по запросу"
+    },
+    {
+     "id": "chaos-group/chaos-group-v-ray-for-nuke",
+     "name": "Chaos Group V-Ray for Nuke",
+     "vendor": "",
+     "class": "Программное обеспечение для 3D графики",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "SketchUp"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "sketchup/sketchup-professional",
+     "name": "SketchUp Pro",
+     "vendor": "",
+     "class": "Программы для дизайна, визуализации и анимации",
+     "sale": "по запросу"
+    },
+    {
+     "id": "sketchup/sketchup-studio",
+     "name": "SketchUp Studio",
+     "vendor": "",
+     "class": "Программы для дизайна, визуализации и анимации",
+     "sale": "по запросу"
+    },
+    {
+     "id": "next-limit-technologies/nextlimit-maxwell-for-sketchup",
+     "name": "NextLimit Maxwell for SketchUp 4",
+     "vendor": "",
+     "class": "Программное обеспечение для 3D графики",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс найден из подсказки: grafika-i-dizayn/3d-grafika. Товар является дополнением для SketchUp и плагином для платформы V-Ray.",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 8.6,
+ "model_requests": 2,
+ "truth": {
+  "id": "chaos-group/chaos-group-v-ray-for-sketchup",
+  "class": "Программное обеспечение для 3D графики",
+  "kind": "",
+  "related": []
+ }
+}

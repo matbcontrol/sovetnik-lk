@@ -1,0 +1,299 @@
+{
+ "card": {
+  "name": "EMS SQL Query for DB2",
+  "vendor": "EMS",
+  "description": "Программное обеспечение SQL Query for DB2 представляет собой решение для легкого и быстрого создания SQL-запросов к базам данных DB2. Приложение SQL Query for DB2 предоставляет возможности не только визуального построения запросов, но и использования многофункционального редактора SQL-кода для написания текста запроса вручную. Благодаря простому и удобному интерфейсу Query for DB2 позволяет подключаться к базам данных DB2, выбирать таблицы и поля для запроса к серверу DB2, настраивать критерии отбора и многое другое. Программа поддерживает одновременную работу с несколькими запросами, редактирование текста запроса в многофункциональном редакторе SQL, просмотр результатов выполнения в различных режимах, визуальное создание запросов DB2 с объединениями и подзапросами. Пользователи SQL Query for DB2 могут строить основанные на запросах диаграммы, просматривать план выполнения запросов DB2 и запускать другие операции для работы с запросами к базам данных DB2. Ключевые возможности SQL Query for DB2: Доступ к современному графическому интерфейсу. Асинхронное выполнение запросов. Визуальный выбор таблиц и полей для запроса путем их перетаскивания. Работа с несколькими запросами в отдельных окнах. Ведение истории недавно написанных запросов. Подсветка синтаксиса, возможность «быстрого кода» и доступ к клавиатурным шаблонам для ускоренного редактирования текста запросов. Работа с инструментами для группировки и фильтрации данных. Визуальное создание запросов с объединениями и подзапро"
+ },
+ "passport": {
+  "class_id": "programmirovanie/bazi-dannih",
+  "class_name": "Программы для работы с базами данных",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Программы для работы с базами данных",
+  "neighbors": {
+   "class_id": "",
+   "confidence": 0.0,
+   "similarity": 0.0,
+   "near": []
+  },
+  "does": "Визуальное создание и выполнение SQL-запросов к базам данных DB2.",
+  "needs": [
+   "База данных DB2"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "ems/ems-sql-manager-for-db2",
+   "type": "complements",
+   "reason": "Продукт является частью линейки инструментов EMS для управления базами данных DB2.",
+   "quote": "",
+   "dst_name": "EMS SQL Manager for DB2",
+   "critic": "Логичное дополнение в рамках линейки инструментов EMS для DB2."
+  },
+  {
+   "dst": "ems/data-generator-for-db2",
+   "type": "complements",
+   "reason": "Продукт является частью линейки инструментов EMS для управления базами данных DB2.",
+   "quote": "",
+   "dst_name": "EMS Data Generator for DB2",
+   "critic": "Логичное дополнение в рамках линейки инструментов EMS для DB2."
+  },
+  {
+   "dst": "ems/data-import-for-db2",
+   "type": "complements",
+   "reason": "Продукт является частью линейки инструментов EMS для управления базами данных DB2.",
+   "quote": "",
+   "dst_name": "EMS Data Import for DB2",
+   "critic": "Логичное дополнение в рамках линейки инструментов EMS для DB2."
+  },
+  {
+   "dst": "ems/data-export-for-db2",
+   "type": "complements",
+   "reason": "Продукт является частью линейки инструментов EMS для управления базами данных DB2.",
+   "quote": "",
+   "dst_name": "EMS Data Export for DB2",
+   "critic": "Логичное дополнение в рамках линейки инструментов EMS для DB2."
+  },
+  {
+   "dst": "ems/ems-data-pump-for-db2",
+   "type": "complements",
+   "reason": "Продукт является частью линейки инструментов EMS для управления базами данных DB2.",
+   "quote": "",
+   "dst_name": "EMS Data Pump for DB2",
+   "critic": "Логичное дополнение в рамках линейки инструментов EMS для DB2."
+  },
+  {
+   "dst": "ems/db-extract-for-db2",
+   "type": "complements",
+   "reason": "Продукт является частью линейки инструментов EMS для управления базами данных DB2.",
+   "quote": "",
+   "dst_name": "EMS DB Extract for DB2",
+   "critic": "Логичное дополнение в рамках линейки инструментов EMS для DB2."
+  }
+ ],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "ems/ems-sql-manager-for-db2",
+   "type": "complements",
+   "why": "Продукт является частью линейки инструментов EMS для управления базами данных DB2."
+  },
+  {
+   "src": "new",
+   "dst": "ems/data-generator-for-db2",
+   "type": "complements",
+   "why": "Продукт является частью линейки инструментов EMS для управления базами данных DB2."
+  },
+  {
+   "src": "new",
+   "dst": "ems/data-import-for-db2",
+   "type": "complements",
+   "why": "Продукт является частью линейки инструментов EMS для управления базами данных DB2."
+  },
+  {
+   "src": "new",
+   "dst": "ems/data-export-for-db2",
+   "type": "complements",
+   "why": "Продукт является частью линейки инструментов EMS для управления базами данных DB2."
+  },
+  {
+   "src": "new",
+   "dst": "ems/ems-data-pump-for-db2",
+   "type": "complements",
+   "why": "Продукт является частью линейки инструментов EMS для управления базами данных DB2."
+  },
+  {
+   "src": "new",
+   "dst": "ems/db-extract-for-db2",
+   "type": "complements",
+   "why": "Продукт является частью линейки инструментов EMS для управления базами данных DB2."
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "find_classes",
+   "args": {},
+   "thought": "Ищу класс для SQL Query for DB2 и проверяю наличие связанных товаров вендора EMS в каталоге",
+   "result": [],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {},
+   "thought": "Ищу класс для SQL Query for DB2 и проверяю наличие связанных товаров вендора EMS в каталоге",
+   "result": [],
+   "ask": 1
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "database management SQL query tool"
+   },
+   "thought": "I have identified the product as a database management tool. Since no specific class was found in the initial search, I will search for database management software classes and related products to establish connections.",
+   "result": [
+    {
+     "class_id": "programmirovanie/bazi-dannih",
+     "name": "Программы для работы с базами данных",
+     "examples": [
+      "EMS SQL Manager for PostgreSQL",
+      "ИСУБД CronosPRO",
+      "EMS SQL Management Studio for PostgreSQL"
+     ]
+    },
+    {
+     "class_id": "sistemnie-programmi/diagnostika-sistemi",
+     "name": "Программы для диагностики системы",
+     "examples": [
+      "Open iT LicenseAnalyzer",
+      "Open iT ApplicationTracker",
+      "BlackBerry Management Pack"
+     ]
+    },
+    {
+     "class_id": "buhgalteriya-sklad-kadry/upravlenie-logistikoy",
+     "name": "Управление логистикой",
+     "examples": [
+      "CONSID.CTMS",
+      "IT Vectura Transportation Management System",
+      "IT Vectura Warehouse Management System"
+     ]
+    },
+    {
+     "class_id": "programmirovanie/drugie-biblioteki",
+     "name": "Другие библиотеки",
+     "examples": [
+      "EMS Advanced Excel Report",
+      "EMS Advanced Data Export .NET",
+      "EMS Advanced Query Builder"
+     ]
+    },
+    {
+     "class_id": "internet-i-set/servernoe-po",
+     "name": "Серверное ПО",
+     "examples": [
+      "PROMT Neural Translation Server",
+      "TCP COM Bridge",
+      "PROMT Translation Factory"
+     ]
+    },
+    {
+     "class_id": "diski-i-fayli/vosstanovlenie-dannih",
+     "name": "Программное обеспечение для восстановления данных",
+     "examples": [
+      "Wondershare Dr.Fone",
+      "EMS SQL Backup for SQL Server",
+      "ФЕНИКС"
+     ]
+    },
+    {
+     "class_id": "saas/e-mailing",
+     "name": "E-mail рассылка (SaaS)",
+     "examples": [
+      "Mimecast Unified Email Management (UEM)"
+     ]
+    },
+    {
+     "class_id": "antivirusi-bezopasnost/drugie-programmi",
+     "name": "Другие программы",
+     "examples": [
+      "Arcserve Replication and High Availability 18.0",
+      "Neurocore",
+      "SAINT ASV"
+     ]
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "DB2"
+   },
+   "thought": "I have identified the product as a database management tool. Since no specific class was found in the initial search, I will search for database management software classes and related products to establish connections.",
+   "result": [
+    {
+     "id": "ems/ems-sql-manager-for-db2",
+     "name": "EMS SQL Manager for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-import-for-db2",
+     "name": "EMS Data Import for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-export-for-db2",
+     "name": "EMS Data Export for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ibm/ibm-db2",
+     "name": "IBM DB2",
+     "vendor": "",
+     "class": "Программы для работы с базами данных",
+     "sale": "по запросу"
+    },
+    {
+     "id": "ems/db-extract-for-db2",
+     "name": "EMS DB Extract for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "niceit/nice-db2-management-pack",
+     "name": "NiCE DB2 Management Pack",
+     "vendor": "",
+     "class": "Программы для работы с базами данных",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Товар является инструментом для работы с базами данных DB2, относится к классу 'Программы для работы с базами данных'. В каталоге найдены другие продукты EMS для DB2, которые являются дополнениями к одной экосистеме.",
+   "result": "паспорт и связи",
+   "ask": 3
+  }
+ ],
+ "seconds": 15.0,
+ "model_requests": 4,
+ "tokens": {
+  "in": 5641,
+  "out": 974
+ },
+ "truth": {
+  "id": "ems/ems-sql-query-for-db2",
+  "class": "Программы для работы с базами данных",
+  "kind": "дополнение",
+  "related": [
+   "IBM DB2"
+  ]
+ }
+}

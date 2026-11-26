@@ -1,0 +1,252 @@
+{
+ "card": {
+  "name": "LanAgent Enterprise",
+  "vendor": "LanAgent",
+  "description": "Программное обеспечение LanAgent Enterprise является комплексной системой по контролю рабочего времени сотрудников и обеспечению информационной безопасности компании. Также как и стандартная версия LanAgent, LanAgent Enterprise направлена на задачи защиты корпоративной информации, а также повышения эффективности работы сотрудников и укрепления трудовой дисциплины. LanAgent Enterprise покажет полную картину рабочего дня подчиненных, по которой будет видно, сколько времени каждый из них тратил на компьютерные игры или на личную переписку в сетях, а сколько – на работу. Это позволит не только повысить трудовую дисциплину, но и оптимизировать рабочий день сотрудников. Также LanAgent Enterprise позволяет взять под контроль основные каналы утечки информации, такие как: съемные носители информации, корпоративную почту, социальные сети, программы обмена мгновенными сообщениями, Skype, печать документов на принтере. Это позволит своевременно обнаружить и предотвратить утечку важной информации. Версия Enterprise выполняет все функции LanAgent Standard и имеет ряд специальных возможностей: она оптимизирована для сбора данных с большого количества компьютеров, ее серверная часть может работать в постоянном круглосуточном режиме. Вход пользователя на сервер при этом не требуется, достаточно, чтобы компьютер просто был включен. Кроме того, в данной версии возможно подключение практически неограниченного количества консолей просмотра данных и для каждого специалиста безопасности гибко задаю"
+ },
+ "passport": {
+  "class_id": "antivirusi-bezopasnost/kontrol-personala",
+  "class_name": "Программное обеспечение для контроля персонала",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Программное обеспечение для контроля персонала",
+  "neighbors": {
+   "class_id": "",
+   "confidence": 0.0,
+   "similarity": 0.0,
+   "near": []
+  },
+  "does": "Контролирует рабочее время сотрудников и обеспечивает информационную безопасность компании с оптимизацией под большое количество компьютеров.",
+  "needs": [],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "lanagent/lanagent-standard-1",
+   "type": "upgrade_of",
+   "reason": "LanAgent Enterprise является более продвинутой редакцией продукта LanAgent Standard с расширенными возможностями для крупных сетей.",
+   "quote": "Версия Enterprise выполняет все функции LanAgent Standard и имеет ряд специальных возможностей",
+   "dst_name": "LanAgent Standard",
+   "critic": "В описании прямо указано, что Enterprise выполняет все функции Standard и является его расширенной версией."
+  }
+ ],
+ "edges": [
+  {
+   "src": "lanagent/lanagent-standard-1",
+   "dst": "new",
+   "type": "upgrade",
+   "why": "LanAgent Enterprise является более продвинутой редакцией продукта LanAgent Standard с расширенными возможностями для крупных сетей."
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "lanagent/lanagent-standard-1",
+   "dst": "new",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "LanAgent Standard"
+  }
+ ],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "контроль рабочего времени сотрудников информационная безопасность"
+   },
+   "thought": "Ищу класс для системы контроля сотрудников и проверяю наличие других версий LanAgent в каталоге.",
+   "result": [
+    {
+     "class_id": "distantsionnoe-obuchenie/infosecurity",
+     "name": "Курсы по информационной безопасности",
+     "examples": [
+      "Kaspersky Express Course",
+      "QMULO Base",
+      "QMULO Pro"
+     ]
+    },
+    {
+     "class_id": "saas/clouds",
+     "name": "Облачные платформы (Импортозамещение)",
+     "examples": [
+      "Защищенное рабочее место для сотрудников"
+     ]
+    },
+    {
+     "class_id": "buhgalteriya-sklad-kadry/kadroviy-uchet",
+     "name": "Программы для кадрового учета",
+     "examples": [
+      "e-staff",
+      "БОСС-Кадровик",
+      "OfficeWork OrgChart Professional"
+     ]
+    },
+    {
+     "class_id": "sapr/pojarnaya-bezopasnost",
+     "name": "Программы для пожарной безопасности",
+     "examples": [
+      "FireGuard",
+      "Fenix+ 3",
+      "Fenix Server"
+     ]
+    },
+    {
+     "class_id": "distantsionnoe-obuchenie/edu-upravlenie-v-organizatsii",
+     "name": "Программное обеспечение для управления в организации",
+     "examples": [
+      "Unicraft",
+      "Курс Системное администрирование Linux",
+      "Курс Администрирование ОС Astra Linux Special Edit"
+     ]
+    },
+    {
+     "class_id": "saas/sistemi-avtomatizatsii_saas",
+     "name": "Системы автоматизации (SaaS)",
+     "examples": [
+      "Navicat Cloud",
+      "МоиОтчеты Облако",
+      "МоиОтчеты Публикатор"
+     ]
+    },
+    {
+     "class_id": "bytovaya-tekhnika/kholodilniki",
+     "name": "Холодильники",
+     "examples": [
+      "ATLANT XM-4012-022",
+      "ATLANT XM-6021-031",
+      "Встраиваемый холодильник ELECTROLUX/ Встраиваемый "
+     ]
+    },
+    {
+     "class_id": "ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie",
+     "name": "Российское офисное ПО (Импортозамещение)",
+     "examples": [
+      "Workspad",
+      "Яндекс 360 для бизнеса. Тариф Основной",
+      "Яндекс 360 для бизнеса"
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "LanAgent"
+   },
+   "thought": "Ищу класс для системы контроля сотрудников и проверяю наличие других версий LanAgent в каталоге.",
+   "result": [
+    {
+     "id": "lanagent/lanagent-standard-1",
+     "name": "LanAgent Standard",
+     "vendor": "LanAgent",
+     "class": "Программное обеспечение для контроля персонала",
+     "sale": "в продаже"
+    },
+    {
+     "id": "lanagent/lanagent-terminal-1",
+     "name": "LanAgent Terminal",
+     "vendor": "",
+     "class": "Программное обеспечение для контроля персонала",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "контроль персонала рабочий день"
+   },
+   "thought": "Класс для LanAgent Enterprise не был найден в первом запросе find_classes. Выполним поиск класса с другим запросом, соответствующим контролю персонала.",
+   "result": [
+    {
+     "class_id": "antivirusi-bezopasnost/kontrol-personala",
+     "name": "Программное обеспечение для контроля персонала",
+     "examples": [
+      "Octagram Flex",
+      "LanAgent Standard",
+      "ИНСАЙДЕР"
+     ]
+    },
+    {
+     "class_id": "buhgalteriya-sklad-kadry/kadroviy-uchet",
+     "name": "Программы для кадрового учета",
+     "examples": [
+      "e-staff",
+      "БОСС-Кадровик",
+      "OfficeWork OrgChart Professional"
+     ]
+    },
+    {
+     "class_id": "ii/gotovye-ii-modeli-i-algoritmy",
+     "name": "Готовые ИИ-модели и алгоритмы",
+     "examples": [
+      "Удаленный рабочий стол с GPT",
+      "AlpinaGPT. Корпоративная платформа внедрения искус",
+      "Jay Copilot"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/iskusstvennyi-intellekt",
+     "name": "ИИ",
+     "examples": [
+      "Удаленный рабочий стол с GPT",
+      "AlpinaGPT. Корпоративная платформа внедрения искус",
+      "Jay Copilot"
+     ]
+    },
+    {
+     "class_id": "saas/sistemi-avtomatizatsii_saas",
+     "name": "Системы автоматизации (SaaS)",
+     "examples": [
+      "Navicat Cloud",
+      "МоиОтчеты Облако",
+      "МоиОтчеты Публикатор"
+     ]
+    },
+    {
+     "class_id": "bytovaya-tekhnika/kholodilniki",
+     "name": "Холодильники",
+     "examples": [
+      "ATLANT XM-4012-022",
+      "ATLANT XM-6021-031",
+      "Встраиваемый холодильник ELECTROLUX/ Встраиваемый "
+     ]
+    },
+    {
+     "class_id": "obrazovanie-i-nauka/obuchayuschie-programmi",
+     "name": "Обучающие программы",
+     "examples": [
+      "Учебный комплект «‎Квадросим»",
+      "Sike. Электронный курс «Материаловедение. Строение",
+      "Sike. Электронный курс «Слесарь-ремонтник»"
+     ]
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс найден (antivirusi-bezopasnost/kontrol-personala), в поиске есть базовая версия LanAgent Standard (lanagent/lanagent-standard-1). LanAgent Enterprise — это старшая редакция продукта.",
+   "result": "паспорт и связи",
+   "ask": 3
+  }
+ ],
+ "seconds": 13.1,
+ "model_requests": 4,
+ "tokens": {
+  "in": 5976,
+  "out": 500
+ },
+ "truth": {
+  "id": "lanagent/lanagent-enterprise-1",
+  "class": "Программное обеспечение для контроля персонала",
+  "kind": "линейка",
+  "related": [
+   "LanAgent Standard"
+  ]
+ }
+}

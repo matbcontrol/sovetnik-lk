@@ -1,0 +1,155 @@
+{
+ "card": {
+  "name": "Sawmill Lite",
+  "vendor": "Sawmill",
+  "description": "Sawmill Lite обеспечивает более быстрое представление отчетов, чем любая другая аналитическая программа. Хотя версия Lite и лишена многих функций, реализованных в Sawmill Professional или Sawmill Enterprise, решение позволяет получать быстрый и прямой доступ к отчетным данным с приложением минимальных усилий. Программа Sawmill Lite очень проста в работе, обладает удобным интерфейсом и быстро выполняет все необходимые операции по анализу лог-данных. Кроме того, решение предлагает легкую и безболезненную схему масштабирования и миграции на версии Sawmill Professional или Sawmill Enterprise. Sawmill Lite поддерживает платформы Unix, Linux, Windows, Macintosh и может запускаться локально (на анализируемом сервере) или удаленно (на любой другой системе). При удаленном запуске Sawmill Professional автоматически загружает лог-файлы, выполняет их и публикует отчеты, используя интегрированный web-сервер, а также отправляет отчеты по электронной почте."
+ },
+ "passport": {
+  "class_id": "",
+  "class_name": "",
+  "class_seen": false,
+  "class_note": "подходящего класса в каталоге нет: товар уходит на проверку менеджеру",
+  "class_source": "не определён",
+  "class_agent": "",
+  "neighbors": {
+   "class_id": "",
+   "confidence": 0.0,
+   "similarity": 0.0,
+   "near": []
+  },
+  "does": "анализирует лог-файлы и предоставляет быстрый доступ к отчетам",
+  "needs": [
+   "платформы Unix, Linux, Windows, Macintosh"
+  ],
+  "audience": "b2b"
+ },
+ "links": [],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "sawmill/sawmill-professional",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "Sawmill Professional"
+  },
+  {
+   "src": "new",
+   "dst": "sawmill/sawmill-enterprise",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "Sawmill Enterprise"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "new",
+   "dst": "sawmill/sawmill-professional",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "Sawmill Professional"
+  },
+  {
+   "src": "new",
+   "dst": "sawmill/sawmill-enterprise",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "Sawmill Enterprise"
+  }
+ ],
+ "dropped": [
+  {
+   "dst": "sawmill/sawmill-professional",
+   "type": "upgrade_of",
+   "reason": "Младшая редакция с возможностью миграции на Sawmill Professional",
+   "quote": "схему масштабирования и миграции на версии Sawmill Professional",
+   "dst_name": "Sawmill Professional",
+   "critic": "Возможность миграции на старшую редакцию прямо указана в описании.",
+   "why": "класс товара не определён — связи не ставим"
+  },
+  {
+   "dst": "sawmill/sawmill-enterprise",
+   "type": "upgrade_of",
+   "reason": "Младшая редакция с возможностью миграции на Sawmill Enterprise",
+   "quote": "или Sawmill Enterprise",
+   "dst_name": "Sawmill Enterprise",
+   "critic": "Возможность миграции на старшую редакцию прямо указана в описании.",
+   "why": "класс товара не определён — связи не ставим"
+  }
+ ],
+ "steps": [
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "анализ логов"
+   },
+   "thought": "Ищу класс для аналитики логов и саму программу Sawmill Lite в каталоге",
+   "result": [
+    {
+     "class_id": "distantsionnoe-obuchenie/infosecurity",
+     "name": "Курсы по информационной безопасности",
+     "examples": [
+      "Kaspersky Express Course",
+      "QMULO Base",
+      "QMULO Pro"
+     ]
+    },
+    {
+     "class_id": "internet-i-set/poisk",
+     "name": "Поиск",
+     "examples": [
+      "EndNote 20",
+      "10-Strike Network File Search",
+      "10-Strike Network File Search Pro"
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "Sawmill"
+   },
+   "thought": "Ищу класс для аналитики логов и саму программу Sawmill Lite в каталоге",
+   "result": [
+    {
+     "id": "sawmill/sawmill-professional",
+     "name": "Sawmill Professional",
+     "vendor": "Sawmill",
+     "class": "Сетевые утилиты",
+     "sale": "в продаже"
+    },
+    {
+     "id": "sawmill/sawmill-enterprise",
+     "name": "Sawmill Enterprise",
+     "vendor": "Sawmill",
+     "class": "Сетевые утилиты",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс 'Сетевые утилиты' подходит лучше всего для анализа логов, найдем его код через find_classes.",
+   "result": "паспорт и связи",
+   "ask": 2
+  }
+ ],
+ "seconds": 4.5,
+ "model_requests": 3,
+ "tokens": {
+  "in": 3076,
+  "out": 472
+ },
+ "truth": {
+  "id": "sawmill/sawmill-lite",
+  "class": "Сетевые утилиты",
+  "kind": "линейка",
+  "related": [
+   "Sawmill Enterprise",
+   "Sawmill Professional"
+  ]
+ }
+}

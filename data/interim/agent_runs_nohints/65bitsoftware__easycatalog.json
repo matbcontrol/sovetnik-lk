@@ -1,0 +1,214 @@
+{
+ "card": {
+  "name": "EasyCatalog",
+  "vendor": "65bit Software",
+  "description": "EasyCatalog для Adobe InDesign идеально подходит для критичных по времени публикаций. Решение может значительно ускорить верстку страницы и гарантировать отсутствие ошибок в документах. Доверенные тысячами пользователей в более чем тридцати странах на шести континентах, EasyCatalog быстро зарекомендовал себя как один из самых мощных и гибких баз данных публикации решений для Adobe InDesign. Импорт из любого места Импорт своих данных из текстового файла и непосредственно из базы данных, совместимой с ODBC, с помощью дополнительного модуля ODBC Data Provider или из XML-файла или URL-канала с помощью модуля XML Data Provider. Форматирование данных Данные отображаются на панели в стиле электронной таблицы в InDesign — можно форматировать, сортировать, группировать и запрашивать данные прямо из InDesign. Ссылка на документ Можно связывать свои данные с содержимым документа InDesign – и текст, и изображения можно импортировать одним нажатием кнопки. Ссылка является двунаправленной, поэтому можно изменять данные в документе. Динамические библиотеки и шаблоны документов Можно создавать сложные, ориентированные на дизайн страницы за считанные секунды, содержащие данные из любого источника данных. Табличные данные Создание таблиц InDesign еще никогда не было таким простым. Панель данных позволяет определить текущий порядок записей и полей, затем нужно нажать кнопку вставки. В документ будет вставлена новая таблица InDesign, содержащая оперативные связанные данные. Сложные таблицы, созд"
+ },
+ "passport": {
+  "class_id": "grafika-i-dizayn/izdatelskie-sistemi",
+  "class_name": "Издательские системы",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Издательские системы",
+  "neighbors": {
+   "class_id": "",
+   "confidence": 0.0,
+   "similarity": 0.0,
+   "near": []
+  },
+  "does": "Автоматизирует верстку документов и импорт данных из баз данных в Adobe InDesign.",
+  "needs": [
+   "Adobe InDesign"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "adobe/adobe-indesign",
+   "type": "addon_for",
+   "reason": "Модуль интеграции данных для Adobe InDesign",
+   "quote": "EasyCatalog для Adobe InDesign идеально подходит для критичных по времени публикаций.",
+   "dst_name": "Adobe InDesign",
+   "critic": "EasyCatalog является плагином (дополнением) для Adobe InDesign, расширяющим его функциональность."
+  }
+ ],
+ "edges": [
+  {
+   "src": "adobe/adobe-indesign",
+   "dst": "new",
+   "type": "complements",
+   "why": "Модуль интеграции данных для Adobe InDesign"
+  },
+  {
+   "src": "65bitsoftware/easycatalog-lite",
+   "dst": "new",
+   "type": "same_line",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "EasyCatalog Lite"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "65bitsoftware/easycatalog-lite",
+   "dst": "new",
+   "type": "same_line",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "EasyCatalog Lite"
+  }
+ ],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "плагин для Adobe InDesign"
+   },
+   "thought": "Ищу класс для плагина Adobe InDesign и сам продукт Adobe InDesign в каталоге для установления связи.",
+   "result": [
+    {
+     "class_id": "grafika-i-dizayn/tsifrovoe-foto",
+     "name": "Программы для обработки цифрового фото",
+     "examples": [
+      "ФотоМАСТЕР",
+      "CyberLink PhotoDirector 2027",
+      "Cyberlink PhotoDirector 365"
+     ]
+    },
+    {
+     "class_id": "text/tekstovie-redaktori",
+     "name": "Текстовые редакторы",
+     "examples": [
+      "Master Pdf Editor",
+      "ContentReader PDF 15 Standard",
+      "ContentReader PDF 15 Corporate"
+     ]
+    },
+    {
+     "class_id": "multimedia/audioredaktori",
+     "name": "Аудиоредакторы",
+     "examples": [
+      "Cyberlink MyEdit Audio",
+      "Magix ACID Music Studio 10",
+      "Avid Sibelius"
+     ]
+    },
+    {
+     "class_id": "grafika-i-dizayn/izdatelskie-sistemi",
+     "name": "Издательские системы",
+     "examples": [
+      "Markzware Q2ID",
+      "TEKLYNX CODESOFT",
+      "FinePrint"
+     ]
+    },
+    {
+     "class_id": "grafika-i-dizayn/grafika-i-dizayn-drugie-utiliti",
+     "name": "Другие графические утилиты",
+     "examples": [
+      "«Юнион Лейбл»",
+      "Seagull Scientific BarTender",
+      "TechSmith SnagIt"
+     ]
+    },
+    {
+     "class_id": "grafika-i-dizayn/3d-grafika",
+     "name": "Программное обеспечение для 3D графики",
+     "examples": [
+      "3D-IO Unwrella",
+      "D5 Render",
+      "3D-IO BonesPro"
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "Adobe InDesign"
+   },
+   "thought": "Ищу класс для плагина Adobe InDesign и сам продукт Adobe InDesign в каталоге для установления связи.",
+   "result": [
+    {
+     "id": "adobe/adobe-indesign",
+     "name": "Adobe InDesign",
+     "vendor": "",
+     "class": "Графические редакторы",
+     "sale": "по запросу"
+    },
+    {
+     "id": "adobe/adobe-indesign-pro",
+     "name": "Adobe InDesign Pro",
+     "vendor": "",
+     "class": "Графические редакторы",
+     "sale": "по запросу"
+    },
+    {
+     "id": "adobe/adobe-connect",
+     "name": "Adobe Connect",
+     "vendor": "",
+     "class": "Программное обеспечение для работы с документами",
+     "sale": "по запросу"
+    },
+    {
+     "id": "adobe/adobe-photoshop",
+     "name": "Adobe Photoshop",
+     "vendor": "",
+     "class": "Графические редакторы",
+     "sale": "по запросу"
+    },
+    {
+     "id": "adobe/adobe-xd-cc",
+     "name": "Adobe XD",
+     "vendor": "",
+     "class": "Графические редакторы",
+     "sale": "по запросу"
+    },
+    {
+     "id": "adobe/adobe-dimension-cc",
+     "name": "Adobe Dimension",
+     "vendor": "",
+     "class": "Графические редакторы",
+     "sale": "по запросу"
+    },
+    {
+     "id": "adobe/adobe-animate",
+     "name": "Adobe Animate",
+     "vendor": "",
+     "class": "Видеоредакторы",
+     "sale": "по запросу"
+    },
+    {
+     "id": "adobe/adobe-photoshop-lightroom",
+     "name": "Adobe Lightroom",
+     "vendor": "",
+     "class": "Программы для обработки цифрового фото",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Определен класс 'grafika-i-dizayn/izdatelskie-sistemi' и базовый продукт Adobe InDesign с id 'adobe/adobe-indesign'. Формирую итоговый JSON.",
+   "result": "паспорт и связи",
+   "ask": 2
+  }
+ ],
+ "seconds": 13.8,
+ "model_requests": 3,
+ "tokens": {
+  "in": 3868,
+  "out": 395
+ },
+ "truth": {
+  "id": "65bitsoftware/easycatalog",
+  "class": "Графические редакторы",
+  "kind": "линейка",
+  "related": [
+   "EasyCatalog Lite"
+  ]
+ }
+}

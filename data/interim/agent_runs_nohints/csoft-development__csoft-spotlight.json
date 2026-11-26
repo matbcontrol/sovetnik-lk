@@ -1,0 +1,194 @@
+{
+ "card": {
+  "name": "CSoft Spotlight",
+  "vendor": "CSoft Development",
+  "description": "Программное обеспечение CSoft Spotlight является профессиональным гибридным графическим инструментом редактирования растровых монохромных, полутоновых и цветных изображений: отсканированных чертежей, карт, схем и других графических материалов. Базовая редакция графического редактора CSoft Spotlight позволяет повышать качество отсканированного изображения, редактировать растровую и векторную графику, векторизовать растровое изображение в полуавтоматическом режиме. Возможности CSoft Spotlight: Сканирование. Модуль WiseScan LE дает возможность работать с широкоформатными монохромными и цветными сканерами. Управление сканером выполняется на аппаратном уровне или посредством TWAIN-интерфейса. Фильтрация монохромных изображений. Применение монохромных фильтров помогает повышать качество черно-белой графики и уменьшать объем растровых файлов. Коррекция геометрических искажений. Функция позволяет исправлять разнообразные геометрические искажения монохромных, цветных и полутоновых растровых изображений. Калибровка. При помощи калибровки можно корректировать ошибки сканирования и искажения, возникшие вследствие деформации исходных графических материалов. Выделение объектов по типу и размеру. Опция позволяет переносить определенные объекты растрового изображения (штриховки, текст, линейные объекты и объекты по размеру) на новые растровые изображения, помещенные на указанные слои. Бинаризация и разделение цветов. Процедуры бинаризации и разделения цветов позволяют получать из цветных и п"
+ },
+ "passport": {
+  "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+  "class_name": "Редакторы и векторизаторы",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Редакторы и векторизаторы",
+  "neighbors": {
+   "class_id": "",
+   "confidence": 0.0,
+   "similarity": 0.0,
+   "near": []
+  },
+  "does": "профессиональный гибридный графический редактор для обработки и векторизации растровых изображений, чертежей и схем",
+  "needs": [],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "csoft-development/csoft-spotlight-pro",
+   "type": "upgrade_of",
+   "reason": "Базовая редакция является младшей по отношению к профессиональной версии",
+   "quote": "",
+   "dst_name": "CSoft Spotlight Pro",
+   "critic": "Старшая редакция является логичным продолжением линейки программного обеспечения."
+  }
+ ],
+ "edges": [
+  {
+   "src": "csoft-development/csoft-spotlight-pro",
+   "dst": "new",
+   "type": "same_line",
+   "why": "Базовая редакция является младшей по отношению к профессиональной версии"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "csoft-development/csoft-spotlight-pro",
+   "dst": "new",
+   "type": "same_line",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "CSoft Spotlight Pro"
+  }
+ ],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "find_classes",
+   "args": {},
+   "thought": "Ищу подходящий класс для гибридного графического редактора Spotlight",
+   "result": [],
+   "ask": 1
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "графический редактор растровых изображений чертежей"
+   },
+   "thought": "Класс не нашелся по первому запросу, попробуем поискать классы по ключевым словам из описания товара",
+   "result": [
+    {
+     "class_id": "sapr/mashinostroenie",
+     "name": "Программы для машиностроения",
+     "examples": [
+      "КОМПАС-3D V25",
+      "КОМПАС-График V25",
+      "КОМПАС-3D HOME"
+     ]
+    },
+    {
+     "class_id": "office/graphic_pad",
+     "name": "Графические планшеты",
+     "examples": [
+      "Defender Акустическая 2.0 система Solar 7 6Вт, под",
+      "Графический планшет HUION H1060P",
+      "Графический планшет HUION Inspiroy H610X"
+     ]
+    },
+    {
+     "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+     "name": "Редакторы и векторизаторы",
+     "examples": [
+      "CSoft RasterDesk",
+      "CSoft RasterID",
+      "CSoft RasterDesk Pro"
+     ]
+    },
+    {
+     "class_id": "text/raspoznavanie-teksta-i-rechi",
+     "name": "Программы для распознавания текста и речи",
+     "examples": [
+      "Wondershare PDFelement",
+      "СЕТЕРЕ Архиватор",
+      "СЕТЕРЕ ПДФ Редактор"
+     ]
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "CSoft Spotlight"
+   },
+   "thought": "Класс не нашелся по первому запросу, попробуем поискать классы по ключевым словам из описания товара",
+   "result": [
+    {
+     "id": "csoft-development/csoft-spotlight-pro",
+     "name": "CSoft Spotlight Pro",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-geonics",
+     "name": "CSoft GeoniCS",
+     "vendor": "CSoft Development",
+     "class": "Инфраструктура: изыскания, генплан, транспорт",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-tdms",
+     "name": "CSoft TDMS",
+     "vendor": "CSoft Development",
+     "class": "Программы для документооборота",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-rasterdesk",
+     "name": "CSoft RasterDesk",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-mechanics",
+     "name": "CSoft MechaniCS",
+     "vendor": "CSoft Development",
+     "class": "Программы для машиностроения",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-tdm365",
+     "name": "CSoft TDM365",
+     "vendor": "CSoft Development",
+     "class": "Программы для документооборота",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-reclouds",
+     "name": "CSoft ReCloudS",
+     "vendor": "CSoft Development",
+     "class": "Программы для дизайна, визуализации и анимации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-rasterid",
+     "name": "CSoft RasterID",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "",
+   "result": "паспорт и связи",
+   "ask": 3
+  }
+ ],
+ "seconds": 5.4,
+ "model_requests": 4,
+ "tokens": {
+  "in": 5271,
+  "out": 338
+ },
+ "truth": {
+  "id": "csoft-development/csoft-spotlight",
+  "class": "Редакторы и векторизаторы",
+  "kind": "линейка",
+  "related": [
+   "CSoft Spotlight Pro"
+  ]
+ }
+}

@@ -1,0 +1,227 @@
+{
+ "card": {
+  "name": "EMS SQL Query for DB2",
+  "vendor": "EMS",
+  "description": "Программное обеспечение SQL Query for DB2 представляет собой решение для легкого и быстрого создания SQL-запросов к базам данных DB2. Приложение SQL Query for DB2 предоставляет возможности не только визуального построения запросов, но и использования многофункционального редактора SQL-кода для написания текста запроса вручную. Благодаря простому и удобному интерфейсу Query for DB2 позволяет подключаться к базам данных DB2, выбирать таблицы и поля для запроса к серверу DB2, настраивать критерии отбора и многое другое. Программа поддерживает одновременную работу с несколькими запросами, редактирование текста запроса в многофункциональном редакторе SQL, просмотр результатов выполнения в различных режимах, визуальное создание запросов DB2 с объединениями и подзапросами. Пользователи SQL Query for DB2 могут строить основанные на запросах диаграммы, просматривать план выполнения запросов DB2 и запускать другие операции для работы с запросами к базам данных DB2. Ключевые возможности SQL Query for DB2: Доступ к современному графическому интерфейсу. Асинхронное выполнение запросов. Визуальный выбор таблиц и полей для запроса путем их перетаскивания. Работа с несколькими запросами в отдельных окнах. Ведение истории недавно написанных запросов. Подсветка синтаксиса, возможность «быстрого кода» и доступ к клавиатурным шаблонам для ускоренного редактирования текста запросов. Работа с инструментами для группировки и фильтрации данных. Визуальное создание запросов с объединениями и подзапро"
+ },
+ "passport": {
+  "class_id": "programmirovanie/bazi-dannih",
+  "class_name": "Программы для работы с базами данных",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "Программы для работы с базами данных",
+  "neighbors": {
+   "class_id": "programmirovanie/bazi-dannih",
+   "name": "Программы для работы с базами данных",
+   "confidence": 1.0,
+   "similarity": 0.71,
+   "near": [
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/ems-sql-query-for-oracle",
+     "name": "EMS SQL Query for Oracle",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/ems-sql-query-for-mysql",
+     "name": "EMS SQL Query for MySQL",
+     "class": "Программы для работы с базами данных"
+    }
+   ]
+  },
+  "does": "Создает и редактирует SQL-запросы к базам данных DB2 с помощью визуальных инструментов и многофункционального редактора.",
+  "needs": [
+   "база данных DB2"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "ibm/ibm-db2",
+   "type": "requires",
+   "reason": "Для работы программы необходима СУБД IBM DB2",
+   "quote": "для легкого и быстрого создания SQL-запросов к базам данных DB2",
+   "dst_name": "IBM DB2",
+   "critic": "Программа предназначена для работы с базами данных DB2, поэтому СУБД необходима."
+  }
+ ],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "ibm/ibm-db2",
+   "type": "requires",
+   "why": "Для работы программы необходима СУБД IBM DB2"
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [
+  {
+   "dst": "ems/ems-sql-manager-for-db2",
+   "type": "complements",
+   "reason": "Рекомендуется использовать совместно с EMS SQL Manager для комплексного управления базами данных DB2",
+   "quote": "",
+   "dst_name": "EMS SQL Manager for DB2",
+   "why": "критик: Связь с другим продуктом вендора не следует напрямую из текста карточки товара."
+  }
+ ],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS SQL Query for DB2"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-oracle",
+     "name": "EMS SQL Query for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-mysql",
+     "name": "EMS SQL Query for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-db2",
+     "name": "EMS SQL Manager for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/sql-query-for-postgresql",
+     "name": "EMS SQL Query for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-interbase_firebird",
+     "name": "EMS SQL Query for InterBase/FireBird",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-advanced-query-builder",
+     "name": "EMS Advanced Query Builder",
+     "vendor": "EMS",
+     "class": "Другие библиотеки",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "DB2"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "ems/ems-sql-manager-for-db2",
+     "name": "EMS SQL Manager for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-import-for-db2",
+     "name": "EMS Data Import for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-export-for-db2",
+     "name": "EMS Data Export for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ibm/ibm-db2",
+     "name": "IBM DB2",
+     "vendor": "",
+     "class": "Программы для работы с базами данных",
+     "sale": "по запросу"
+    },
+    {
+     "id": "ems/db-extract-for-db2",
+     "name": "EMS DB Extract for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "niceit/nice-db2-management-pack",
+     "name": "NiCE DB2 Management Pack",
+     "vendor": "",
+     "class": "Программы для работы с базами данных",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 2,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "ems/ems-sql-query-for-db2",
+  "class": "Программы для работы с базами данных",
+  "kind": "дополнение",
+  "related": [
+   "IBM DB2"
+  ]
+ }
+}

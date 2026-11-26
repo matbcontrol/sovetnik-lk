@@ -1,0 +1,203 @@
+{
+ "card": {
+  "name": "EMS SQL Administrator for SQL Server",
+  "vendor": "EMS",
+  "description": "Программное обеспечение EMS SQL Administrator for SQL Server – набор инструментов для эффективного администрирования SQL Server. Являясь простым в установке и использовании, продукт EMS SQL Administrator for SQL Server содержит почти полный набор средств, необходимых для администрирования SQL Server. Программа EMS SQL Administrator for SQL Server предназначена для работы именно администраторов баз данных и позволяет выполнять задачи по администрированию максимально просто, быстро и эффективно. EMS SQL Administrator for SQL Server позволяет управлять задачами по обслуживанию, контролировать наличие их расписания по выполнению, периодичность расписания и успешность последнего выполнения. Решение выполняет поиск возможных неисправностей и информирует пользователя при обнаружении таковых; собирает статистику производительности, позволяет находить «узкие места» в производительности, прогнозировать их наступление и необходимость расширения дискового пространства; позволяет легко находить уязвимые места в безопасности сервера и управлять привилегиями. Решение также ключает в себя средства для управления объектами, мониторинга активности, просмотра журналов сервера. Ключевые особенности: Возможность получать информацию обо всех планах/задачах обслуживания, а также просматривать выполнение их периодичности и результат последнего выполнения. Поиск возможных неисправностей с помощью списка неисправностей (Alarm Summary tool). Управление базами данных и их файлами. Полная информация о пр"
+ },
+ "passport": {
+  "class_id": "programmirovanie/bazi-dannih",
+  "class_name": "Программы для работы с базами данных",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Программы для работы с базами данных",
+  "neighbors": {
+   "class_id": "",
+   "confidence": 0.0,
+   "similarity": 0.0,
+   "near": []
+  },
+  "does": "администрирование баз данных SQL Server",
+  "needs": [
+   "Microsoft SQL Server"
+  ],
+  "audience": "b2b"
+ },
+ "links": [],
+ "edges": [],
+ "rule_edges": [],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "администрирование баз данных SQL Server"
+   },
+   "thought": "Ищу подходящий класс для средства администрирования SQL Server.",
+   "result": [
+    {
+     "class_id": "torgovoe-oborudovanie/terminaly-sbora-dannykh",
+     "name": "Терминалы сбора данных",
+     "examples": [
+      "Терминалы сбора данных Urovo DT40-LITE",
+      "Терминал сбора данных MERTECH SEUIC AutoID Q9C сер",
+      "Терминалы сбора данных M3 Mobile PC10"
+     ]
+    },
+    {
+     "class_id": "programmirovanie/bazi-dannih",
+     "name": "Программы для работы с базами данных",
+     "examples": [
+      "EMS SQL Manager for PostgreSQL",
+      "ИСУБД CronosPRO",
+      "EMS SQL Management Studio for PostgreSQL"
+     ]
+    },
+    {
+     "class_id": "san-nas/san-storage",
+     "name": "Сетевые системы хранения данных",
+     "examples": [
+      "Сетевая система хранения данных ASUSTOR AS6512RD",
+      "HPE Storage MSL 1/8 Gen3 0-drive Tape Autoloader",
+      "Infortrend EonStor GS 3000T 2U/24bay U.2 NVMe AFA,"
+     ]
+    },
+    {
+     "class_id": "distantsionnoe-obuchenie/edu-upravlenie-v-organizatsii",
+     "name": "Программное обеспечение для управления в организации",
+     "examples": [
+      "Unicraft",
+      "Курс Системное администрирование Linux",
+      "Курс Администрирование ОС Astra Linux Special Edit"
+     ]
+    },
+    {
+     "class_id": "diski-i-fayli/vosstanovlenie-dannih",
+     "name": "Программное обеспечение для восстановления данных",
+     "examples": [
+      "Wondershare Dr.Fone",
+      "EMS SQL Backup for SQL Server",
+      "ФЕНИКС"
+     ]
+    },
+    {
+     "class_id": "operating-systems/os-windows",
+     "name": "Операционные системы Windows",
+     "examples": [
+      "Операционная система Microsoft Windows Server Stan",
+      "Microsoft Windows 10 Pro (GGWA)",
+      "Microsoft Windows Server Datacenter 2022"
+     ]
+    },
+    {
+     "class_id": "sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie",
+     "name": "Системы управления базами данных (Импортозамещение)",
+     "examples": [
+      "Postgres Pro Enterprise (сертифицированная версия)",
+      "Postgres Pro Enterprise для 1С:Предприятие (сертиф",
+      "СУБД Ред База Данных"
+     ]
+    },
+    {
+     "class_id": "programmi-dlya-mobilnih-ustroystv/mobilnie-ustroystva-zaschita-informatsii",
+     "name": "Защита данных на смартфоне",
+     "examples": [
+      "SafeMobile",
+      "Elcomsoft Phone Password Breaker",
+      "F-Secure Mobile Security for Business"
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS SQL Administrator"
+   },
+   "thought": "Ищу подходящий класс для средства администрирования SQL Server.",
+   "result": [
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "vendor": "EMS",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-oracle",
+     "name": "EMS SQL Manager for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-mysql",
+     "name": "EMS SQL Manager for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-postgresql",
+     "name": "EMS SQL Manager for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-db2",
+     "name": "EMS SQL Manager for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-oracle",
+     "name": "EMS SQL Query for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Найдена подходящая категория Программы для работы с базами данных (programmirovanie/bazi-dannih) и сам продукт в каталоге. Связей с другими продуктами по смыслу названия не требуется.",
+   "result": "паспорт и связи",
+   "ask": 2
+  }
+ ],
+ "seconds": 2.4,
+ "model_requests": 2,
+ "tokens": {
+  "in": 3346,
+  "out": 234
+ },
+ "truth": {
+  "id": "ems/ems-sql-administrator-for-sql-server",
+  "class": "Серверное ПО",
+  "kind": "дополнение",
+  "related": [
+   "Microsoft SQL Server",
+   "Microsoft SQL Server Enterprise Edition",
+   "Microsoft SQL Server Standard Edition"
+  ]
+ }
+}

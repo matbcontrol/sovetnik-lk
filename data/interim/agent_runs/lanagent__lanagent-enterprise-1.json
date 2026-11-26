@@ -1,0 +1,158 @@
+{
+ "card": {
+  "name": "LanAgent Enterprise",
+  "vendor": "LanAgent",
+  "description": "Программное обеспечение LanAgent Enterprise является комплексной системой по контролю рабочего времени сотрудников и обеспечению информационной безопасности компании. Также как и стандартная версия LanAgent, LanAgent Enterprise направлена на задачи защиты корпоративной информации, а также повышения эффективности работы сотрудников и укрепления трудовой дисциплины. LanAgent Enterprise покажет полную картину рабочего дня подчиненных, по которой будет видно, сколько времени каждый из них тратил на компьютерные игры или на личную переписку в сетях, а сколько – на работу. Это позволит не только повысить трудовую дисциплину, но и оптимизировать рабочий день сотрудников. Также LanAgent Enterprise позволяет взять под контроль основные каналы утечки информации, такие как: съемные носители информации, корпоративную почту, социальные сети, программы обмена мгновенными сообщениями, Skype, печать документов на принтере. Это позволит своевременно обнаружить и предотвратить утечку важной информации. Версия Enterprise выполняет все функции LanAgent Standard и имеет ряд специальных возможностей: она оптимизирована для сбора данных с большого количества компьютеров, ее серверная часть может работать в постоянном круглосуточном режиме. Вход пользователя на сервер при этом не требуется, достаточно, чтобы компьютер просто был включен. Кроме того, в данной версии возможно подключение практически неограниченного количества консолей просмотра данных и для каждого специалиста безопасности гибко задаю"
+ },
+ "passport": {
+  "class_id": "antivirusi-bezopasnost/kontrol-personala",
+  "class_name": "Программное обеспечение для контроля персонала",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Программное обеспечение для контроля персонала",
+  "neighbors": {
+   "class_id": "antivirusi-bezopasnost/kontrol-personala",
+   "name": "Программное обеспечение для контроля персонала",
+   "confidence": 0.62,
+   "similarity": 0.66,
+   "near": [
+    {
+     "id": "lanagent/lanagent-standard-1",
+     "name": "LanAgent Standard",
+     "class": "Программное обеспечение для контроля персонала"
+    },
+    {
+     "id": "lanagent/lanagent-terminal-1",
+     "name": "LanAgent Terminal",
+     "class": "Программное обеспечение для контроля персонала"
+    },
+    {
+     "id": "pixso/pixso-enterprise",
+     "name": "Pixso Enterprise",
+     "class": "Программное обеспечение для управления бизнесом"
+    }
+   ]
+  },
+  "does": "Контролирует рабочее время сотрудников и обеспечивает информационную безопасность компании с возможностью постоянной круглосуточной работы сервера и сбора данных с большого числа компьютеров.",
+  "needs": [],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "lanagent/lanagent-standard-1",
+   "type": "upgrade_of",
+   "reason": "LanAgent Enterprise является старшей редакцией LanAgent Standard с расширенными возможностями.",
+   "quote": "Версия Enterprise выполняет все функции LanAgent Standard и имеет ряд специальных возможностей",
+   "dst_name": "LanAgent Standard",
+   "critic": "Прямо следует из текста карточки: версия Enterprise выполняет все функции LanAgent Standard."
+  }
+ ],
+ "edges": [
+  {
+   "src": "lanagent/lanagent-standard-1",
+   "dst": "new",
+   "type": "upgrade",
+   "why": "LanAgent Enterprise является старшей редакцией LanAgent Standard с расширенными возможностями."
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "lanagent/lanagent-standard-1",
+   "dst": "new",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "LanAgent Standard"
+  }
+ ],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "LanAgent Enterprise"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "lanagent/lanagent-standard-1",
+     "name": "LanAgent Standard",
+     "vendor": "LanAgent",
+     "class": "Программное обеспечение для контроля персонала",
+     "sale": "в продаже"
+    },
+    {
+     "id": "lanagent/lanagent-terminal-1",
+     "name": "LanAgent Terminal",
+     "vendor": "",
+     "class": "Программное обеспечение для контроля персонала",
+     "sale": "по запросу"
+    },
+    {
+     "id": "pixso/pixso-enterprise",
+     "name": "Pixso Enterprise",
+     "vendor": "Pixso",
+     "class": "Программное обеспечение для управления бизнесом",
+     "sale": "в продаже"
+    },
+    {
+     "id": "sawmill/sawmill-enterprise",
+     "name": "Sawmill Enterprise",
+     "vendor": "Sawmill",
+     "class": "Сетевые утилиты",
+     "sale": "в продаже"
+    },
+    {
+     "id": "postgrespro/postgres-pro-enterprise",
+     "name": "Postgres Pro Enterprise",
+     "vendor": "Postgres Professional",
+     "class": "Российские базы данных (Импортозамещение)",
+     "sale": "в продаже"
+    },
+    {
+     "id": "1s-bitriks/1s-bitriks-enterprayz",
+     "name": "1С-Битрикс: Enterprise",
+     "vendor": "1С-Битрикс",
+     "class": "Программное обеспечение для создания сайтов",
+     "sale": "в продаже"
+    },
+    {
+     "id": "postgrespro/postgres-pro-enterprise-dlia-1s",
+     "name": "Postgres Pro Enterprise для 1С",
+     "vendor": "Postgres Professional",
+     "class": "Российские базы данных (Импортозамещение)",
+     "sale": "в продаже"
+    },
+    {
+     "id": "pixso/pixso-boardmix-enterprise",
+     "name": "Pixso BoardMix Enterprise",
+     "vendor": "Pixso",
+     "class": "Программное обеспечение для управления бизнесом",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Найден базовый продукт LanAgent Standard, поэтому LanAgent Enterprise является его старшей редакцией (upgrade_of). Класс товара известен из подсказки.",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 2,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "lanagent/lanagent-enterprise-1",
+  "class": "Программное обеспечение для контроля персонала",
+  "kind": "линейка",
+  "related": [
+   "LanAgent Standard"
+  ]
+ }
+}

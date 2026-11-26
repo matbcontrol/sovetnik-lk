@@ -1,0 +1,206 @@
+{
+ "card": {
+  "name": "CSoft RasterDesk Pro",
+  "vendor": "CSoft Development",
+  "description": "Программное обеспечение CSoft RasterDesk Pro является профессиональным растровым инструментом редактирования и визуализации, предназначенным для работы с отсканированными документами в САПР AutoCAD. Графический редактор CSoft RasterDesk Pro дополняет возможности AutoCAD передовыми средствами работы с растровыми изображениями. Профессиональная версия растрового редактора CSoft RasterDesk Pro добавляет к базовой редакции инструменты автоматической векторизации, автоматической векторной коррекции и модуль распознавания текстов ABBYY FineReader 10. Возможности CSoft RasterDesk Pro: Сканирование. Модуль WiseScan LE дает возможность работать с широкоформатными монохромными и цветными сканерами. Управление сканером выполняется на аппаратном уровне или посредством TWAIN-интерфейса. Фильтрация монохромных изображений. Применение монохромных фильтров помогает повышать качество черно-белой графики и уменьшать объем растровых файлов. Геометрическая коррекция. Редактор позволяет исправлять различные геометрические параметры растрового изображения. Калибровка. При помощи калибровки можно корректировать ошибки сканирования и искажения, возникшие вследствие деформации исходных графических материалов. Цветокоррекция и цветная фильтрация. CSoft RasterDesk содержит следующие процедуры цветокоррекции и фильтрации растровых изображений. Выбор и редактирование растровых объектов. Интеллектуальная объектная технология выбора растровых данных позволяет редактировать растровое изображение методами, а"
+ },
+ "passport": {
+  "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+  "class_name": "Редакторы и векторизаторы",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Редакторы и векторизаторы",
+  "neighbors": {
+   "class_id": "",
+   "confidence": 0.0,
+   "similarity": 0.0,
+   "near": []
+  },
+  "does": "Профессиональный растровый редактор для САПР AutoCAD с функциями векторизации и сканирования",
+  "needs": [
+   "AutoCAD"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "csoft-development/csoft-rasterdesk",
+   "type": "upgrade_of",
+   "reason": "Профессиональная версия растрового редактора добавляет новые инструменты к базовой редакции",
+   "quote": "Профессиональная версия растрового редактора CSoft RasterDesk Pro добавляет к базовой редакции инструменты автоматической векторизации",
+   "dst_name": "CSoft RasterDesk",
+   "critic": "Это старшая редакция продукта, что напрямую указано в описании."
+  }
+ ],
+ "edges": [
+  {
+   "src": "csoft-development/csoft-rasterdesk",
+   "dst": "new",
+   "type": "same_line",
+   "why": "Профессиональная версия растрового редактора добавляет новые инструменты к базовой редакции"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "csoft-development/csoft-rasterdesk",
+   "dst": "new",
+   "type": "same_line",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "CSoft RasterDesk"
+  }
+ ],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "растровый редактор для САПР"
+   },
+   "thought": "Ищу класс для растрового редактора и проверяю наличие AutoCAD в каталоге для связи.",
+   "result": [
+    {
+     "class_id": "sapr/mashinostroenie",
+     "name": "Программы для машиностроения",
+     "examples": [
+      "КОМПАС-3D V25",
+      "КОМПАС-График V25",
+      "КОМПАС-3D HOME"
+     ]
+    },
+    {
+     "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+     "name": "Редакторы и векторизаторы",
+     "examples": [
+      "CSoft RasterDesk",
+      "CSoft RasterID",
+      "CSoft Spotlight"
+     ]
+    },
+    {
+     "class_id": "sapr/dizayn-vizualizatsiya-i-animatsiya",
+     "name": "Программы для дизайна, визуализации и анимации",
+     "examples": [
+      "iPi Motion Capture",
+      "3D-IO Flatiron",
+      "Power Translators"
+     ]
+    },
+    {
+     "class_id": "text/raspoznavanie-teksta-i-rechi",
+     "name": "Программы для распознавания текста и речи",
+     "examples": [
+      "Wondershare PDFelement",
+      "СЕТЕРЕ Архиватор",
+      "СЕТЕРЕ ПДФ Редактор"
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "AutoCAD"
+   },
+   "thought": "Ищу класс для растрового редактора и проверяю наличие AutoCAD в каталоге для связи.",
+   "result": [
+    {
+     "id": "ippekshev/modplus-autocad",
+     "name": "ModPlus AutoCAD",
+     "vendor": "Modplus",
+     "class": "Базовые программы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "autodesk/autodesk-autocad-2022",
+     "name": "Autodesk AutoCAD",
+     "vendor": "",
+     "class": "Базовые программы",
+     "sale": "по запросу"
+    },
+    {
+     "id": "autodesk/autodesk-autocad-lt-2022",
+     "name": "Autodesk AutoCAD LT",
+     "vendor": "",
+     "class": "Базовые программы",
+     "sale": "по запросу"
+    },
+    {
+     "id": "autodesk/autodesk-autocad-architecture",
+     "name": "Autodesk AutoCAD Architecture",
+     "vendor": "",
+     "class": "Программы для архитекторов",
+     "sale": "по запросу"
+    },
+    {
+     "id": "autodesk/autodesk-autocad-electrical",
+     "name": "Autodesk AutoCAD Electrical",
+     "vendor": "",
+     "class": "Программы для машиностроения",
+     "sale": "по запросу"
+    },
+    {
+     "id": "autodesk/autodesk-autocad-mep",
+     "name": "Autodesk AutoCAD MEP",
+     "vendor": "",
+     "class": "Строительное программное обеспечение",
+     "sale": "по запросу"
+    },
+    {
+     "id": "autodesk/autodesk-autocad-mechanical",
+     "name": "Autodesk AutoCAD Mechanical",
+     "vendor": "",
+     "class": "Программы для машиностроения",
+     "sale": "по запросу"
+    },
+    {
+     "id": "autodesk/autodesk-autocad-lt-2021",
+     "name": "AutoCAD LT for Macintosh",
+     "vendor": "",
+     "class": "Базовые программы",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "RasterDesk"
+   },
+   "thought": "Ищу класс для растрового редактора и проверяю наличие AutoCAD в каталоге для связи.",
+   "result": [
+    {
+     "id": "csoft-development/csoft-rasterdesk",
+     "name": "CSoft RasterDesk",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс найден, базовый продукт CSoft RasterDesk найден, формирую итог.",
+   "result": "паспорт и связи",
+   "ask": 2
+  }
+ ],
+ "seconds": 147.2,
+ "model_requests": 3,
+ "tokens": {
+  "in": 3973,
+  "out": 424
+ },
+ "truth": {
+  "id": "csoft-development/csoft-rasterdesk-pro",
+  "class": "Редакторы и векторизаторы",
+  "kind": "линейка",
+  "related": [
+   "CSoft RasterDesk"
+  ]
+ }
+}

@@ -1,0 +1,248 @@
+{
+ "card": {
+  "name": "EMS SQL Administrator for SQL Server",
+  "vendor": "EMS",
+  "description": "Программное обеспечение EMS SQL Administrator for SQL Server – набор инструментов для эффективного администрирования SQL Server. Являясь простым в установке и использовании, продукт EMS SQL Administrator for SQL Server содержит почти полный набор средств, необходимых для администрирования SQL Server. Программа EMS SQL Administrator for SQL Server предназначена для работы именно администраторов баз данных и позволяет выполнять задачи по администрированию максимально просто, быстро и эффективно. EMS SQL Administrator for SQL Server позволяет управлять задачами по обслуживанию, контролировать наличие их расписания по выполнению, периодичность расписания и успешность последнего выполнения. Решение выполняет поиск возможных неисправностей и информирует пользователя при обнаружении таковых; собирает статистику производительности, позволяет находить «узкие места» в производительности, прогнозировать их наступление и необходимость расширения дискового пространства; позволяет легко находить уязвимые места в безопасности сервера и управлять привилегиями. Решение также ключает в себя средства для управления объектами, мониторинга активности, просмотра журналов сервера. Ключевые особенности: Возможность получать информацию обо всех планах/задачах обслуживания, а также просматривать выполнение их периодичности и результат последнего выполнения. Поиск возможных неисправностей с помощью списка неисправностей (Alarm Summary tool). Управление базами данных и их файлами. Полная информация о пр"
+ },
+ "passport": {
+  "class_id": "programmirovanie/bazi-dannih",
+  "class_name": "Программы для работы с базами данных",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "Программы для работы с базами данных",
+  "neighbors": {
+   "class_id": "programmirovanie/bazi-dannih",
+   "name": "Программы для работы с базами данных",
+   "confidence": 0.77,
+   "similarity": 0.63,
+   "near": [
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "class": "Программное обеспечение для восстановления данных"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "class": "Программы для работы с базами данных"
+    }
+   ]
+  },
+  "does": "инструмент для администрирования, мониторинга и оптимизации баз данных Microsoft SQL Server",
+  "needs": [
+   "Microsoft SQL Server"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "microsoft/microsoft-sql-server",
+   "type": "requires",
+   "reason": "продукт предназначен для администрирования серверов Microsoft SQL Server",
+   "quote": "администрирования SQL Server",
+   "dst_name": "Microsoft SQL Server",
+   "critic": "Программное обеспечение предназначено для администрирования именно Microsoft SQL Server."
+  },
+  {
+   "dst": "ems/ems-sql-manager-for-sql-server",
+   "type": "complements",
+   "reason": "другой инструмент от того же вендора для работы с SQL Server",
+   "quote": "",
+   "dst_name": "EMS SQL Manager for SQL Server",
+   "critic": "Логично предложить другой инструмент того же вендора для комплексного администрирования."
+  },
+  {
+   "dst": "ems/ems-sql-management-studio-for-sql-server",
+   "type": "complements",
+   "reason": "комплексное решение для управления SQL Server",
+   "quote": "",
+   "dst_name": "EMS SQL Management Studio for SQL Server",
+   "critic": "Смежный продукт того же вендора для работы с тем же сервером."
+  }
+ ],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "microsoft/microsoft-sql-server",
+   "type": "requires",
+   "why": "продукт предназначен для администрирования серверов Microsoft SQL Server"
+  },
+  {
+   "src": "new",
+   "dst": "ems/ems-sql-manager-for-sql-server",
+   "type": "complements",
+   "why": "другой инструмент от того же вендора для работы с SQL Server"
+  },
+  {
+   "src": "new",
+   "dst": "ems/ems-sql-management-studio-for-sql-server",
+   "type": "complements",
+   "why": "комплексное решение для управления SQL Server"
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS SQL Administrator for SQL Server"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "vendor": "EMS",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-sql-server",
+     "name": "EMS SQL Management Studio for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-generator-for-sql-server-",
+     "name": "EMS Data Generator for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-import-for-sql-server",
+     "name": "EMS Data Import for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-sql-server",
+     "name": "EMS Data Export for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-comparer-for-sql-server",
+     "name": "EMS Data Comparer for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "SQL Server"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "navicat/navicat-for-sql-server",
+     "name": "Navicat for SQL Server",
+     "vendor": "Navicat",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "vendor": "EMS",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "microsoft/microsoft-sql-server",
+     "name": "Microsoft SQL Server",
+     "vendor": "",
+     "class": "Серверное ПО",
+     "sale": "по запросу"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "officerecovery/recovery-for-sql-server",
+     "name": "Recovery for SQL Server",
+     "vendor": "",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "по запросу"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-sql-server",
+     "name": "EMS SQL Management Studio for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-generator-for-sql-server-",
+     "name": "EMS Data Generator for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 2,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "ems/ems-sql-administrator-for-sql-server",
+  "class": "Серверное ПО",
+  "kind": "дополнение",
+  "related": [
+   "Microsoft SQL Server",
+   "Microsoft SQL Server Enterprise Edition",
+   "Microsoft SQL Server Standard Edition"
+  ]
+ }
+}

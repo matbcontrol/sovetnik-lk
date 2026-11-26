@@ -1,0 +1,140 @@
+{
+ "card": {
+  "name": "Kaspersky Security для Kubernetes",
+  "vendor": "Лаборатория Касперского",
+  "description": "Защита контейнерных сред и оркестраторов: проверка образов, контроль запуска, защита среды выполнения. Требуется кластер Kubernetes."
+ },
+ "passport": {
+  "class_id": "antivirusi-bezopasnost/antivirusi-organizatsii",
+  "class_name": "Антивирусы для организаций",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Антивирусы для организаций",
+  "neighbors": {
+   "class_id": "antivirusi-bezopasnost/antivirusi-organizatsii",
+   "name": "Антивирусы для организаций",
+   "confidence": 0.59,
+   "near": [
+    {
+     "id": "kaspersky/kaspersky-total-security-dlya-biznesa",
+     "name": "Kaspersky Total Security для бизнеса",
+     "class": "Антивирусы для организаций"
+    },
+    {
+     "id": "kaspersky/kaspersky-symphony-security",
+     "name": "Kaspersky Symphony Security",
+     "class": "Программы для защиты информации"
+    },
+    {
+     "id": "kaspersky/kaspersky-security-for-xsp",
+     "name": "Kaspersky Security for xSP",
+     "class": "Интернет и Сеть"
+    }
+   ]
+  },
+  "does": "Защищает контейнерные среды и оркестраторы Kubernetes, проверяет образы и контролирует запуск в среде выполнения.",
+  "needs": [
+   "Кластер Kubernetes"
+  ],
+  "audience": "b2b"
+ },
+ "links": [],
+ "edges": [],
+ "rule_edges": [],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "Kaspersky Security для Kubernetes"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "kaspersky/kaspersky-total-security-dlya-biznesa",
+     "name": "Kaspersky Total Security для бизнеса",
+     "vendor": "«Лаборатория Касперского»",
+     "class": "Антивирусы для организаций",
+     "sale": "в продаже"
+    },
+    {
+     "id": "kaspersky/kaspersky-symphony-security",
+     "name": "Kaspersky Symphony Security",
+     "vendor": "«Лаборатория Касперского»",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "kaspersky/kaspersky-security-for-xsp",
+     "name": "Kaspersky Security for xSP",
+     "vendor": "«Лаборатория Касперского»",
+     "class": "Интернет и Сеть",
+     "sale": "в продаже"
+    },
+    {
+     "id": "kaspersky/kaspersky-endpoint-security-dlya-biznesa-cloud",
+     "name": "Kaspersky Endpoint Security Cloud",
+     "vendor": "«Лаборатория Касперского»",
+     "class": "Антивирусы для организаций",
+     "sale": "в продаже"
+    },
+    {
+     "id": "kaspersky/kaspersky-small-office-security",
+     "name": "Kaspersky Small Office Security",
+     "vendor": "«Лаборатория Касперского»",
+     "class": "Антивирусы для организаций",
+     "sale": "в продаже"
+    },
+    {
+     "id": "kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirennyiy",
+     "name": "Kaspersky Endpoint Security для бизнеса Расширенный",
+     "vendor": "«Лаборатория Касперского»",
+     "class": "Антивирусы для организаций",
+     "sale": "в продаже"
+    },
+    {
+     "id": "kaspersky/kaspersky-endpoint-security-dlya-biznesa-standartnyiy",
+     "name": "Kaspersky Endpoint Security для бизнеса Стандартный",
+     "vendor": "«Лаборатория Касперского»",
+     "class": "Антивирусы для организаций",
+     "sale": "в продаже"
+    },
+    {
+     "id": "kaspersky/kaspersky-security-dlya-microsoft-office",
+     "name": "Kaspersky Security для Microsoft Office 365",
+     "vendor": "«Лаборатория Касперского»",
+     "class": "Антивирусы для организаций",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "Kubernetes"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "akademya-softline/rabota-s-konteynerami-docker-i-vvedenie-v-administrirovanie-klas",
+     "name": "Курс Работа с контейнерами Docker и введение в администрирование кластера Kubernetes",
+     "vendor": "",
+     "class": "Программное обеспечение для управления в организац",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 1.7,
+ "model_requests": 1
+}

@@ -1,0 +1,111 @@
+{
+ "card": {
+  "name": "EasyCatalog",
+  "vendor": "65bit Software",
+  "description": "EasyCatalog для Adobe InDesign идеально подходит для критичных по времени публикаций. Решение может значительно ускорить верстку страницы и гарантировать отсутствие ошибок в документах. Доверенные тысячами пользователей в более чем тридцати странах на шести континентах, EasyCatalog быстро зарекомендовал себя как один из самых мощных и гибких баз данных публикации решений для Adobe InDesign. Импорт из любого места Импорт своих данных из текстового файла и непосредственно из базы данных, совместимой с ODBC, с помощью дополнительного модуля ODBC Data Provider или из XML-файла или URL-канала с помощью модуля XML Data Provider. Форматирование данных Данные отображаются на панели в стиле электронной таблицы в InDesign — можно форматировать, сортировать, группировать и запрашивать данные прямо из InDesign. Ссылка на документ Можно связывать свои данные с содержимым документа InDesign – и текст, и изображения можно импортировать одним нажатием кнопки. Ссылка является двунаправленной, поэтому можно изменять данные в документе. Динамические библиотеки и шаблоны документов Можно создавать сложные, ориентированные на дизайн страницы за считанные секунды, содержащие данные из любого источника данных. Табличные данные Создание таблиц InDesign еще никогда не было таким простым. Панель данных позволяет определить текущий порядок записей и полей, затем нужно нажать кнопку вставки. В документ будет вставлена новая таблица InDesign, содержащая оперативные связанные данные. Сложные таблицы, созд"
+ },
+ "passport": {
+  "class_id": "grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori",
+  "class_name": "Графические редакторы",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "",
+  "neighbors": {
+   "class_id": "grafika-i-dizayn/grafika-i-disayn-graficheskie-redaktori",
+   "name": "Графические редакторы",
+   "confidence": 0.77,
+   "similarity": 1.0,
+   "near": [
+    {
+     "id": "65bitsoftware/easycatalog-lite",
+     "name": "EasyCatalog Lite",
+     "class": "Графические редакторы"
+    },
+    {
+     "id": "65bitsoftware/imagelink",
+     "name": "ImageLink",
+     "class": "Программы для обработки цифрового фото"
+    },
+    {
+     "id": "65bitsoftware/scripting-module",
+     "name": "Scripting Module",
+     "class": "Графические редакторы"
+    }
+   ]
+  },
+  "does": "Автоматизирует верстку документов и связывает базы данных с Adobe InDesign",
+  "needs": [
+   "Adobe InDesign"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "65bitsoftware/easycatalog-lite",
+   "type": "upgrade_of",
+   "reason": "Полнофункциональная редакция EasyCatalog является старшей версией по отношению к Lite-версии",
+   "quote": "EasyCatalog для Adobe InDesign идеально подходит для критичных по времени публикаций",
+   "dst_name": "EasyCatalog Lite",
+   "critic": "EasyCatalog является старшей редакцией по отношению к EasyCatalog Lite"
+  }
+ ],
+ "edges": [
+  {
+   "src": "65bitsoftware/easycatalog-lite",
+   "dst": "new",
+   "type": "same_line",
+   "why": "Полнофункциональная редакция EasyCatalog является старшей версией по отношению к Lite-версии"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "65bitsoftware/easycatalog-lite",
+   "dst": "new",
+   "type": "same_line",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "EasyCatalog Lite"
+  }
+ ],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EasyCatalog"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "65bitsoftware/easycatalog-lite",
+     "name": "EasyCatalog Lite",
+     "vendor": "65bit Software",
+     "class": "Графические редакторы",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс уже известен, нужно найти базовый продукт или связать с уже найденным easycatalog-lite, если это полная версия или наоборот.",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 2,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "65bitsoftware/easycatalog",
+  "class": "Графические редакторы",
+  "kind": "линейка",
+  "related": [
+   "EasyCatalog Lite"
+  ]
+ }
+}

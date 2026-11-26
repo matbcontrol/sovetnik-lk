@@ -1,0 +1,182 @@
+{
+ "card": {
+  "name": "Sawmill Lite",
+  "vendor": "Sawmill",
+  "description": "Sawmill Lite обеспечивает более быстрое представление отчетов, чем любая другая аналитическая программа. Хотя версия Lite и лишена многих функций, реализованных в Sawmill Professional или Sawmill Enterprise, решение позволяет получать быстрый и прямой доступ к отчетным данным с приложением минимальных усилий. Программа Sawmill Lite очень проста в работе, обладает удобным интерфейсом и быстро выполняет все необходимые операции по анализу лог-данных. Кроме того, решение предлагает легкую и безболезненную схему масштабирования и миграции на версии Sawmill Professional или Sawmill Enterprise. Sawmill Lite поддерживает платформы Unix, Linux, Windows, Macintosh и может запускаться локально (на анализируемом сервере) или удаленно (на любой другой системе). При удаленном запуске Sawmill Professional автоматически загружает лог-файлы, выполняет их и публикует отчеты, используя интегрированный web-сервер, а также отправляет отчеты по электронной почте."
+ },
+ "passport": {
+  "class_id": "internet-i-set/programmi-dlya-seti",
+  "class_name": "Сетевые утилиты",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Сетевые утилиты",
+  "neighbors": {
+   "class_id": "internet-i-set/programmi-dlya-seti",
+   "name": "Сетевые утилиты",
+   "confidence": 0.62,
+   "similarity": 0.59,
+   "near": [
+    {
+     "id": "sawmill/sawmill-professional",
+     "name": "Sawmill Professional",
+     "class": "Сетевые утилиты"
+    },
+    {
+     "id": "sawmill/sawmill-enterprise",
+     "name": "Sawmill Enterprise",
+     "class": "Сетевые утилиты"
+    },
+    {
+     "id": "defender/26089-484945",
+     "name": "Сумка Defender Lite 17\"",
+     "class": "Сумки и чехлы для ноутбуков"
+    }
+   ]
+  },
+  "does": "Анализирует лог-файлы и формирует быстрые отчеты.",
+  "needs": [
+   "платформы Unix, Linux, Windows, Macintosh"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "sawmill/sawmill-professional",
+   "type": "upgrade_of",
+   "reason": "Sawmill Lite предлагает легкую схему миграции на версию Sawmill Professional",
+   "quote": "решение предлагает легкую и безболезненную схему масштабирования и миграции на версии Sawmill Professional или Sawmill Enterprise",
+   "dst_name": "Sawmill Professional",
+   "critic": "Прямо указано в описании товара как старшая редакция для миграции"
+  },
+  {
+   "dst": "sawmill/sawmill-enterprise",
+   "type": "upgrade_of",
+   "reason": "Sawmill Lite предлагает легкую схему миграции на версию Sawmill Enterprise",
+   "quote": "решение предлагает легкую и безболезненную схему масштабирования и миграции на версии Sawmill Professional или Sawmill Enterprise",
+   "dst_name": "Sawmill Enterprise",
+   "critic": "Прямо указано в описании товара как старшая редакция для миграции"
+  }
+ ],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "sawmill/sawmill-professional",
+   "type": "upgrade",
+   "why": "Sawmill Lite предлагает легкую схему миграции на версию Sawmill Professional"
+  },
+  {
+   "src": "new",
+   "dst": "sawmill/sawmill-enterprise",
+   "type": "upgrade",
+   "why": "Sawmill Lite предлагает легкую схему миграции на версию Sawmill Enterprise"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "new",
+   "dst": "sawmill/sawmill-professional",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "Sawmill Professional"
+  },
+  {
+   "src": "new",
+   "dst": "sawmill/sawmill-enterprise",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "Sawmill Enterprise"
+  }
+ ],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "Sawmill Lite"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "sawmill/sawmill-professional",
+     "name": "Sawmill Professional",
+     "vendor": "Sawmill",
+     "class": "Сетевые утилиты",
+     "sale": "в продаже"
+    },
+    {
+     "id": "sawmill/sawmill-enterprise",
+     "name": "Sawmill Enterprise",
+     "vendor": "Sawmill",
+     "class": "Сетевые утилиты",
+     "sale": "в продаже"
+    },
+    {
+     "id": "defender/26089-484945",
+     "name": "Сумка Defender Lite 17\"",
+     "vendor": "Defender",
+     "class": "Сумки и чехлы для ноутбуков",
+     "sale": "в продаже"
+    },
+    {
+     "id": "65bitsoftware/easycatalog-lite",
+     "name": "EasyCatalog Lite",
+     "vendor": "65bit Software",
+     "class": "Графические редакторы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "insider/insayder-oblako-lite-cloud",
+     "name": "ИНСАЙДЕР Облако Lite Cloud",
+     "vendor": "Инсайдер",
+     "class": "Программное обеспечение для контроля персонала",
+     "sale": "в продаже"
+    },
+    {
+     "id": "aktiv/rutoken-lite-rutoken",
+     "name": "Рутокен Lite (Rutoken)",
+     "vendor": "Актив",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ubiquiti/usw-lite-16-poe-487480",
+     "name": "Коммутатор UBIQUITI USW-Lite-16-PoE",
+     "vendor": "UBIQUITI",
+     "class": "Коммутаторы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "defender/99487-527481",
+     "name": "Сетевой фильтр Defender ES Lite 1.8",
+     "vendor": "Defender",
+     "class": "Сетевые фильтры и стабилизаторы",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс очевиден из подсказки и поиска, это сетевые утилиты. Свяжем Sawmill Lite с другими редакциями.",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 2,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "sawmill/sawmill-lite",
+  "class": "Сетевые утилиты",
+  "kind": "линейка",
+  "related": [
+   "Sawmill Enterprise",
+   "Sawmill Professional"
+  ]
+ }
+}

@@ -1,0 +1,143 @@
+{
+ "card": {
+  "name": "Программное решение Fox-SNC",
+  "vendor": "ЛИССИ-Софт",
+  "description": "Программное решение Fox-SNC обеспечивает защиту от несанкционированного доступа (НСД) путем аутентификации пользователей на сертификатах ключа проверки ЭП. Решение также организовывает защиту сетевого трафика в продуктах компании SAP, функционирующих на базе Web Application Server, по протоколу SNC с использованием российских криптографических алгоритмов (ГОСТ 28147-89, ГОСТ Р 34.11-94, ГОСТ Р 34.10-2001). Технология работы комплекса Fox-SNC основана на стандартах инфраструктуры открытых ключей (Public Key Infrastructure). Каждый элемент информационной системы имеет свой цифровой сертификат стандарта X.509 v.3 и соответствующую ключевую информацию. Комплекс «Fox-SNC» обеспечивает надежную криптографическую защиту передаваемой информации следующими методами: аутентификация пользователей с использованием сертификатов ключей проверки ЭП; контроль целостности передаваемой информации; шифрование передаваемой информации."
+ },
+ "passport": {
+  "class_id": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+  "class_name": "Программы для защиты информации",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Программы для защиты информации",
+  "neighbors": {
+   "class_id": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+   "name": "Программы для защиты информации",
+   "confidence": 0.66,
+   "similarity": 0.55,
+   "near": [
+    {
+     "id": "lissisoft/programmnyiy-kompleks-fox-ssf",
+     "name": "Программный комплекс «Fox-SSF»",
+     "class": "Программы для защиты информации"
+    },
+    {
+     "id": "lissisoft/tsentr-vyidachi-i-upravleniya-sertifikatami-fox-xca",
+     "name": "Центр выдачи и управления сертификатами «Fox-XCA»",
+     "class": "Программы для защиты информации"
+    },
+    {
+     "id": "lissisoft/lirtunnel",
+     "name": "LIRTUNNEL",
+     "class": "Интернет и Сеть"
+    }
+   ]
+  },
+  "does": "Обеспечивает криптографическую защиту сетевого трафика и аутентификацию пользователей в продуктах SAP с использованием российских алгоритмов ГОСТ.",
+  "needs": [
+   "SAP Web Application Server"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "lissisoft/programmnyiy-kompleks-fox-ssf",
+   "type": "complements",
+   "reason": "Продукты одного вендора для комплексной защиты информационной системы.",
+   "quote": "",
+   "dst_name": "Программный комплекс «Fox-SSF»",
+   "critic": "Продукты одного вендора для построения комплексной системы защиты информации."
+  },
+  {
+   "dst": "lissisoft/tsentr-vyidachi-i-upravleniya-sertifikatami-fox-xca",
+   "type": "complements",
+   "reason": "Рекомендуется использовать совместно для управления сертификатами X.509.",
+   "quote": "Каждый элемент информационной системы имеет свой цифровой сертификат стандарта X.509 v.3",
+   "dst_name": "Центр выдачи и управления сертификатами «Fox-XCA»",
+   "critic": "Fox-SNC использует сертификаты X.509, для управления которыми необходим центр сертификации, такой как Fox-XCA."
+  }
+ ],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "lissisoft/programmnyiy-kompleks-fox-ssf",
+   "type": "complements",
+   "why": "Продукты одного вендора для комплексной защиты информационной системы."
+  },
+  {
+   "src": "new",
+   "dst": "lissisoft/tsentr-vyidachi-i-upravleniya-sertifikatami-fox-xca",
+   "type": "complements",
+   "why": "Рекомендуется использовать совместно для управления сертификатами X.509."
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "Программное решение Fox-SNC"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "lissisoft/programmnyiy-kompleks-fox-ssf",
+     "name": "Программный комплекс «Fox-SSF»",
+     "vendor": "ЛИССИ-Софт",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "lissisoft/tsentr-vyidachi-i-upravleniya-sertifikatami-fox-xca",
+     "name": "Центр выдачи и управления сертификатами «Fox-XCA»",
+     "vendor": "ЛИССИ-Софт",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ddos-guard/reshenie-ddos-guard-dlya-zashchity-saytov",
+     "name": "Решение DDoS-Guard для Защиты сайтов",
+     "vendor": "",
+     "class": "Программы для защиты информации",
+     "sale": "не продаётся"
+    },
+    {
+     "id": "ddos-guard/reshenie-ddos-guard-dlya-zashchity-seti-l3-l4l7",
+     "name": "Решение DDoS-Guard для Защиты сети L3-L4+L7",
+     "vendor": "",
+     "class": "Программы для защиты информации",
+     "sale": "не продаётся"
+    },
+    {
+     "id": "ddos-guard/reshenie-ddos-guard-dlya-zashchity-seti-l3-l4",
+     "name": "Решение DDoS-Guard для Защиты сети L3-L4",
+     "vendor": "",
+     "class": "Программы для защиты информации",
+     "sale": "не продаётся"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "",
+   "result": "паспорт и связи",
+   "ask": 1
+  }
+ ],
+ "seconds": 0.0,
+ "model_requests": 2,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "truth": {
+  "id": "lissisoft/programmnoe-reshenie-fox-snc",
+  "class": "Программное обеспечение для контроля доступа",
+  "kind": "обычный",
+  "related": []
+ }
+}
