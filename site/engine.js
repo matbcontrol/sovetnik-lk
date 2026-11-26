@@ -47,7 +47,8 @@
   function parseDate(s) {
     if (!s) return null;
     const p = String(s).slice(0, 10).split("-").map(Number);
-    return Date.UTC(p[0], p[1] - 1, p[2]);
+    const ms = Date.UTC(p[0], p[1] - 1, p[2]);
+    return Number.isFinite(ms) ? ms : null;          // нечитаемая дата — то же, что дата неизвестна
   }
   function fmt(ms) {
     const d = new Date(ms);
@@ -260,7 +261,8 @@
     recommend(client, k) {
       k = k || 3;
       const g = this.g;
-      client = Object.assign({}, client, { todayMs: parseDate(client.today) });
+      const todayMs = parseDate(client.today);
+      client = Object.assign({}, client, { todayMs: todayMs === null ? parseDate(new Date().toISOString()) : todayMs });
       const purchases = (client.purchases || []).map((p) => Object.assign({}, p, { dateMs: parseDate(p.date) }));
       const ordered = purchases.slice().sort((a, b) => (a.dateMs === null ? -Infinity : a.dateMs) - (b.dateMs === null ? -Infinity : b.dateMs));
       const owned = new Map();
@@ -318,6 +320,7 @@
 
       const recs = [];
       for (const c of cands.values()) {
+        if (!c.bestEdge) continue;                     // у кандидата нет ни одного основания с весом
         const paths = c.paths.slice().sort((a, b) => b.score - a.score).slice(0, 4);
         const rec = this._rec(c.dst, c.slot, round(1.0 - c.miss, 4), c.bestEdge, paths, false);
         rec.why = this._why(c.bestEdge);
