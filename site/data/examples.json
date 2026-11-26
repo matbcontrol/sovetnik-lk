@@ -1,0 +1,70 @@
+[
+ {
+  "title": "Организация: лицензия истекает, есть старшая редакция",
+  "client": {
+   "type": "b2b",
+   "today": "2026-11-26",
+   "purchases": [
+    {
+     "family": "contentai/abbyy-finereader-15-standard",
+     "date": "2025-12-26",
+     "term": 12
+    },
+    {
+     "family": "adobe/adobe-acrobat-standard",
+     "date": "2024-05-26",
+     "term": null
+    }
+   ]
+  }
+ },
+ {
+  "title": "Организация: куплены продукты ушедших вендоров",
+  "client": {
+   "type": "b2b",
+   "today": "2026-11-26",
+   "purchases": [
+    {
+     "family": "adobe/adobe-acrobat-standard",
+     "date": "2023-07-26",
+     "term": null
+    },
+    {
+     "family": "nagios-enterprises/nagios-xi",
+     "date": "2023-01-26",
+     "term": null
+    }
+   ]
+  }
+ },
+ {
+  "title": "Частное лицо: куплена прошлая версия",
+  "client": {
+   "type": "b2c",
+   "today": "2026-11-26",
+   "purchases": [
+    {
+     "family": "contentai/abbyy-finereader-15-standard",
+     "date": "2025-03-26",
+     "term": null
+    }
+   ]
+  }
+ },
+ {
+  "title": "Частное лицо без истории покупок",
+  "client": {
+   "type": "b2c",
+   "today": "2026-11-26",
+   "purchases": []
+  }
+ },
+ {
+  "title": "Организация без истории покупок",
+  "client": {
+   "type": "b2b",
+   "today": "2026-11-26",
+   "purchases": []
+  }
+ }
+]

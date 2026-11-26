@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Советник личного кабинета — три совета с объяснением</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="top__title">
+    <h1>Советник личного кабинета</h1>
+    <p>Три совета клиенту — и по какой связи каждый выведен. Языковая модель на запрос не вызывается: совет берётся из готового графа связей и истории покупок.</p>
+  </div>
+  <dl class="top__facts" id="facts"></dl>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="tab is-active" data-tab="client" role="tab">Клиент</button>
+  <button class="tab" data-tab="product" role="tab">Товар</button>
+  <button class="tab" data-tab="links" role="tab">Связи на проверку</button>
+  <button class="tab" data-tab="numbers" role="tab">Цифры</button>
+</nav>
+
+<main>
+  <!-- Клиент -->
+  <section class="pane is-active" id="pane-client">
+    <div class="split">
+      <aside class="panel">
+        <!-- клиенты из данных задачи: блок виден, только если рядом лежит data/private.json -->
+        <div id="data-box" hidden>
+          <div class="data-only">
+            <h2>Клиент из данных задачи</h2>
+            <div class="row"><label class="field"><span>Набор</span><select id="d-set"></select></label></div>
+            <div class="row"><label class="field"><span>Клиент</span><select id="d-client"></select></label></div>
+            <div class="row row--btn"><button class="btn" id="d-prev">← Предыдущий</button><button class="btn" id="d-next">Следующий →</button></div>
+            <label class="check"><input type="checkbox" id="d-hide"> <span>Спрятать историю товара — как у новинки или «соло»-товара</span></label>
+            <p class="hint small" id="d-note"></p>
+            <button class="linkbtn" id="d-off">Собрать клиента самому — на открытых данных</button>
+          </div>
+          <div class="manual-only"><button class="linkbtn linkbtn--top" id="d-on">← К клиентам из данных задачи</button></div>
+        </div>
+
+        <div class="manual-only">
+          <h2>Кто клиент</h2>
+          <div class="row">
+            <label class="field">
+              <span>Пример</span>
+              <select id="example"></select>
+            </label>
+          </div>
+          <div class="row">
+            <div class="seg" id="ctype" role="radiogroup" aria-label="Тип клиента">
+              <button data-v="b2b" class="is-on" role="radio">Организация</button>
+              <button data-v="b2c" role="radio">Частное лицо</button>
+            </div>
+          </div>
+          <div class="row">
+            <label class="field">
+              <span>Сегодня (дата, на которую считаем сроки)</span>
+              <input type="date" id="today">
+            </label>
+          </div>
+        </div>
+
+        <h3>Что уже куплено</h3>
+        <ul class="owned" id="owned"></ul>
+
+        <div class="manual-only">
+          <div class="add">
+            <input type="search" id="add-q" placeholder="Добавить покупку: начните вводить название" autocomplete="off">
+            <ul class="suggest" id="add-list"></ul>
+          </div>
+          <label class="field field--range">
+            <span>Строгость: показывать связи с уверенностью не ниже <b id="minconf-v">0</b></span>
+            <input type="range" id="minconf" min="0" max="0.95" step="0.05" value="0">
+            <small>Левее — шире охват, правее — только подтверждённые связи.</small>
+          </label>
+        </div>
+      </aside>
+
+      <div class="main">
+        <div class="panel">
+          <div class="panel__head">
+            <h2 id="block-title">Рекомендуем вам</h2>
+            <span class="cost" id="cost"></span>
+          </div>
+          <div class="cards" id="cards"></div>
+          <div class="fact" id="fact" hidden></div>
+        </div>
+        <div class="panel">
+          <div class="panel__head">
+            <h2>Почему эти товары</h2>
+            <ul class="legend" id="legend"></ul>
+          </div>
+          <div class="why" id="why">
+            <div class="why__col" id="why-left"></div>
+            <div class="why__col" id="why-right"></div>
+            <svg class="why__svg" id="why-svg" aria-hidden="true"></svg>
+            <div class="why__labels" id="why-labels"></div>
+          </div>
+          <details class="bans" id="bans"></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Товар -->
+  <section class="pane" id="pane-product">
+    <div class="panel">
+      <h2>Любой товар магазина</h2>
+      <div class="add add--wide">
+        <input type="search" id="prod-q" placeholder="Название товара или вендора" autocomplete="off">
+        <ul class="suggest" id="prod-list"></ul>
+      </div>
+      <div id="prod-view" class="prod"></div>
+    </div>
+  </section>
+
+  <!-- Связи -->
+  <section class="pane" id="pane-links">
+    <div class="panel">
+      <div class="panel__head">
+        <h2>Связи на проверку</h2>
+        <div class="actions">
+          <button class="btn" id="export-links">Выгрузить принятые связи (CSV)</button>
+        </div>
+      </div>
+      <p class="hint">Это файл связей для блока ручных правил: менеджер принимает или отклоняет связь одним нажатием. Отклонённая связь перестаёт участвовать в советах сразу.</p>
+      <div class="filters">
+        <label class="field"><span>Вид связи</span><select id="f-type"></select></label>
+        <label class="field"><span>Источник</span><select id="f-source"></select></label>
+        <label class="field"><span>Решение</span>
+          <select id="f-state"><option value="">любое</option><option value="new">не рассмотрено</option><option value="ok">принято</option><option value="no">отклонено</option></select>
+        </label>
+        <label class="field field--grow"><span>Поиск по названию</span><input type="search" id="f-q" placeholder="например, Acrobat"></label>
+      </div>
+      <div class="tablewrap"><table class="links" id="links"></table></div>
+      <div class="pager" id="pager"></div>
+    </div>
+  </section>
+
+  <!-- Цифры -->
+  <section class="pane" id="pane-numbers">
+    <div class="panel" id="numbers"></div>
+  </section>
+</main>
+
+<div class="tip" id="tip" hidden></div>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
