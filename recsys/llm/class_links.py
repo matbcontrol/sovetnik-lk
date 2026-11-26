@@ -80,11 +80,21 @@ def catalog_text(classes: dict[str, dict]) -> str:
     return "\n".join(f"{k} | {c['name']} | {'; '.join(c['examples'])}" for k, c in classes.items())
 
 
-def propose(llm, classes: dict[str, dict], batch_size: int = 12) -> list[dict]:
+def batches(keys: list[str], small: int = 12, small_part: int = 60, big: int = 33) -> list[list[str]]:
+    """Порции классов для запросов. Первые порции маленькие (они были размечены до того, как выяснился
+    суточный лимит запросов, и лежат в кеше), остальные крупные — чтобы уложиться в лимит."""
+    out = [keys[i:i + small] for i in range(0, min(small_part, len(keys)), small)]
+    rest = keys[small_part:]
+    return out + [rest[i:i + big] for i in range(0, len(rest), big)]
+
+
+def propose(llm, classes: dict[str, dict]) -> list[dict]:
     keys, links = list(classes), []
     catalog = catalog_text(classes)
-    for i in range(0, len(keys), batch_size):
-        batch = keys[i:i + batch_size]
+    done = 0
+    for batch in batches(keys):
+        done += len(batch)
+        i, batch_size = done - len(batch), len(batch)
         data = llm.json(PROPOSE_SYSTEM, PROPOSE_USER.format(catalog=catalog, batch=", ".join(batch)),
                         purpose="связи классов: предложение")
         for link in data.get("links", []) if isinstance(data, dict) else []:
@@ -101,7 +111,7 @@ def propose(llm, classes: dict[str, dict], batch_size: int = 12) -> list[dict]:
     return links
 
 
-def criticize(llm, classes: dict[str, dict], links: list[dict], batch_size: int = 25) -> list[dict]:
+def criticize(llm, classes: dict[str, dict], links: list[dict], batch_size: int = 90) -> list[dict]:
     kept = []
     for i in range(0, len(links), batch_size):
         part = links[i:i + batch_size]
@@ -133,8 +143,8 @@ def main() -> None:
     catalog = catalog_text(classes)
     print(f"классов с товарами в продаже: {len(classes)}; список классов ~{len(catalog) // 3} токенов")
     if args.dry_run:
-        calls = -(-len(classes) // 12)
-        print(f"запросов на предложение: {calls}, на проверку: примерно {-(-len(classes) * 3 // 25)}")
+        calls = len(batches(list(classes)))
+        print(f"запросов на предложение: {calls}, на проверку: примерно {-(-len(classes) * 2 // 90)}")
         print("---- запрос (начало) ----")
         print(PROPOSE_USER.format(catalog=catalog[:1500] + "\n…", batch=", ".join(list(classes)[:12])))
         return
