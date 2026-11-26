@@ -67,6 +67,27 @@ def parity_clients(g: Graph, n: int = 300, seed: int = 5) -> list[dict]:
     return out
 
 
+def replacement_coverage(g: Graph, today: date = date(2026, 11, 26)) -> dict:
+    """Для скольких снятых с продажи зарубежных программ движок находит замену и какого вида.
+
+    direct  — прямой аналог из таблицы замещения;
+    sibling — российский продукт того же класса, названный в таблице аналогом другого продукта того же вендора;
+    klass   — российский продукт того же класса из реестра (самый слабый вид).
+    """
+    rec = Recommender(g)
+    out = {"gone": 0, "direct": 0, "sibling": 0, "klass": 0}
+    for fam, n in g.nodes.items():
+        if g.on_sale(fam) or str(n.get("ru", "0")) == "1" or n.get("kind", "software") == "hardware":
+            continue
+        out["gone"] += 1
+        client = Client("b2b", [Purchase(fam, date(2025, 6, 15), None)], today=today)
+        recs = [r for r in rec.recommend(client, 3) if r.slot == "replace"]
+        if recs:
+            path = recs[0].paths[0]
+            out["direct" if path["type"] == "analog_ru" else "sibling" if path.get("sibling") else "klass"] += 1
+    return out
+
+
 def examples(g: Graph, today: date = date(2026, 11, 26)) -> list[dict]:
     """Клиенты-примеры для стенда. Собраны из графа и подписаны как примеры: это не данные задачи."""
     def purchase(fam: str, months_ago: int, term: int | None = None) -> dict:
@@ -141,6 +162,7 @@ def main() -> None:
             "built": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "nodes": len(g.nodes), "edges": len(edges),
             "on_sale": sum(1 for f in g.nodes if g.on_sale(f)),
+            "replace": replacement_coverage(g),
         },
         "nodes": [node_out(n) for n in g.nodes.values()],
         "classes": class_names,
