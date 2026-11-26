@@ -48,6 +48,9 @@ CLASS_ANALOG_TOP = 5         # сколько российских продук�
 # Срок лицензии подошёл, а продлить её нельзя: замена так же срочна, как продление.
 LAPSE_ANALOG = 0.9           # нижняя граница оценки прямого аналога, умножается на уверенность связи
 LAPSE_CLASS = 0.75           # нижняя граница оценки замены по классу
+# Таблица замещения называет аналогами и продукты другого назначения (к AutoCAD — геоинформационную
+# систему). Аналог из другого класса каталога идёт после аналога того же класса.
+OTHER_CLASS_ANALOG = 0.8
 LABEL = {
     "таблица сравнения магазина": "подтверждено магазином",
     "типы лицензий на странице": "подтверждено магазином",
@@ -477,11 +480,17 @@ class Recommender:
                     bans.append({"family": e["dst"], "type": t, "from": fam, "reason": reason})
                     continue
                 s = self.w[t] * e["confidence"] * recency
-                if t == "analog_ru" and not self.g.on_sale(fam):
-                    s = min(0.95, s * 2.0)              # купленного больше не продают: замена важнее
-                    if lapse:
-                        s = max(s, LAPSE_ANALOG * e["confidence"])
-                        e = {**e, "lapse": lapse}
+                if t == "analog_ru":
+                    e = {**e, "group": f"replace:{fam}"}        # на один продукт — одна замена в блоке
+                    if not self.g.on_sale(fam):
+                        s = min(0.95, s * 2.0)          # купленного больше не продают: замена важнее
+                        if lapse:
+                            s = max(s, LAPSE_ANALOG * e["confidence"])
+                            e["lapse"] = lapse
+                    ca = (self.g.nodes.get(fam) or {}).get("class") or ""
+                    cb = (self.g.nodes.get(e["dst"]) or {}).get("class") or ""
+                    if ca and cb and ca != cb:
+                        s *= OTHER_CLASS_ANALOG
                 if not self.g.on_sale(e["dst"]):
                     s *= 0.8                            # цена только по запросу: совет чуть слабее
                 direct = direct or t == "analog_ru"

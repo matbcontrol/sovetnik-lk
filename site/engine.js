@@ -27,6 +27,9 @@
   // Срок лицензии подошёл, а продлить её нельзя: замена так же срочна, как продление.
   const LAPSE_ANALOG = 0.9;
   const LAPSE_CLASS = 0.75;
+  // Таблица замещения называет аналогами и продукты другого назначения (к AutoCAD — геоинформационную
+  // систему). Аналог из другого класса каталога идёт после аналога того же класса.
+  const OTHER_CLASS_ANALOG = 0.8;
   const LABEL = {
     "таблица сравнения магазина": "подтверждено магазином",
     "типы лицензий на странице": "подтверждено магазином",
@@ -359,9 +362,14 @@
           const reason = this._banned(client, owned, platforms, e.dst, t, fam);
           if (reason) { bans.push({ family: e.dst, type: t, from: fam, reason }); continue; }
           let s = this.w[t] * e.confidence * recency;
-          if (t === "analog_ru" && !g.onSale(fam)) {
-            s = Math.min(0.95, s * 2.0);
-            if (lapse) { s = Math.max(s, LAPSE_ANALOG * e.confidence); e = Object.assign({}, e, { lapse }); }
+          if (t === "analog_ru") {
+            e = Object.assign({}, e, { group: "replace:" + fam });        // на один продукт — одна замена в блоке
+            if (!g.onSale(fam)) {
+              s = Math.min(0.95, s * 2.0);
+              if (lapse) { s = Math.max(s, LAPSE_ANALOG * e.confidence); e.lapse = lapse; }
+            }
+            const ca = (g.nodes.get(fam) || {}).cls || "", cb = (g.nodes.get(e.dst) || {}).cls || "";
+            if (ca && cb && ca !== cb) s *= OTHER_CLASS_ANALOG;
           }
           if (!g.onSale(e.dst)) s *= 0.8;
           direct = direct || t === "analog_ru";
