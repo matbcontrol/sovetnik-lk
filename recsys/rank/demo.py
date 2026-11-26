@@ -26,7 +26,7 @@ from datetime import date, datetime, timezone
 from recsys.config import DATA, INTERIM, ROOT
 from recsys.eval.value import Prep, in_regime
 from recsys.rank.data import OFFICIAL, Fold, load_task, make_fold
-from recsys.rank.explain import advice, describe, short_name
+from recsys.rank.explain import advice, describe, short_name, title_name
 from recsys.rank.features import FoldStats, build_attrs
 from recsys.rank.ltr import copies, fit
 from recsys.stable import rerun_with_fixed_order
@@ -152,7 +152,8 @@ def main() -> None:
         except ValueError:
             p = 0.0
         items[i] = {
-            "name": task.names.get(i, i), "short": short_name(task, i), "desc": describe(task, i, attrs[i]),
+            "name": task.names.get(i, i), "title": title_name(task, i), "short": short_name(task, i),
+            "desc": describe(task, i, attrs[i]),
             "vendor": r.get("vendor", ""), "cls": r.get("subcategory", ""), "url": url.get(off_id, r.get("url", "")),
             "price": p if p > 0 else None,
         }
