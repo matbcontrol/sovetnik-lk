@@ -29,14 +29,16 @@ import gzip
 import json
 import sys
 from collections import Counter, defaultdict
+import re
 from dataclasses import asdict, dataclass, field
 from datetime import date
+from typing import Callable
 
 import numpy as np
 
 from recsys.catalog.items import license_kind, seat_band, term_months
 from recsys.config import INTERIM, ROOT
-from recsys.rank.data import OFFICIAL, Task, load_task, make_fold
+from recsys.rank.data import OFFICIAL, Task, load_task, make_fold, months_between
 from recsys.rank.features import FEATURES, FoldStats, build_attrs
 
 REPORT = ROOT / "reports" / "unified.json"
@@ -47,6 +49,8 @@ ADDON_KINDS = ("media", "support", "renewal", "extension")
 PRICE_CAP = 5.0
 RENEW_MAX, NEW_MAX = 2, 3
 RECENT_DAYS = 183
+DUE_MONTHS = 4          # «Пора продлить» — только когда до конца срока осталось не больше четырёх месяцев
+YEARLY = re.compile(r"\bгодов(?:ая|ой|ую)\b", re.I)
 # связи с измеренной поддержкой идут наравне с советами модели; слабые (редко сбываются или проверить
 # нечем) — после «часто берут», по своей оценке
 STRONG_LINKS = {"new_version", "analog_ru"}
@@ -283,9 +287,38 @@ class Unified:
         """Продление купленного: тот же продукт, а сам товар — продление, поддержка или очередной платёж подписки."""
         return ab.kind in ("renewal", "support") or ab.period is not None
 
+    def months_left(self, c: str, item: str) -> int | None:
+        """Сколько месяцев осталось до конца срока купленной лицензии того же продукта; None — срок неизвестен.
+
+        Считается так же, как в объяснениях (recsys.rank.explain): срок купленного товара минус месяцы,
+        прошедшие с его последней покупки; «годовая» в названии читается как 12 месяцев.
+        """
+        at = self.at
+        ab = at.get(item)
+        if ab is None:
+            return None
+        near = [a for a in self.fold.history[c] if at[a].line == ab.line or (ab.nline and at[a].nline == ab.nline)]
+        if not near:
+            return None
+        a = max(near, key=lambda x: self.fold.last[c][x])
+        term = at[a].term
+        if not term and YEARLY.search(self.task.names.get(a, "")):
+            term = 12
+        if not term:
+            return None
+        return term - int(round(months_between(self.fold.last[c][a], self.fold.test_from)))
+
     # ---- вид «как в кабинете» ------------------------------------------------------------
 
-    def cabinet(self, c: str, prices: dict[str, float] | None = None) -> dict:
+    def cabinet(self, c: str, prices: dict[str, float] | None = None,
+                keep: Callable[[list[str], Scored], tuple[bool, str]] | None = None) -> dict:
+        """Что видит клиент в кабинете: {"renew": до двух продлений, "new": до трёх новых советов, "dropped": [...]}.
+
+        keep — необязательный фильтр новых советов: функция (история клиента, кандидат) -> (оставить, причина).
+        Через неё накладываются заранее вынесенные вердикты «нужно / уже есть / то же самое / не связано».
+        Строку продлений фильтр не трогает. Популярное в свободные места не подмешивается: если после
+        фильтра новых советов меньше трёх, их и будет меньше.
+        """
         at, cat = self.at, self.cat
         h = self.fold.history[c]
         own = {at[a].line for a in h} | {at[a].nline for a in h if at[a].nline}
@@ -316,6 +349,16 @@ class Unified:
             if cap and s.price and s.price > PRICE_CAP * cap:
                 dropped.append({"item": s.item, "reason": "намного дороже прошлых покупок клиента"})
                 continue
+            if s.slot == "renew":
+                left = self.months_left(c, s.replaces or s.item)
+                if left is None or left > DUE_MONTHS:
+                    dropped.append({"item": s.item, "reason": "продлевать рано: срок лицензии ещё далеко или неизвестен"})
+                    continue
+            elif keep is not None:
+                ok, why = keep(h, s)
+                if not ok:
+                    dropped.append({"item": s.item, "reason": why or "отсеяно проверкой пары"})
+                    continue
             target = renew if s.slot == "renew" else new
             if len(target) >= (RENEW_MAX if s.slot == "renew" else NEW_MAX):
                 continue
@@ -349,6 +392,53 @@ class Unified:
         return Scored(item=item, p=p, basis=basis, grounded=was.grounded, in_sales=not item.startswith("K:"),
                       title=offer["name"], url=offer["url"], price=self.cat.price(offer), src=was.src,
                       evidence=evidence, replaces=was.item, slot=was.slot, features=was.features)
+
+
+def cabinet_summary(uni: Unified, keep=None, prices: dict[str, float] | None = None) -> dict:
+    """Вид «как в кабинете» на клиентах официальной проверки: сколько карточек показано и сколько сбылось.
+
+    keep — тот же необязательный фильтр новых советов, что в Unified.cabinet: так измеряется его цена.
+    """
+    from recsys.eval.value import by_segment
+
+    task, fold = uni.task, uni.fold
+    stats, basis = Counter(), Counter()
+    shown3, shown_any = {}, {}
+    per: dict[str, Counter] = defaultdict(Counter)
+    for c in fold.group_a:
+        cab = uni.cabinet(c, prices, keep)
+        cards = cab["renew"] + cab["new"]
+        tgt = fold.target[c]
+        g = task.clients[c]["client_group"]
+        cold = len(fold.history[c]) == 1
+        for key in [f"A {g}", "A все"] + ([f"B {g}", "B все"] if cold else []):
+            r = per[key]
+            r["clients"] += 1
+            r["renew_cards"] += len(cab["renew"])
+            r["renew_hits"] += sum(x.item in tgt for x in cab["renew"])
+            r["new_cards"] += len(cab["new"])
+            r["new_hits"] += sum(x.item in tgt for x in cab["new"])
+            r["clients_without_new"] += not cab["new"]
+            r["clients_without_cards"] += not cards
+        stats["клиентов"] += 1
+        stats["с продлением"] += bool(cab["renew"])
+        stats["карточек"] += len(cards)
+        stats["товаров вне продаж"] += sum(not x.in_sales for x in cards)
+        stats["подстановок преемника"] += sum(bool(x.replaces) for x in cards)
+        stats["убрано: нет в продаже"] += sum(d["reason"].startswith("нет в продаже") for d in cab["dropped"])
+        stats["убрано: продлевать рано"] += sum(d["reason"].startswith("продлевать рано") for d in cab["dropped"])
+        for x in cards:
+            basis[x.basis] += 1
+        first3 = sorted(cards, key=lambda x: -x.p)[:3]
+        shown3[c] = len({x.item for x in first3} & tgt) / 3
+        shown_any[c] = float(bool({x.item for x in cards} & tgt))
+    s3, s5 = by_segment(task, fold, shown3), by_segment(task, fold, shown_any)
+    return {
+        "precision@3_of_three_best_cards": {k: v["value"] for k, v in s3.items()},
+        "clients_with_a_hit_among_shown": {k: v["value"] for k, v in s5.items()},
+        "cards": {k: dict(v) for k, v in per.items()},
+        "counts": dict(stats), "basis": dict(basis),
+    }
 
 
 def as_dict(s: Scored) -> dict:
@@ -387,37 +477,18 @@ def main() -> None:
         print("совпадает с reports/value.json (режим «полная модель»):", "да" if same else "НЕТ: " + str(full))
 
     # 2) вид «как в кабинете» на тех же клиентах: что показываем и чего это стоит по мерке протокола
-    stats = Counter()
-    shown3, shown5 = {}, {}
-    basis = Counter()
-    for c in fold.group_a:
-        cab = uni.cabinet(c)
-        cards = cab["renew"] + cab["new"]
-        stats["клиентов"] += 1
-        stats["с продлением"] += bool(cab["renew"])
-        stats["карточек"] += len(cards)
-        stats["товаров вне продаж"] += sum(not s.in_sales for s in cards)
-        stats["клиентов с товаром вне продаж"] += any(not s.in_sales for s in cards)
-        stats["подстановок преемника"] += sum(bool(s.replaces) for s in cards)
-        stats["убрано: нет в продаже"] += sum(d["reason"].startswith("нет в продаже") for d in cab["dropped"])
-        for s in cards:
-            basis[s.basis] += 1
-        first3 = sorted(cards, key=lambda s: -s.p)[:3]
-        shown3[c] = len({s.item for s in first3} & fold.target[c]) / 3
-        shown5[c] = float(bool({s.item for s in cards} & fold.target[c]))
-    s3 = by_segment(task, fold, shown3)
-    s5 = by_segment(task, fold, shown5)
+    cab = cabinet_summary(uni)
     print("вид «как в кабинете»: три лучшие карточки по мерке протокола: "
-          + " / ".join(f"{s} {s3[s]['value']:.1%}" for s in ("A B2B", "B B2B", "A B2C")))
+          + " / ".join(f"{k} {cab['precision@3_of_three_best_cards'][k]:.1%}" for k in ("A B2B", "B B2B", "A B2C")))
     print("доля клиентов, у которых сбылась хотя бы одна показанная карточка: "
-          + " / ".join(f"{s} {s5[s]['value']:.1%}" for s in ("A B2B", "B B2B", "A B2C")))
-    print("что показано:", dict(stats))
-    print("основания карточек:", dict(basis))
-    report["cabinet_view"] = {
-        "precision@3_of_three_best_cards": {s: s3[s]["value"] for s in segs},
-        "clients_with_a_hit_among_shown": {s: s5[s]["value"] for s in segs},
-        "counts": dict(stats), "basis": dict(basis),
-    }
+          + " / ".join(f"{k} {cab['clients_with_a_hit_among_shown'][k]:.1%}" for k in ("A B2B", "B B2B", "A B2C")))
+    for k in ("A B2B", "A B2C"):
+        r = cab["cards"][k]
+        print(f"  {k}: «Пора продлить» — карточек {r['renew_cards']}, сбылось {r['renew_hits']}; новые советы — "
+              f"карточек {r['new_cards']}, сбылось {r['new_hits']}; клиентов без новых советов {r['clients_without_new']}")
+    print("что показано:", cab["counts"])
+    print("основания карточек:", cab["basis"])
+    report["cabinet_view"] = cab
     REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"отчёт: {REPORT}")
 

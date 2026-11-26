@@ -16,32 +16,88 @@
  "protocol_equals_value_report": true,
  "cabinet_view": {
   "precision@3_of_three_best_cards": {
-   "A все": 0.13254203758654798,
-   "A B2B": 0.12472406181015452,
+   "A все": 0.12660731948565776,
+   "A B2B": 0.11810154525386313,
    "A B2C": 0.19999999999999998,
    "B все": 0.1569767441860465,
    "B B2B": 0.14512471655328799,
    "B B2C": 0.22666666666666666
   },
   "clients_with_a_hit_among_shown": {
-   "A все": 0.3916913946587537,
-   "A B2B": 0.3675496688741722,
+   "A все": 0.3768545994065282,
+   "A B2B": 0.3509933774834437,
    "A B2C": 0.6,
    "B все": 0.47093023255813954,
    "B B2B": 0.43537414965986393,
    "B B2C": 0.68
   },
+  "cards": {
+   "A B2B": {
+    "clients": 302,
+    "renew_cards": 112,
+    "renew_hits": 45,
+    "new_cards": 906,
+    "new_hits": 63,
+    "clients_without_new": 0,
+    "clients_without_cards": 0
+   },
+   "A все": {
+    "clients": 337,
+    "renew_cards": 115,
+    "renew_hits": 47,
+    "new_cards": 1011,
+    "new_hits": 82,
+    "clients_without_new": 0,
+    "clients_without_cards": 0
+   },
+   "B B2B": {
+    "clients": 147,
+    "renew_cards": 48,
+    "renew_hits": 30,
+    "new_cards": 441,
+    "new_hits": 34,
+    "clients_without_new": 0,
+    "clients_without_cards": 0
+   },
+   "B все": {
+    "clients": 172,
+    "renew_cards": 50,
+    "renew_hits": 32,
+    "new_cards": 516,
+    "new_hits": 49,
+    "clients_without_new": 0,
+    "clients_without_cards": 0
+   },
+   "A B2C": {
+    "clients": 35,
+    "renew_cards": 3,
+    "renew_hits": 2,
+    "new_cards": 105,
+    "new_hits": 19,
+    "clients_without_new": 0,
+    "clients_without_cards": 0
+   },
+   "B B2C": {
+    "clients": 25,
+    "renew_cards": 2,
+    "renew_hits": 2,
+    "new_cards": 75,
+    "new_hits": 15,
+    "clients_without_new": 0,
+    "clients_without_cards": 0
+   }
+  },
   "counts": {
    "клиентов": 337,
-   "с продлением": 176,
-   "карточек": 1235,
+   "с продлением": 100,
+   "карточек": 1126,
    "товаров вне продаж": 16,
-   "клиентов с товаром вне продаж": 15,
    "подстановок преемника": 1,
-   "убрано: нет в продаже": 455
+   "убрано: нет в продаже": 455,
+   "убрано: продлевать рано": 485
   },
   "basis": {
-   "модель": 1218,
+   "модель": 1109,
    "новая версия": 14,
    "замена": 3
   }
