@@ -171,6 +171,9 @@ def client_card(unis: dict[str, Unified], verdicts: Verdicts, c: str, mode: str,
                     for a in fold.history[c]],
         "target": sorted(fold.target.get(c, ())) if mode == "test" else [],
         "recs": {}, "renew": {}, "popular": {}, "rejected": {}, "unlabelled": {},
+        # тройка по протоколу организаторов: из неё считается Precision@3, блок кабинета к ней не сводится
+        "protocol": [{"item": i, "hit": i in fold.target.get(c, ())} for i in unis["full"].protocol(c)]
+        if mode == "test" else [],
     }
     for regime in REGIMES:
         uni = unis[regime]
@@ -242,7 +245,7 @@ def main() -> None:
         used |= {h["item"] for h in card["history"]} | set(card["target"])
         for regime in REGIMES:
             used |= {x["item"] for x in card["recs"][regime] + card["renew"][regime] + card["popular"][regime]
-                     + card["rejected"][regime]}
+                     + card["rejected"][regime] + card["protocol"]}
     items = dict(EXTRA)
     for i in used - set(EXTRA):
         r = task.items.get(i) or {}

@@ -1,8 +1,17 @@
 astralinux/astra-linux-special-edition	astralinux/workspad	U	
+astralinux/astra-linux-special-edition	drweb/drweb-desktop-security-suite	N	В комплект входит Dr.Web для Linux, сертифицирован для Astra
+astralinux/astra-linux-special-edition	kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirennyiy	N	Лицензия покрывает Kaspersky для Linux, сертифицирован для Astra
+astralinux/astra-linux-special-edition	kaspersky/kaspersky-endpoint-security-dlya-biznesa-standartnyiy	N	Лицензия покрывает Kaspersky для Linux, сертифицирован для Astra
 astralinux/astra-linux-special-edition	kod-bezopasnosti/kod-bezopasnosti-secret-net-studio	U	
 basealt/alt-sp-10	astralinux/workspad	U	
+basealt/alt-sp-10	drweb/drweb-desktop-security-suite	N	В комплект входит Dr.Web для Linux с поддержкой Альт
+basealt/alt-sp-10	kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirennyiy	N	Лицензия покрывает Kaspersky для Linux, работает в Альт
+basealt/alt-sp-10	kaspersky/kaspersky-endpoint-security-dlya-biznesa-standartnyiy	N	Лицензия покрывает Kaspersky для Linux, работает в Альт
 basealt/alt-sp-10	kod-bezopasnosti/kod-bezopasnosti-secret-net-studio	U	
 ituniverse/layerpie	astralinux/workspad	U	
 redsoft/red-os-1	astralinux/workspad	U	
 redsoft/red-os-1	kod-bezopasnosti/kod-bezopasnosti-secret-net-studio	U	
 ubitech/ublinux-desktop-enterprise	astralinux/workspad	U	
+ubitech/ublinux-desktop-enterprise	drweb/drweb-desktop-security-suite	N	В состав входит Dr.Web для Linux с сертификатом ФСТЭК
+ubitech/ublinux-desktop-enterprise	kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirennyiy	N	В состав входит Kaspersky для Linux, проверьте UBLinux в списке поддержки
+ubitech/ublinux-desktop-enterprise	kaspersky/kaspersky-endpoint-security-dlya-biznesa-standartnyiy	N	В состав входит Kaspersky для Linux, проверьте UBLinux в списке поддержки

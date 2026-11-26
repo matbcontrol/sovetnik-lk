@@ -55,9 +55,10 @@
     copurchase: "покупают вместе", next_purchase: "покупают следом", mentions: "упоминание",
     analog_ru: "российский аналог", analog_class: "российский продукт того же класса", same_line: "та же линейка", popular: "часто берут",
   };
-  // Связь между классами и между товарами разных линеек — вывод, а не факт каталога. Клиенту она показывается,
-  // если пару заранее проверили по правилам («нужно» или «комплект») или её принял менеджер. Вердикт модели,
-  // не прошедшей сверку с первой разметкой, и замена по классу ждут менеджера.
+  // Связь между товарами разных линеек — вывод, а не факт каталога. Клиенту она показывается, если саму пару
+  // товаров заранее проверили по правилам и вердикт — «нужно». Всё остальное — подсказка менеджеру и ждёт
+  // его решения: «комплект», товар, подобранный по связи классов (проверена связь классов, но не пара
+  // с товаром клиента), вердикт модели, не прошедшей сверку, и замена по классу.
   const PENDING = "ждёт проверки менеджером";
   const KIT_MAX = 1;           // сколько советов «типовой набор» может быть в блоке
   const VERDICT_SOURCE = { need: "разметка: нужно", kit: "разметка: комплект" };
@@ -237,11 +238,12 @@
         for (const o of owned.keys()) if (g.veto.has(o + "|" + dst)) return "пара проверена: уже есть, то же самое или не связано";
       }
       const b2bOnly = (x) => x.b2b === 1;
-      const homeOnly = (x) => { const c = split(x.ct); return c.size === 1 && c.has("b2c") && !b2bOnly(x); };
+      // в каталоге признак «для дома» заполнен не у всех: смотрим и на класс («Антивирусы для дома»)
+      const homeOnly = (x) => { const c = split(x.ct); const homeClass = String(g.classes[x.cls || ""] || "").toLowerCase().includes("для дома"); return ((c.size === 1 && c.has("b2c")) || homeClass) && !b2bOnly(x); };
       const s = g.nodes.get(src) || {};
       const inLine = edgeType === "renewal" || edgeType === "upgrade" || edgeType === "new_version";
       if (client.type === "b2c" && b2bOnly(n) && !(inLine && b2bOnly(s))) return "продаётся только юридическим лицам";
-      if (client.type === "b2b" && homeOnly(n) && !(inLine && homeOnly(s))) return "лицензия только для дома";
+      if (client.type === "b2b" && homeOnly(n) && !homeOnly(s)) return "лицензия только для дома";   // кто сам берёт домашние лицензии, тому можно
       const np = new Set();
       for (const x of split(n.pf)) for (const p of x.split(",")) if (p.trim()) np.add(p.trim().toLowerCase());
       if (edgeType !== "renewal" && platforms.size && np.size && ![...platforms].some((p) => np.has(p))) return "не та платформа";
@@ -408,6 +410,15 @@
             // проверенная пара товаров: из одного класса в блоке один совет, как и по связи классов
             e = Object.assign({}, e, { group: (g.nodes.get(e.dst) || {}).cls || "" });
           }
+          if (e.source === VERDICT_SOURCE.kit) {
+            const key = `pk|${fam}|${e.dst}`;
+            if (this.rejected.has(key)) continue;
+            if (!(this.unverified || this.approved.has(key))) {     // комплект клиент увидит после менеджера
+              bans.push({ family: e.dst, type: t, from: fam, reason: PENDING, key });
+              continue;
+            }
+            e = Object.assign({}, e, { key });
+          }
           push(e.dst, e.source === VERDICT_SOURCE.kit ? "kit" : SLOT[t], s, e);
         }
         // замена по классу: купленный зарубежный продукт сняли с продажи, а прямого аналога в таблице
@@ -458,7 +469,8 @@
           if (g.classBlock.has(fam + "|" + link.dst_class)) continue;   // первые товары этого класса владельцу fam не подошли
           const verdict = link.verdict || "";
           const labelled = link.source === "разметка" && verdict in VERDICT_SOURCE;
-          const shown = this.unverified || labelled || this.approved.has(key);
+          // проверена связь классов, а не пара с товаром клиента: это подсказка менеджеру
+          const shown = this.unverified || this.approved.has(key);
           const source = this.approved.has(key) ? "менеджер" : labelled ? VERDICT_SOURCE[verdict] : (link.source || "модель");
           const list = (g.classRank[link.dst_class] || []).slice(0, 10);
           const allowed = g.classPicks[link.src_class + "|" + link.dst_class];

@@ -290,12 +290,12 @@ san-nas/san-storage,diski-i-fayli/rezervnoe-kopirovanie,need,"СХД не защ
 san-nas/san-storage,peripherals/ups,need,ИБП защитит систему хранения от внезапного отключения и потери записываемых данных,b2b,ассистент
 san-nas/san-storage,san-nas/san-options,need,Ленточный привод и картриджи LTO добавляют к СХД долгий архив вне дисков,b2b,ассистент
 san-nas/san-storage,servisnye-reseniia/texniceskaia-podderzka-oborudovaniia,kit,Если ещё нет сервисного контракта: поддержка ускорит замену узлов СХД при отказе,b2b,ассистент
-sapr/arhitektura,office/plotters,need,"Архитектурные чертежи большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/arhitektura,office/plotters,kit,Если ещё нет плоттера: чертежи форматов А1–А0 печатают на широкоформатной технике,b2b,ассистент
 sapr/arhitektura,peripherals/displays,kit,Если ещё нет большого монитора: на нём план и фасады видны целиком без постоянного масштабирования,,ассистент
 sapr/arhitektura,sapr/bazovie-produkti,has,работает поверх базовой CAD-платформы,,ассистент
 sapr/arhitektura,sapr/dizayn-vizualizatsiya-i-animatsiya,unrelated,в классе не архитектурные визуализаторы,,ассистент
 sapr/arhitektura,sapr/dokumentooborot,kit,Если ещё нет электронного архива: TDMS или Pilot-BIM хранят версии проекта и согласования,b2b,ассистент
-sapr/bazovie-produkti,office/plotters,need,"Чертежи большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/bazovie-produkti,office/plotters,kit,Если ещё нет плоттера: чертежи форматов А1–А0 печатают на широкоформатной технике,b2b,ассистент
 sapr/bazovie-produkti,peripherals/displays,kit,Если ещё нет большого монитора: на нём чертёж виден целиком без постоянного масштабирования,,ассистент
 sapr/bazovie-produkti,sapr/dokumentooborot,kit,Если ещё нет электронного архива: TDMS или Pilot хранят версии чертежей и согласования,b2b,ассистент
 sapr/bazovie-produkti,sapr/gibridnie-graficheskie-redaktori-i-vektorizatori,need,RasterDesk правит и векторизует сканы старых чертежей прямо в nanoCAD,,ассистент
@@ -305,26 +305,26 @@ sapr/dokumentooborot,diski-i-fayli/rezervnoe-kopirovanie,need,Резервная
 sapr/dokumentooborot,servers/rackmount-servers,kit,Если ещё нет сервера: TDMS и Pilot-BIM держат общий архив проектов на сервере,b2b,ассистент
 sapr/geoinformatsionnie-sistemi,3d-oborudovanie/3d-scanners,unrelated,"настольные сканеры деталей, не для ГИС",,ассистент
 sapr/geoinformatsionnie-sistemi,karti-navigatsiya-puteshestviya/karti,kit,Если ещё нет картографической основы: карты регионов РФ в SXF открываются в ГИС «Панорама»,b2b,ассистент
-sapr/geoinformatsionnie-sistemi,office/plotters,need,"Карты и планы большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/geoinformatsionnie-sistemi,office/plotters,kit,Если ещё нет плоттера: чертежи форматов А1–А0 печатают на широкоформатной технике,b2b,ассистент
 sapr/gibridnie-graficheskie-redaktori-i-vektorizatori,office/plotters,kit,Если ещё нет плоттера: исправленные чертежи большого формата печатают только на нём,,ассистент
 sapr/gibridnie-graficheskie-redaktori-i-vektorizatori,office/scanner,need,"Сканер переводит бумажные чертежи в растр, который программа правит и векторизует",,ассистент
 sapr/gibridnie-graficheskie-redaktori-i-vektorizatori,sapr/bazovie-produkti,has,RasterDesk работает внутри CAD-платформы,,ассистент
-sapr/infrastruktura-iziskaniya-genplan-transport,office/plotters,need,"Генпланы и профили дорог большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/infrastruktura-iziskaniya-genplan-transport,office/plotters,kit,Если ещё нет плоттера: чертежи форматов А1–А0 печатают на широкоформатной технике,b2b,ассистент
 sapr/infrastruktura-iziskaniya-genplan-transport,sapr/bazovie-produkti,has,GeoniCS работает на платформе nanoCAD,,ассистент
 sapr/infrastruktura-iziskaniya-genplan-transport,sapr/dokumentooborot,kit,Если ещё нет электронного архива: TDMS или Pilot хранят версии проекта и согласования,b2b,ассистент
 sapr/infrastruktura-iziskaniya-genplan-transport,sapr/geoinformatsionnie-sistemi,kit,Если ещё нет ГИС: в ней ведут карту участка и данные изысканий вне проекта,b2b,ассистент
 sapr/injenerniy-soft,delovie-programmi/rabota-s-dokumentami,unrelated,связи с PDF нет,,ассистент
 sapr/injenerniy-soft,sapr/bazovie-produkti,unrelated,расчёты не требуют CAD,,ассистент
 sapr/kadastr-i-gradostroitelstvo,antivirusi-bezopasnost/bezopasnost-zaschita-informatsii,unrelated,прямой связи нет,,ассистент
-sapr/kadastr-i-gradostroitelstvo,office/plotters,need,Схемы и планы территорий большого формата печатают на плоттере,,ассистент
+sapr/kadastr-i-gradostroitelstvo,office/plotters,kit,Если ещё нет плоттера: чертежи форматов А1–А0 печатают на широкоформатной технике,b2b,ассистент
 sapr/kadastr-i-gradostroitelstvo,sapr/geoinformatsionnie-sistemi,has,работает на ГИС «Панорама»,,ассистент
-sapr/kartografiya-fotogrammetriya,office/plotters,need,"Готовые карты большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/kartografiya-fotogrammetriya,office/plotters,kit,Если ещё нет плоттера: чертежи форматов А1–А0 печатают на широкоформатной технике,b2b,ассистент
 sapr/kartografiya-fotogrammetriya,sapr/geoinformatsionnie-sistemi,same,ИнГео уже сама ГИС,,ассистент
 sapr/kartografiya-fotogrammetriya,sapr/infrastruktura-iziskaniya-genplan-transport,unrelated,другая задача,,ассистент
 sapr/lazernoe-skanirovanie,3d-oborudovanie/3d-scanners,unrelated,"сканеры деталей, не лазерные облака",,ассистент
 sapr/lazernoe-skanirovanie,sapr/bazovie-produkti,has,модуль работает на платформе nanoCAD,,ассистент
 sapr/mashinostroenie,3d-oborudovanie/3d-scanners,kit,Если ещё нет 3D-сканера: он снимет форму готовой детали для обратного проектирования в КОМПАС,b2b,ассистент
-sapr/mashinostroenie,office/plotters,need,"Сборочные чертежи формата А1 и А0 печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/mashinostroenie,office/plotters,kit,Если ещё нет плоттера: чертежи форматов А1–А0 печатают на широкоформатной технике,b2b,ассистент
 sapr/mashinostroenie,peripherals/displays,kit,Если ещё нет большого монитора: на нём модель и чертёж видны одновременно,,ассистент
 sapr/mebelnoe-proizvodstvo,office/plotters,kit,Если ещё нет плоттера: чертежи и карты раскроя большого формата печатают на нём,b2b,ассистент
 sapr/mebelnoe-proizvodstvo,sapr/bazovie-produkti,unrelated,bCAD самостоятельная система,,ассистент
@@ -332,7 +332,7 @@ sapr/pojarnaya-bezopasnost,delovie-programmi/rabota-s-dokumentami,unrelated,св
 sapr/pojarnaya-bezopasnost,sapr/stroitelstvo,unrelated,"расчёт рисков, не проектирование",,ассистент
 sapr/science-software,sapr/bazovie-produkti,unrelated,расчёты не требуют CAD,,ассистент
 sapr/selskoe-khozyaystvo,sapr/geoinformatsionnie-sistemi,has,работает на ГИС «Панорама»,,ассистент
-sapr/stroitelstvo,office/plotters,need,"Рабочие чертежи большого формата печатают на плоттере, офисный принтер их не выведет",,ассистент
+sapr/stroitelstvo,office/plotters,kit,Если ещё нет плоттера: чертежи форматов А1–А0 печатают на широкоформатной технике,b2b,ассистент
 sapr/stroitelstvo,peripherals/displays,kit,Если ещё нет большого монитора: на нём расчётная схема и чертёж видны целиком,,ассистент
 sapr/stroitelstvo,sapr/dokumentooborot,kit,Если ещё нет электронного архива: TDMS или Pilot-BIM хранят версии проекта и согласования,b2b,ассистент
 sapr/tekhnicheskaya-podderzhka,servisnye-reseniia/texniceskaia-podderzka-programmnogo-obespeceniia-1,unrelated,"постпроцессор, не услуга поддержки",,ассистент

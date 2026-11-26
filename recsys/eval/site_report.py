@@ -70,7 +70,10 @@ def main() -> None:
         out["verdict_effect"] = {
             "verdicts": {back[k]: n for k, n in e["verdicts"].items()}, "clients": first["клиентов"], "rows": rows,
             "top_before": first["самые частые товары"][0][0],
-            "cost": f"{first['новых сбылось']} сбывшихся новых советов без проверки, {stand['новых сбылось']} — с проверкой.",
+            "cost": "Личных советов стало меньше ({} вместо {}), а сбываются они чаще: {} % против {} %.".format(
+                stand["новых советов"], first["новых советов"],
+                f"{stand['доля сбывшихся новых советов'] * 100:.1f}".replace(".", ","),
+                f"{first['доля сбывшихся новых советов'] * 100:.1f}".replace(".", ",")),
         }
     path = ROOT / "site" / "data" / "report.json"
     path.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")

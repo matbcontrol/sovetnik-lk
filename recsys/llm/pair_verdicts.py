@@ -313,7 +313,8 @@ def _fixes(path: Path, table: dict[tuple[str, str], Verdict]) -> int:
         for raw in _rows(path):
             a, b, code, *rest = raw.split("\t")
             if (a, b) in table and code in CODES:
-                table[(a, b)] = Verdict(CODES[code], clean(rest[0]) if rest and CODES[code] in SHOWN else "")
+                aud = rest[1].strip() if len(rest) > 1 and rest[1].strip() in ("b2b", "b2c") else table[(a, b)].audience
+                table[(a, b)] = Verdict(CODES[code], clean(rest[0]) if rest and CODES[code] in SHOWN else "", FIRST, aud)
                 n += 1
     return n
 

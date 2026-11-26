@@ -33,7 +33,7 @@
   function rebuild() {
     const edges = data.edges.filter((e) => votes[ekey(e)] !== "no");
     graph = new E.Graph(Object.assign({}, data, { edges }));
-    const byClass = (v) => new Set(Object.keys(votes).filter((k) => votes[k] === v && /^c[lr]\|/.test(k)));
+    const byClass = (v) => new Set(Object.keys(votes).filter((k) => votes[k] === v && /^(c[lr]|pk)\|/.test(k)));
     approved = byClass("ok");
     rejected = byClass("no");
   }
@@ -252,8 +252,8 @@
     const pend = $("#pending");
     pend.hidden = !waiting;
     const w10 = waiting % 10, w100 = waiting % 100;
-    const waits = w10 === 1 && w100 !== 11 ? "связь по классу ждёт" : w10 >= 2 && w10 <= 4 && (w100 < 12 || w100 > 14) ? "связи по классу ждут" : "связей по классу ждут";
-    pend.innerHTML = `Ещё ${waiting} ${waits} проверки менеджера: клиент не увидит такие советы, пока связь не принята. <button class="linkbtn" id="to-queue">Открыть очередь</button>`;
+    const waits = w10 === 1 && w100 !== 11 ? "совет ждёт" : w10 >= 2 && w10 <= 4 && (w100 < 12 || w100 > 14) ? "совета ждут" : "советов ждут";
+    pend.innerHTML = `Ещё ${waiting} ${waits} решения менеджера — подбор по связи классов, «комплекты» и замены по классу: у них проверена не сама пара с товаром клиента. <button class="linkbtn" id="to-queue">Открыть очередь</button>`;
     if (waiting) $("#to-queue").addEventListener("click", openQueue);
     renderContract(last.recs.map((r) => { const n = graph.nodes.get(r.family) || {}; return { link: r.url, name: r.name, vendorName: r.vendor, price: n.price || null, slot: r.slot, reason: r.why }; }));
     const ms = performance.now() - t0;
@@ -397,7 +397,7 @@
   function fillClients() {
     $("#d-client").innerHTML = setClients().map((c, i) => {
       const kind = [c.type, c.segment].filter(Boolean).join(", ");
-      const fact = c.mode === "test" ? ` · сбылось ${hitsOf(c)} из ${shownOf(c).length}` : "";
+      const fact = c.mode === "test" ? ` · в блоке сбылось ${hitsOf(c)} из ${shownOf(c).length}` : "";
       return `<option value="${i}">${esc(c.id)} · ${esc(kind)} · покупок: ${c.history.length}${fact}</option>`;
     }).join("");
   }
@@ -456,8 +456,12 @@
     if (c.mode === "test") {
       const named = new Set(recs.concat(renew, popular).map((x) => x.item));
       fact.hidden = false;
+      const proto = c.protocol || [];
       fact.innerHTML = `<b>Что клиент купил на самом деле с ${ruDate(priv.test_from)}:</b> ` + c.target.map((t) =>
-        `<span class="bought${named.has(t) ? " bought--yes" : ""}">${named.has(t) ? "✓ " : ""}${esc(item(t).short)}${item(t).desc ? ` (${esc(item(t).desc)})` : ""}</span>`).join(" ");
+        `<span class="bought${named.has(t) ? " bought--yes" : ""}">${named.has(t) ? "✓ " : ""}${esc(item(t).short)}${item(t).desc ? ` (${esc(item(t).desc)})` : ""}</span>`).join(" ")
+        + (proto.length ? `<p class="hint small" style="margin:8px 0 0"><b>Тройка по протоколу организаторов</b> — три лучших товара по оценке модели, из неё считается Precision@3 (сбылось ${proto.filter((x) => x.hit).length} из ${proto.length}): `
+          + proto.map((x) => `<span class="bought${x.hit ? " bought--yes" : ""}">${x.hit ? "✓ " : ""}${esc(item(x.item).short)}${item(x.item).desc ? ` (${esc(item(x.item).desc)})` : ""}</span>`).join(" ")
+          + ` Блок выше — вид кабинета: одинаковые варианты одного продукта в нём не повторяются, а чужие продукты проходят проверку пар.</p>` : "");
     } else {
       fact.hidden = true;
     }
@@ -529,15 +533,16 @@
   for (const n of data.nodes) if (n.cls && n.sale !== 1 && n.ru !== 1 && n.kind !== "hardware") goneByClass[n.cls] = (goneByClass[n.cls] || 0) + 1;
   const queue = [];
   for (const e of data.edges) {
-    queue.push({ key: ekey(e), group: "edge", type: e[2], from: nodeNameAll(e[0]), to: nodeNameAll(e[1]), source: E.LABEL[e[3]] || e[3],
-                 conf: e[4], ev: (e[5] || "").replace(/; https?:\S+$/, ""), auto: true, urlFrom: (allNodes.get(e[0]) || {}).url, urlTo: (allNodes.get(e[1]) || {}).url });
+    const kit = e[3] === "разметка: комплект";           // комплект клиент увидит только после решения менеджера
+    queue.push({ key: kit ? `pk|${e[0]}|${e[1]}` : ekey(e), group: kit ? "kit" : "edge", type: e[2], from: nodeNameAll(e[0]), to: nodeNameAll(e[1]), source: E.LABEL[e[3]] || e[3],
+                 conf: e[4], ev: (e[5] || "").replace(/; https?:\S+$/, ""), auto: !kit, urlFrom: (allNodes.get(e[0]) || {}).url, urlTo: (allNodes.get(e[1]) || {}).url });
   }
   for (const l of data.class_links || []) {
     const labelled = l.source === "разметка";
     const top = ((data.class_rank || {})[l.dst_class] || [])[0];
     queue.push({ key: `cl|${l.src_class}|${l.dst_class}`, group: "class", type: l.type || "complements", from: `Класс «${clsName(l.src_class)}»`,
                  to: `Класс «${clsName(l.dst_class)}»` + (top ? ` — например, ${nodeNameAll(top)}` : ""),
-                 source: labelled ? (l.verdict === "kit" ? "разметка: комплект" : "разметка: нужно") : "модель по API", conf: l.confidence, ev: l.reason || "", auto: labelled });
+                 source: labelled ? (l.verdict === "kit" ? "разметка: комплект" : "разметка: нужно") : "модель по API", conf: l.confidence, ev: l.reason || "", auto: false });
   }
   for (const [cid, fams] of new E.Graph(data).ruByClass) {
     if (!goneByClass[cid]) continue;
@@ -550,7 +555,7 @@
   const statusOf = (r) => (votes[r.key] === "ok" ? "принято" : votes[r.key] === "no" ? "отклонено" : r.auto ? "показывается клиенту" : "ждёт проверки");
   const types = Array.from(new Set(data.edges.map((e) => e[2])));
   const sources = Array.from(new Set(queue.map((r) => r.source)));
-  $("#f-type").innerHTML = '<option value="pending">ждут проверки менеджера</option><option value="class">связи между классами</option><option value="replace">замены по классу</option>'
+  $("#f-type").innerHTML = '<option value="pending">ждут проверки менеджера</option><option value="class">связи между классами</option><option value="kit">комплекты к товарам</option><option value="replace">замены по классу</option>'
     + '<option value="advice">связи товаров (без «той же линейки»)</option><option value="">все</option>'
     + types.map((t) => `<option value="${esc(t)}">товары: ${esc(E.TYPE_TITLE[t] || t)}</option>`).join("");
   $("#f-source").innerHTML = '<option value="">любой</option>' + sources.map((x) => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
@@ -560,7 +565,7 @@
     return queue.filter((r) => {
       const v = votes[r.key];
       if (t === "pending") { if (r.auto || v) return false; }
-      else if (t === "class" || t === "replace") { if (r.group !== t) return false; }
+      else if (t === "class" || t === "replace" || t === "kit") { if (r.group !== t) return false; }
       else if (t === "advice") { if (r.group !== "edge" || r.type === "same_line") return false; }
       else if (t && (r.group !== "edge" || r.type !== t)) return false;
       if (src && r.source !== src) return false;
@@ -719,9 +724,9 @@
     const sum = (o) => KINDS.reduce((a, [k]) => a + ((o || {})[k] || 0), 0);
     const cell = (o, k) => (o ? nf.format(o[k] || 0) : "—");
     let h = `<h3>Проверка пар «купил А — советовать ли Б»</h3>
-      <p class="hint">Статистика продаж не отличает «нужно» от «и так есть»: после антивируса чаще всего покупают Windows, потому что её покупают все. Поэтому каждую пару заранее судит модель по правилам хорошего менеджера, и в блок идут только «нужно» и «комплект» — с фразой «зачем». На обращение клиента модель не вызывается: вердикт — строка таблицы.</p>
+      <p class="hint">Статистика продаж не отличает «нужно» от «и так есть»: после антивируса чаще всего покупают Windows, потому что её покупают все. Поэтому каждую пару заранее судит модель по правилам хорошего менеджера. В личные советы идёт только «нужно» — с фразой «зачем»; «комплект» на истории не сбылся ни разу и остаётся подсказкой менеджеру. На обращение клиента модель не вызывается: вердикт — строка таблицы.</p>
       <table class="links"><tr><th>Вердикт</th><th class="num">Пары классов каталога</th><th class="num">Пары товаров каталога</th><th class="num">Пары линеек из продаж</th></tr>
-      ${KINDS.map(([k, t]) => `<tr><td>${t}${k === "need" || k === "kit" ? " — идёт в советы" : ""}</td><td class="num">${cell(vs.classes, k)}</td><td class="num">${cell(vs.families, k)}</td><td class="num">${cell(lines, k)}</td></tr>`).join("")}
+      ${KINDS.map(([k, t]) => `<tr><td>${t}${k === "need" ? " — идёт в личные советы" : k === "kit" ? " — ждёт решения менеджера" : ""}</td><td class="num">${cell(vs.classes, k)}</td><td class="num">${cell(vs.families, k)}</td><td class="num">${cell(lines, k)}</td></tr>`).join("")}
       <tr><td><b>Всего</b></td><td class="num"><b>${nf.format(sum(vs.classes))}</b></td><td class="num"><b>${nf.format(sum(vs.families))}</b></td><td class="num"><b>${lines ? nf.format(sum(lines)) : "—"}</b></td></tr></table>`;
     const old = vs.old_links;
     if (old && old.total) {
@@ -729,10 +734,10 @@
     }
     if (ve && ve.rows && ve.rows.length) {
       h += `<h3>Что проверка пар меняет в блоке кабинета</h3>
-        <p class="hint">Организации из проверки на истории (${ve.clients} клиентов): советы даны по покупкам до 31 августа, «сбылось» — клиент купил этот товар осенью. Строка «Пора продлить» во всех вариантах одна и та же и в таблицу не входит.</p>
+        <p class="hint">Организации из проверки на истории (${ve.clients} клиентов): советы даны по покупкам до 31 августа, «сбылось» — клиент купил этот товар осенью. Строки «Пора продлить» и «Часто докупают» в таблицу не входят.</p>
         <table class="links"><tr><th>Блок новых советов</th><th class="num">Карточек</th><th class="num">Сбылось</th><th class="num">Доля</th><th class="num">Самый частый товар видят</th><th class="num">Клиентов без новых советов</th></tr>
         ${ve.rows.map((r) => `<tr><td>${esc(r.title)}${r.stand ? " — так на стенде" : ""}</td><td class="num">${nf.format(r.cards)}</td><td class="num">${r.hits}</td><td class="num">${pct(r.share)}</td><td class="num">${pct(r.top_share)} клиентов</td><td class="num">${r.without}</td></tr>`).join("")}</table>
-        <p class="hint">Без проверки один и тот же товар («${esc(ve.top_before)}») получали почти все; с проверкой он остаётся там, где у него есть основание. Цена — часть попаданий, которые давал совет «всем подряд»: ${esc(ve.cost)}</p>`;
+        <p class="hint">Без проверки один и тот же товар («${esc(ve.top_before)}») стоял в личных советах почти у всех; с проверкой он остаётся там, где у него есть основание, а остальным показывается отдельной строкой «Часто докупают». ${esc(ve.cost)}</p>`;
     }
     if (vs.check && vs.check.length) {
       h += `<h3>Разметка через API</h3>
@@ -777,7 +782,7 @@
     const vs = data.meta.verdicts;
     if (vs) html += verdictsHtml(vs);
     html += `<h3>Очередь менеджера</h3>
-      <p class="hint">Сейчас блок построен примерно на 6 000 ручных связок «товар — товар». Здесь связи между классами и между товарами разных линеек размечены заранее и показываются клиенту с подписью «пара проверена заранее»; любую из них менеджер отклоняет одним нажатием на вкладке «Связи». Проверки менеджера ждут только замены по классу и вердикты модели, не прошедшей сверку: строк в очереди сейчас ${nf.format(waitingRows().length)}.</p>`;
+      <p class="hint">Сейчас блок построен примерно на 6 000 ручных связок «товар — товар». Здесь клиент сразу видит только пары товаров, проверенные заранее и получившие вердикт «нужно»; любую из них менеджер отклоняет одним нажатием на вкладке «Связи». Решения менеджера ждёт то, где проверена не сама пара с товаром клиента или где совет не сбывается на истории: связи между классами, «комплекты» и замены по классу — сейчас ${nf.format(waitingRows().length)} строк.</p>`;
     $("#numbers").innerHTML = html;
     $$("#numbers [data-tip]").forEach((el) => {
       el.addEventListener("mousemove", (ev) => showTip(ev, `<span>${esc(el.dataset.tip)}</span>`));

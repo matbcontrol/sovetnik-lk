@@ -6,8 +6,9 @@
   «Пора продлить»      до двух продлений, срок которых подходит (вердикты их не касаются);
   «К вашим продуктам»  до трёх советов: другой вариант своей линейки, товар каталога по проверенной
                        связи графа от покупки клиента и чужие линейки с вердиктом «нужно»;
-  «Комплект»           если места остались — не больше KIT_MAX советов с вердиктом «комплект»:
-                       прямой связи нет, но товар из того же типового набора.
+  «Комплект»           вердикт «комплект» (прямой связи нет, но товар из того же типового набора)
+                       клиенту не показывается: на истории такие советы не сбылись ни разу
+                       (recsys.eval.verdict_effect). KIT_MAX оставлен настройкой для замера.
 
   «Часто докупают»     одна строка: продукт, который впервые берут не меньше 5 % вернувшихся клиентов
                        группы. Это не личный совет, и подписан он так же честно; «уже есть» и «то же
@@ -23,9 +24,9 @@ from dataclasses import dataclass
 from recsys.llm.pair_verdicts import SHOWN, Verdicts
 from recsys.rank.unified import NEW_MAX, Scored, Unified
 
-KIT_MAX = 1
+KIT_MAX = 0                  # сколько советов «комплект» идёт в личные советы; замер показал, что они не сбываются
 HORIZON = 15                 # сколько чужих линеек по порядку оценки рассматриваем для одного клиента
-POPULAR_N = 1                # товаров в строке «Часто докупают»
+POPULAR_N = None             # товаров в строке «Часто докупают»: один, а если личных советов меньше трёх — по числу свободных мест
 MARK = "вердикт|"            # так помечаются причины отсева, которые дал вердикт пары
 
 
@@ -144,7 +145,7 @@ def cabinet(uni: Unified, c: str, verdicts: Verdicts | None, prices: dict[str, f
         return Card(s, tier, reason, by)
 
     def not_owned(history: list[str], s: Scored) -> tuple[bool, str]:
-        return classify(at, verdicts, history, s)[0] not in ("has", "same"), ""
+        return classify(at, verdicts, history, s)[0] != "has", ""    # «то же самое» здесь допустимо: вторую лицензию докупают
 
     popular = uni.popular_row(c, [*cab["renew"], *new], prices, not_owned, n=POPULAR_N) if popular_row else []
     return {"renew": [Card(s, "renew") for s in cab["renew"]], "new": [card(s) for s in new],

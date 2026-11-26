@@ -7,9 +7,10 @@
 Три вида советов (слоты):
   renew   — что истекает: продление того, что уже куплено
   next    — следующая ступень: старшая редакция или новая версия
-  missing — чего не хватает: дополняющие и требуемые продукты; сюда же пары с вердиктом «нужно»
-  kit     — типовой набор: пары с вердиктом «комплект» (прямой связи нет, но товар из того же набора);
-            в блоке таких советов не больше одного, и идут они после остальных
+  missing — к вашему продукту: дополняющие и требуемые продукты; сюда же пары товаров с вердиктом «нужно»
+  kit     — типовой набор: пары с вердиктом «комплект» (прямой связи нет, но товар из того же набора).
+            На истории продаж такие советы не сбывались, поэтому клиент видит их только после решения
+            менеджера; в блоке их не больше одного, и идут они после остальных
   replace — замена: когда купленного зарубежного продукта больше нет в продаже — его российский аналог
             из таблицы замещения, а если прямого аналога нет — российский продукт того же класса из реестра.
             Если при этом срок лицензии подошёл, замена идёт первой: продлить такую лицензию нельзя.
@@ -72,9 +73,10 @@ LABEL = {
     "менеджер": "принято менеджером",
     "витрина": "порядок витрины магазина",
 }
-# Связь между классами и между товарами разных линеек — вывод, а не факт каталога. Клиенту она показывается,
-# если пару заранее проверили по правилам (recsys.llm.pair_verdicts: «нужно» или «комплект») или её принял
-# менеджер. Вердикт модели, которая сверку с первой разметкой не прошла, и замена по классу ждут менеджера.
+# Связь между товарами разных линеек — вывод, а не факт каталога. Клиенту она показывается, если саму пару
+# товаров заранее проверили по правилам (recsys.llm.pair_verdicts) и вердикт — «нужно». Всё остальное —
+# подсказка менеджеру и ждёт его решения: «комплект», товар, подобранный по связи классов (проверена связь
+# классов, но не пара с товаром клиента), вердикт модели, не прошедшей сверку, и замена по классу.
 # Проверку «связь подтверждена покупками» мы убрали: она подтверждала «к антивирусу — Windows», потому что
 # самые продаваемые товары встречаются рядом с чем угодно.
 PENDING = "ждёт проверки менеджером"
@@ -408,7 +410,9 @@ class Recommender:
             return str(node.get("b2b_only", "0")) == "1"
 
         def home_only(node: dict) -> bool:
-            return _split(node.get("client_types", "")) == {"b2c"} and not b2b_only(node)
+            # в каталоге признак «для дома» заполнен не у всех: смотрим и на класс («Антивирусы для дома»)
+            home_class = "для дома" in self.g.class_names.get(node.get("class") or "", "").lower()
+            return (_split(node.get("client_types", "")) == {"b2c"} or home_class) and not b2b_only(node)
 
         # Ограничение по типу клиента не действует внутри линейки, которую клиент уже покупает:
         # раз он купил такую лицензию, продление и следующая ступень ему доступны.
@@ -416,7 +420,7 @@ class Recommender:
         in_line = edge_type in ("renewal", "upgrade", "new_version")
         if client.client_type == "b2c" and b2b_only(n) and not (in_line and b2b_only(s)):
             return "продаётся только юридическим лицам"
-        if client.client_type == "b2b" and home_only(n) and not (in_line and home_only(s)):
+        if client.client_type == "b2b" and home_only(n) and not home_only(s):   # кто сам берёт домашние лицензии, тому можно
             return "лицензия только для дома"
         np_ = {p.strip().lower() for x in _split(n.get("platforms", "")) for p in x.split(",") if p.strip()}
         if edge_type != "renewal" and platforms and np_ and not (platforms & np_):
@@ -552,6 +556,14 @@ class Recommender:
                 if t == "complements" and e.get("source") in VERDICT_SOURCE.values():
                     # проверенная пара товаров: из одного класса в блоке один совет, как и по связи классов
                     e = {**e, "group": (self.g.nodes.get(e["dst"]) or {}).get("class") or ""}
+                if e.get("source") == VERDICT_SOURCE["kit"]:
+                    key = f"pk|{fam}|{e['dst']}"
+                    if key in self.rejected:
+                        continue
+                    if not (self.unverified or key in self.approved):   # комплект клиент увидит после менеджера
+                        bans.append({"family": e["dst"], "type": t, "from": fam, "reason": PENDING, "key": key})
+                        continue
+                    e = {**e, "key": key}
                 push(e["dst"], "kit" if e.get("source") == VERDICT_SOURCE["kit"] else SLOT[t], s, e, p)
 
             # замена по классу: купленный зарубежный продукт сняли с продажи, а прямого аналога в таблице
@@ -608,7 +620,8 @@ class Recommender:
                     continue                            # первые товары этого класса владельцу fam не подошли
                 verdict = link.get("verdict", "")
                 labelled = link.get("source") == "разметка" and verdict in VERDICT_SOURCE
-                shown = self.unverified or labelled or key in self.approved
+                # проверена связь классов, а не пара с товаром клиента: это подсказка менеджеру
+                shown = self.unverified or key in self.approved
                 source = "менеджер" if key in self.approved else VERDICT_SOURCE[verdict] if labelled \
                     else link.get("source", "модель")
                 allowed = self.g.class_picks.get(f"{link['src_class']}|{link['dst_class']}")
