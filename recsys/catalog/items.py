@@ -22,10 +22,9 @@ from functools import lru_cache
 import pandas as pd
 
 from recsys.catalog.feed import CATEGORIES, OFFERS, norm_code
-from recsys.config import DATA
+from recsys.config import DATA, DATASET
 from recsys.graph.textnorm import tokens
 
-DATASET = DATA / "private" / "task" / "dataset_v3.xlsx"
 ITEMS = DATA / "private" / "task" / "items.csv"
 
 LICENSE_WORDS = [

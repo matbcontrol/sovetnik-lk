@@ -14,9 +14,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from recsys.config import DATA
+from recsys.config import DATA, DATASET
 
-DATASET = DATA / "private" / "task" / "dataset_v3.xlsx"
 ITEMS = DATA / "private" / "task" / "items.csv"
 
 OFFICIAL = ("официальный", "2026-08-31", "2026-09-07", "2026-11-30")
@@ -46,7 +45,7 @@ class Fold:
     history: dict[str, list[str]]                 # клиент -> товары обучения в порядке первой покупки
     first: dict[str, dict[str, date]]             # клиент -> товар -> неделя первой покупки
     last: dict[str, dict[str, date]]              # клиент -> товар -> неделя последней покупки
-    orders: dict[str, list[str]]                  # заказ -> товары (только обучение)
+    orders: dict[tuple, list[str]]                # корзина (заказ, неделя) -> товары, только обучение
     target: dict[str, set[str]]
     group_a: list[str] = field(default_factory=list)
     group_b: list[str] = field(default_factory=list)
@@ -79,12 +78,13 @@ def make_fold(task: Task, name: str, train_until: str, test_from: str, test_unti
     train = [r for r in task.rows if r.week <= tu]
     first: dict[str, dict[str, date]] = defaultdict(dict)
     last: dict[str, dict[str, date]] = defaultdict(dict)
-    orders: dict[str, list[str]] = defaultdict(list)
+    orders: dict[tuple, list[str]] = defaultdict(list)
     for r in train:
         first[r.client].setdefault(r.item, r.week)
         last[r.client][r.item] = r.week
-        if r.item not in orders[r.order]:
-            orders[r.order].append(r.item)
+        # корзина — пара «заказ + неделя»: один order_id в разные недели — это разные покупки (подписки)
+        if r.item not in orders[(r.order, r.week)]:
+            orders[(r.order, r.week)].append(r.item)
     history = {c: sorted(d, key=lambda i: d[i]) for c, d in first.items()}
     later: dict[str, set[str]] = defaultdict(set)
     for r in task.rows:

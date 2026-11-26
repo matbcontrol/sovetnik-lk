@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import pickle
 import random
 import sys
@@ -20,11 +21,15 @@ from datetime import date, timedelta
 import numpy as np
 from sklearn.ensemble import HistGradientBoostingClassifier
 
-from recsys.config import DATA
+from recsys.config import DATASET, ROOT, TASK_DIR
+from recsys.eval import official as org
+from recsys.rank.breakdown import breakdown, text
 from recsys.rank.data import OFFICIAL, Fold, Task, load_task, make_fold
 from recsys.rank.features import FEATURES, FoldStats, build_attrs
+from recsys.stable import rerun_with_fixed_order
 
-MODEL_FILE = DATA / "private" / "task" / "ltr_model.pkl"
+MODEL_FILE = TASK_DIR / "ltr_model.pkl"
+BREAKDOWN_FILE = ROOT / "reports" / "hits_breakdown.json"
 WINDOW_WEEKS = 12
 FIRST_CUTOFF = date(2025, 8, 4)          # раньше в данных слишком мало истории
 COLS = ["A все", "A B2B", "A B2C", "B все", "B B2B", "B B2C"]
@@ -116,6 +121,7 @@ def single(p: Prepared, feature: str) -> dict[str, dict]:
 
 
 def main() -> None:
+    rerun_with_fixed_order("recsys.rank.ltr")           # одно и то же число при каждом запуске
     sys.stdout.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser()
     ap.add_argument("--inner", action="store_true", help="не трогать официальный разрез")
@@ -123,6 +129,7 @@ def main() -> None:
 
     task = load_task()
     attrs = build_attrs(task)
+    print(f"датасет: {DATASET.name}, товаров {len(task.names)}")
     cache: dict[str, Prepared] = {}
 
     def prep(spec) -> Prepared:
@@ -168,7 +175,39 @@ def main() -> None:
         if c in res:
             lo, hi = ci(res[c]["values"])
             print(f"  {c:6} клиентов {res[c]['clients']:>4}: Precision@3 {res[c]['p3']:.1%} [{lo:.1%} – {hi:.1%}]")
-    print("\nу организаторов: популярность A 5.2 / 3.6 / 19.4, B 7.0 / 5.1 / 19.2; совм. покупки A 4.8 / 3.9 / 13.0, B 5.1 / 3.8 / 12.8")
+    # ---- база организаторов на тех же клиентах и разбивка попаданий по видам
+    ot = org.load()
+    base = {"популярность": org.popularity(ot), "совместные покупки": org.co_purchase(ot)}
+    report = {
+        "dataset": DATASET.name, "split": {"train_until": OFFICIAL[1], "test_from": OFFICIAL[2]},
+        "kinds": {"вариант": "другой артикул продукта, который у клиента уже есть (то же семейство)",
+                  "версия": "тот же продукт в другой версии или редакции",
+                  "новый продукт": "у клиента не было ничего из этой линейки"},
+        "methods": {},
+    }
+    print("\nиз чего состоят попадания:")
+    for name, rec in base.items():
+        res_b = breakdown(task, off.fold, attrs, {c: rec(c) for c in off.fold.group_a})
+        report["methods"][name] = res_b
+        print(" ", text(name, res_b, "A B2B"))
+    ours = breakdown(task, off.fold, attrs, off.recs)
+    report["methods"]["обученное ранжирование"] = ours
+    for key in ("A B2B", "B B2B", "A B2C"):
+        print(" ", text("обученное ранжирование", ours, key))
+    a = ours["A все"]
+    print(f"\nцели группы A: вариант {a['targets']['вариант']}, версия {a['targets']['версия']}, "
+          f"новый продукт {a['targets']['новый продукт']}; холодных товаров (не продавались в обучении) "
+          f"{a['cold_targets']} ({a['cold_target_share']:.1%} целей, у {a['clients_with_cold_target']} клиентов)")
+    report["future_information"] = [
+        "семейство и класс товара берутся из текущего фида магазина (снимка каталога на дату разреза нет)",
+        "вид лицензии и срок частично берутся из параметров текущего фида",
+        "привязка товара продаж к каталогу сделана по текущему фиду",
+    ]
+    BREAKDOWN_FILE.parent.mkdir(exist_ok=True)
+    BREAKDOWN_FILE.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"отчёт: {BREAKDOWN_FILE}")
+    print("\nбаза организаторов (v4), Precision@3 все / B2B / B2C: популярность A 5.44 / 3.75 / 20.0, "
+          "B 7.36 / 5.22 / 20.0; совместные покупки A 5.64 / 4.53 / 15.24, B 6.01 / 4.54 / 14.67")
 
 
 if __name__ == "__main__":

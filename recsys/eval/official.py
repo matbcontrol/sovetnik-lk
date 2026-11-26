@@ -1,14 +1,19 @@
-"""Проверка на истории по протоколу организаторов (лист «Протокол_проверки» датасета).
+"""Проверка на истории по протоколу организаторов и их базовые способы.
 
-Правила общие для всех команд, поэтому считаем строго по ним:
-  обучение  — заказы с order_week не позже 2026-08-31;
-  проверка  — заказы с order_week с 2026-09-07 до конца данных;
-  цель      — товары (item_id), новые для клиента: купленные в проверке и не купленные в обучении;
-  совет     — ровно 3 item_id на клиента, без товаров из его истории;
-  Precision@3 — число угаданных из трёх / 3, среднее по клиентам группы;
-  группа A  — клиенты с покупками в обучении и хотя бы одним новым товаром в проверке;
-  группа B  — часть группы A с ровно одним товаром в истории (холодный старт);
-  Fill Rate — доля клиентов группы, которым способ выдал хотя бы один совет.
+Правила (лист «Протокол_проверки» датасета v4 и приложенный к нему baseline.py) повторены дословно:
+  обучение    — строки с order_week не позже 2026-08-31, проверка — позже;
+  корзина     — пара (order_id, order_week): один order_id в разные недели — это разные покупки;
+  цель        — товары (item_id), новые для клиента: куплены в проверке, в обучении у клиента их не было;
+  совет       — ровно 3 item_id на клиента, без товаров из его истории; если выдано меньше трёх,
+                недостающие места считаются промахом (всегда делим на 3);
+  Precision@3 — число угаданных / 3, среднее по клиентам группы;
+  группа A    — клиенты с покупками в обучении и хотя бы одним новым товаром в проверке;
+  группа B    — часть группы A с ровно одним товаром в истории (холодный старт клиента);
+  Fill Rate   — доля клиентов группы, которым способ выдал хотя бы один совет.
+Базовые способы:
+  популярность       — число разных клиентов, купивших товар в обучении;
+  совместные покупки — число корзин обучения, где оба товара встретились, сумма по товарам истории;
+  ничьи              — выше счёт, затем выше популярность, затем item_id по алфавиту.
 
 Датасет организаторов публиковать нельзя: он лежит в data/private и в репозиторий не попадает.
 
@@ -16,6 +21,8 @@
 """
 from __future__ import annotations
 
+import itertools
+import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -23,132 +30,115 @@ from typing import Callable
 
 import pandas as pd
 
-from recsys.config import DATA
+from recsys.config import DATASET
 
-DATASET = DATA / "private" / "task" / "dataset_v3.xlsx"
 TRAIN_UNTIL = "2026-08-31"
-TEST_FROM = "2026-09-07"
+
+# цифры организаторов для v4 (лист «Протокол_проверки»): Precision@3 и Fill Rate, все / B2B / B2C
+PUBLISHED = {
+    "популярность": {"A": (5.44, 3.75, 20.0, 100.0), "B": (7.36, 5.22, 20.0, 100.0)},
+    "совместные покупки": {"A": (5.64, 4.53, 15.24, 92.3), "B": (6.01, 4.54, 14.67, 87.2)},
+}
+PUBLISHED_GROUPS = {"A": (337, 302, 35), "B": (172, 147, 25)}
 
 
 @dataclass
 class Task:
-    sales: pd.DataFrame                 # все строки продаж
-    clients: dict[str, dict]            # client_id -> строка справочника
-    train: pd.DataFrame
-    test: pd.DataFrame
-    history: dict[str, list[str]]       # client_id -> товары обучения (в порядке покупки, без повторов)
-    target: dict[str, set[str]]         # client_id -> новые товары в проверке
+    group: dict[str, str]               # client_id -> B2B / B2C
+    hist: dict[str, set[str]]           # client_id -> товары обучения
+    test: dict[str, set[str]]           # client_id -> товары проверки
+    baskets: dict[tuple, set[str]]      # (order_id, order_week) -> товары, только обучение
+    pop: Counter                        # товар -> число разных клиентов в обучении
     group_a: list[str]
     group_b: list[str]
-    names: dict[str, str]               # item_id -> название
+    names: dict[str, str]
 
 
 def load(path: Path = DATASET) -> Task:
     sales = pd.read_excel(path, sheet_name="Продажи", dtype=str, engine="openpyxl")
     cl = pd.read_excel(path, sheet_name="Клиенты", dtype=str, engine="openpyxl")
-    clients = {r["client_id"]: r for r in cl.fillna("").to_dict("records")}
-    sales = sales.sort_values(["order_week", "order_id"], kind="stable").reset_index(drop=True)
-    train = sales[sales["order_week"] <= TRAIN_UNTIL]
-    test = sales[sales["order_week"] >= TEST_FROM]
-    history: dict[str, list[str]] = defaultdict(list)
-    for c, i in zip(train["client_id"], train["item_id"]):
-        if i not in history[c]:
-            history[c].append(i)
-    bought_later: dict[str, set[str]] = defaultdict(set)
-    for c, i in zip(test["client_id"], test["item_id"]):
-        bought_later[c].add(i)
-    target = {c: items - set(history[c]) for c, items in bought_later.items() if c in history}
-    group_a = sorted(c for c, t in target.items() if t)
-    group_b = [c for c in group_a if len(history[c]) == 1]
-    names = dict(zip(sales["item_id"], sales["item_name"]))
-    return Task(sales, clients, train, test, dict(history), target, group_a, group_b, names)
+    group = dict(zip(cl["client_id"], cl["client_group"]))
+    hist, test, baskets = defaultdict(set), defaultdict(set), defaultdict(set)
+    for order, client, week, item in zip(sales["order_id"], sales["client_id"], sales["order_week"], sales["item_id"]):
+        if week <= TRAIN_UNTIL:
+            hist[client].add(item)
+            baskets[(order, week)].add(item)
+        else:
+            test[client].add(item)
+    pop = Counter()
+    for items in hist.values():
+        pop.update(items)
+    group_a = sorted(c for c in test if c in hist and test[c] - hist[c])
+    group_b = [c for c in group_a if len(hist[c]) == 1]
+    return Task(group, dict(hist), dict(test), dict(baskets), pop, group_a, group_b,
+                dict(zip(sales["item_id"], sales["item_name"])))
 
 
-Recommender = Callable[[str, list[str]], list[str]]     # (client_id, история) -> до трёх item_id
+Recommender = Callable[[str], list[str]]     # client_id -> до трёх item_id
 
 
-def evaluate(task: Task, recommend: Recommender) -> dict[str, dict]:
-    """Precision@3 и Fill Rate по группам A и B: все / B2B / B2C. Клиент без совета даёт ноль."""
-    rows = {}
-    for c in task.group_a:
-        owned = set(task.history[c])
-        recs = [i for i in dict.fromkeys(recommend(c, task.history[c])) if i not in owned][:3]
-        rows[c] = (len(set(recs) & task.target[c]) / 3, bool(recs), len(recs))
-    out = {}
-    for gname, group in (("A", task.group_a), ("B", task.group_b)):
-        for seg in ("все", "B2B", "B2C"):
-            ids = [c for c in group if seg == "все" or task.clients[c]["client_group"] == seg]
-            if not ids:
-                continue
-            out[f"{gname} {seg}"] = {
-                "clients": len(ids),
-                "precision@3": sum(rows[c][0] for c in ids) / len(ids),
-                "fill_rate": sum(rows[c][1] for c in ids) / len(ids),
-                "hit_clients": sum(rows[c][0] > 0 for c in ids),
-            }
-    return out
+def top3(task: Task, scores: dict[str, float], seen: set[str]) -> list[str]:
+    """Три лучших по счёту; ничьи — выше популярность, затем item_id по алфавиту (как в baseline.py)."""
+    cand = [i for i in scores if i not in seen]
+    cand.sort(key=lambda i: (-scores[i], -task.pop[i], i))
+    return cand[:3]
 
 
-# ---- базовые способы организаторов -------------------------------------------------------
-
-def popularity(task: Task, by: str = "rows") -> Recommender:
-    """Три самых покупаемых товара периода обучения, которых нет у клиента."""
-    if by == "clients":
-        cnt = task.train.drop_duplicates(["client_id", "item_id"])["item_id"].value_counts()
-    elif by == "orders":
-        cnt = task.train.drop_duplicates(["order_id", "item_id"])["item_id"].value_counts()
-    else:
-        cnt = task.train["item_id"].value_counts()
-    top = list(cnt.index[:50])
-    return lambda c, h: [i for i in top if i not in h][:3]
+def popularity(task: Task) -> Recommender:
+    return lambda c: top3(task, task.pop, task.hist[c])
 
 
-def co_orders(task: Task) -> Recommender:
-    """Товары, которые чаще всего встречаются в одних заказах с товарами клиента."""
-    pair: dict[str, Counter] = defaultdict(Counter)
-    for _, items in task.train.groupby("order_id")["item_id"]:
-        items = list(dict.fromkeys(items))
-        for a in items:
-            for b in items:
-                if a != b:
-                    pair[a][b] += 1
+def co_purchase(task: Task) -> Recommender:
+    co: dict[str, Counter] = defaultdict(Counter)
+    for items in task.baskets.values():
+        for a, b in itertools.permutations(items, 2):
+            co[a][b] += 1
 
-    def rec(c: str, h: list[str]) -> list[str]:
-        score = Counter()
-        for a in h:
-            score.update(pair.get(a, {}))
-        return [i for i, _ in score.most_common() if i not in h][:3]
+    def rec(c: str) -> list[str]:
+        scores = Counter()
+        for a in task.hist[c]:
+            scores.update(co[a])
+        return top3(task, scores, task.hist[c])
 
     return rec
 
 
-def table(results: dict[str, dict[str, dict]]) -> str:
-    cols = ["A все", "A B2B", "A B2C", "B все", "B B2B", "B B2C"]
-    lines = [f"{'способ':34}" + "".join(f"{c:>16}" for c in cols)]
-    for name, res in results.items():
-        lines.append(f"{name:34}" + "".join(
-            f"{res[c]['precision@3']:>8.1%} /{res[c]['fill_rate']:>5.0%} " if c in res else f"{'—':>16}" for c in cols))
-    lines.append("(в ячейке: Precision@3 / Fill Rate)")
-    return "\n".join(lines)
+def evaluate(task: Task, recommend: Recommender) -> dict[str, dict]:
+    """Precision@3 и Fill Rate по группам A и B: все / B2B / B2C."""
+    recs = {c: [i for i in dict.fromkeys(recommend(c)) if i not in task.hist[c]][:3] for c in task.group_a}
+    out = {}
+    for gname, clients in (("A", task.group_a), ("B", task.group_b)):
+        for seg in ("все", "B2B", "B2C"):
+            ids = [c for c in clients if seg == "все" or task.group[c] == seg]
+            if not ids:
+                continue
+            hits = [len(set(recs[c]) & (task.test[c] - task.hist[c])) / 3 for c in ids]
+            out[f"{gname} {seg}"] = {
+                "clients": len(ids), "precision@3": sum(hits) / len(ids),
+                "fill_rate": sum(1 for c in ids if recs[c]) / len(ids),
+            }
+    return out
 
 
 def main() -> None:
+    sys.stdout.reconfigure(encoding="utf-8")
     task = load()
-    b2b = sum(task.clients[c]["client_group"] == "B2B" for c in task.group_a)
-    b2b_b = sum(task.clients[c]["client_group"] == "B2B" for c in task.group_b)
-    print(f"строк продаж {len(task.sales)}, обучение {len(task.train)}, проверка {len(task.test)}, "
-          f"товаров {task.sales['item_id'].nunique()}")
-    print(f"группа A: {len(task.group_a)} (B2B {b2b}, B2C {len(task.group_a) - b2b}); "
-          f"группа B: {len(task.group_b)} (B2B {b2b_b}, B2C {len(task.group_b) - b2b_b})")
-    print("у организаторов: A 367 (331 / 36), B 191 (165 / 26)\n")
-    results = {
-        "популярность (по строкам)": evaluate(task, popularity(task, "rows")),
-        "популярность (по клиентам)": evaluate(task, popularity(task, "clients")),
-        "совместные заказы": evaluate(task, co_orders(task)),
-    }
-    print(table(results))
-    print("\nу организаторов: популярность  A 5.2% / 3.6% / 19.4%, B 7.0% / 5.1% / 19.2% (Fill Rate 100%)")
-    print("                 совм. покупки A 4.8% / 3.9% / 13.0% (89%), B 5.1% / 3.8% / 12.8% (82%)")
+    print(f"датасет: {DATASET.name}")
+    for g, clients in (("A", task.group_a), ("B", task.group_b)):
+        b2b = sum(task.group[c] == "B2B" for c in clients)
+        print(f"группа {g}: {len(clients)} (B2B {b2b}, B2C {len(clients) - b2b}); "
+              f"у организаторов {PUBLISHED_GROUPS[g][0]} ({PUBLISHED_GROUPS[g][1]} / {PUBLISHED_GROUPS[g][2]})")
+    ok = True
+    for name, rec in (("популярность", popularity(task)), ("совместные покупки", co_purchase(task))):
+        res = evaluate(task, rec)
+        for g in ("A", "B"):
+            mine = tuple(round(100 * res[f"{g} {s}"]["precision@3"], 2) for s in ("все", "B2B", "B2C")) \
+                + (round(100 * res[f"{g} все"]["fill_rate"], 1),)
+            same = mine == PUBLISHED[name][g]
+            ok &= same
+            print(f"{name:20} группа {g}: {mine[0]:.2f} / {mine[1]:.2f} / {mine[2]:.2f}, Fill Rate {mine[3]:.1f}  "
+                  f"{'= как у организаторов' if same else 'НЕ СОВПАЛО, у организаторов ' + str(PUBLISHED[name][g])}")
+    print("\nнаш счёт совпадает с baseline.py организаторов" if ok else "\nЕСТЬ РАСХОЖДЕНИЯ с цифрами организаторов")
 
 
 if __name__ == "__main__":

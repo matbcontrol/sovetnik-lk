@@ -6,6 +6,12 @@ DATA = ROOT / "data"
 RAW = DATA / "raw"
 INTERIM = DATA / "interim"
 
+# Датасет организаторов и всё производное от него лежит здесь и в репозиторий не попадает.
+# Версия 4 от 26.11.2026 заменила версию 3 (пороги обезличивания пересчитаны по item_id, товаров 817):
+# цифры, посчитанные на v3, с базовыми способами организаторов не сопоставимы.
+TASK_DIR = DATA / "private" / "task"
+DATASET = TASK_DIR / "dataset_v4.xlsx"
+
 STORE = "https://store.softline.ru"
 SITEMAP_INDEX = f"{STORE}/https-sitemap.xml"
 
