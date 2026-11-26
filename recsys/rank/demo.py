@@ -67,6 +67,8 @@ def recommend(st: FoldStats, model, clients: list[str], regime: str, diverse: bo
             picked.append(b)
             if len(picked) == 3:
                 break
+        if len(picked) < 3:                          # разных линеек не хватило: добираем следующими по оценке
+            picked += [b for b in items if b not in picked][: 3 - len(picked)]
         out[c] = picked
     return out
 

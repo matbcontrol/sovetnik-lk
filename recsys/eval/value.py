@@ -337,6 +337,14 @@ def main() -> None:
         c = report["regimes"][regime]["ci"]
         print(f"  {title:34} A {c['A B2B'][0]:.1%}–{c['A B2B'][1]:.1%}   B {c['B B2B'][0]:.1%}–{c['B B2B'][1]:.1%}")
     report["baseline_popularity"] = {s: pop_seg[s]["value"] for s in SEGS}
+    # из чего состоят попадания главного режима: вариант уже купленного, другая версия, новый продукт
+    from recsys.rank.breakdown import breakdown
+    report["hits_breakdown"] = breakdown(task, fold, attrs, recs_by["full"])
+    part = report["hits_breakdown"].get("A B2B", {})
+    if part:
+        print("\nпопадания организаций (группа A) по видам: "
+              + ", ".join(f"{k} {v}" for k, v in part["hits"].items())
+              + "; целей: " + ", ".join(f"{k} {v}" for k, v in part["targets"].items()))
 
     print("\nразница на одних и тех же клиентах (организации), в процентных пунктах:")
     diffs = {}

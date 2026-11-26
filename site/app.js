@@ -537,7 +537,7 @@
     const rub = (x) => nf.format(Math.round(x / 1000)) + " тыс. ₽";
     return `
       <h2>Проверка на истории по протоколу организаторов</h2>
-      <p class="hint" style="margin-top:6px">Обезличенный датасет организаторов. Советы даны по покупкам до ${esc(r.protocol.train_until)}, засчитываются новые для клиента товары, купленные с ${esc(r.protocol.test_from)}. Модель и её режимы обучались только на периоде до даты разреза.</p>
+      <p class="hint" style="margin-top:6px">Обезличенный датасет организаторов${r.dataset ? `, версия ${esc(String(r.dataset).replace(/^dataset_v?|\.xlsx$/g, ""))}` : ""}. Советы даны по покупкам до ${esc(r.protocol.train_until)}, засчитываются новые для клиента товары, купленные с ${esc(r.protocol.test_from)}. Модель и её режимы обучались только на периоде до даты разреза.</p>
       <dl class="tiles">
         <div class="tile"><dt>Угадано из трёх советов, организации</dt><dd>${pct(full["A B2B"])}</dd><small>базовые способы организаторов: ${pct(org["популярность"]["A B2B"])} и ${pct(org["совместные покупки"]["A B2B"])}</small></div>
         <div class="tile"><dt>То же, холодный старт</dt><dd>${pct(full["B B2B"])}</dd><small>базовые способы: ${pct(org["популярность"]["B B2B"])} и ${pct(org["совместные покупки"]["B B2B"])}</small></div>
@@ -554,7 +554,8 @@
         ${row("Популярность (организаторы)", org["популярность"])}${row("Совместные покупки (организаторы)", org["совместные покупки"])}
         ${Object.keys(reg).map((k) => row(reg[k].title[0].toUpperCase() + reg[k].title.slice(1), reg[k].p3, k === "full")).join("")}
       </table></div>
-      <p class="hint" style="margin-top:8px">Частных лиц в проверке 36 — их цифры шумные, главных выводов по ним не делаем.</p>
+      <p class="hint" style="margin-top:8px">Частных лиц в проверке всего несколько десятков — их цифры шумные, главных выводов по ним не делаем.</p>
+      ${breakdownHtml(r)}
       <h3>Охват каталога</h3>
       <table class="links"><tr><th>Откуда берётся совет</th><th class="num">Товаров в наличии с советом</th><th class="num">Доля от ${nf.format(cat.available)}</th></tr>
         <tr><td>История продаж: после товара хотя бы три клиента купили один и тот же другой товар</td><td class="num">${nf.format(cat.history_3)}</td><td class="num">${pct(cat.history_3 / cat.available)}</td></tr>
@@ -566,6 +567,35 @@
         <tr><td>Все новые покупки этих клиентов</td><td class="num">${m.all_targets.targets}</td><td class="num">${rub(m.all_targets.rub_per_100_clients)}</td></tr></table>
       <p class="hint" style="margin-top:8px">Цены нынешние, количество лицензий в данных не указано, у части товаров цены нет. Это покупки, которые клиент сделал и без нашего блока: число показывает уместность совета, а не прирост продаж.</p>`;
   }
+  /** Из чего состоят попадания: вариант уже купленного продукта, другая версия или новый для клиента продукт. */
+  function breakdownHtml(r) {
+    const b = r.breakdown || {};
+    const order = ["популярность", "совместные покупки", "наша модель"].filter((k) => b[k] && b[k]["A B2B"]);
+    if (!order.length) return "";
+    const KINDS = [["вариант", "Другой вариант уже купленного"], ["версия", "Другая версия или редакция"], ["новый продукт", "Новый для клиента продукт"]];
+    const title = { "популярность": "Популярность (организаторы)", "совместные покупки": "Совместные покупки (организаторы)", "наша модель": "<b>Наша модель</b>" };
+    const sum = (o) => KINDS.reduce((a, [k]) => a + o[k], 0);
+    const targets = b[order[0]]["A B2B"].targets;
+    const row = (k) => {
+      const x = b[k]["A B2B"];
+      return `<tr><td>${title[k]}</td>${KINDS.map(([kk]) => `<td class="num">${x.hits[kk]} <small>· ${pct(x.parts[kk])}</small></td>`).join("")}
+        <td class="num">${sum(x.hits)} <small>· ${pct(x.p3)}</small></td></tr>`;
+    };
+    const ours = b["наша модель"] && b["наша модель"]["A B2B"], pop = b["популярность"] && b["популярность"]["A B2B"];
+    const note = ours && pop
+      ? `На новых для клиента продуктах наша модель угадала ${ours.hits["новый продукт"]} покупок из ${targets["новый продукт"]}, популярность — ${pop.hits["новый продукт"]}.` : "";
+    const future = r.future_information || [];
+    return `<h3>Из чего состоят попадания, организации (группа A)</h3>
+      <p class="hint">Разные артикулы одного продукта в проверке считаются разными товарами, поэтому попадание бывает трёх видов. В ячейке — число угаданных покупок и их вклад в Precision@3; вклады в сумме дают общую цифру.</p>
+      <table class="links"><tr><th>Способ</th>${KINDS.map(([, name]) => `<th class="num">${name}</th>`).join("")}<th class="num">Всего</th></tr>
+        <tr><td>Таких покупок у клиентов в проверочный период</td>${KINDS.map(([kk]) => `<td class="num">${targets[kk]}</td>`).join("")}<td class="num">${sum(targets)}</td></tr>
+        ${order.map(row).join("")}</table>
+      ${note ? `<p class="hint" style="margin-top:8px">${note}</p>` : ""}
+      ${future.length ? `<h3>Что в расчёте может знать о будущем</h3>
+        <p class="hint">Снимка каталога на дату разреза нет, поэтому часть сведений о товаре взята из сегодняшнего каталога:</p>
+        <ul class="hint">${future.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}`;
+  }
+
   function renderNumbers() {
     const sale = data.nodes.filter((n) => n.sale === 1);
     const linkedIds = new Set(data.edges.filter((e) => e[2] !== "same_line").map((e) => e[0]));
@@ -587,6 +617,16 @@
       <table class="links"><tr><th>Источник</th><th class="num">Связей</th></tr>${Object.entries(bySource).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<tr><td>${esc(k)}</td><td class="num">${nf.format(v)}</td></tr>`).join("")}</table>
       <h3>Связи по видам</h3>
       <table class="links"><tr><th>Вид связи</th><th class="num">Связей</th></tr>${Object.entries(byType).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<tr><td><span class="typ" style="--slot:${slotVar(slotOf(k))}"><i class="dot"></i>${esc(E.TYPE_TITLE[k] || k)}</span></td><td class="num">${nf.format(v)}</td></tr>`).join("")}</table>`;
+    const rp = data.meta.replace;
+    if (rp && rp.gone) {
+      const found = rp.direct + rp.sibling + rp.klass;
+      html += `<h3>Замена зарубежных программ, снятых с продажи</h3>
+        <p class="hint">В кабинете магазина кнопка «Подобрать замену» отправляет заявку менеджеру с ответом через 1–2 рабочих дня. Здесь замена находится сразу — для ${nf.format(found)} программ из ${nf.format(rp.gone)} (${pct(found / rp.gone, 0)}).</p>
+        <table class="links"><tr><th>Откуда замена</th><th class="num">Программ</th></tr>
+          <tr><td>Прямой российский аналог из таблицы замещения</td><td class="num">${nf.format(rp.direct)}</td></tr>
+          <tr><td>Российский продукт того же класса, названный в таблице аналогом другого продукта того же вендора</td><td class="num">${nf.format(rp.sibling)}</td></tr>
+          <tr><td>Российский продукт того же класса из реестра — самый слабый вид совета</td><td class="num">${nf.format(rp.klass)}</td></tr></table>`;
+    }
     $("#numbers").innerHTML = html;
     $$("#numbers [data-tip]").forEach((el) => {
       el.addEventListener("mousemove", (ev) => showTip(ev, `<span>${esc(el.dataset.tip)}</span>`));
