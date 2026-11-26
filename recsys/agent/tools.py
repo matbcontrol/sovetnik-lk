@@ -71,10 +71,26 @@ class Catalog:
 
     # ---- инструменты -------------------------------------------------------------------------
 
+    def _class_tokens(self, cid: str) -> Counter:
+        """Слова класса для поиска. Индекс строится по первым товарам класса на витрине; если среди них
+        есть спрятанный товар («вынь и вставь»), слова класса пересчитываются без него — иначе поиск
+        класса подсказывал бы агенту ответ названием спрятанного товара."""
+        top = self.class_rank.get(cid, [])[:25]
+        if not self.hidden or not self.hidden.intersection(top):
+            return self.class_tok[cid]
+        c = Counter()
+        for w in tokens(self.class_names[cid]):
+            c[w] += 3
+        for fam in [f for f in self.class_rank.get(cid, []) if f not in self.hidden][:25]:
+            for w in set(tokens(self.nodes.get(fam, {}).get("name", ""))):
+                c[w] += 1
+        return c
+
     def find_classes(self, query: str, limit: int = 8) -> list[dict]:
         q = tokens(query)
         scored = []
-        for cid, c in self.class_tok.items():
+        for cid in self.class_tok:
+            c = self._class_tokens(cid)
             s = sum(c.get(w, 0) * self.idf.get(w, 3.0) for w in q)
             if s > 0:
                 scored.append((s / (5 + math.sqrt(sum(c.values()))), cid))

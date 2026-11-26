@@ -755,25 +755,27 @@
       view.innerHTML = '<p class="note">Журналов агента пока нет: <code>python -m recsys.agent.exam</code>, затем <code>python -m recsys.agent.site</code>.</p>';
       return;
     }
-    const e = agent.exam || {}, pr = agent.per_run;
+    const e = agent.exam || {}, nh = agent.exam_nohints || {}, pr = agent.per_run;
     const rows = [];
+    const of = (x, n) => `${Math.round(x * n)} из ${n}`;
     if (e.runs) {
       rows.push(["Прогонов в экзамене", e.runs]);
-      rows.push(["Класс совпал с магазином", pct(e.class_exact, 0)]);
+      rows.push(["Класс совпал с рубрикой магазина", of(e.class_exact, e.runs)]);
+      if (e.class_code_only != null) rows.push(["…один код, без модели", of(e.class_code_only, e.runs)]);
+      if (nh.runs) rows.push(["…модель без подсказок кода", of(nh.class_exact, nh.runs)]);
       const k = e.by_kind || {};
       if (k["дополнение"]) rows.push(["Дополнения: агент нашёл базовый продукт", `${k["дополнение"].agent} из ${k["дополнение"].runs}`]);
-      if (k["линейка"]) rows.push(["Линейки: сосед найден агентом или правилом", `${k["линейка"].agent_or_rule} из ${k["линейка"].runs}`]);
-      else if (e.related_found != null) rows.push([`Связанный товар найден (из ${e.related_runs})`, pct(e.related_found, 0)]);
+      if (k["линейка"]) rows.push(["Линейки: соседа нашёл агент", `${k["линейка"].agent} из ${k["линейка"].runs}`]);
+      if (e.runs_with_model_tools != null) rows.push(["Модель сама вызывала инструменты", `в ${of(e.runs_with_model_tools, e.runs)} прогонов`]);
       rows.push(["Запросов к модели на товар", String(e.requests_per_run.toFixed(1)).replace(".", ",")]);
-      rows.push(["Секунд на товар, медиана", Math.round(e.seconds_median || e.seconds_per_run)]);
     }
-    if (pr) rows.push([`Стоимость прогона (${pr.price})`, String(pr.rub).replace(".", ",") + " ₽"]);
+    if (pr) rows.push([`Стоимость товара (${pr.price})`, String(pr.rub).replace(".", ",") + " ₽"]);
     $("#agent-exam").innerHTML = rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
     $("#agent-runs").innerHTML = agent.runs.map((r, i) => {
       const t = r.truth || {};
       const okClass = t.class && r.passport.class_name === t.class;
       return `<li data-i="${i}" class="${i === agentIdx ? "is-cur" : ""}">${esc(r.card.name)}
-        <small>${t.kind ? esc(t.kind) + " · " : ""}${r.truth ? `<span class="mark mark--${okClass ? "yes" : "no"}">${okClass ? "класс совпал" : "класс другой"}</span>` : '<span class="mark mark--yes">живой запуск</span>'} · связей ${r.links.length} · ${r.requests || "?"} запр., ${Math.round(r.seconds)} с</small></li>`;
+        <small>${t.kind ? esc(t.kind) + " · " : ""}${r.truth ? `<span class="mark mark--${okClass ? "yes" : "no"}">${okClass ? "класс совпал" : "класс другой"}</span>` : '<span class="mark mark--yes">живой запуск</span>'} · связей ${r.links.length} · ${r.requests || "?"} запр., ${r.seconds >= 0.5 ? Math.round(r.seconds) + " с" : "ответы из кеша"}</small></li>`;
     }).join("");
     $$("#agent-runs li").forEach((li) => li.addEventListener("click", () => { agentIdx = +li.dataset.i; renderAgent(); }));
     const r = agent.runs[agentIdx], t = r.truth || {}, p = r.passport;
@@ -791,7 +793,7 @@
     const cut = r.dropped.map((l) => `<li>«${esc(l.dst_name || l.dst || "")}» — ${esc(l.why)}</li>`).join("");
     view.className = "panel agent";
     view.innerHTML = `
-      <div class="panel__head"><h2>${esc(r.card.name)}</h2><span class="cost">запросов к модели: <b>${r.requests || "?"}</b> · ${Math.round(r.seconds)} с${pr ? ` · около ${String(pr.rub).replace(".", ",")} ₽ один раз` : ""}</span></div>
+      <div class="panel__head"><h2>${esc(r.card.name)}</h2><span class="cost">запросов к модели: <b>${r.requests || "?"}</b> · ${r.seconds >= 0.5 ? Math.round(r.seconds) + " с" : "ответы из кеша"}${pr ? ` · оценка ${String(pr.rub).replace(".", ",")} ₽ один раз` : ""}</span></div>
       <div class="agent__card"><b>Что получил агент.</b> Название: ${esc(r.card.name)}. Вендор: ${esc(r.card.vendor || "—")}. Описание: ${esc((r.card.description || "—").slice(0, 380))}${(r.card.description || "").length > 380 ? "…" : ""}</div>
       <h3>Шаги агента</h3>
       <ul class="steps">${steps}</ul>

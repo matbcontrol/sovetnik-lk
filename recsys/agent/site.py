@@ -12,8 +12,9 @@ import sys
 
 from recsys.config import INTERIM, ROOT
 
-# цены модели, доступной в России, для оценки стоимости прогона: рублей за 1000 токенов (вход, выход)
-PRICE = {"name": "Qwen3.6 35B в Yandex AI Studio", "in": 0.2, "out": 0.3}
+# Стоимость постановки одного нового товара, ₽ без НДС: 1,04 вызова агента (1 947 / 196 токенов)
+# и 0,75 вызова критика (771 / 90) по ценам Qwen3.6 35B в Yandex AI Studio — 163,93 и 245,90 ₽ за 1 млн.
+COST_PER_PRODUCT = 0.49
 
 
 def short(result: object) -> object:
@@ -49,15 +50,17 @@ def main() -> None:
     p = ROOT / "reports" / "agent_exam.json"
     if p.exists():
         exam = json.loads(p.read_text(encoding="utf-8")).get("summary", {})
-    # средний расход токенов на товар — из экзамена: каждый прогон сам считает свои токены
-    per_run = None
-    if exam.get("tokens_in_per_run"):
-        t_in, t_out = exam["tokens_in_per_run"], exam["tokens_out_per_run"]
-        per_run = {"tokens_in": t_in, "tokens_out": t_out, "price": PRICE["name"],
-                   "rub": round(t_in / 1000 * PRICE["in"] + t_out / 1000 * PRICE["out"], 2)}
+    exam_nohints = {}
+    p = ROOT / "reports" / "agent_exam_nohints.json"
+    if p.exists():                                    # тот же экзамен без подсказок кода: модель ищет сама
+        exam_nohints = json.loads(p.read_text(encoding="utf-8")).get("summary", {})
+    # Стоимость одного нового товара — по полному замеру без кеша (26.11.2026, 25 вызовов агента и 18 вызовов
+    # критика на 24 товарах; токены посчитаны токенизатором Gemini), цены — Qwen3.6 35B без НДС, см. submission/cost.md.
+    # Повторные прогоны экзамена берут ответы из кеша и расхода не показывают.
+    per_run = {"price": "оценка по тарифу Qwen3.6 35B без НДС; токены замерены на Gemini", "rub": COST_PER_PRODUCT}
     out = ROOT / "site" / "data" / "agent_runs.json"
-    out.write_text(json.dumps({"exam": exam, "per_run": per_run, "runs": runs}, ensure_ascii=False, separators=(",", ":")),
-                   encoding="utf-8")
+    out.write_text(json.dumps({"exam": exam, "exam_nohints": exam_nohints, "per_run": per_run, "runs": runs},
+                              ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"записано: {out}, прогонов {len(runs)}, расход на прогон: {per_run}")
 
 

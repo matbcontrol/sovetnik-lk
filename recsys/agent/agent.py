@@ -121,8 +121,13 @@ def to_edge(name: str, cat: Catalog, link: dict) -> dict:
     return {"src": "new", "dst": dst, "type": typ, "why": link["reason"]}      # requires, complements
 
 
-def place(llm, cat: Catalog, card: dict, verbose: bool = False) -> dict:
-    """Ставит товар в граф. Возвращает паспорт, связи после проверки и журнал шагов."""
+def place(llm, cat: Catalog, card: dict, verbose: bool = False, hints: bool = True) -> dict:
+    """Ставит товар в граф. Возвращает паспорт, связи после проверки и журнал шагов.
+
+    hints=True  — как в эксплуатации: код без модели заранее находит похожие товары, кандидатов в классы
+                  и базовый продукт дополнения, модель решает по готовым кандидатам.
+    hints=False — проверка самой модели: подсказок нет, всё нужное агент ищет в каталоге сам.
+    """
     t0 = time.time()
     spent0 = list(getattr(llm, "spent", [0, 0, 0]))            # расход токенов до прогона
     steps: list[dict] = []
@@ -131,10 +136,14 @@ def place(llm, cat: Catalog, card: dict, verbose: bool = False) -> dict:
     final = None
     card_text = json.dumps(card, ensure_ascii=False, indent=1)
     # ступень без модели: класс по ближайшим товарам каталога
-    hint = cat.neighbor_class(card.get("name", ""), card.get("vendor", ""))
+    hint = (cat.neighbor_class(card.get("name", ""), card.get("vendor", "")) if hints
+            else {"class_id": "", "confidence": 0.0, "similarity": 0.0, "near": []})
     alike = bool(hint["class_id"]) and hint.get("similarity", 0.0) >= ALIKE       # соседи похожи на товар
     trust = alike and hint["confidence"] >= SURE                                  # и единодушны
-    if alike:
+    if not hints:
+        card_text += ("\n\nПодсказок нет: класс, базовый продукт и соседей по линейке найди в каталоге сам через "
+                      "инструменты. Если ни один класс не подходит, товар не по профилю магазина: оставь class_id пустым.")
+    elif alike:
         seen_classes.add(hint["class_id"])
         for n in hint["near"]:
             seen_ids.add(n["id"])
@@ -148,9 +157,9 @@ def place(llm, cat: Catalog, card: dict, verbose: bool = False) -> dict:
                       "словами. Только если ни один класс не подходит, товар не по профилю магазина: оставь class_id пустым.")
     # ещё одна ступень без модели: поиск по самому названию (соседи по линейке) и по продукту,
     # названному после «for / для» (базовый продукт дополнения). Агент начинает уже с кандидатами.
-    queries = [card.get("name", "")]
+    queries = [card.get("name", "")] if hints else []
     m = re.split(r"\s+(?:for|для)\s+", card.get("name", ""), maxsplit=1, flags=re.I)
-    if len(m) == 2 and m[1].strip():
+    if hints and len(m) == 2 and m[1].strip():
         queries.append(m[1].strip())
     for q in queries:
         result = cat.search_catalog(q)
@@ -158,7 +167,7 @@ def place(llm, cat: Catalog, card: dict, verbose: bool = False) -> dict:
             seen_ids.add(r["id"])
         steps.append({"tool": "search_catalog", "args": {"query": q}, "thought": "без модели: поиск по названию",
                       "result": result, "ask": 0})
-    if not alike:                              # похожих товаров нет: кандидаты в классы — по словам карточки, тоже без модели
+    if hints and not alike:                    # похожих товаров нет: кандидаты в классы — по словам карточки, тоже без модели
         q = f"{card.get('name', '')} {card.get('description', '')[:300]}".strip()
         result = cat.find_classes(q)
         for r in result:

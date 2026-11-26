@@ -1,0 +1,21 @@
+{
+ "items": 800,
+ "seed": 5,
+ "sure": 0.7,
+ "alike": 0.3,
+ "any_neighbors": {
+  "share": 0.998,
+  "correct": 0.895
+ },
+ "unanimous": {
+  "share": 0.86,
+  "correct": 0.964
+ },
+ "used_without_model": {
+  "share": 0.844,
+  "correct": 0.969
+ },
+ "left_to_model": {
+  "share": 0.156
+ }
+}

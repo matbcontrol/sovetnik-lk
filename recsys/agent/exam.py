@@ -11,8 +11,10 @@
 Так проверяется именно то, что нужно для новых и «соло»-товаров: место в графе по одной карточке.
 Работает только на открытом каталоге; данных клиентов здесь нет.
 
-Запуск:  python -m recsys.agent.exam --n 12        (каждый прогон — 3–4 запроса к модели)
-Отчёт:   reports/agent_exam.json, журналы прогонов — data/interim/agent_runs/
+Запуск:  python -m recsys.agent.exam --n 24 --seed 23              как в эксплуатации: код готовит кандидатов
+         python -m recsys.agent.exam --n 24 --seed 23 --no-hints   без подсказок кода: модель ищет сама
+Отчёт:   reports/agent_exam.json (reports/agent_exam_nohints.json), журналы — data/interim/agent_runs/
+         (agent_runs_nohints/). В отчёте есть строка «только код»: какой класс дал бы код без модели.
 """
 from __future__ import annotations
 
@@ -23,7 +25,7 @@ import random
 import sys
 from collections import defaultdict
 
-from recsys.agent.agent import place
+from recsys.agent.agent import ALIKE, place
 from recsys.agent.tools import Catalog
 from recsys.config import INTERIM, ROOT
 
@@ -75,11 +77,26 @@ def grade(cat: Catalog, task: dict, res: dict) -> dict:
         "links": len(res["links"]), "dropped": len(res["dropped"]),
         "requests": res["model_requests"], "seconds": res["seconds"],
         "tokens_in": (res.get("tokens") or {}).get("in", 0), "tokens_out": (res.get("tokens") or {}).get("out", 0),
+        # сколько раз модель сама вызвала инструмент (шаги кода без модели не считаются)
+        "model_tool_calls": sum(1 for st in res["steps"] if st.get("ask", 0) >= 1 and st["tool"] != "итог"),
     }
+    # класс, который дал бы один код без модели: соседи по каталогу, а если они не похожи — поиск класса
+    card = res["card"]
+    h = cat.neighbor_class(card.get("name", ""), card.get("vendor", ""))
+    if h["class_id"] and h.get("similarity", 0.0) >= ALIKE:
+        code_cls = h["class_id"]
+    else:
+        found = cat.find_classes(f"{card.get('name', '')} {(card.get('description') or '')[:300]}".strip())
+        code_cls = found[0]["class_id"] if found else ""
+    out["class_code_only"] = code_cls == node["class"]
     if task["kind"] in ("дополнение", "линейка"):
         out["found"] = bool(dsts & lines)                     # нашёл сам агент
         by_rule = {e["src"] if e["dst"] == "new" else e["dst"] for e in res.get("rule_edges", [])}
         out["found_with_rules"] = bool((dsts | by_rule) & lines)   # агент или правило по названию
+        # был ли верный товар уже среди кандидатов, которые код нашёл до модели
+        given = {r.get("id") for st in res["steps"] if st.get("ask", 0) == 0 and isinstance(st["result"], list)
+                 for r in st["result"] if isinstance(r, dict)}
+        out["truth_given_by_code"] = bool(given & lines)
     return out
 
 
@@ -88,17 +105,19 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=12)
     ap.add_argument("--seed", type=int, default=11, help="номер выборки: другой номер — другие товары")
+    ap.add_argument("--no-hints", action="store_true", help="без подсказок кода: класс и связи модель ищет сама")
     args = ap.parse_args()
     from recsys.llm.client import LLM, LLMError
     cat = Catalog()
     llm = LLM()
-    runs_dir = INTERIM / "agent_runs"
+    suffix = "_nohints" if args.no_hints else ""
+    runs_dir = INTERIM / f"agent_runs{suffix}"
     runs_dir.mkdir(exist_ok=True)
     rows = []
     for task in pick(cat, args.n, args.seed):
         cat.hidden = {task["id"]}
         try:
-            res = place(llm, cat, cat.card(task["id"]))
+            res = place(llm, cat, cat.card(task["id"]), hints=not args.no_hints)
         except LLMError as e:
             print(f"остановлено: {str(e)[:160]}")
             break
@@ -116,7 +135,11 @@ def main() -> None:
     rel = [r for r in rows if "found" in r]
     fresh = [r for r in rows if r["tokens_in"] > 0]
     summary = {
-        "runs": n, "seed": args.seed,
+        "runs": n, "seed": args.seed, "hints": not args.no_hints,
+        "class_code_only": sum(r["class_code_only"] for r in rows) / n,
+        "model_tool_calls_per_run": sum(r["model_tool_calls"] for r in rows) / n,
+        "runs_with_model_tools": sum(r["model_tool_calls"] > 0 for r in rows) / n,
+        "truth_given_by_code": (sum(r.get("truth_given_by_code", False) for r in rel) / len(rel)) if rel else None,
         "class_by_neighbors": sum(r["class_source"] == "соседи по каталогу" for r in rows) / n,
         "class_exact": sum(r["class_exact"] for r in rows) / n,
         "class_category": sum(r["class_category"] for r in rows) / n,
@@ -136,8 +159,10 @@ def main() -> None:
     }
     print(f"\nпрогонов {n}: класс точно {summary['class_exact']:.0%}, в той же категории {summary['class_category']:.0%}; "
           + (f"связанный товар найден в {summary['related_found']:.0%} из {len(rel)}; " if rel else "")
-          + f"в среднем {summary['requests_per_run']:.1f} запроса и {summary['seconds_per_run']:.0f} с на товар")
-    out = ROOT / "reports" / "agent_exam.json"
+          + f"в среднем {summary['requests_per_run']:.1f} запроса и {summary['seconds_per_run']:.0f} с на товар; "
+          + f"класс одним кодом {summary['class_code_only']:.0%}; инструменты модель вызывала сама в "
+          + f"{summary['runs_with_model_tools']:.0%} прогонов ({summary['model_tool_calls_per_run']:.1f} на товар)")
+    out = ROOT / "reports" / f"agent_exam{suffix}.json"
     out.write_text(json.dumps({"summary": summary, "runs": rows}, ensure_ascii=False, indent=1), encoding="utf-8")
     print("отчёт:", out)
 
