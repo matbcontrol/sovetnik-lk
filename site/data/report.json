@@ -664,33 +664,33 @@
    },
    {
     "title": "Только «нужно»",
-    "cards": 619,
-    "hits": 53,
-    "share": 0.0856,
-    "top_share": 0.172,
+    "cards": 612,
+    "hits": 51,
+    "share": 0.0833,
+    "top_share": 0.169,
     "without": 38,
     "stand": false
    },
    {
     "title": "«нужно», затем один комплект",
-    "cards": 738,
-    "hits": 53,
-    "share": 0.0718,
-    "top_share": 0.202,
+    "cards": 736,
+    "hits": 51,
+    "share": 0.0693,
+    "top_share": 0.205,
     "without": 12,
     "stand": true
    },
    {
     "title": "«нужно» и комплект вперемешку",
-    "cards": 831,
-    "hits": 57,
-    "share": 0.0686,
-    "top_share": 0.646,
+    "cards": 829,
+    "hits": 55,
+    "share": 0.0663,
+    "top_share": 0.649,
     "without": 8,
     "stand": false
    }
   ],
   "top_before": "КриптоПро CSP 5.0",
-  "cost": "66 сбывшихся новых советов без проверки, 53 — с проверкой."
+  "cost": "66 сбывшихся новых советов без проверки, 51 — с проверкой."
  }
 }

@@ -93,6 +93,11 @@ def keeper(at: dict, verdicts: Verdicts, allow: tuple[str, ...] = SHOWN, popular
                 return False, "по этой покупке уже есть совет о следующей ступени или замене"
             steps.add(group)
             return True, ""
+        if tier == "line" and ab is not None and ab.version is not None:
+            mine = [at[a].version for a in history if at[a].version is not None
+                    and (at[a].line == ab.line or (ab.nline and at[a].nline == ab.nline))]
+            if mine and ab.version < min(mine):          # версии старше всех купленных у клиента не было
+                return False, "предыдущая версия уже купленного продукта"
         if tier == "kit" and ab is not None and (ab.nline or ab.line) in popular:
             return False, "комплект из числа популярных: идёт строкой «Часто докупают»"
         if tier == "line" or tier in allow:
