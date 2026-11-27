@@ -22,7 +22,7 @@
   "line": 2301,
   "graph": 255
  },
- "agent_links_in_verdict_table": 2,
+ "agent_links_in_verdict_table": 5,
  "groups": {
   "с доступом в кабинет: B2B": {
    "clients": 1578,
