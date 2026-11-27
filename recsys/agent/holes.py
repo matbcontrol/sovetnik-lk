@@ -30,7 +30,7 @@ from pathlib import Path
 
 from recsys.agent.tools import TOOLS_HELP, Catalog
 from recsys.config import INTERIM
-from recsys.llm.pair_verdicts import FAMILY_FILE, RULES, RU, read
+from recsys.llm.pair_verdicts import FAMILY_FILE, LINE_FILE, RULES, RU, read
 
 ROOT = Path(__file__).resolve().parents[2]
 LINKS_FILE = ROOT / "knowledge" / "agent_links.csv"
@@ -120,6 +120,14 @@ class HoleTools(Catalog):
         self.by_a: dict[str, list[tuple[str, str]]] = defaultdict(list)
         for (a, b), v in self.verdicts.items():
             self.by_a[a].append((b, v.verdict))
+        # закрытая таблица вердиктов линеек: ключ линейки у товаров, привязанных к каталогу, совпадает с семейством.
+        # Её вердикт главнее связи агента, поэтому пары «уже есть / то же самое / не связано» агент не предлагает.
+        # В запросы к модели она не идёт: только фильтр в коде.
+        self.line_veto: dict[str, set[str]] = defaultdict(set)
+        if LINE_FILE.exists():
+            for (a, b), v in read(LINE_FILE).items():
+                if v.verdict in ("has", "same", "unrelated"):
+                    self.line_veto[a].add(b)
         self.line: dict[str, set[str]] = defaultdict(set)
         with (INTERIM / "graph_edges.csv").open(encoding="utf-8") as f:
             for e in csv.DictReader(f):
@@ -178,8 +186,12 @@ class HoleTools(Catalog):
         return super().call(tool, args)
 
 
-def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False) -> dict:
-    """Ищет до трёх обоснованных советов к товару fam. Возвращает исход, связи, журнал шагов и расход."""
+def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bool = True) -> dict:
+    """Ищет до трёх обоснованных советов к товару fam. Возвращает исход, связи, журнал шагов и расход.
+
+    persist=True — сразу дописывает результат в knowledge/agent_links.csv и reports/agent_holes.json: живой запуск
+    со стенда и пакетный оставляют один и тот же след.
+    """
     t0 = time.time()
     spent0 = list(getattr(llm, "spent", [0, 0, 0]))
     n = cat.nodes[fam]
@@ -243,9 +255,14 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False) -> dict:
                "товара нет в продаже" if cat.nodes[dst].get("on_sale") != "1" else
                "неизвестный вид совета" if kind not in KINDS else
                f"уже рассужено: «{RU[vetoed[dst]]}»" if dst in vetoed else
+               "уже рассужено в таблице линеек" if dst in cat.line_veto.get(fam, ()) else
                "редакция или версия не из линейки товара" if kind in ("upgrade", "new_version") and dst not in cat.line.get(fam, ()) else
                "другая редакция той же линейки — это не «нужно»" if kind in ("need", "kit") and dst in cat.line.get(fam, ()) else "")
-        rec = {"dst": dst, "kind": kind, "reason": str(link.get("reason", ""))[:160], "quote_agent": str(link.get("quote", ""))[:200]}
+        reason = re.sub(r"\s+", " ", str(link.get("reason", ""))).strip().rstrip(".")[:160]
+        if kind == "kit" and reason and not reason.lower().startswith("если"):
+            reason = "Если ещё нет: " + reason[:1].lower() + reason[1:]       # комплект — всегда с условием
+        rec = {"dst": dst, "kind": kind, "type": KINDS.get(kind, ("",))[0], "reason": reason, "evidence": reason,
+               "quote_agent": str(link.get("quote", ""))[:200]}
         if why:
             dropped.append({**rec, "why": why})
         elif len(proposed) < MAX_LINKS:
@@ -275,10 +292,14 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False) -> dict:
         explanation = str(final.get("none_reason") or "").strip() or "; ".join(d["why"] for d in dropped[:3]) or \
             "агент не нашёл в каталоге товара, который подходит именно к этому"
     spent = getattr(llm, "spent", [0, 0, 0])
-    return {"family": fam, "name": n["name"], "class": n.get("class_name", ""), "outcome": outcome,
-            "explanation": explanation, "links": kept, "dropped": dropped, "steps": steps,
-            "model": getattr(llm, "model", ""), "model_requests": asks + (1 if proposed else 0),
-            "tokens": {"in": spent[0] - spent0[0], "out": spent[1] - spent0[1]}, "seconds": round(time.time() - t0, 1)}
+    res = {"family": fam, "name": n["name"], "class": n.get("class_name", ""), "outcome": outcome,
+           "explanation": explanation, "links": kept, "dropped": dropped, "steps": steps,
+           "model": getattr(llm, "model", ""), "model_requests": asks + (1 if proposed else 0),
+           "tokens": {"in": spent[0] - spent0[0], "out": spent[1] - spent0[1]}, "seconds": round(time.time() - t0, 1),
+           "date": time.strftime("%Y-%m-%d %H:%M")}
+    if persist:
+        save([res])
+    return res
 
 
 def edges_of(res: dict) -> list[dict]:
@@ -321,20 +342,28 @@ def save(results: list[dict]) -> None:
 
 
 def families_from(path: Path, top: int, private: bool, cat: HoleTools) -> list[str]:
-    """Дыры из очереди: товар каталога по ключу семейства или по family_id фида; линейку без товара — только с --private."""
+    """Дыры из очереди recsys.rank.holes по убыванию числа клиентов: только kind «закрывает агент» и только товары
+    каталога (по ключу семейства, family_id фида или адресу). Линейку без товара каталога — только с --private."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    holes = data["holes"] if isinstance(data, dict) else data
     by_id = {r.get("family_id"): k for k, r in cat.nodes.items() if r.get("family_id")}
-    out, skipped = [], 0
-    for h in json.loads(path.read_text(encoding="utf-8"))[: top * 3]:
-        k = h.get("family") or h.get("family_id") or ""
-        k = k if k in cat.nodes else by_id.get(str(k), "")
-        if k and cat.nodes[k].get("on_sale") == "1":
+    out, skipped, renew = [], 0, 0
+    for h in sorted(holes, key=lambda x: -(x.get("clients") or 0)):
+        if h.get("kind") and h["kind"] != "закрывает агент":
+            renew += 1                                   # «нужно продление, а не совет» — агенту закрывать нечего
+            continue
+        k = h.get("family") or ""
+        k = k if k in cat.nodes else by_id.get(str(h.get("family_id") or ""), "")
+        if not k and h.get("url"):
+            k = h["url"].split("store.softline.ru/")[-1].strip("/")
+        if k in cat.nodes and cat.nodes[k].get("on_sale") == "1":
             out.append(k)
-        elif not private:
+        else:
             skipped += 1
         if len(out) >= top:
             break
-    if skipped:
-        print(f"пропущено дыр без товара каталога: {skipped} (их названия из продаж по API без --private не отправляем)")
+    print(f"дыр к разбору: {len(out)}; пропущено: «нужно продление» {renew}, без товара каталога в продаже {skipped}"
+          + ("" if private else " (названия из продаж по API без --private не отправляем)"))
     return out
 
 
@@ -357,7 +386,7 @@ def main() -> None:
     llm, results = LLM(), []
     for fam in fams:
         print(f"дыра: {cat.nodes[fam]['name']}", flush=True)
-        res = close_hole(llm, cat, fam, verbose=args.verbose)
+        res = close_hole(llm, cat, fam, verbose=args.verbose, persist=False)
         results.append(res)
         for l in res["links"]:
             print(f"   {l['status']:5} [{l['kind']}] {l['dst_name'][:60]} — {l['reason'][:80]}" + (f" | цитата: «{l['quote'][:60]}»" if l.get("quote") else ""))

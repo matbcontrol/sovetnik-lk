@@ -44,7 +44,7 @@ def run(cat, critic):
     final = {"final": {"links": [{"dst": ok, "kind": "kit", "reason": "Если ещё нет: проверка"},
                                  {"dst": bad, "kind": "need", "reason": "лишнее"},
                                  {"dst": "nobody/nothing", "kind": "need", "reason": "выдумано"}]}}
-    return ok, close_hole(FakeLLM([final, {"verdicts": [critic(ok)]}]), cat, FAM)
+    return ok, close_hole(FakeLLM([final, {"verdicts": [critic(ok)]}]), cat, FAM, persist=False)
 
 
 def test_quote_found_in_text_goes_to_graph(cat):
@@ -70,7 +70,7 @@ def test_critic_rejects(cat):
 
 
 def test_honest_no_link(cat):
-    res = close_hole(FakeLLM([{"final": {"links": [], "none_reason": "совместимость зависит от модели"}}]), cat, FAM)
+    res = close_hole(FakeLLM([{"final": {"links": [], "none_reason": "совместимость зависит от модели"}}]), cat, FAM, persist=False)
     assert res["outcome"] == "no_grounded_link" and res["explanation"] == "совместимость зависит от модели"
     assert json.dumps(res, ensure_ascii=False)                  # результат пишется в отчёт как есть
 
