@@ -1023,20 +1023,26 @@
       </ol>`;
   }
 
-  /** ИИ-тест: виртуальные клиенты вслепую сравнивают два набора советов. */
+  /** ИИ-тест: виртуальные клиенты вслепую сравнивают два набора советов. Итог — по типам клиентов: в среднем он прячет главное. */
   function judgeHtml(j) {
     if (!j || !j.cases) return "";
-    const pr = j.prefer || {}, sc = j.scores || {}, ag = j.agreement;
-    const share = (x) => pct(x / j.cases, 0);
-    const avg = (x) => (x == null ? "—" : x.toFixed(2).replace(".", ","));
+    const g = j.by_group || {}, b = g.B2B, c = g.B2C;
+    const tile = (title, x, big, small) => `<div class="tile"><dt>${esc(title)}</dt><dd>${big}</dd><small>${small}</small></div>`;
+    const tiles = [];
+    if (b && b.judgments) {
+      tiles.push(tile("Организации: выбрали наш набор", b.judgments, `${nf.format(b.prefer.ours)} из ${nf.format(b.judgments)}`,
+        `совместные покупки — ${nf.format(b.prefer.base)}, равноценны — ${nf.format(b.prefer.tie)}`));
+      tiles.push(tile("Организации: ненужных советов", b.judgments, b.useless.ours != null ? pct(b.useless.ours, 0) : "—",
+        `у совместных покупок ${b.useless.base != null ? pct(b.useless.base, 0) : "—"}; на деле из нашего набора купили ${nf.format((b.bought || {}).ours || 0)}, из базового — ${nf.format((b.bought || {}).base || 0)}`));
+    }
+    if (c && c.judgments) {
+      tiles.push(tile("Частные лица: выбрали наш набор", c.judgments, `${nf.format(c.prefer.ours)} из ${nf.format(c.judgments)}`,
+        `совместные покупки — ${nf.format(c.prefer.base)}; на деле из нашего набора купили ${nf.format((c.bought || {}).ours || 0)}, из базового — ${nf.format((c.bought || {}).base || 0)}`));
+    }
+    if (j.agreement != null) tiles.push(tile("Оценщики согласны", 0, pct(j.agreement, 0), "два независимых оценщика выбрали один и тот же набор"));
     return `<h2 style="margin-top:26px">ИИ-тест: виртуальные клиенты сравнивают вслепую</h2>
       <p class="hint" style="margin-top:6px">${esc(j.how || "")}</p>
-      <dl class="tiles" style="margin:10px 0 8px">
-        <div class="tile"><dt>Предпочли наш набор</dt><dd>${share(pr.ours || 0)}</dd><small>${nf.format(pr.ours || 0)} оценок из ${nf.format(j.cases)}; совместные покупки — ${nf.format(pr.base || 0)}, равноценны — ${nf.format(pr.tie || 0)}</small></div>
-        <div class="tile"><dt>Средняя польза совета</dt><dd>${avg(sc.ours)}</dd><small>из 2: у совместных покупок ${avg(sc.base)}</small></div>
-        <div class="tile"><dt>Ненужных советов</dt><dd>${j.useless && j.useless.ours != null ? pct(j.useless.ours, 0) : "—"}</dd><small>оценка 0: не по профилю или дубль; у совместных покупок ${j.useless && j.useless.base != null ? pct(j.useless.base, 0) : "—"}</small></div>
-        ${ag != null ? `<div class="tile"><dt>Оценщики согласны</dt><dd>${pct(ag, 0)}</dd><small>два независимых оценщика выбрали один и тот же набор</small></div>` : ""}
-      </dl>
+      <dl class="tiles" style="margin:10px 0 8px">${tiles.join("")}</dl>
       ${j.note ? `<p class="hint">${esc(j.note)}</p>` : ""}`;
   }
 

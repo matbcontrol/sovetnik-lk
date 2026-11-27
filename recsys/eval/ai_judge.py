@@ -130,11 +130,14 @@ def summary() -> dict:
             for c in cases}
     decided = [v for v in vs if real.get(v["n"]) in ("ours", "base")]
     total = block(vs)
+    # что те же клиенты купили на самом деле: попадания каждого набора в выборке
+    bought = {g: {"ours": sum(x["hit"] for c in cases if c["group"] == g for x in c["ours"]),
+                  "base": sum(x["hit"] for c in cases if c["group"] == g for x in c["base"])} for g in ("B2B", "B2C")}
     out = {
         "cases": len(vs), "clients": len(cases), "judges": len(judges),
         "groups": {g: sum(c["group"] == g for c in cases) for g in ("B2B", "B2C")},
         "prefer": total["prefer"], "scores": total["scores"], "useless": total["useless"],
-        "by_group": {g: block([v for v in vs if v["group"] == g]) for g in ("B2B", "B2C")},
+        "by_group": {g: {**block([v for v in vs if v["group"] == g]), "bought": bought[g]} for g in ("B2B", "B2C")},
         "agreement": agree,
         "matches_purchase": {"cases": len(decided),
                              "share": sum(v["winner"] == real[v["n"]] for v in decided) / len(decided) if decided else None},
@@ -143,9 +146,34 @@ def summary() -> dict:
                 "этих клиентов. Каждый видит историю покупок до 31.08.2026 и два набора по три товара — нашу тройку "
                 "по протоколу и «совместные покупки» из baseline.py — в случайном порядке и только названиями: "
                 "какой набор чей, он не знает. Оценка — польза каждого товара от 0 до 2 и выбор набора."),
-        "note": ("Это не замена проверке на истории, а её дополнение: она меряет, что купили, а здесь — полезен ли "
-                 "совет, который не сбылся. Оценщики — языковые модели, а не живые клиенты."),
+        "note": "",
     }
+    # разбор по типам клиентов: у организаций и частных лиц ИИ-клиенты решают по-разному, и это нужно сказать прямо
+    gb, gc = out["by_group"]["B2B"], out["by_group"]["B2C"]
+    pct = lambda x: f"{100 * x:.0f} %".replace(".", ",") if x is not None else "—"  # noqa: E731
+
+    def goods(n: int) -> str:
+        d10, d100 = n % 10, n % 100
+        return f"{n} " + ("товар" if d10 == 1 and d100 != 11 else "товара" if 2 <= d10 <= 4 and not 12 <= d100 <= 14 else "товаров")
+
+    # Отчёт открытый: в нём только сводные числа по наборам. Сколько клиентов купило конкретный товар, наружу не идёт —
+    # этот пример (КриптоПро CSP у частных лиц) пишется в закрытую папку, для рассказа на демо.
+    d = json.loads(PRIVATE.read_text(encoding="utf-8"))
+    csp = {i for i, it in d["items"].items() if "КриптоПро CSP" in (it.get("name") or "")}
+    b2c = [c for c in d["clients"] if c["mode"] == "test" and c["group"] == "B2C"]
+    (WORK / "detail.json").write_text(json.dumps({
+        "example": "КриптоПро CSP у частных лиц группы A", "bought_after_split": sum(any(i in csp for i in c["target"]) for c in b2c),
+        "clients": len(b2c)}, ensure_ascii=False, indent=1), encoding="utf-8")
+    out["note"] = (
+        f"У организаций ИИ-клиенты выбрали наш набор в {gb['prefer']['ours']} оценках из {gb['judgments']}, "
+        f"совместные покупки — в {gb['prefer']['base']}; ненужных советов у нас {pct(gb['useless']['ours'])}, "
+        f"у базового способа {pct(gb['useless']['base'])}. Это совпадает с проверкой на истории: те же клиенты потом "
+        f"купили из нашего набора {goods(gb['bought']['ours'])}, из базового — {goods(gb['bought']['base'])}. "
+        f"У частных лиц наоборот: {gc['prefer']['base']} против {gc['prefer']['ours']} в пользу совместных покупок, "
+        f"хотя на деле эти клиенты купили из нашего набора {goods(gc['bought']['ours'])}, из базового — "
+        f"{goods(gc['bought']['base'])}. Модель в роли частного лица считает лишними товары, которые частные лица "
+        "в данных на деле покупают, — у неё свой стереотип «домашнего» покупателя. "
+        "ИИ-тест дополняет проверку на истории, но не заменяет её: оценщики — языковые модели, а не живые клиенты.")
     return out
 
 
