@@ -164,7 +164,7 @@
     const coSet = new Set(c.baseline.copurchase.filter((h) => h.hit).map((h) => h.item));
     const bought = (c.target || []).map((t) => `<span class="${oursSet.has(t) ? "ours" : coSet.has(t) ? "co" : ""}">${esc(name(t))}</span>`).join("");
     $("#sim-stage").innerHTML = `
-      <div class="sim-head"><b>Клиент ${k + 1} из ${total}</b> · ${kind(c)}${c.cold ? " · почти без истории" : ""}</div>
+      <div class="sim-head"><b>Клиент ${k + 1} из ${total}</b>: ${kind(c).toLowerCase()}${c.cold ? ", почти без истории" : ""}</div>
       <div class="sim-hist">Купил до ${fmtDate(trainUntil)}: <ul>${shown}</ul>${hist.length > 4 ? `<small>и ещё ${hist.length - 4}</small>` : ""}</div>
       <div class="sim-cols">
         <div class="sim-col sim-col--ours"><h3>Наш советник на ${fmtDate(trainUntil)}</h3>${c.protocol.map((h) => item(h, "купил")).join("") || '<div class="empty">совета нет</div>'}</div>

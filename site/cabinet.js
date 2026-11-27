@@ -80,8 +80,13 @@
     client.today = client.today || new Date().toISOString().slice(0, 10);
     const [head, tail] = ex.title.split(":");
     const name = /^(Организация|Частное лицо)$/.test(head.trim()) && tail ? tail.trim() : head.trim();
-    $("#who").innerHTML = `<b>${esc(name.charAt(0).toUpperCase() + name.slice(1))}</b>`
-      + `<span>${client.type === "b2b" ? "Организация" : "Частное лицо"} · пример стенда</span>`;
+    const title = name.charAt(0).toUpperCase() + name.slice(1);
+    $("#who").innerHTML = `<b>${esc(title)}</b><span>${client.type === "b2b" ? "Организация" : "Частное лицо"}</span>`;
+    // инициалы клиента; у примеров стенда без имени («Организация: …») — буква типа клиента
+    $("#avatar").textContent = /^(Организация|Частное лицо)/.test(ex.title) ? (client.type === "b2b" ? "О" : "Ч") : title.split(/\s+/).filter((w) => /^[A-ZА-ЯЁa-zа-яё]/.test(w) && w.length > 2).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
+    // виджет «Ключи и дистрибутивы» — как в кабинете: ключи доступны по действующим лицензиям
+    const live = client.purchases.filter((p) => !p.term || days(client.today, addMonths(p.date, p.term)) >= 0).length;
+    $("#w-keys").textContent = live ? `Доступно по ${live} ${live % 10 === 1 && live % 100 !== 11 ? "продукту" : "продуктам"}` : "Действующих лицензий нет";
     $("#today").textContent = `на ${fmtDate(client.today)}`;
 
     // клиент видит только подтверждённое; продление — в строке своей лицензии, а не в блоке советов
@@ -119,23 +124,23 @@
       if (r) {
         action = `<a class="btn btn--fill" href="${esc(shopUrl(r.url, "renew", k + 1))}" target="_blank" rel="noopener">Продлить</a> ${invoice("renew", k + 1, r.name)}`
           + `<div class="hint">${esc(r.why)}</div>`
-          + (r.also ? `<div class="hint"><b>Заодно.</b> ${esc(r.also)}</div>` : "");
+          + (r.also ? `<div class="hint"><strong>Заодно.</strong> ${esc(r.also)}</div>` : "");
       } else if (rep && ((left != null && left < 0) || n.sale !== 1)) {
         const wait = pending(rep);
         action = `<button class="btn" data-repl="${k}">Подобрать замену</button>
           <div class="hint">${wait ? "Замена ждёт подтверждения менеджера" : "Доступна замена — готова сразу"}</div>
-          <div class="repl ${wait ? "repl--wait" : ""}" id="repl-${k}" hidden>
-            ${wait ? "<b>Замена подготовлена и ждёт подтверждения менеджера.</b> " : "<b>Замена готова сразу.</b> "}
-            «${esc(rep.name)}», ${esc(price(node(rep.family)))}. ${esc(rep.why)}
+          <article class="repl ${wait ? "repl--wait" : ""}" id="repl-${k}" hidden>
+            ${wait ? "<strong>Замена подготовлена и ждёт подтверждения менеджера.</strong> " : "<strong>Замена готова сразу.</strong> "}
+            «<span class="card__name">${esc(rep.name)}</span>», ${esc(price(node(rep.family)))}. ${esc(rep.why)}
             ${wait ? '<div class="hint">Менеджер подтверждает такую замену одним нажатием в очереди советника — для всех клиентов сразу. Сейчас заявка ждёт ответа 1–2 рабочих дня.</div>'
               : `<div style="margin-top:6px"><a class="btn btn--fill" href="${esc(shopUrl(rep.url, "replace", k + 1))}" target="_blank" rel="noopener">Открыть в магазине</a></div>`}
-          </div>`;
+          </article>`;
       } else if (left != null && left < 0) {
         action = '<span class="hint">Срок истёк. Продление этого продукта советник не нашёл.</span>';
       }
-      return `<tr><td><div class="pvend"><b>${esc(n.vendor || (p.family.split("/")[0] || "").replace(/^./, (c) => c.toUpperCase()))}</b> <span>· № ${k + 1}</span></div>
-        <div class="pname">${esc(n.name || p.family)}</div>
-        <div class="ptags">${esc([className(n), `куплен ${fmtDate(p.date)}`, p.term ? `${p.term} мес.` : ""].filter(Boolean).join(" · "))}</div></td>
+      return `<tr><td><div class="pvend">${esc(n.vendor || (p.family.split("/")[0] || "").replace(/^./, (c) => c.toUpperCase()))} <span>№ ${k + 1}</span></div>
+        <div class="pname card__name">${esc(n.name || p.family)}</div>
+        <div class="ptags">${esc(`${className(n) ? className(n) + ", к" : "К"}уплен ${fmtDate(p.date)}${p.term ? ` на ${p.term} мес.` : ""}`)}</div></td>
         <td>${status}</td><td class="pact">${action}</td></tr>`;
     });
     $("#licenses").innerHTML = `<table><tr><th>Информация о продукте</th><th>Срок истечения</th><th></th></tr>${rows.join("")}</table>`;
@@ -157,7 +162,7 @@
     const term = end == null ? "" : left < 0 ? `<span class="badge badge--gone">истекла ${fmtDate(end)}</span>`
       : left <= 120 ? `<span class="badge badge--soon">истекает через ${left} дн.</span>`
         : `<span class="badge badge--ok">активна до ${fmtDate(end)}</span>`;
-    return `<div class="adv__basis">${esc(KIND[r.slot] || "К вашей покупке")}<b>${esc(node(src).name || src)}</b>${term}</div>`;
+    return `<div class="adv__basis">${esc(KIND[r.slot] || "К вашей покупке")}<span class="adv__src">${esc(node(src).name || src)}</span>${term}</div>`;
   }
 
   function renderBlock(client, personal, pops) {
