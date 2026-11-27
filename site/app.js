@@ -1155,7 +1155,11 @@
       out.push({ group: "clients", family: q.family || "", name: q.name || q.family || "", cls: q.cls || "", clients: q.clients || 0, b2b: q.b2b || 0, b2c: q.b2c || 0,
                  renew: !!q.renew, sale: q.sale !== false, rebuy: q.rebuy, other: q.other, run: (q.family && holeBy.get(q.family)) || null });
     }
-    for (const h of holeRuns) {
+    // разобранное вне очереди клиентов: сначала то, где агент что-то нашёл, длинный хвост «связи нет» — в конце
+    const rank = { closed: 0, kit: 1, queue: 2, known: 3, no_grounded_link: 4 };
+    const done = holeRuns.filter((h) => !seen.has(h.family)).map((h) => ({ h, r: rank[holeResult(h)] }));
+    done.sort((a, b) => a.r - b.r || String(a.h.name || "").localeCompare(String(b.h.name || ""), "ru"));
+    for (const { h } of done) {
       if (seen.has(h.family)) continue;
       seen.add(h.family);
       out.push({ group: "done", family: h.family, name: h.name || nodeNameAll(h.family), cls: h.class || "", clients: null, renew: false, sale: true, run: h });
@@ -1212,7 +1216,7 @@
     $("#holes-sum").innerHTML = parts.join(" ");
     const groups = new Set(list.map((x) => x.group));
     let shown = "";
-    $("#holes-list").innerHTML = list.slice(0, 200).map((x, i) => {
+    $("#holes-list").innerHTML = list.slice(0, 400).map((x, i) => {
       // подзаголовок группы — когда групп больше одной: в открытом стенде список один, и заголовок ему не нужен
       const title = GROUP[x.group] + (x.group === "catalog" && holeExtra.queue_total ? ` (первые ${(holeExtra.queue || []).length} из ${nf.format(holeExtra.queue_total)})` : "");
       const head = groups.size > 1 && x.group !== shown ? `<li class="sep" style="border:0;background:none;cursor:default;padding:8px 2px 0;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">${esc(title)}</li>` : "";
@@ -1235,8 +1239,9 @@
     if (!recs.length) return `<p class="hint">Блок ничего не советует ${who} с одним этим товаром: дыра остаётся.</p>`;
     const notes = [`Клиент — ${type === "b2b" ? "организация" : "частное лицо"} с одним этим товаром. Совет считается на странице, модель не вызывается.`];
     // совет по делу у владельца одного товара есть, а дыра всё равно числится: она про клиентов, у которых советуемое уже куплено
-    if (x.clients && recs.some((r) => r.slot !== "kit")) notes.push("Владельцу одного этого товара совет по делу есть. Дыра — про клиентов кабинета, у которых советуемое уже куплено или не подходит им по типу: им нужна ещё одна связь.");
     const fresh = ((x.run && x.run.links) || []).filter((l) => l.status === "graph" && holeNew(x.run, l));
+    // совет по делу был и без агента, а дыра всё равно числится: она про клиентов, у которых советуемое уже куплено
+    if (x.clients && recs.some((r) => r.slot !== "kit" && !fresh.some((l) => l.dst === r.family))) notes.push("Владельцу одного этого товара совет по делу есть и без агента. Дыра — про клиентов кабинета, у которых советуемое уже куплено или не подходит им по типу: им нужна ещё одна связь.");
     const lost = fresh.filter((l) => !recs.some((r) => r.family === l.dst));
     if (lost.length) notes.push(`Совет агента «${lost.map((l) => l.dst_name || nodeNameAll(l.dst)).join("», «")}» в эти три карточки не попал: комплект в блоке один, и место занято парой, проверенной заранее.`);
     return `<p class="hint small">${notes.map(esc).join(" ")}</p>

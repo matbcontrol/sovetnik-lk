@@ -1,6 +1,6 @@
 {
  "today": "2026-11-27",
- "total": 3475,
+ "total": 3465,
  "shown": 400,
  "order": "по месту товара в своём классе магазина; при равном месте — сначала программы, затем товары, у класса которых связь есть, а общего для всех товара нет",
  "holes": [
@@ -85,14 +85,6 @@
    "rank": 1
   },
   {
-   "family": "idex/impact-lms",
-   "name": "iMpact LMS",
-   "class": "Программы для бизнес-образования",
-   "product": "software",
-   "why": "nothing",
-   "rank": 1
-  },
-  {
    "family": "visionero/visionero",
    "name": "ПАК «Визионеро»",
    "class": "Программы для медицины",
@@ -160,14 +152,6 @@
    "family": "cyberlink-corp/cyberlink-myedit-audio",
    "name": "Cyberlink MyEdit Audio",
    "class": "Аудиоредакторы",
-   "product": "software",
-   "why": "judged",
-   "rank": 1
-  },
-  {
-   "family": "tehnologii-upravleniya-i-razvitiya/bolshaya-biblioteka-biznes-analitika-i-spetsialista-po-biznes-pr",
-   "name": "Большая библиотека бизнес-аналитика и специалиста по бизнес-процессам. Версия 4.0",
-   "class": "Бизнес-литература",
    "product": "software",
    "why": "judged",
    "rank": 1
@@ -429,14 +413,6 @@
    "rank": 1
   },
   {
-   "family": "etersoft/wineetersoft-network",
-   "name": "WINE@Etersoft",
-   "class": "Расширения системы",
-   "product": "software",
-   "why": "judged",
-   "rank": 1
-  },
-  {
    "family": "varwin/vr-dlya-obrazovaniya",
    "name": "VR для образования",
    "class": "Решения дополненной и виртуальной реальности AR/VR",
@@ -597,33 +573,9 @@
    "rank": 1
   },
   {
-   "family": "bosch/pcr9a5i90m-510635",
-   "name": "Газовая варочная панель Bosch PCR9A5I90M",
-   "class": "Варочные панели",
-   "product": "hardware",
-   "why": "class_only",
-   "rank": 1
-  },
-  {
-   "family": "patriot/512309216-349021",
-   "name": "Газонокосилка роторная Patriot PT 1433E (512309216) электрическая 1400Вт",
-   "class": "Газонокосилки",
-   "product": "hardware",
-   "why": "class_only",
-   "rank": 1
-  },
-  {
    "family": "patriot/474101040-349053",
    "name": "Генератор Patriot 2700i 2.5кВт",
    "class": "Генераторы",
-   "product": "hardware",
-   "why": "class_only",
-   "rank": 1
-  },
-  {
-   "family": "bosch/cmg7241b1-448057",
-   "name": "Электрический духовой шкаф Bosch CMG7241B1",
-   "class": "Духовые шкафы",
    "product": "hardware",
    "why": "class_only",
    "rank": 1
@@ -661,14 +613,6 @@
    "rank": 1
   },
   {
-   "family": "bosch/tsm6a011w-407651",
-   "name": "Электрическая кофемолка Bosch TSM6A011",
-   "class": "Кофемолки",
-   "product": "hardware",
-   "why": "class_only",
-   "rank": 1
-  },
-  {
    "family": "hikvision/ds-1280zj-dm18-268886",
    "name": "Крепление Hikvision DS-1280ZJ",
    "class": "Крепления",
@@ -680,14 +624,6 @@
    "family": "zombie/zombie-10-red-390036",
    "name": "Кресло игровое ZOMBIE 10",
    "class": "Кресла и стулья",
-   "product": "hardware",
-   "why": "class_only",
-   "rank": 1
-  },
-  {
-   "family": "panasonic/er-gy10cm520-218953",
-   "name": "Машинки для стрижки волос Panasonic ER-GY10CM520",
-   "class": "Машинки для стрижки волос",
    "product": "hardware",
    "why": "class_only",
    "rank": 1
@@ -784,14 +720,6 @@
    "family": "dahua/dh-hac-hdw1231tlmqp-a-0280b-526873",
    "name": "Камера видеонаблюдения аналоговая Dahua DH-HAC-HDW1231TLMQP-A-0280B 2.8-2.8мм HD-CVI HD-TVI цв. корп.:белый",
    "class": "Умный дом",
-   "product": "hardware",
-   "why": "class_only",
-   "rank": 1
-  },
-  {
-   "family": "philips/bhd500-00-481928",
-   "name": "Фены Philips BHD500/00",
-   "class": "Фены",
    "product": "hardware",
    "why": "class_only",
    "rank": 1
@@ -3200,6 +3128,78 @@
    "family": "aggsoftware/usb-hid-logger",
    "name": "USB HID Logger",
    "class": "Внешние устройства",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "kb-panorama/panorama-foto",
+   "name": "Панорама Фото",
+   "class": "Геоинформационные системы (ГИС)",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "65bitsoftware/scripting-module",
+   "name": "Scripting Module",
+   "class": "Графические редакторы",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "ems/ems-advanced-pdf-generator",
+   "name": "EMS Advanced PDF Generator",
+   "class": "Другие библиотеки",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "amberite/perfektsionist",
+   "name": "Перфекционист",
+   "class": "Другое офисное ПО",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "technosoft/texnosoft-ammiak-texnologiia",
+   "name": "Технософт Аммиак-Технология",
+   "class": "Инженерные калькуляторы",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "navitelnavigator/navitel-navigator-filippiny",
+   "name": "Навител Навигатор. Филиппины",
+   "class": "Карты и сервисы",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "youngzsoft/youngzsoft-ccproxy",
+   "name": "Youngzsoft CCProxy",
+   "class": "ПО для IP-телефонии",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "ipicasoftware/ip-video-system-design-tool",
+   "name": "IP Video System Design Tool",
+   "class": "ПО для видеонаблюдения",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "cyberlink-corp/cyberlink-powerdvd-365",
+   "name": "CyberLink PowerDVD 365",
+   "class": "Плееры",
    "product": "software",
    "why": "judged",
    "rank": 4
