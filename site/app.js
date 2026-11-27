@@ -30,9 +30,21 @@
   let graph;
   // решения менеджера по связям классов и заменам по классу: ключи «cl|класс|класс» и «cr|класс|товар»
   let approved = new Set(), rejected = new Set();
+  // Предложения агента каталога, принятые менеджером: новый товар и его связи. Хранятся в браузере рядом
+  // с решениями менеджера, чтобы принятое пережило перезагрузку страницы.
+  const AGENT_KEY = "sovetnik.agent.v1";
+  let agentStore = {};
+  try { agentStore = JSON.parse(localStorage.getItem(AGENT_KEY) || "{}"); } catch (e) { agentStore = {}; }
+  const nodeIds = new Set(data.nodes.map((n) => n.id));
   function rebuild() {
     const edges = data.edges.filter((e) => votes[ekey(e)] !== "no");
-    graph = new E.Graph(Object.assign({}, data, { edges }));
+    const newNodes = new Map(), newEdges = [];
+    for (const [k, p] of Object.entries(agentStore)) {
+      if (votes[k] !== "ok" || !p || !p.edge) continue;
+      if (p.node && !nodeIds.has(p.node.id)) newNodes.set(p.node.id, p.node);
+      newEdges.push(p.edge);
+    }
+    graph = new E.Graph(Object.assign({}, data, { nodes: data.nodes.concat(Array.from(newNodes.values())), edges: edges.concat(newEdges) }));
     const byClass = (v) => new Set(Object.keys(votes).filter((k) => votes[k] === v && /^(c[lrp]|pk)\|/.test(k)));
     approved = byClass("ok");
     rejected = byClass("no");
@@ -234,6 +246,11 @@
       <p class="hint small" style="margin-top:6px">Поля link, name, vendorName и price блок кабинета получает и сейчас; reason и slot — новые: объяснение совета и его вид.</p>
       <pre>${esc(JSON.stringify({ status: rows.length ? "shown" : "hidden", data: rows }, null, 1))}</pre>`;
   }
+  document.addEventListener("click", (ev) => {
+    if (!ev.target.matches || !ev.target.matches("[data-agent-queue]")) return;
+    $("#f-type").value = "agent"; $("#f-state").value = "";
+    $$(".tab").find((b) => b.dataset.tab === "links").click();
+  });
   function openQueue() {
     $("#f-type").value = "pending"; $("#f-state").value = "";
     $$(".tab").find((b) => b.dataset.tab === "links").click();
@@ -633,11 +650,50 @@
                    to: nodeNameAll(dst), source: "реестр российского ПО", conf: 0.5, ev: "", auto: false, urlTo: (allNodes.get(dst) || {}).url });
     }
   }
+  // Предложения агента каталога: одна строка на связь. Ждут менеджера; после «принять» товар встаёт в граф
+  // страницы, и владелец исходного товара видит его в личных советах.
+  const slug = (s) => String(s || "").toLowerCase().replace(/[^a-zа-яё0-9]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 60);
+  const knownEdges = new Set(data.edges.map(ekey));
+  function agentRowsOf(r) {
+    if (!r || !r.card || !r.card.name) return [];
+    const hidden = (r.truth && r.truth.id) || "";            // проверочный прогон: товар спрятан из каталога, он уже существует
+    const id = hidden || "new/" + slug(r.card.name);
+    const p = r.passport || {};
+    const node = hidden ? null : { id, name: r.card.name, vendor: r.card.vendor || "", cls: p.class_id || "", sale: 1,
+                                   b2b: p.audience === "b2b" ? 1 : 0, kind: "software" };
+    const rows = [];
+    for (const e of r.edges || []) {
+      if (e.type === "same_line") continue;
+      const src = e.src === "new" ? id : e.src, dst = e.dst === "new" ? id : e.dst;
+      if (knownEdges.has(`${src}|${dst}|${e.type}`)) continue;   // каталог эту связь уже знает
+      const target = allNodes.get(dst);
+      if (target && target.sale !== 1) continue;                  // товара нет в продаже: клиенту он не покажется, решать нечего
+      rows.push({ key: `ag|${id}|${src}|${dst}|${e.type}`, group: "agent", type: e.type,
+                  from: src === id ? r.card.name : nodeNameAll(src), to: dst === id ? r.card.name : nodeNameAll(dst),
+                  source: "агент каталога", conf: 0.75, ev: e.why || "", auto: false,
+                  urlFrom: (allNodes.get(src) || {}).url, urlTo: (allNodes.get(dst) || {}).url,
+                  payload: { node, edge: [src, dst, e.type, "агент каталога", 0.75, e.why || ""] } });
+    }
+    return rows;
+  }
+  function addAgentRows(run) {
+    let added = 0;
+    for (const row of agentRowsOf(run)) if (!queue.some((q) => q.key === row.key)) { queue.push(row); added++; }
+    return added;
+  }
+  ((agent && agent.runs) || []).forEach(addAgentRows);
+  // принятое раньше (например, в живом прогоне до перезагрузки) остаётся в очереди, чтобы его можно было отменить
+  for (const [k, p] of Object.entries(agentStore)) {
+    if (p && p.edge && !queue.some((q) => q.key === k)) {
+      queue.push({ key: k, group: "agent", type: p.edge[2], from: p.from || p.edge[0], to: p.to || p.edge[1], source: "агент каталога",
+                   conf: 0.75, ev: p.edge[5] || "", auto: false, payload: { node: p.node || null, edge: p.edge } });
+    }
+  }
   const waitingRows = () => queue.filter((r) => !r.auto && !votes[r.key]);
   const statusOf = (r) => (votes[r.key] === "ok" ? "принято" : votes[r.key] === "no" ? "отклонено" : r.auto ? "показывается клиенту" : "ждёт проверки");
   const types = Array.from(new Set(data.edges.map((e) => e[2])));
   const sources = Array.from(new Set(queue.map((r) => r.source)));
-  $("#f-type").innerHTML = '<option value="pending">ждут проверки менеджера</option><option value="class">связи между классами</option><option value="kit">комплекты к товарам</option><option value="pick">товары, проверенные для класса</option><option value="replace">замены по классу</option>'
+  $("#f-type").innerHTML = '<option value="pending">ждут проверки менеджера</option><option value="class">связи между классами</option><option value="kit">комплекты к товарам</option><option value="pick">товары, проверенные для класса</option><option value="replace">замены по классу</option><option value="agent">предложения агента каталога</option>'
     + '<option value="advice">связи товаров (без «той же линейки»)</option><option value="">все</option>'
     + types.map((t) => `<option value="${esc(t)}">товары: ${esc(E.TYPE_TITLE[t] || t)}</option>`).join("");
   $("#f-source").innerHTML = '<option value="">любой</option>' + sources.map((x) => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
@@ -647,7 +703,7 @@
     return queue.filter((r) => {
       const v = votes[r.key];
       if (t === "pending") { if (r.auto || v) return false; }
-      else if (t === "class" || t === "replace" || t === "kit" || t === "pick") { if (r.group !== t) return false; }
+      else if (t === "class" || t === "replace" || t === "kit" || t === "pick" || t === "agent") { if (r.group !== t) return false; }
       else if (t === "advice") { if (r.group !== "edge" || r.type === "same_line") return false; }
       else if (t && (r.group !== "edge" || r.type !== t)) return false;
       if (src && r.source !== src) return false;
@@ -657,6 +713,12 @@
     });
   }
   function saveVotes() {
+    for (const r of queue) {
+      if (r.group !== "agent") continue;
+      if (votes[r.key] === "ok") agentStore[r.key] = Object.assign({ from: r.from, to: r.to }, r.payload);
+      else delete agentStore[r.key];
+    }
+    localStorage.setItem(AGENT_KEY, JSON.stringify(agentStore));
     localStorage.setItem(VOTES_KEY, JSON.stringify(votes));
     rebuild(); renderLinks(); render();
   }
@@ -665,7 +727,7 @@
     const pages = Math.max(1, Math.ceil(rows.length / PAGE));
     page = Math.min(page, pages - 1);
     const part = rows.slice(page * PAGE, page * PAGE + PAGE);
-    const kind = (r) => (r.group === "class" ? "классы: " : r.group === "pick" ? "класс — товар: " : "") + (E.TYPE_TITLE[r.type] || r.type);
+    const kind = (r) => (r.group === "class" ? "классы: " : r.group === "pick" ? "класс — товар: " : r.group === "agent" ? "агент: " : "") + (E.TYPE_TITLE[r.type] || r.type);
     $("#links").innerHTML = '<tr><th>Откуда</th><th>Вид связи</th><th>Куда</th><th>Источник</th><th class="num">Уверенность</th><th>Основание</th><th>Решение</th></tr>' +
       part.map((r) => {
         const v = votes[r.key] || "";
@@ -1013,6 +1075,7 @@
       ${cut ? `<ul class="cut">${cut}</ul>` : '<p class="hint">Ничего.</p>'}
       <h3>Кому теперь посоветуем этот товар</h3>
       ${whoGets(r)}
+      ${(() => { const n = agentRowsOf(r).length; return n ? `<p class="hint" style="margin-top:6px">Результат агента не остаётся на этой вкладке: ${n} ${n === 1 ? "связь стоит" : "связей стоят"} в очереди менеджера. После «принять» владелец исходного товара увидит этот товар в личных советах. <button class="linkbtn" data-agent-queue>Открыть очередь</button></p>` : ""; })()}
       <h3>Что теперь увидит покупатель этого товара</h3>
       <div class="cards">${afterPlacement(r)}</div>
       <p class="hint" style="margin-top:8px">Так блок будет выглядеть после проверки менеджером: совет посчитан на этой странице по графу, в который товар только что поставлен. Связи по классу, которые менеджер ещё не принял, клиент не видит. Модель при расчёте не вызывается.</p>`;
@@ -1084,6 +1147,7 @@
                       dropped: res.dropped, seconds: res.seconds, requests: res.model_requests };
         if (!agent) return;
         agent.runs.unshift(run);
+        addAgentRows(run);
         agentIdx = 0;
         $("#a-status").textContent = `Готово: ${Math.round(res.seconds)} с, запросов к модели: ${res.model_requests}.`;
         renderAgent();
