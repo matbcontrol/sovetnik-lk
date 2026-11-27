@@ -862,6 +862,7 @@
       <p class="hint" style="margin-top:8px">Частных лиц в проверке всего несколько десятков — их цифры шумные, главных выводов по ним не делаем.</p>
       ${shownHtml(r.shown)}
       ${whyHtml(r.why)}
+      ${clientsHtml(r.ai_clients)}
       ${judgeHtml(r.ai_judge)}
       ${breakdownHtml(r)}
       <h3>Потолок: у скольких артикулов фида есть хоть какая-то опора для совета</h3>
@@ -1070,6 +1071,27 @@
         ${bb.ours ? `<li><b>Холодный старт.</b> У организаций группы B одна покупка: ${hitsW(bb.ours.hits)} против ${n((bb.copurchase || {}).hits)} и ${n((bb.popularity || {}).hits)}, из них новых продуктов ${n(bb.ours.new)} против ${n((bb.copurchase || {}).new)} и ${n((bb.popularity || {}).new)}.</li>` : ""}
         ${bc.ours ? `<li><b>Где перевеса нет.</b> Совсем новых для клиента продуктов система угадывает столько же, сколько популярность, а у частных лиц новых продуктов ${n(bc.ours.new)} против ${n((bc.popularity || {}).new)}: их покупки похожи друг на друга, и популярное почти так же хорошо. Здесь блок берёт не числом, а качеством: каждый совет проверен на паре с товаром клиента и объяснён.</li>` : ""}
       </ol>`;
+  }
+
+  /** Симуляция ИИ-клиентов на всех клиентах группы A: нажал бы, купил бы, сбылось ли — и есть ли у ИИ-клиента сигнал. */
+  function clientsHtml(a) {
+    if (!a || !a.by_group) return "";
+    const g = a.by_group, b = g.B2B, c = g.B2C;
+    const plural = (k, one, few, many) => { const d = k % 10, h = k % 100; return `${nf.format(k)} ${d === 1 && h !== 11 ? one : d >= 2 && d <= 4 && (h < 12 || h > 14) ? few : many}`; };
+    const two = (x, y) => `<b>${x != null ? pct(x, 0) : "—"}</b> / ${y != null ? pct(y, 0) : "—"}`;
+    const row = (title, x) => (!x || !x.ours ? "" : `<tr><td>${esc(title)} <small style="color:var(--muted)">(${plural(x.judgments, "оценка", "оценки", "оценок")})</small></td>
+      <td class="num">${two(x.ours.click, x.base.click)}</td><td class="num">${two(x.ours.buy, x.base.buy)}</td>
+      <td class="num">${two(x.ours.buy_came_true, x.base.buy_came_true)}</td>
+      <td class="num"><b>${nf.format(x.prefer.ours)}</b> / ${nf.format(x.prefer.base)} / ${nf.format(x.prefer.tie)}</td></tr>`);
+    const sb = b && b.signal, sc = c && c.signal;
+    const sig = sb && sb.would_buy && sb.would_not_buy ? `<p class="hint" style="margin-top:8px"><b>У ИИ-клиента есть сигнал, а не только мнение.</b> Товары, о которых организация сказала «купил бы», на деле куплены в ${pct(sb.would_buy.share, 0)} случаев (${nf.format(sb.would_buy.bought)} из ${nf.format(sb.would_buy.items)}), остальные показанные — в ${pct(sb.would_not_buy.share, 1)}.${sb.by_score && sb.by_score["2"] ? ` По оценке пользы: «нужно» (2) куплено в ${pct(sb.by_score["2"].share, 0)} случаев, «может пригодиться» (1) — в ${pct((sb.by_score["1"] || {}).share || 0, 0)}, «не нужно» (0) — в ${pct((sb.by_score["0"] || {}).share || 0, 0)}.` : ""} Поэтому то, что ИИ-клиенты-организации чаще выбирают наш набор и чаще готовы его купить, — это не вкус модели: её «купил бы» совпадает с настоящими покупками.${sc && sc.would_buy ? ` У частных лиц сигнал слабее (${pct(sc.would_buy.share, 0)} против ${pct(sc.would_not_buy.share, 0)}, всего ${nf.format(sc.would_buy.items)} «купил бы»), и перевеса нашего набора у них нет.` : ""}</p>` : "";
+    const empty = b && b.base && b.base.empty_sets ? ` У части организаций совместные покупки не дали ни одного совета (${plural(b.base.empty_sets, "пустой набор", "пустых набора", "пустых наборов")} из ${nf.format(b.judgments)}) — так работает и нынешний блок: нет связок — нет показа.` : "";
+    return `<h2 style="margin-top:26px">Симуляция: ${nf.format(a.clients || 0)} ИИ-клиентов в кабинете</h2>
+      <p class="hint" style="margin-top:6px">${esc(a.how || "")}</p>
+      <table class="links"><tr><th>Клиенты</th><th class="num">Нажал бы: наш / базовый</th><th class="num">Купил бы</th><th class="num">Из «купил бы» куплено на деле</th><th class="num">Выбрал: наш / базовый / поровну</th></tr>
+        ${row("Организации", b)}${row("Частные лица", c)}</table>
+      ${sig}
+      <p class="hint">«Нажал бы» и «купил бы» — доля оценок, где ИИ-клиент нажал бы хотя бы на один совет набора или купил бы его; «куплено на деле» — сколько из этих «купил бы» клиент действительно купил с 07.09 по 23.11.2026. Это намерения языковой модели в роли клиента, а не поведение живых клиентов.${empty}${a.agreement != null ? ` Оценщики выбрали один и тот же набор в ${pct(a.agreement, 0)} случаев.` : ""}</p>`;
   }
 
   /** ИИ-тест: виртуальные клиенты вслепую сравнивают два набора советов. Итог — по типам клиентов: в среднем он прячет главное. */

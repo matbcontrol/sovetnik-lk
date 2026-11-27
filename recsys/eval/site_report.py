@@ -210,6 +210,9 @@ def main() -> None:
                                "splits": splits, "no_catalog": {s: (rb.get("no_catalog (as value.py)") or {}).get(s)
                                                                 for s in ("A B2B", "B B2B")}}
         out["proof"] = proof
+    p = ROOT / "reports" / "ai_clients.json"
+    if p.exists():                                       # симуляция ИИ-клиентов на всех 337 клиентах группы A, только сводка
+        out["ai_clients"] = json.loads(p.read_text(encoding="utf-8"))
     p = ROOT / "reports" / "ai_judge.json"
     if p.exists():                                       # ИИ-тест: слепая оценка наборов виртуальными клиентами, только сводка
         out["ai_judge"] = json.loads(p.read_text(encoding="utf-8"))
