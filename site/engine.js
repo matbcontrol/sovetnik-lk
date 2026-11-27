@@ -43,6 +43,7 @@
     "номера версий в названиях": "выведено из названий",
     "названия": "выведено из названий",
     "название товара": "сказано в названии товара",
+    "серия в названии": "та же серия по названию: комплект",
     "таблица замещения АРПП": "реестр российского ПО",
     "реестр и класс": "тот же класс из реестра, ждёт проверки менеджером",
     "продажи": "подтверждено покупками",
@@ -69,6 +70,9 @@
   const KIT_MAX = 1;           // сколько советов «типовой набор» может быть в блоке
   const KIT_TO_CLIENT = true;  // показывать «комплект» клиенту сразу; false — только после решения менеджера
   const VERDICT_SOURCE = { need: "разметка: нужно", kit: "разметка: комплект" };
+  // Серия, прочитанная в названиях: курс той же серии, картридж той же серии другого цвета. Тоже «комплект».
+  const SERIES_SOURCE = "серия в названии";
+  const isKit = (source) => source === VERDICT_SOURCE.kit || source === SERIES_SOURCE;
   // Товар, проверенный для класса: разметчик судил не пару с конкретным товаром клиента, а «подходит ли товар Б
   // любому товару класса А» (или только товарам того же производителя). Совет слабее проверенной пары товаров.
   const PICK_SOURCE = { need: "разметка класса: нужно", kit: "разметка класса: комплект" };
@@ -297,7 +301,7 @@
       if (edge.source === PICK_SOURCE.need || edge.source === PICK_SOURCE.kit) {
         return `${ev.replace(/[. ]+$/, "")}.`;       // товар проверен для класса: причина написана для клиента
       }
-      if ((edge.source === VERDICT_SOURCE.need || edge.source === VERDICT_SOURCE.kit) && !edge.class) {
+      if ((edge.source === VERDICT_SOURCE.need || isKit(edge.source)) && !edge.class) {
         return `${ev.replace(/[. ]+$/, "")}.`;       // пара товаров проверена заранее: причина уже написана для клиента
       }
       if (edge.class) {
@@ -438,7 +442,7 @@
             const dstClass = (g.nodes.get(e.dst) || {}).cls || "";
             if (dstClass !== ((g.nodes.get(fam) || {}).cls || "")) e = Object.assign({}, e, { group: dstClass });
           }
-          if (e.source === VERDICT_SOURCE.kit) {
+          if (isKit(e.source)) {
             const key = `pk|${fam}|${e.dst}`;
             if (this.rejected.has(key)) continue;
             if (!(KIT_TO_CLIENT || this.unverified || this.approved.has(key))) {     // комплект — после менеджера
@@ -447,7 +451,7 @@
             }
             e = Object.assign({}, e, { key });
           }
-          push(e.dst, e.source === VERDICT_SOURCE.kit ? "kit" : SLOT[t], s, e);
+          push(e.dst, isKit(e.source) ? "kit" : SLOT[t], s, e);
         }
         // замена по классу: купленный зарубежный продукт сняли с продажи, а прямого аналога в таблице
         // замещения нет — советуем российские продукты того же класса из реестра

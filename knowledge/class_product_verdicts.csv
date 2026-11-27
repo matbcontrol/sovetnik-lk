@@ -1566,10 +1566,10 @@ security/domofony,hikvision/ds-2cd2783g2-izs-380350,unrelated,all,,,ассист
 security/domofony,hikvision/ds-2cd2h23g2-izs-406054,unrelated,all,,,ассистент
 security/ip-videocams,dahua/dh-pft1500-520880,unrelated,all,,,ассистент
 security/ip-videocams,dahua/dh-tas100-541152,unrelated,all,,,ассистент
-security/ip-videocams,dahua/dhi-nvr1108hs-8p-s3-h-446143,unrelated,all,,,ассистент
-security/ip-videocams,dahua/dhi-nvr2108hs-8p-i2-433304,unrelated,all,,,ассистент
-security/ip-videocams,dahua/dhi-nvr4108-4ks3-475011,unrelated,all,,,ассистент
-security/ip-videocams,dahua/dhi-nvr4216-16p-4ks3-483311,unrelated,all,,,ассистент
+security/ip-videocams,dahua/dhi-nvr1108hs-8p-s3-h-446143,kit,vendor,Если ещё нет регистратора: он записывает видео с камер того же производителя и хранит архив,,ассистент
+security/ip-videocams,dahua/dhi-nvr2108hs-8p-i2-433304,kit,vendor,Если ещё нет регистратора: он записывает видео с камер того же производителя и хранит архив,,ассистент
+security/ip-videocams,dahua/dhi-nvr4108-4ks3-475011,kit,vendor,Если ещё нет регистратора: он записывает видео с камер того же производителя и хранит архив,,ассистент
+security/ip-videocams,dahua/dhi-nvr4216-16p-4ks3-483311,kit,vendor,Если ещё нет регистратора: он записывает видео с камер того же производителя и хранит архив,,ассистент
 security/ip-videocams,hikvision/ds-1275zj-sus-267503,unrelated,all,,,ассистент
 security/ip-videocams,hikvision/ds-1280zj-dm18-268886,unrelated,all,,,ассистент
 security/ip-videocams,hikvision/ds-1475zj-sus-267509,unrelated,all,,,ассистент
@@ -1738,11 +1738,11 @@ torgovoe-oborudovanie/pos-aksessuary,mertech/1007-366915,unrelated,all,,b2b,ас
 torgovoe-oborudovanie/pos-aksessuary,mertech/4588-366877,unrelated,all,,b2b,ассистент
 torgovoe-oborudovanie/printery,atol/57984-458140,unrelated,all,,b2b,ассистент
 torgovoe-oborudovanie/printery,atol/61989-529647,unrelated,all,,b2b,ассистент
-torgovoe-oborudovanie/printery,datalogic/qw2520-bkk1-405050,unrelated,all,,b2b,ассистент
+torgovoe-oborudovanie/printery,datalogic/qw2520-bkk1-405050,kit,all,Если ещё нет сканера штрихкодов: он считывает коды с этикеток и товаров на кассе и складе,b2b,ассистент
 torgovoe-oborudovanie/printery,intersoft/union-label,unrelated,all,,b2b,ассистент
-torgovoe-oborudovanie/printery,mertech/m-er4871-467320,unrelated,all,,b2b,ассистент
+torgovoe-oborudovanie/printery,mertech/m-er4871-467320,kit,all,Если ещё нет сканера штрихкодов: он считывает коды с этикеток и товаров на кассе и складе,b2b,ассистент
 torgovoe-oborudovanie/printery,mertech/m-er4879-466871,unrelated,all,,b2b,ассистент
-torgovoe-oborudovanie/printery,mindeo/md6600-hd-stand-469547,unrelated,all,,b2b,ассистент
+torgovoe-oborudovanie/printery,mindeo/md6600-hd-stand-469547,kit,all,Если ещё нет сканера штрихкодов: он считывает коды с этикеток и товаров на кассе и складе,b2b,ассистент
 torgovoe-oborudovanie/printery,zebra/ds2208-sr7u2100azw-320907,unrelated,all,,b2b,ассистент
 torgovoe-oborudovanie/printery,zebra/ds3608-sr3u4600vzw-331749,unrelated,all,,b2b,ассистент
 torgovoe-oborudovanie/schetchiki-banknot-monet,docash/12953-29135-526958,kit,all,"Если ещё нет детектора: он проверит подлинность купюр, которые счётчик только пересчитал",b2b,ассистент

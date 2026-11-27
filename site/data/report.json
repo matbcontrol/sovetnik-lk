@@ -699,58 +699,48 @@
   "kinds": {
    "software": {
     "on_sale": 1817,
-    "with_advice": 918,
+    "with_advice": 1075,
     "own_need": 189,
-    "own_kit": 217,
+    "own_kit": 374,
     "class_need": 36,
     "class_kit": 476,
-    "solo": 899,
-    "solo_any_client": 886,
+    "solo": 742,
+    "solo_any_client": 729,
     "manager": 11,
-    "judged": 806,
+    "judged": 649,
     "class_only": 1,
     "nothing": 81
    },
    "hardware": {
     "on_sale": 6775,
-    "with_advice": 3645,
-    "own_need": 0,
-    "own_kit": 0,
-    "class_need": 269,
-    "class_kit": 3376,
-    "solo": 3130,
-    "solo_any_client": 2993,
-    "manager": 462,
+    "with_advice": 3860,
+    "own_need": 69,
+    "own_kit": 110,
+    "class_need": 268,
+    "class_kit": 3413,
+    "solo": 2915,
+    "solo_any_client": 2778,
+    "manager": 395,
     "judged": 0,
-    "class_only": 2135,
+    "class_only": 1987,
     "nothing": 533
    }
   },
   "total": {
    "on_sale": 8592,
-   "with_advice": 4563,
-   "own_need": 189,
-   "own_kit": 217,
-   "class_need": 305,
-   "class_kit": 3852,
-   "solo": 4029,
-   "solo_any_client": 3879,
-   "manager": 473,
-   "judged": 806,
-   "class_only": 2136,
+   "with_advice": 4935,
+   "own_need": 258,
+   "own_kit": 484,
+   "class_need": 304,
+   "class_kit": 3889,
+   "solo": 3657,
+   "solo_any_client": 3507,
+   "manager": 406,
+   "judged": 649,
+   "class_only": 1988,
    "nothing": 614
   },
   "solo_classes": [
-   {
-    "class": "Расходные материалы",
-    "solo": 287,
-    "on_sale": 287
-   },
-   {
-    "class": "Обучающие программы",
-    "solo": 278,
-    "on_sale": 290
-   },
    {
     "class": "Сменные батареи для ИБП",
     "solo": 244,
@@ -772,6 +762,11 @@
     "on_sale": 196
    },
    {
+    "class": "Расходные материалы",
+    "solo": 177,
+    "on_sale": 287
+   },
+   {
     "class": "Медиаконвертеры, трансиверы",
     "solo": 168,
     "on_sale": 168
@@ -787,19 +782,24 @@
     "on_sale": 141
    },
    {
+    "class": "Обучающие программы",
+    "solo": 121,
+    "on_sale": 290
+   },
+   {
     "class": "Жесткие диски",
     "solo": 106,
     "on_sale": 106
    },
    {
-    "class": "IP-телефоны",
-    "solo": 104,
-    "on_sale": 104
-   },
-   {
     "class": "Системы автоматизации",
     "solo": 99,
     "on_sale": 106
+   },
+   {
+    "class": "Телефоны DECT",
+    "solo": 80,
+    "on_sale": 80
    }
   ]
  }

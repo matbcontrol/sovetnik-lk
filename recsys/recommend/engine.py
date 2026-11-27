@@ -68,6 +68,7 @@ LABEL = {
     "номера версий в названиях": "выведено из названий",
     "названия": "выведено из названий",
     "название товара": "сказано в названии товара",
+    "серия в названии": "та же серия по названию: комплект",
     "таблица замещения АРПП": "реестр российского ПО",
     "реестр и класс": "тот же класс из реестра, ждёт проверки менеджером",
     "продажи": "подтверждено покупками",
@@ -91,6 +92,10 @@ PENDING = "ждёт проверки менеджером"
 KIT_MAX = 1                  # сколько советов «типовой набор» может быть в блоке
 KIT_TO_CLIENT = True         # показывать «комплект» клиенту сразу; False — только после решения менеджера
 VERDICT_SOURCE = {"need": "разметка: нужно", "kit": "разметка: комплект"}
+# Серия, прочитанная в названиях (recsys.graph.name_links): курс той же серии, картридж той же серии другого
+# цвета. Это тоже «комплект»: с условием «Если…», последней карточкой, не больше одного.
+SERIES_SOURCE = "серия в названии"
+KIT_SOURCES = (VERDICT_SOURCE["kit"], SERIES_SOURCE)
 # Товар, проверенный для класса: разметчик судил не пару с конкретным товаром клиента, а «подходит ли товар Б
 # любому товару класса А» (или только товарам того же производителя). Так получают совет оборудование и
 # малоизвестные программы, у которых своих проверенных пар нет. Совет слабее проверенной пары товаров.
@@ -271,6 +276,11 @@ class Graph:
                 line[e["dst"]].add(e["src"])
         edges = base + [e for e in as_family_edges(families, lambda a, b: b in line[a])
                         if (e["src"], e["dst"]) not in known]
+        # связи, прочитанные в названиях (курсы одной серии, картриджи одной серии разных цветов)
+        from recsys.graph.name_links import read as name_links
+        known = {(e["src"], e["dst"]) for e in edges if e["type"] != "same_line"}
+        edges += [e for e in name_links() if e["src"] in nodes and e["dst"] in nodes
+                  and (e["src"], e["dst"]) not in known]
         veto = sorted((a, b, v.verdict) for (a, b), v in families.items() if not v.shown)
         classes = read(CLASS_FILE) if CLASS_FILE.exists() else {}
         class_veto = sorted(p for p, v in classes.items() if v.verdict in ("has", "same"))
@@ -485,7 +495,7 @@ class Recommender:
         t, ev = edge["type"], edge.get("evidence", "")
         if edge.get("source") in PICK_SOURCE.values():
             return f"{ev.rstrip('. ')}."                 # товар проверен для класса: причина написана для клиента
-        if edge.get("source") in VERDICT_SOURCE.values() and not edge.get("class"):
+        if edge.get("source") in (*VERDICT_SOURCE.values(), SERIES_SOURCE) and not edge.get("class"):
             return f"{ev.rstrip('. ')}."                 # пара товаров проверена заранее: причина уже написана для клиента
         if edge.get("class"):
             cname = self.g.class_names.get(edge["class"], edge["class"])
@@ -599,7 +609,7 @@ class Recommender:
                     dst_class = (self.g.nodes.get(e["dst"]) or {}).get("class") or ""
                     if dst_class != ((self.g.nodes.get(fam) or {}).get("class") or ""):
                         e = {**e, "group": dst_class}
-                if e.get("source") == VERDICT_SOURCE["kit"]:
+                if e.get("source") in KIT_SOURCES:
                     key = f"pk|{fam}|{e['dst']}"
                     if key in self.rejected:
                         continue
@@ -607,7 +617,7 @@ class Recommender:
                         bans.append({"family": e["dst"], "type": t, "from": fam, "reason": PENDING, "key": key})
                         continue
                     e = {**e, "key": key}
-                push(e["dst"], "kit" if e.get("source") == VERDICT_SOURCE["kit"] else SLOT[t], s, e, p)
+                push(e["dst"], "kit" if e.get("source") in KIT_SOURCES else SLOT[t], s, e, p)
 
             # замена по классу: купленный зарубежный продукт сняли с продажи, а прямого аналога в таблице
             # замещения нет — советуем российские продукты того же класса из реестра
