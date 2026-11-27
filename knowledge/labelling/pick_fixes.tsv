@@ -19,18 +19,44 @@ buhgalteriya-sklad-kadry/skladskie-programmi	m3-mobile/pc100c-t2ffs0-hf-503434	K
 buhgalteriya-sklad-kadry/skladskie-programmi	mertech/m-er9050-382864	K	Если ещё нет терминалов сбора данных: с ними товар принимают и считают по штрихкодам у стеллажа	b2b
 buhgalteriya-sklad-kadry/skladskie-programmi	urovo/dt40-lite12u4401x-t-476854	K	Если ещё нет терминалов сбора данных: с ними товар принимают и считают по штрихкодам у стеллажа	b2b
 computers/all-in-ones	astralinux/workspad	U
+computers/all-in-ones	microsoft/microsoft-365-for-family	K	Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями
+computers/all-in-ones	microsoft/microsoft-365-personal	K	Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями
+computers/all-in-ones	microsoft/microsoft-office-dlya-doma-i-biznesa-2024	K	Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями
+computers/all-in-ones	microsoft/microsoft-office-dlya-doma-i-ucheby-2024	K	Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями
+computers/all-in-ones	vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
+computers/all-in-ones	yandex/yandeks-360	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
+computers/all-in-ones	yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
 computers/desktop	astralinux/workspad	U
+computers/desktop	vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
+computers/desktop	yandex/yandeks-360	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
+computers/desktop	yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
 computers/nettop	astralinux/workspad	U
+computers/nettop	vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
+computers/nettop	yandex/yandeks-360	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
+computers/nettop	yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
 computers/notebook	astralinux/workspad	U
+computers/notebook	microsoft/microsoft-365-for-family	K	Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями
+computers/notebook	microsoft/microsoft-365-personal	K	Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями
+computers/notebook	microsoft/microsoft-office-dlya-doma-i-biznesa-2024	K	Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями
+computers/notebook	microsoft/microsoft-office-dlya-doma-i-ucheby-2024	K	Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями
+computers/notebook	vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
+computers/notebook	yandex/yandeks-360	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
+computers/notebook	yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy	K	Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц
 elektroinstrument/rubanki	karcher/1-628-170-0-468537	K	Если ещё нет строительного пылесоса: он соберёт стружку и пыль после работы рубанком
 internet-i-set/pochtovie-programmi	2bt/rusbss	U
 internet-i-set/servernoe-po	2bt/rusbss	U
 parts/ram	netac/nt01n5m-256g-m3x-390058	U
+peripherals/keyboards	a4tech/b-072-344103	K	Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора	b2c
+peripherals/keyboards	a4tech/x7-200mp-344100	K	Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора	b2c
 peripherals/keyboards	acer/um-hx2cd-306-486427	U
 peripherals/keyboards	acer/um-ke1cd-601-505686	U
 peripherals/keyboards	asus/90lm03i1-b01370-375780	U
+peripherals/keyboards	defender/50559-344068	K	Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора	b2c
+peripherals/keyboards	defender/50560-344069	K	Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора	b2c
 peripherals/keyboards	dell/p2425h-463974	U
+peripherals/keyboards	oklick/ok-fp0350-344096	K	Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора	b2c
 peripherals/keyboards	philips/24e2g2200-502616	U
+peripherals/keyboards	razer/rz02-04490100-r3m1-408914	K	Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора	b2c
 peripherals/silovye-moduli-dlya-ibp	ippon/bk-6-eu-1-8-10-b-470665	U
 peripherals/silovye-moduli-dlya-ibp	ippon/bk-6-eu-1-8-16-b-457176	U
 peripherals/silovye-moduli-dlya-ibp	pilot/pilot-s7m-82530	U

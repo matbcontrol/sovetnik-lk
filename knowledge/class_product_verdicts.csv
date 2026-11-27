@@ -272,17 +272,17 @@ computers/all-in-ones,kaspersky/kaspersky-premium,need,all,Антивирус з
 computers/all-in-ones,kaspersky/kaspersky-standard,need,all,Антивирус защищает компьютер от вирусов и мошеннических сайтов с первого дня,b2c,ассистент
 computers/all-in-ones,logitech/920-003058-526771,kit,all,Если в комплекте нет клавиатуры: без неё на моноблоке не напечатать,,ассистент
 computers/all-in-ones,logitech/920-003169-521130,kit,all,Если в комплекте нет клавиатуры и мыши: без них моноблоком не управлять,,ассистент
-computers/all-in-ones,microsoft/microsoft-365-for-family,need,all,"Офисный пакет нужен, чтобы работать на компьютере с документами, таблицами и презентациями",b2c,ассистент
-computers/all-in-ones,microsoft/microsoft-365-personal,need,all,"Офисный пакет нужен, чтобы работать на компьютере с документами, таблицами и презентациями",b2c,ассистент
-computers/all-in-ones,microsoft/microsoft-office-dlya-doma-i-biznesa-2024,need,all,"Офисный пакет нужен, чтобы работать на компьютере с документами, таблицами и презентациями",b2c,ассистент
-computers/all-in-ones,microsoft/microsoft-office-dlya-doma-i-ucheby-2024,need,all,"Офисный пакет нужен, чтобы работать на компьютере с документами, таблицами и презентациями",b2c,ассистент
+computers/all-in-ones,microsoft/microsoft-365-for-family,kit,all,"Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями",b2c,ассистент
+computers/all-in-ones,microsoft/microsoft-365-personal,kit,all,"Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями",b2c,ассистент
+computers/all-in-ones,microsoft/microsoft-office-dlya-doma-i-biznesa-2024,kit,all,"Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями",b2c,ассистент
+computers/all-in-ones,microsoft/microsoft-office-dlya-doma-i-ucheby-2024,kit,all,"Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями",b2c,ассистент
 computers/all-in-ones,msi/s11-04ru230-cla-328535,kit,all,Если в комплекте нет клавиатуры: без неё на моноблоке не напечатать,,ассистент
 computers/all-in-ones,oklick/1011937-362754,kit,all,Если в комплекте нет клавиатуры: без неё на моноблоке не напечатать,,ассистент
 computers/all-in-ones,pro32/pro32-endpoint-security,need,all,Корпоративный антивирус защищает рабочее место и управляется из одной консоли с остальными,b2b,ассистент
 computers/all-in-ones,pro32/pro32-endpoint-security-standard,need,all,Корпоративный антивирус защищает рабочее место и управляется из одной консоли с остальными,b2b,ассистент
-computers/all-in-ones,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,need,all,"Офисный пакет нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
-computers/all-in-ones,yandex/yandeks-360,need,all,"Офисный пакет нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
-computers/all-in-ones,yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy,need,all,"Офисный пакет нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/all-in-ones,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/all-in-ones,yandex/yandeks-360,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/all-in-ones,yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
 computers/desktop,acer/um-hx2cd-306-486427,need,all,"Системный блок продаётся без экрана, и монитор нужен, чтобы им пользоваться",,ассистент
 computers/desktop,acer/um-ke1cd-601-505686,need,all,"Системный блок продаётся без экрана, и монитор нужен, чтобы им пользоваться",,ассистент
 computers/desktop,astralinux/workspad,unrelated,all,,b2b,ассистент
@@ -300,9 +300,9 @@ computers/desktop,oklick/1011937-362754,need,all,"Клавиатура подк�
 computers/desktop,philips/24e2g2200-502616,need,all,"Системный блок продаётся без экрана, и монитор нужен, чтобы им пользоваться",,ассистент
 computers/desktop,pro32/pro32-endpoint-security,need,all,Корпоративный антивирус защищает рабочее место и управляется из одной консоли с остальными,b2b,ассистент
 computers/desktop,pro32/pro32-endpoint-security-standard,need,all,Корпоративный антивирус защищает рабочее место и управляется из одной консоли с остальными,b2b,ассистент
-computers/desktop,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,need,all,"Офисный пакет нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
-computers/desktop,yandex/yandeks-360,need,all,"Офисный пакет нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
-computers/desktop,yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy,need,all,"Офисный пакет нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/desktop,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/desktop,yandex/yandeks-360,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/desktop,yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
 computers/nettop,acer/um-hx2cd-306-486427,need,all,"У мини-ПК нет своего экрана, и монитор нужен, чтобы им пользоваться",,ассистент
 computers/nettop,acer/um-ke1cd-601-505686,need,all,"У мини-ПК нет своего экрана, и монитор нужен, чтобы им пользоваться",,ассистент
 computers/nettop,astralinux/workspad,unrelated,all,,b2b,ассистент
@@ -326,9 +326,9 @@ computers/nettop,oklick/1011937-362754,need,all,"Мини-ПК идёт без �
 computers/nettop,philips/24e2g2200-502616,need,all,"У мини-ПК нет своего экрана, и монитор нужен, чтобы им пользоваться",,ассистент
 computers/nettop,pro32/pro32-endpoint-security,unrelated,all,,b2b,ассистент
 computers/nettop,pro32/pro32-endpoint-security-standard,unrelated,all,,b2b,ассистент
-computers/nettop,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,need,all,"Офисный пакет нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
-computers/nettop,yandex/yandeks-360,need,all,"Офисный пакет нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
-computers/nettop,yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy,need,all,"Офисный пакет нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/nettop,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/nettop,yandex/yandeks-360,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/nettop,yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
 computers/notebook,acer/zl-oth11-025-534272,unrelated,all,,,ассистент
 computers/notebook,acer/zl-oth11-026-534273,unrelated,all,,,ассистент
 computers/notebook,astralinux/workspad,unrelated,all,,b2b,ассистент
@@ -344,15 +344,15 @@ computers/notebook,kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirenn
 computers/notebook,kaspersky/kaspersky-plus,need,all,"Антивирус защитит ноутбук от вирусов и фишинга, в том числе в чужих сетях Wi-Fi",b2c,ассистент
 computers/notebook,kaspersky/kaspersky-premium,need,all,"Антивирус защитит ноутбук от вирусов и фишинга, в том числе в чужих сетях Wi-Fi",b2c,ассистент
 computers/notebook,kaspersky/kaspersky-standard,need,all,"Антивирус защитит ноутбук от вирусов и фишинга, в том числе в чужих сетях Wi-Fi",b2c,ассистент
-computers/notebook,microsoft/microsoft-365-for-family,need,all,"Офисный пакет нужен, чтобы работать на ноутбуке с документами, таблицами и презентациями",b2c,ассистент
-computers/notebook,microsoft/microsoft-365-personal,need,all,"Офисный пакет нужен, чтобы работать на ноутбуке с документами, таблицами и презентациями",b2c,ассистент
-computers/notebook,microsoft/microsoft-office-dlya-doma-i-biznesa-2024,need,all,"Офисный пакет нужен, чтобы работать на ноутбуке с документами, таблицами и презентациями",b2c,ассистент
-computers/notebook,microsoft/microsoft-office-dlya-doma-i-ucheby-2024,need,all,"Офисный пакет нужен, чтобы работать на ноутбуке с документами, таблицами и презентациями",b2c,ассистент
+computers/notebook,microsoft/microsoft-365-for-family,kit,all,"Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями",b2c,ассистент
+computers/notebook,microsoft/microsoft-365-personal,kit,all,"Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями",b2c,ассистент
+computers/notebook,microsoft/microsoft-office-dlya-doma-i-biznesa-2024,kit,all,"Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями",b2c,ассистент
+computers/notebook,microsoft/microsoft-office-dlya-doma-i-ucheby-2024,kit,all,"Если ещё нет офисного пакета: в нём работают с документами, таблицами и презентациями",b2c,ассистент
 computers/notebook,pro32/pro32-endpoint-security,need,all,Корпоративный антивирус защищает ноутбук и вне офиса и управляется из одной консоли,b2b,ассистент
 computers/notebook,pro32/pro32-endpoint-security-standard,need,all,Корпоративный антивирус защищает ноутбук и вне офиса и управляется из одной консоли,b2b,ассистент
-computers/notebook,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,need,all,"Офисный пакет нужен на рабочем ноутбуке для документов, почты и таблиц",b2b,ассистент
-computers/notebook,yandex/yandeks-360,need,all,"Офисный пакет нужен на рабочем ноутбуке для документов, почты и таблиц",b2b,ассистент
-computers/notebook,yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy,need,all,"Офисный пакет нужен на рабочем ноутбуке для документов, почты и таблиц",b2b,ассистент
+computers/notebook,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/notebook,yandex/yandeks-360,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
+computers/notebook,yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy,kit,all,"Если ещё нет офисного пакета: он нужен на рабочем месте для документов, почты и таблиц",b2b,ассистент
 delovie-programmi/iskusstvennyi-intellekt,tehnologii-upravleniya-i-razvitiya/ii-agenty-dlia-biznesa,kit,all,Если сотрудники ещё не обучены: курс научит ставить задачи ИИ и проверять его ответы,b2b,ассистент
 delovie-programmi/iskusstvennyi-intellekt,tehnologii-upravleniya-i-razvitiya/ucebno-prakticeskii-paket-po-ii,kit,all,Если сотрудники ещё не обучены: курс научит ставить задачи ИИ и проверять его ответы,b2b,ассистент
 delovie-programmi/pravovoe-i-kadrovoe-obsluzivanie,cryptocom/magpro-kriptopaket,unrelated,all,,b2b,ассистент
@@ -1250,20 +1250,20 @@ peripherals/displays,logitech/920-003169-521130,kit,all,"Если ещё нет 
 peripherals/displays,oklick/1011937-362754,kit,all,Если ещё нет клавиатуры: без неё за рабочим местом с монитором не поработать,,ассистент
 peripherals/displays,samsung/stn-wm55rx-ci-541996,unrelated,all,,,ассистент
 peripherals/displays,twt/twt-45-45-0-15-gy-372833,unrelated,all,,,ассистент
-peripherals/keyboards,a4tech/b-072-344103,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,,ассистент
-peripherals/keyboards,a4tech/x7-200mp-344100,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,,ассистент
+peripherals/keyboards,a4tech/b-072-344103,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,b2c,ассистент
+peripherals/keyboards,a4tech/x7-200mp-344100,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,b2c,ассистент
 peripherals/keyboards,acer/um-hx2cd-306-486427,unrelated,all,,,ассистент
 peripherals/keyboards,acer/um-ke1cd-601-505686,unrelated,all,,,ассистент
 peripherals/keyboards,acer/zl-oth11-02g-535083,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,,ассистент
 peripherals/keyboards,asus/90lm03i1-b01370-375780,unrelated,all,,,ассистент
 peripherals/keyboards,asus/90lm08u0-b01170-434817,unrelated,all,,,ассистент
-peripherals/keyboards,defender/50559-344068,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,,ассистент
-peripherals/keyboards,defender/50560-344069,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,,ассистент
+peripherals/keyboards,defender/50559-344068,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,b2c,ассистент
+peripherals/keyboards,defender/50560-344069,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,b2c,ассистент
 peripherals/keyboards,dell/p2425h-463974,unrelated,all,,,ассистент
-peripherals/keyboards,oklick/ok-fp0350-344096,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,,ассистент
+peripherals/keyboards,oklick/ok-fp0350-344096,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,b2c,ассистент
 peripherals/keyboards,oklick/ok-rg0550-bk-363861,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,,ассистент
 peripherals/keyboards,philips/24e2g2200-502616,unrelated,all,,,ассистент
-peripherals/keyboards,razer/rz02-04490100-r3m1-408914,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,,ассистент
+peripherals/keyboards,razer/rz02-04490100-r3m1-408914,kit,all,Если ещё нет коврика: он даёт мыши ровную поверхность и точное движение курсора,b2c,ассистент
 peripherals/silovye-moduli-dlya-ibp,buro/bu-ps2-w-82494,unrelated,all,,,ассистент
 peripherals/silovye-moduli-dlya-ibp,buro/bu-ps3f-w-82497,unrelated,all,,,ассистент
 peripherals/silovye-moduli-dlya-ibp,elemy/ats-1204-16-416104,unrelated,all,,b2b,ассистент
