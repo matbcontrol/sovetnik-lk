@@ -163,7 +163,12 @@ def verdict_summary() -> dict:
                 if v:
                     old[v.verdict] += 1
     runs = json.loads(REPORT.read_text(encoding="utf-8")).get("runs", {}) if REPORT.exists() else {}
+    # вторая разметка вслепую, без API: та же выборка пар, размеченная заново без подсказки первой разметки
+    blind_file = REPORT.parent / "pair_verdicts_blind.json"
+    blind = json.loads(blind_file.read_text(encoding="utf-8")) if blind_file.exists() else {}
+    keep = ("pairs", "same_decision", "precision", "recall")
     return {
+        "blind": [{k: part[k] for k in keep} for part in blind.values() if isinstance(part, dict) and "same_decision" in part],
         "classes": dict(Counter(v.verdict for v in cls.values())),
         "class_sources": len({a for (a, _), v in cls.items() if v.shown}),
         "families": dict(Counter(v.verdict for v in fam.values())),

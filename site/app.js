@@ -822,6 +822,13 @@
         <p class="hint">Первую разметку сделал ИИ-ассистент во время разработки. Новые пары в эксплуатации размечает модель по API тем же запросом (<code>python -m recsys.llm.pair_verdicts label</code>). Какой модели можно верить без менеджера, показывает сверка с первой разметкой: порог — ${pct(vs.trust)} одинаковых решений «советовать или нет».</p>
         <table class="links"><tr><th>Модель</th><th class="num">Пар в сверке</th><th class="num">То же решение</th><th class="num">Верных среди показанного</th><th>Вывод</th></tr>
         ${vs.check.map((c) => `<tr><td>${esc(c.model)}</td><td class="num">${c.pairs}</td><td class="num">${pct(c.same_decision)}</td><td class="num">${c.precision == null ? "—" : pct(c.precision)}</td><td>${c.trusted ? "вердикты идут клиенту сразу" : "вердикты ждут менеджера"}</td></tr>`).join("")}</table>`;
+      const bl = vs.blind || [];
+      if (bl.length) {
+        const [all, unseen] = bl;
+        h += `<p class="hint">Для сравнения — вторая разметка вслепую, без API: другая сессия ассистента разметила те же ${all.pairs} пар, не видя вердиктов первой. То же решение — ${pct(all.same_decision)}, верных среди показанного — ${pct(all.precision)}`
+          + (unseen ? `; без пар, которые она раньше видела на проверке (осталось ${unseen.pairs}), — ${pct(unseen.same_decision)} и ${pct(unseen.precision)}` : "")
+          + `. Оба разметчика — одной семьи моделей, так что это нижняя оценка расхождения, а не независимая проверка. Порог ${pct(vs.trust, 0)} — уровень согласия двух таких разметчиков.</p>`;
+      }
     }
     return h;
   }
