@@ -20,7 +20,7 @@ import os
 import time
 from datetime import date
 
-from recsys.recommend.engine import Client, Graph, Purchase, Rec, Recommender
+from recsys.recommend.engine import LABEL, Client, Graph, Purchase, Rec, Recommender
 
 UTM = "utm_source=lk.softline.ru&utm_medium=internal&utm_campaign=reco&utm_content=sovetnik_{slot}&utm_term={pos}"
 _GRAPH: Graph | None = None
@@ -77,10 +77,23 @@ def control_share(body: dict) -> float:
         return 0.0
 
 
+# как на странице (engine.js, TYPE_TITLE): вид связи — словами для строки «Как проверено»
+TYPE_TITLE = {"renewal": "продление", "upgrade": "старшая редакция", "new_version": "новая версия", "requires": "требуется",
+              "complements": "дополняет", "compatible": "совместимо", "copurchase": "покупают вместе",
+              "next_purchase": "покупают следом", "mentions": "упоминание", "analog_ru": "российский аналог",
+              "analog_class": "российский продукт того же класса", "same_line": "та же линейка", "popular": "часто берут"}
+
+
 def card(g: Graph, r: Rec, pos: int) -> dict:
+    """Поля нынешнего блока (link, name, vendorName, price) и новые: slot, reason, основание и «как проверено»."""
     price = Recommender._price(g.nodes.get(r.family) or {})
+    name = lambda f: (g.nodes.get(f) or {}).get("name") or f  # noqa: E731
+    src = (r.paths[0] if r.paths else {}).get("src")
+    checks = ([r.label] if r.label else []) + [
+        f"из покупки «{name(p.get('src', ''))}»: {TYPE_TITLE.get(p.get('type', ''), p.get('type', ''))}"
+        + (f", {LABEL.get(p['source'], p['source'])}" if p.get("source") else "") for p in r.paths[:3]]
     return {"link": link(r.url, r.slot, pos), "name": r.name, "vendorName": r.vendor, "price": price or None,
-            "slot": r.slot, "reason": r.why}
+            "slot": r.slot, "reason": r.why, "basis": {"family": src, "name": name(src)} if src else None, "checks": checks}
 
 
 def advice(body: dict) -> dict:

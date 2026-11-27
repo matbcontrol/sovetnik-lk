@@ -29,7 +29,8 @@ def test_test_client_gets_the_expected_block():
     res = advice(ex[0]["client"])
     assert res["model_calls"] == 0 and res["status"] == "shown"
     assert [c["slot"] for c in res["data"]] == ["next", "missing", "kit"]
-    assert set(res["data"][0]) == {"link", "name", "vendorName", "price", "slot", "reason"}
+    assert {"link", "name", "vendorName", "price"} <= set(res["data"][0])        # поля нынешнего блока на месте
+    assert res["data"][0]["basis"]["name"] and res["data"][0]["checks"]             # основание и «как проверено»
     assert all("utm_content=sovetnik_" in c["link"] for c in res["data"] + res["popular"])
     empty = advice({"type": "b2b", "today": "2026-11-26", "purchases": []})
     assert empty["status"] == "hidden" and len(empty["popular"]) == 3
