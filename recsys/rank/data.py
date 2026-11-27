@@ -65,6 +65,10 @@ class Task:
 def load_task(dataset: Path = DATASET, items_path: Path = ITEMS) -> Task:
     sales = pd.read_excel(dataset, sheet_name="Продажи", dtype=str, engine="openpyxl").fillna("")
     cl = pd.read_excel(dataset, sheet_name="Клиенты", dtype=str, engine="openpyxl").fillna("")
+    # product_group — как в baseline.py организаторов: по всем строкам продаж в порядке файла (при разных
+    # значениях у одного item_id побеждает последняя строка), пустая колонка — группа равна самому item_id
+    groups = {i: (g or i) for i, g in zip(sales["item_id"], sales["product_group"])} \
+        if "product_group" in sales.columns else {}
     sales = sales.sort_values(["order_week", "order_id"], kind="stable")
     rows = [Row(c, date.fromisoformat(w), o, i)
             for c, w, o, i in zip(sales["client_id"], sales["order_week"], sales["order_id"], sales["item_id"])]
@@ -73,7 +77,6 @@ def load_task(dataset: Path = DATASET, items_path: Path = ITEMS) -> Task:
         with items_path.open(encoding="utf-8") as f:
             items = {r["item_id"]: r for r in csv.DictReader(f)}
     names = dict(zip(sales["item_id"], sales["item_name"]))
-    groups = {i: g for i, g in zip(sales["item_id"], sales["product_group"]) if g}         if "product_group" in sales.columns else {}
     return Task(rows, {r["client_id"]: r for r in cl.to_dict("records")}, items, names, groups)
 
 

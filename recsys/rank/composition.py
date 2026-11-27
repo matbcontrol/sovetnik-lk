@@ -220,11 +220,14 @@ def main() -> None:
             for s in SEGS:
                 cnt = Counter()
                 for c in seg_clients(s):
-                    own = {task.groups.get(a) for a in fold.history[c]} - {None}
+                    own = {task.groups.get(a, a) for a in fold.history[c]}
                     for b in top3(method, c, ()):
-                        k = "вариант" if task.groups.get(b) in own else "новый продукт"
+                        k = "вариант" if task.groups.get(b, b) in own else "новый продукт"
                         cnt[k + ": мест"] += 1
                         cnt[k + ": попаданий"] += b in fold.target[c]
+                hits = cnt["вариант: попаданий"] + cnt["новый продукт: попаданий"]
+                # как печатает baseline.py организаторов: доля попаданий-вариантов, %
+                cnt["variant_share_%"] = round(100 * cnt["вариант: попаданий"] / hits, 1) if hits else None
                 report["official_split"][method][s] = dict(cnt)
             r = report["official_split"][method]["A B2B"]
             print(f"  {method:20} A B2B: вариант {r.get('вариант: мест', 0)} / {r.get('вариант: попаданий', 0)}; "
