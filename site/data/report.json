@@ -750,7 +750,7 @@
     "kit_only": 0.422068463219228
    }
   },
-  "agent_links": 3
+  "agent_links": 2
  },
  "holes": {
   "today": "2026-11-23",
@@ -785,7 +785,64 @@
    "clients_b2b": 53,
    "clients_b2c": 860
   },
-  "measured": {}
+  "queue_wide": {
+   "products": 26,
+   "need_pairs_hidden": 54,
+   "owners_with_access": 1895
+  },
+  "measured": {
+   "products": 6,
+   "products_with_agent_link": 3,
+   "owners_with_access": 1031,
+   "clients_with_access": 4324,
+   "with_own_ground_advice": {
+    "before": {
+     "all": 977,
+     "b2b": 97,
+     "b2c": 880
+    },
+    "hidden": {
+     "all": 58,
+     "b2b": 43,
+     "b2c": 15
+    },
+    "restored": {
+     "all": 186,
+     "b2b": 50,
+     "b2c": 136
+    },
+    "proposed": {
+     "all": 925,
+     "b2b": 82,
+     "b2c": 843
+    }
+   },
+   "lost_when_hidden": 919,
+   "returned_by_agent": 128,
+   "share_returned": 0.13928182807399347,
+   "returned_with_manager": 867,
+   "share_returned_with_manager": 0.9434167573449401,
+   "lost_share_of_all_clients": 0.21253469010175763,
+   "returned_share_of_all_clients": 0.02960222016651249,
+   "agent_links": 3,
+   "agent_links_confirmed": 2,
+   "agent_links_to_products_outside_graph": 0,
+   "pairs_vs_labelling": {
+    "то же решение": 2,
+    "тот же вердикт": 2,
+    "пары нет в разметке": 1
+   },
+   "need_pairs_hidden": 16,
+   "need_pairs_found_by_agent": 1,
+   "need_pairs_proposed_by_agent": 2,
+   "agent_run": {
+    "tool_calls_by_model": 54,
+    "tokens_in": 84857,
+    "tokens_out": 3699,
+    "seconds": 79.5
+   }
+  },
+  "measured_wide": {}
  },
  "coverage": {
   "bought": "2026-03-01",

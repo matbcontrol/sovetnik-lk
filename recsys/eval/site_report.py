@@ -130,13 +130,21 @@ def main() -> None:
     if p.exists():                                       # тест «спрятали — вернул» (recsys.rank.restore): только сводные числа
         r = json.loads(p.read_text(encoding="utf-8"))
         queue = {k: v for k, v in (r.get("queue") or {}).items() if k != "largest_product_clients"}   # число по одному товару наружу не идёт
-        keep = ("products", "owners_with_access", "clients_with_access", "with_own_ground_advice", "lost_when_hidden",
-                "returned_by_agent", "share_returned", "lost_share_of_all_clients", "returned_share_of_all_clients",
-                "agent_links", "agent_links_confirmed", "pairs_vs_labelling", "need_pairs_hidden", "need_pairs_found_by_agent")
-        measured = r.get("measured") or {}
+        keep = ("products", "products_with_agent_link", "owners_with_access", "clients_with_access", "with_own_ground_advice",
+                "lost_when_hidden", "returned_by_agent", "share_returned", "returned_with_manager", "share_returned_with_manager",
+                "lost_share_of_all_clients", "returned_share_of_all_clients", "agent_links", "agent_links_confirmed",
+                "agent_links_to_products_outside_graph", "pairs_vs_labelling", "need_pairs_hidden", "need_pairs_found_by_agent",
+                "need_pairs_proposed_by_agent", "agent_run")
+
+        def measure(name: str) -> dict:
+            m = r.get(name) or {}
+            return {k: m[k] for k in keep if k in m}
+
         out["restore"] = {"today": r.get("today"), "clients_with_access": r.get("clients_with_access"),
                           "clients_by_state": r.get("clients_by_state") or {}, "queue": queue,
-                          "measured": {k: measured[k] for k in keep if k in measured}}
+                          "queue_wide": r.get("queue_wide") or {},
+                          "measured": measure("measured"),           # товары, на которых держится больше всего клиентов
+                          "measured_wide": measure("measured_wide")}   # широкая выборка, которую никто не разглядывал
     p = ROOT / "reports" / "coverage.json"
     if p.exists():                                       # у скольких товаров в продаже есть личный совет
         out["coverage"] = json.loads(p.read_text(encoding="utf-8"))
