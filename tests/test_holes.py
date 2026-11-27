@@ -6,6 +6,7 @@ import pytest
 from recsys.agent.holes import HoleTools, close_hole, edges_of, norm
 
 FAM = "nanosoft/platforma-nanocad"
+SEARCH = {"thought": "ищу", "calls": [{"tool": "search_catalog", "args": {"query": "nanoCAD"}}]}
 
 
 class FakeLLM:
@@ -27,7 +28,7 @@ def cat():
 
 def candidate(cat):
     """Товар из спутников класса, по которому у FAM нет вердикта и который не из его линейки."""
-    vetoed = {b for b, _ in cat.by_a.get(FAM, [])}
+    vetoed = {b for b, _ in cat.by_a.get(FAM, [])} | {a["id"] for a in cat.advised_now(FAM)}
     for c in cat.call("class_companions", {"class_id": cat.nodes[FAM]["class"]}):
         for t in c.get("top", []):
             if t["id"] not in vetoed and t["id"] not in cat.line.get(FAM, ()) and t["id"] != FAM:
@@ -41,10 +42,10 @@ def vetoed_one(cat):
 
 def run(cat, critic):
     ok, bad = candidate(cat), vetoed_one(cat)
-    final = {"final": {"links": [{"dst": ok, "kind": "kit", "reason": "Если ещё нет: проверка"},
+    final = {"final": {"links": [{"dst": ok, "kind": "need", "reason": "Нужен для проверки"},
                                  {"dst": bad, "kind": "need", "reason": "лишнее"},
                                  {"dst": "nobody/nothing", "kind": "need", "reason": "выдумано"}]}}
-    return ok, close_hole(FakeLLM([final, {"verdicts": [critic(ok)]}]), cat, FAM, persist=False)
+    return ok, close_hole(FakeLLM([SEARCH, final, {"verdicts": [critic(ok)]}]), cat, FAM, persist=False)
 
 
 def test_quote_found_in_text_goes_to_graph(cat):
@@ -54,7 +55,7 @@ def test_quote_found_in_text_goes_to_graph(cat):
     whys = " ".join(d["why"] for d in res["dropped"])
     assert "уже рассужено" in whys and "нет в каталоге" in whys
     row = edges_of(res)[0]
-    assert row["source"] == "агент каталога: комплект" and row["status"] == "graph" and row["quote"]
+    assert row["source"] == "агент каталога" and row["status"] == "graph" and row["quote"]
 
 
 def test_invented_quote_goes_to_manager_queue(cat):
@@ -70,9 +71,16 @@ def test_critic_rejects(cat):
 
 
 def test_honest_no_link(cat):
-    res = close_hole(FakeLLM([{"final": {"links": [], "none_reason": "совместимость зависит от модели"}}]), cat, FAM, persist=False)
+    res = close_hole(FakeLLM([SEARCH, {"final": {"links": [], "none_reason": "совместимость зависит от модели"}}]), cat, FAM, persist=False)
     assert res["outcome"] == "no_grounded_link" and res["explanation"] == "совместимость зависит от модели"
     assert json.dumps(res, ensure_ascii=False)                  # результат пишется в отчёт как есть
+
+
+def test_final_without_search_is_not_accepted(cat):
+    none = {"final": {"links": [], "none_reason": "связи нет"}}
+    res = close_hole(FakeLLM([none, SEARCH, none]), cat, FAM, persist=False)
+    assert any(s["tool"] == "требование кода" for s in res["steps"])
+    assert any(s["tool"] == "search_catalog" and s["ask"] for s in res["steps"])
 
 
 def test_norm_ignores_quotes_case_and_spaces():

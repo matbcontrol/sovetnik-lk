@@ -125,15 +125,29 @@ class HoleTools(Catalog):
         # В запросы к модели она не идёт: только фильтр в коде.
         self.line_veto: dict[str, set[str]] = defaultdict(set)
         if LINE_FILE.exists():
-            for (a, b), v in read(LINE_FILE).items():
-                if v.verdict in ("has", "same", "unrelated"):
-                    self.line_veto[a].add(b)
+            for (a, b), _ in read(LINE_FILE).items():          # любая уже размеченная пара: повторять её незачем
+                self.line_veto[a].add(b)
         self.line: dict[str, set[str]] = defaultdict(set)
         with (INTERIM / "graph_edges.csv").open(encoding="utf-8") as f:
             for e in csv.DictReader(f):
                 if e["type"] in ("same_line", "upgrade", "new_version"):
                     self.line[e["src"]].add(e["dst"])
                     self.line[e["dst"]].add(e["src"])
+        self._rec = None
+
+    def advised_now(self, fam: str) -> list[dict]:
+        """Что блок кабинета уже советует владельцу одного этого товара — тем же движком, что на стенде."""
+        from datetime import date, timedelta
+
+        from recsys.recommend.engine import Client, Graph, Purchase, Recommender
+        if self._rec is None:
+            self._rec = Recommender(Graph.load())
+        n = self.nodes.get(fam, {})
+        home = (n.get("client_types") == "b2c" or "для дома" in n.get("class_name", "").lower()) and n.get("b2b_only") != "1"
+        today = date.today()
+        recs = self._rec.recommend(Client("b2c" if home else "b2b", [Purchase(fam, today - timedelta(days=183))], today=today), k=3)
+        return [{"id": r.family, "name": r.name[:70], "kind": "kit" if r.slot == "kit" else r.slot}
+                for r in recs if not r.fallback and r.slot != "renew"]
 
     def text(self, k: str, limit: int = 1200) -> str:
         """Всё, что о товаре известно из открытого каталога: название, класс, описание, характеристики."""
@@ -200,6 +214,13 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bo
             "description": ((cat.desc.get(fam) or {}).get("description") or "")[:900], "spec": cat.specs.get(fam, "")[:400]}
     steps: list[dict] = []
     seen: set[str] = set()
+    # что владельцу уже показывают: второй комплект там, где комплект есть, клиенту не виден (в блоке он один)
+    now = cat.advised_now(fam)
+    strong = [a for a in now if a["kind"] != "kit"]
+    card["сейчас_советуем"] = [f"{a['name']} ({'комплект' if a['kind'] == 'kit' else 'совет по делу'})" for a in now] or "ничего"
+    goal = ("У владельца А уже есть совет по делу. Ищи только то, чего в нём нет, и только need, upgrade или new_version." if strong else
+            "Сейчас владельцу А показывается только комплект. Второй комплект клиент не увидит — ищи need, upgrade или new_version." if now else
+            "Сейчас владельцу А не показывается ничего. Подойдёт и need, и честный комплект «Если ещё нет …».")
 
     def run(tool: str, args: dict, thought: str, ask: int) -> None:
         result = cat.call(tool, args)
@@ -219,18 +240,25 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bo
     for tool, args in (("judged", {"id": fam}), ("line", {"id": fam}), ("addons", {"id": fam}),
                        ("class_companions", {"class_id": n.get("class", "")})):
         run(tool, args, "без модели: исходные сведения", 0)
-    final, asks = None, 0
-    for _ in range(MAX_STEPS + 1):
+    final, asks, searched, nudged = None, 0, 0, False
+    for _ in range(MAX_STEPS + 2):
         history = "\n".join(f"{i + 1}. {s['tool']} {json.dumps(s['args'], ensure_ascii=False)} -> "
                             f"{json.dumps(s['result'], ensure_ascii=False)[:1200]}" for i, s in enumerate(steps))
         left = MAX_STEPS - asks
         prompt = STEP.format(rules=RULES, card=json.dumps(card, ensure_ascii=False, indent=1), tools=HOLE_TOOLS,
-                             history=history, kinds=KIND_HELP, left=left)
+                             history=history, kinds=KIND_HELP, left=left) + "\nЦель: " + goal
         if left <= 0:
             prompt += "\nШаги закончились: дай итог сейчас."
         ans = llm.json(SYSTEM, prompt, purpose="агент: дыра, шаг")
         asks += 1
         if not isinstance(ans, dict):
+            continue
+        if "final" in ans and not searched and not nudged and left > 0:
+            # итог без единого поиска не принимаем: облегчённые модели отвечают «связи нет», не заглянув в каталог
+            nudged = True
+            steps.append({"tool": "требование кода", "args": {}, "thought": "итог без поиска не принят",
+                          "result": "Сначала поищи сам: вызови хотя бы один инструмент (search_catalog, addons, line, spec, "
+                                    "get_product), потом дай итог.", "ask": asks})
             continue
         if "final" in ans or left <= 0:
             final = ans.get("final") if isinstance(ans.get("final"), dict) else {}
@@ -240,10 +268,12 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bo
         for c in calls[:MAX_CALLS]:
             if isinstance(c, dict) and c.get("tool"):
                 run(str(c["tool"]), c.get("args") if isinstance(c.get("args"), dict) else {}, str(ans.get("thought", "")), asks)
+                searched += 1
     final = final or {}
 
     # ---- правила в коде, потом критик по цитате
-    vetoed = {b: v for b, v in cat.by_a.get(fam, []) if v in ("has", "same", "unrelated")}
+    vetoed = dict(cat.by_a.get(fam, []))                 # любая уже размеченная пара: повторять известное незачем
+    advised = {a["id"] for a in now}
     proposed, dropped = [], []
     for link in (final.get("links") or [])[:6]:
         if not isinstance(link, dict):
@@ -255,7 +285,9 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bo
                "товара нет в продаже" if cat.nodes[dst].get("on_sale") != "1" else
                "неизвестный вид совета" if kind not in KINDS else
                f"уже рассужено: «{RU[vetoed[dst]]}»" if dst in vetoed else
-               "уже рассужено в таблице линеек" if dst in cat.line_veto.get(fam, ()) else
+               "уже рассужено" if dst in cat.line_veto.get(fam, ()) else
+               "это уже советуется владельцу" if dst in advised else
+               "второй комплект клиент не увидит" if kind == "kit" and any(a["kind"] == "kit" for a in now) else
                "редакция или версия не из линейки товара" if kind in ("upgrade", "new_version") and dst not in cat.line.get(fam, ()) else
                "другая редакция той же линейки — это не «нужно»" if kind in ("need", "kit") and dst in cat.line.get(fam, ()) else "")
         reason = re.sub(r"\s+", " ", str(link.get("reason", ""))).strip().rstrip(".")[:160]
@@ -286,8 +318,10 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bo
                 kept.append({**l, "quote": quote if found else "", "critic": str(v.get("why", ""))[:160],
                              "status": "graph" if found else "queue",
                              "quote_note": "" if found else ("цитаты в тексте нет" if quote else "критик не привёл цитату")})
-    outcome = ("closed" if any(k["status"] == "graph" for k in kept) else "queue" if kept else "no_grounded_link")
-    explanation = ""
+    # «закрыта» — только если появилась связь сильнее комплекта: замер показа блока комплект обоснованным советом не считает
+    graph_kinds = {k["kind"] for k in kept if k["status"] == "graph"}
+    outcome = ("closed" if graph_kinds - {"kit"} else "kit_only" if graph_kinds else "queue" if kept else "no_grounded_link")
+    explanation = "найден только комплект: обоснованного совета сильнее комплекта нет" if outcome == "kit_only" else ""
     if outcome == "no_grounded_link":
         explanation = str(final.get("none_reason") or "").strip() or "; ".join(d["why"] for d in dropped[:3]) or \
             "агент не нашёл в каталоге товара, который подходит именно к этому"
