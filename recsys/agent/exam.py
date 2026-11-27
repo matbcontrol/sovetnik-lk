@@ -106,11 +106,12 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=12)
     ap.add_argument("--seed", type=int, default=11, help="номер выборки: другой номер — другие товары")
     ap.add_argument("--no-hints", action="store_true", help="без подсказок кода: класс и связи модель ищет сама")
+    ap.add_argument("--tag", default="", help="метка прогона на другой модели: отчёт agent_exam_<метка>.json, прежний отчёт не трогается")
     args = ap.parse_args()
     from recsys.llm.client import LLM, LLMError
     cat = Catalog()
     llm = LLM()
-    suffix = "_nohints" if args.no_hints else ""
+    suffix = ("_nohints" if args.no_hints else "") + (f"_{args.tag}" if args.tag else "")
     runs_dir = INTERIM / f"agent_runs{suffix}"
     runs_dir.mkdir(exist_ok=True)
     rows = []
@@ -157,7 +158,8 @@ def main() -> None:
                            "agent_or_rule": sum(r["found_with_rules"] for r in part)}
                     for kind in ("дополнение", "линейка") if (part := [r for r in rel if r["kind"] == kind])},
     }
-    summary["without_cache"] = journal_costs()
+    summary["model"] = llm.model
+    summary["without_cache"] = journal_costs(llm.model if args.tag else None)
     print(f"\nпрогонов {n}: класс точно {summary['class_exact']:.0%}, в той же категории {summary['class_category']:.0%}; "
           + (f"связанный товар найден в {summary['related_found']:.0%} из {len(rel)}; " if rel else "")
           + f"в среднем {summary['requests_per_run']:.1f} запроса и {summary['seconds_per_run']:.0f} с на товар; "
@@ -168,7 +170,7 @@ def main() -> None:
     print("отчёт:", out)
 
 
-def journal_costs() -> dict:
+def journal_costs(model: str | None = None) -> dict:
     """Расход исходных вызовов агента без кеша — по журналу data/interim/llm_calls.jsonl.
 
     Повторный экзамен берёт ответы модели из кеша, поэтому время и токены его прогонов нулевые. Чтобы в отчёте
@@ -184,7 +186,7 @@ def journal_costs() -> dict:
                 c = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            if c.get("cached") or c.get("purpose") not in ("агент: шаг", "агент: критик"):
+            if c.get("cached") or c.get("purpose") not in ("агент: шаг", "агент: критик") or (model and c.get("model") != model):
                 continue
             a = acc.setdefault(c["purpose"], [0, 0, 0, 0.0])
             a[0] += 1
