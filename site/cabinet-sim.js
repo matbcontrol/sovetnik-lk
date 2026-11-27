@@ -28,7 +28,7 @@
   route();
 
   const report = (await getJson("data/report.json")) || {};
-  const priv = await getJson("data/private.json");
+  const priv = /\.github\.io$/.test(location.hostname) ? null : await getJson("data/private.json");   // на открытом стенде файла нет
   const tests = priv && Array.isArray(priv.clients) ? priv.clients.filter((c) => c.mode === "test" && c.protocol && c.baseline) : [];
   const items = (priv && priv.items) || {};
   // полное название: у вариантов одного продукта (срок, число мест) короткие названия совпадают

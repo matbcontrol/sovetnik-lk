@@ -19,7 +19,9 @@
   if (!data) { $("main").innerHTML = '<div class="panel">Не удалось загрузить data/graph.json. Соберите данные: <code>python -m recsys.export</code></div>'; return; }
   const examples = (await getJson("data/examples.json")) || [];
   const report = await getJson("data/report.json");
-  const priv = await getJson("data/private.json");
+  // открытый стенд на статическом хостинге: закрытого файла и сервера агента там нет — не просим их зря
+  const STATIC = /\.github\.io$/.test(location.hostname);
+  const priv = STATIC ? null : await getJson("data/private.json");
   const agent = await getJson("data/agent_runs.json");
   const holesData = await getJson("data/agent_holes.json");
 
@@ -1584,7 +1586,7 @@
   }
   // живой запуск агента: доступен, когда стенд открыт через локальный сервер (python -m recsys.server)
   (async function setupLive() {
-    const ping = await getJson("api/ping");
+    const ping = STATIC ? null : await getJson("api/ping");
     if (!ping) return;                                    // стенд открыт без сервера: живого запуска нет
     holesLive = !!(ping.agent && ping.holes);
     if (holesLive) renderAgent();                          // появились кнопка запуска и очередь товаров каталога

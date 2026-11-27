@@ -6,8 +6,10 @@ Precision@3, Fill Rate и доля вариантов по product_group); к и
 парная проверка значимости по клиентам (бутстреп и знаковый тест) и отпечатки файлов, чтобы любой мог убедиться,
 что считал на тех же данных.
 
-  python -m recsys.eval.proof            файл ответов из site/data/private.json (тройки по протоколу) -> счёт
+  python -m recsys.eval.proof            модель обучается заново на продажах до 31.08 -> файл ответов -> счёт.
+                                         Нужен только датасет организаторов (data/private/task/dataset_v5.xlsx).
   python -m recsys.eval.proof --answers  только выгрузить файл ответов: data/private/task/proof/our_top3.csv
+  python -m recsys.eval.proof --stand    ответы взять из закрытого стенда (site/data/private.json), без обучения
 
 Файл ответов — client_id и три item_id; в нём идентификаторы датасета, поэтому он лежит в закрытой папке и
 передаётся организаторам вместе с закрытым стендом. В открытый отчёт reports/proof.json идут только числа.
@@ -34,10 +36,37 @@ PRIVATE = ROOT / "site" / "data" / "private.json"
 BOOT, SEED = 10000, 7
 
 
+def model_answers() -> list[tuple]:
+    """Наши тройки по протоколу заново: модель учится только на продажах до разреза и ранжирует товары клиентов группы A.
+
+    Тот же путь, что у разбора тройки (recsys.rank.composition) и у стенда: вердикты пар и закрытые таблицы
+    для этого не нужны, только датасет.
+    """
+    from datetime import date
+
+    from recsys.eval.value import Prep
+    from recsys.rank.data import OFFICIAL, load_task, make_fold
+    from recsys.rank.features import FoldStats, build_attrs
+    from recsys.rank.ltr import copies, fit
+    from recsys.rank.unified import Catalog, Unified
+
+    task = load_task()
+    attrs = build_attrs(task)
+    train = [Prep(FoldStats(task, make_fold(task, *s), attrs), "full") for s in copies(date.fromisoformat(OFFICIAL[1]))]
+    off = FoldStats(task, make_fold(task, *OFFICIAL), attrs)
+    uni = Unified(off, fit(train), Catalog(task))
+    return [(c, *uni.protocol(c)[:3]) for c in sorted(off.fold.group_a)]
+
+
+def stand_answers() -> list[tuple]:
+    """Тройки из закрытого стенда (их строит recsys.rank.demo тем же путём)."""
+    d = json.loads(PRIVATE.read_text(encoding="utf-8"))
+    return sorted((c["id"], *[x["item"] for x in c["protocol"]][:3]) for c in d["clients"] if c["mode"] == "test")
+
+
 def export_answers() -> None:
     """Наши тройки по протоколу для клиентов группы A — в том виде, в каком их видит счёт организаторов."""
-    d = json.loads(PRIVATE.read_text(encoding="utf-8"))
-    rows = [(c["id"], *[x["item"] for x in c["protocol"]][:3]) for c in d["clients"] if c["mode"] == "test"]
+    rows = stand_answers() if "--stand" in sys.argv else model_answers()
     WORK.mkdir(parents=True, exist_ok=True)
     with ANSWERS.open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f, delimiter=";")
@@ -64,11 +93,13 @@ def sign_test(wins: int, losses: int) -> float:
 
 
 def main() -> None:
+    from recsys.stable import rerun_with_fixed_order
+
+    rerun_with_fixed_order("recsys.eval.proof")        # порядок обхода фиксирован: два запуска дают один файл ответов
     sys.stdout.reconfigure(encoding="utf-8")
-    if "--answers" in sys.argv or not ANSWERS.exists():
-        export_answers()
-        if "--answers" in sys.argv:
-            return
+    export_answers()
+    if "--answers" in sys.argv:
+        return
 
     # ---- дословно из baseline.py организаторов (загрузка, разрез, группы, счёт) ----
     SPLIT = '2026-08-31'          # обучение: order_week <= SPLIT, проверка: order_week > SPLIT
