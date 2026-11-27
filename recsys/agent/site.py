@@ -58,6 +58,11 @@ def main() -> None:
     # Стоимость одного нового товара — замер на deepseek-v4-pro (27.11.2026, 77 вызовов агента и 24 вызова критика
     # на 24 товарах), дневной тариф DeepSeek без НДС, см. submission/cost.md. Прогоны ниже — экзамен на Gemini.
     # Повторные прогоны экзамена берут ответы из кеша и расхода не показывают.
+    # модель экзамена — по журналу вызовов без кеша: почти все шаги и вызовы критика шли на облегчённых моделях
+    if exam:
+        exam.setdefault("model", "облегчённая Gemini Flash-Lite (3.5 и 3.1); из 295 вызовов обоих экзаменов на 3.6 Flash — 5")
+    if exam_nohints:
+        exam_nohints.setdefault("model", "облегчённая Gemini Flash-Lite")
     per_run = {"price": "замер на deepseek-v4-pro, дневной тариф без НДС", "rub": COST_PER_PRODUCT}
     out = ROOT / "site" / "data" / "agent_runs.json"
     out.write_text(json.dumps({"exam": exam, "exam_nohints": exam_nohints, "per_run": per_run, "runs": runs},
