@@ -3,27 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <title>Встраивание советника в кабинет: один тег script</title>
 <style>
-  body { margin: 0; font: 14px/1.45 "Segoe UI", Roboto, Arial, sans-serif; color: #1d2530; background: #f3f5f8; }
-  header { background: #22303f; color: #fff; padding: 12px 20px; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
+  body { margin: 0; font: 14px/1.45 Inter, Arial, Tahoma, Helvetica, sans-serif; color: #121519; background: #fff; }
+  header { background: #fff; border-bottom: 1px solid #e4e7ec; padding: 12px 24px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
   header b { font-size: 16px; }
-  header a { color: #9fd3ff; }
+  header a { color: #a50f2d; }
+  .logo { display: inline-flex; align-items: center; gap: 8px; color: #a50f2d; font-weight: 700; font-size: 20px; line-height: 1; }
+  .logo small { display: block; font-size: 10px; font-weight: 500; margin-top: 3px; }
+  .logo i { display: inline-grid; grid-template-columns: 11px 11px; gap: 1px; }
+  .logo i b { width: 11px; height: 11px; background: #d6d9de; }
+  .logo i b:first-child { background: #a50f2d; }
   main { max-width: 1080px; margin: 16px auto; padding: 0 16px; display: grid; grid-template-columns: 300px 1fr; gap: 16px; }
-  .box { background: #fff; border: 1px solid #dfe3e8; border-radius: 10px; padding: 14px; }
+  .box { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 1px 1px rgba(0,0,0,.12), 0 0 0 1px rgba(60,66,87,.16), 0 2px 5px rgba(60,66,87,.08); }
   .box h2 { font-size: 15px; margin: 0 0 10px; }
   label { display: block; font-size: 13px; margin: 8px 0 4px; color: #4a5462; }
   select, input[type=text] { width: 100%; box-sizing: border-box; padding: 6px 8px; font: inherit; border: 1px solid #c9d0d8; border-radius: 6px; }
-  button.go { margin-top: 12px; width: 100%; padding: 8px; font: inherit; background: #1f5fa8; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
+  button.go { margin-top: 12px; width: 100%; padding: 8px; font: inherit; background: #a50f2d; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
   pre { background: #f6f8fa; border: 1px solid #e3e7ec; border-radius: 6px; padding: 10px; font-size: 12px; overflow-x: auto; white-space: pre-wrap; }
   .hint { font-size: 12px; color: #5b6573; }
-  .arm { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; background: #e8f1fb; color: #1f5fa8; }
+  .arm { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 12px; background: #e6f7e9; color: #006817; }
   .arm--control { background: #fdf0e1; color: #9a5b12; }
   @media (max-width: 800px) { main { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <header>
+  <span class="logo"><i><b></b><b></b><b></b><b></b></i><span>софтлайн<small>цифровой актив</small></span></span>
   <b>Встраивание советника</b>
   <span>чужая страница кабинета подключает советника одним тегом script — без сборки и без модели на запрос</span>
   <a href="./">стенд</a><a href="cabinet.html">макет кабинета</a>

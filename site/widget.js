@@ -108,16 +108,16 @@
     s.id = "svt-css";
     s.textContent = `.svt{font:inherit;color:inherit}
 .svt-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.svt-card{border:1px solid #d9dde3;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;background:#fff}
-.svt-kind{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#5b6573}
+.svt-card{border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:6px;background:#f2f3f5}
+.svt-kind{font-size:12px;font-weight:500;color:#a50f2d}
 .svt-name{font-weight:600}.svt-vendor{font-size:12px;color:#5b6573}
 .svt-why{font-size:13px;margin:0}
 .svt-foot{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .svt-price{flex:1 0 100%;font-weight:600;white-space:nowrap}
-.svt-btn{display:inline-block;border:1px solid #1f5fa8;color:#1f5fa8;background:#fff;border-radius:6px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer;text-decoration:none}
-.svt-btn--fill{background:#1f5fa8;color:#fff}.svt-btn:disabled{opacity:.6;cursor:default}
+.svt-btn{display:inline-block;border:1px solid #a50f2d;color:#a50f2d;background:#fff;border-radius:8px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer;text-decoration:none}
+.svt-btn--fill{background:#a50f2d;color:#fff}.svt-btn:disabled{opacity:.6;cursor:default}
 .svt-h{font-size:14px;font-weight:600;margin:14px 0 4px}.svt-h small{font-weight:400;color:#5b6573}
-.svt-row{display:flex;gap:10px;align-items:center;border-top:1px solid #eceff3;padding:8px 0;flex-wrap:wrap}
+.svt-row{display:flex;gap:10px;align-items:center;background:#f2f3f5;border-radius:16px;padding:12px 18px;margin-top:10px;flex-wrap:wrap}
 .svt-row b{flex:1 1 200px}.svt-note{font-size:12px;color:#5b6573;margin-top:8px}`;
     document.head.appendChild(s);
   }

@@ -3,129 +3,259 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Макет: советник в личном кабинете</title>
+<title>Главная — макет кабинета Softline с советником</title>
 <link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Макет повторяет устройство и вид личного кабинета Softline (lk.softline.ru): шапка магазина, серое боковое меню,
+     «Главная» с виджетами и таблица «Продукты». Свой у макета только блок советника и его следы в таблице. -->
 <style>
   :root {
-    --bg: #f3f4f6; --card: #fff; --ink: #1f2328; --ink-2: #5b6168; --line: #e1e4e8;
-    --accent: #1d4f91; --accent-2: #e8f0fb; --warn: #9a5b00; --warn-bg: #fff4e0; --bad: #a12a2a; --bad-bg: #fdecec;
-    --ok: #1f6b3a; --ok-bg: #e7f5ec;
+    --red: #a50f2d; --red-dark: #870b24; --ink: #121519; --ink-2: #768297; --gray: #f2f3f5; --line: #e4e7ec;
+    --shadow: 0 1px 1px rgba(0, 0, 0, .12), 0 0 0 1px rgba(60, 66, 87, .16), 0 2px 5px rgba(60, 66, 87, .08);
+    --ok: #006817; --ok-bg: #e6f7e9; --ok-line: #cfe4d3; --warn: #c65300; --warn-bg: #fcf6df; --warn-line: #f7e6bb;
+    --bad: #b2041b; --bad-bg: #ffebf0; --bad-line: #f3ced4;
+    --accent: var(--red); --accent-2: #fbeef1; --bg: #fff; --card: #fff;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); }
-  .mock { background: #2b2f36; color: #f0f0f0; font-size: 12.5px; padding: 6px 18px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-  .mock b { color: #fff; }
-  .mock select { font: inherit; padding: 2px 6px; max-width: 420px; }
-  .mock a { color: #cfe0ff; }
-  header.bar { background: var(--card); border-bottom: 1px solid var(--line); padding: 12px 24px; display: flex; align-items: center; gap: 18px; }
-  .logo { font-weight: 700; font-size: 16px; letter-spacing: .02em; }
-  .logo small { font-weight: 400; color: var(--ink-2); margin-left: 6px; }
-  .who { margin-left: auto; text-align: right; font-size: 13px; color: var(--ink-2); }
-  .who b { color: var(--ink); display: block; }
-  .layout { display: grid; grid-template-columns: 220px 1fr; gap: 20px; max-width: 1240px; margin: 20px auto; padding: 0 20px; }
-  nav.side { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 8px; align-self: start; }
-  nav.side a { display: block; padding: 9px 12px; border-radius: 6px; color: var(--ink); text-decoration: none; }
-  nav.side a.on { background: var(--accent-2); color: var(--accent); font-weight: 600; }
-  main { display: grid; gap: 20px; min-width: 0; }
-  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; }
-  .panel h2 { font-size: 17px; margin: 0 0 12px; }
-  .panel h2 small { font-weight: 400; color: var(--ink-2); font-size: 13px; margin-left: 8px; }
-  table { width: 100%; border-collapse: collapse; }
-  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { font-size: 12px; color: var(--ink-2); font-weight: 600; }
-  .st { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; white-space: nowrap; }
-  .st--ok { background: var(--ok-bg); color: var(--ok); }
-  .st--warn { background: var(--warn-bg); color: var(--warn); }
-  .st--bad { background: var(--bad-bg); color: var(--bad); }
-  .st--none { background: #eef0f2; color: var(--ink-2); }
-  .btn { display: inline-block; border: 1px solid var(--accent); color: var(--accent); background: #fff; border-radius: 6px; padding: 5px 12px; font: inherit; font-size: 13px; cursor: pointer; text-decoration: none; white-space: nowrap; }
-  .btn--fill { background: var(--accent); color: #fff; }
-  .hint { font-size: 12.5px; color: var(--ink-2); margin-top: 6px; max-width: 560px; }
+  body { margin: 0; font: 14px/1.43 Inter, Arial, Tahoma, Helvetica, sans-serif; color: var(--ink); background: #fff; }
+  a { color: var(--red); }
+  svg.i { width: 20px; height: 20px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* полоса макета: не часть кабинета */
+  .demo { background: var(--ink); color: #e9ebef; font-size: 12.5px; padding: 6px 24px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .demo b { color: #fff; }
+  .demo select { font: inherit; padding: 2px 6px; max-width: 420px; border-radius: 6px; border: 0; }
+  .demo a { color: #ffd1da; }
+
+  /* шапка магазина */
+  .hdr { max-width: 1392px; margin: 0 auto; padding: 12px 24px 0; }
+  .hdr__row { display: flex; align-items: center; gap: 16px; height: 52px; }
+  .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--red); }
+  .logo__text { font-weight: 700; font-size: 20px; line-height: 1; letter-spacing: -.01em; }
+  .logo__text small { display: block; font-size: 10px; font-weight: 500; letter-spacing: .02em; color: var(--red); margin-top: 3px; }
+  .logo__mark { display: grid; grid-template-columns: 11px 11px; gap: 1px; }
+  .logo__mark i { width: 11px; height: 11px; background: #d6d9de; }
+  .logo__mark i:first-child { background: var(--red); }
+  .btn-cat { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 10px 20px; border: 0; border-radius: 10px; background: var(--red); color: #fff; font: 500 14px Inter, Arial, sans-serif; }
+  .search { flex: 1; display: flex; height: 44px; border: .8px solid var(--red); border-radius: 9px; overflow: hidden; }
+  .search span { flex: 1; display: flex; align-items: center; padding: 0 14px; color: #9aa3b2; font-size: 14px; }
+  .search i { width: 44px; background: var(--red); color: #fff; display: grid; place-items: center; }
+  .contacts { font-size: 13px; line-height: 1.35; }
+  .contacts b { display: block; font-weight: 500; }
+  .contacts span { color: var(--ink-2); }
+  .hdr__icons { display: flex; gap: 22px; font-size: 13px; }
+  .hdr__icons span { display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative; }
+  .hdr__icons em { position: absolute; top: -4px; right: 4px; background: var(--red); color: #fff; font-style: normal; font-size: 10px; border-radius: 8px; padding: 0 5px; }
+  .hdr__nav { display: flex; gap: 26px; align-items: center; height: 40px; font-size: 13.5px; white-space: nowrap; overflow: hidden; }
+  .hdr__nav span { display: inline-flex; align-items: center; gap: 4px; }
+  .hdr__nav .r { margin-left: auto; }
+
+  /* кабинет: боковая панель и содержимое */
+  .layout { max-width: 1392px; margin: 8px auto 0; padding: 0 24px; display: grid; grid-template-columns: 240px 1fr; gap: 32px; }
+  .side__window { background: var(--gray); border-radius: 24px; padding: 24px 16px; margin-bottom: 16px; }
+  .avatar { width: 64px; height: 64px; border-radius: 50%; background: #e3e5e9; display: grid; place-items: center; margin: 0 auto 12px; }
+  .who { text-align: center; margin-bottom: 18px; }
+  .who b { display: block; font-size: 16px; font-weight: 600; line-height: 1.3; }
+  .who span { display: block; color: var(--ink-2); font-size: 12px; margin-top: 4px; }
+  .menu a { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 8px; color: var(--ink); text-decoration: none; font-size: 14px; line-height: 1.3; }
+  .menu a.on { background: #e3e5e9; }
+  .menu a.off { cursor: default; }
+  .menu a .ext { margin-left: auto; width: 16px; height: 16px; color: var(--ink-2); }
+  .side__shop { display: flex; align-items: center; gap: 12px; padding: 16px 24px; }
+  main { min-width: 0; padding-bottom: 40px; }
+  .h1 { font-size: 40px; line-height: 48px; font-weight: 700; margin: 8px 0 24px; }
+  .h1 small { font-size: 14px; font-weight: 400; color: var(--ink-2); margin-left: 12px; }
+  .h2 { font-size: 24px; line-height: 32px; font-weight: 600; margin: 32px 0 16px; }
+  .h2 small { font-size: 14px; font-weight: 400; color: var(--ink-2); margin-left: 10px; }
+  .hint { font-size: 13px; color: var(--ink-2); margin-top: 6px; max-width: 560px; line-height: 1.45; }
   .hint b { color: var(--ink); }
-  .repl { margin-top: 8px; padding: 10px 12px; border-radius: 6px; background: var(--accent-2); font-size: 13px; max-width: 620px; }
-  .repl--wait { background: #f4f5f7; border: 1px dashed #b9bec5; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
-  .card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px; }
-  .card__kind { font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); font-weight: 600; }
-  .card__name { font-weight: 600; }
-  .card__vendor { font-size: 12.5px; color: var(--ink-2); }
-  .card__why { font-size: 13px; margin: 4px 0; }
-  .card__foot { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding-top: 6px; }
-  .card__price { font-weight: 600; white-space: nowrap; flex: 1 0 100%; }
-  .chip { font-size: 11.5px; color: var(--ink-2); background: #f1f2f4; border-radius: 10px; padding: 2px 8px; }
-  details.why summary { cursor: pointer; font-size: 12.5px; color: var(--accent); }
-  details.why ul { margin: 6px 0 0; padding-left: 18px; font-size: 12.5px; color: var(--ink-2); }
-  .row { display: flex; gap: 12px; align-items: baseline; padding: 8px 0; border-top: 1px solid var(--line); flex-wrap: wrap; }
-  .row:first-of-type { border-top: 0; }
-  .row b { min-width: 220px; }
-  .empty { color: var(--ink-2); font-size: 13.5px; padding: 6px 0 2px; }
-  pre { background: #f6f8fa; border: 1px solid var(--line); border-radius: 6px; padding: 10px; font-size: 12px; overflow: auto; max-height: 340px; }
-  footer { max-width: 1240px; margin: 0 auto 30px; padding: 0 20px; font-size: 12px; color: var(--ink-2); }
-  /* симуляция «три месяца за минуту» */
+
+  /* «Главная»: виджеты как у кабинета */
+  .widgets { display: grid; grid-template-columns: repeat(2, minmax(0, 349px)); gap: 16px; }
+  .info-widget { display: flex; gap: 14px; background: #fff; border-radius: 8px; padding: 16px; box-shadow: var(--shadow); color: var(--ink); text-decoration: none; min-height: 96px; }
+  .iw__icon { position: relative; width: 40px; height: 40px; display: grid; place-items: center; }
+  .iw__badge { position: absolute; top: -2px; right: -4px; background: var(--red); color: #fff; font-style: normal; font-size: 11px; border-radius: 9px; padding: 0 5px; }
+  .iw__title { font-size: 16px; margin-bottom: 6px; }
+  .iw__text { color: var(--ink); font-size: 14px; }
+  .iw__text.muted { color: var(--ink-2); }
+
+  /* блок советника — карточками в стиле «Популярных решений» */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+  .card { background: var(--gray); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .card__kind { font-size: 12px; font-weight: 500; color: var(--red); }
+  .card__name { font-size: 16px; font-weight: 600; line-height: 1.35; }
+  .card__vendor { font-size: 13px; color: var(--ink-2); }
+  .card__why { font-size: 14px; margin: 6px 0; }
+  .card__foot { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 8px; }
+  .card__price { font-weight: 600; white-space: nowrap; flex: 1 0 100%; font-size: 15px; }
+  .chip { align-self: flex-start; font-size: 12px; color: var(--ink-2); background: #fff; border-radius: 8px; padding: 2px 8px; }
+  details.why summary { cursor: pointer; font-size: 13px; color: var(--red); font-weight: 500; }
+  details.why ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; color: var(--ink-2); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 8px; padding: 6px 12px; font: 500 14px/20px Inter, Arial, sans-serif;
+    cursor: pointer; text-decoration: none; white-space: nowrap; background: #fff; color: var(--red); box-shadow: inset 0 0 0 1px var(--red); }
+  .btn--fill { background: var(--red); color: #fff; box-shadow: none; }
+  .btn--fill:hover { background: var(--red-dark); }
+  .btn:disabled { background: var(--gray); color: #a4afc0; box-shadow: none; cursor: default; }
+  .row { display: flex; gap: 12px; align-items: center; padding: 14px 20px; background: var(--gray); border-radius: 16px; flex-wrap: wrap; margin-top: 12px; }
+  .row b { flex: 1 1 220px; font-weight: 600; }
+  #popular h2 { font-size: 18px !important; font-weight: 600; margin: 28px 0 0 !important; }
+  #popular h2 small { font-size: 13px; font-weight: 400; color: var(--ink-2); margin-left: 8px; }
+  .empty { color: var(--ink-2); font-size: 14px; padding: 16px 20px; background: var(--gray); border-radius: 16px; }
+  details.contract { margin-top: 32px; border-top: 1px solid var(--line); padding-top: 14px; font-size: 13px; color: var(--ink-2); }
+  details.contract summary { cursor: pointer; }
+  pre { background: var(--gray); border-radius: 8px; padding: 12px; font-size: 12px; overflow: auto; max-height: 340px; color: var(--ink); }
+
+  /* «Продукты»: поиск, фильтры и таблица как у кабинета */
+  .psearch { display: flex; align-items: center; gap: 10px; height: 44px; border-radius: 10px; box-shadow: var(--shadow); padding: 0 14px; color: #9aa3b2; font-size: 16px; }
+  .filters { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0 20px; }
+  .filters span { display: inline-flex; align-items: center; gap: 24px; height: 40px; padding: 0 12px; border-radius: 8px; box-shadow: var(--shadow); font-size: 14px; }
+  .filters span::after { content: ""; width: 7px; height: 7px; border-right: 1.5px solid var(--ink-2); border-bottom: 1.5px solid var(--ink-2); transform: rotate(45deg) translateY(-2px); }
+  #licenses table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  #licenses th { background: var(--gray); text-align: left; font-weight: 400; font-size: 14px; padding: 12px 16px; }
+  #licenses td { padding: 14px 16px; border-top: 1px solid var(--line); vertical-align: top; }
+  #licenses td.pact { width: 380px; text-align: right; }
+  #licenses td.pact .hint { margin-left: auto; text-align: right; font-size: 13px; }
+  .pvend b { font-weight: 500; }
+  .pvend span { color: var(--ink-2); font-weight: 500; }
+  .pname { margin: 4px 0; max-width: 460px; }
+  .ptags { color: var(--ink-2); }
+  .pdate { margin-top: 8px; }
+  .st { display: inline-block; padding: 2px 6px; border-radius: 8px; font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; border: .8px solid transparent; }
+  .st--ok { background: var(--ok-bg); color: var(--ok); border-color: var(--ok-line); }
+  .st--warn { background: var(--warn-bg); color: var(--warn); border-color: var(--warn-line); }
+  .st--bad { background: var(--bad-bg); color: var(--bad); border-color: var(--bad-line); }
+  .st--none { background: var(--gray); color: var(--ink-2); }
+  .repl { margin: 10px 0 0 auto; padding: 12px 14px; border-radius: 12px; background: var(--gray); font-size: 13px; max-width: 380px; text-align: left; }
+  #licenses td.pact .repl .hint { text-align: left; margin-left: 0; }
+  .repl--wait { background: #fff; box-shadow: inset 0 0 0 1px #c9ced6; }
+  .note { color: var(--ink-2); margin-top: 14px; }
+  footer { max-width: 1392px; margin: 0 auto; padding: 18px 24px 30px; font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line); }
+  .feedback { position: fixed; left: 0; top: 42%; writing-mode: vertical-rl; transform: rotate(180deg); background: var(--red); color: #fff; font-size: 12px;
+    font-weight: 500; padding: 14px 7px; border-radius: 0 8px 8px 0; }
+
+  /* симуляция «три месяца за минуту» — та же, что раньше, в цветах кабинета */
+  #sim { padding-top: 8px; }
+  #sim h2 { font-size: 24px; line-height: 32px; font-weight: 600; margin: 0 0 8px; }
+  #sim h2 small { font-size: 14px; font-weight: 400; color: var(--ink-2); margin-left: 8px; }
   .sim-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 6px 0 12px; }
   .sim-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 10px; }
-  .sim-tile { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; }
+  .sim-tile { background: var(--gray); border-radius: 16px; padding: 12px 16px; }
   .sim-tile b { display: block; font-size: 30px; line-height: 1.1; font-variant-numeric: tabular-nums; }
-  .sim-tile span { font-size: 12.5px; color: var(--ink-2); }
-  .sim-tile--ours { border-color: var(--ok); background: var(--ok-bg); }
+  .sim-tile span { font-size: 13px; color: var(--ink-2); }
+  .sim-tile--ours { background: var(--ok-bg); }
   .sim-tile--ours b { color: var(--ok); }
-  .sim-barwrap { height: 6px; background: #eef0f2; border-radius: 3px; overflow: hidden; margin: 4px 0 2px; }
-  .sim-barwrap i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .sim-barwrap { height: 6px; background: var(--gray); border-radius: 3px; overflow: hidden; margin: 4px 0 2px; }
+  .sim-barwrap i { display: block; height: 100%; width: 0; background: var(--red); transition: width .2s; }
   #sim-progress { font-size: 12px; color: var(--ink-2); }
   #sim-stage { margin-top: 12px; min-height: 290px; }
   .sim-head { font-size: 14px; margin-bottom: 6px; }
-  .sim-hist { font-size: 12.5px; color: var(--ink-2); margin-bottom: 10px; }
+  .sim-hist { font-size: 13px; color: var(--ink-2); margin-bottom: 10px; }
   .sim-hist ul { display: inline; padding: 0; margin: 0; }
   .sim-hist li { display: inline; margin-right: 10px; color: var(--ink); }
   .sim-hist li small, .sim-item small { color: var(--ink-2); }
   .sim-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .sim-col { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
-  .sim-col--ours { border-color: var(--accent); }
+  .sim-col { background: var(--gray); border-radius: 16px; padding: 12px 14px; }
+  .sim-col--ours { background: #fff; box-shadow: inset 0 0 0 1.5px var(--red); }
   .sim-col h3 { font-size: 12.5px; margin: 0 0 6px; color: var(--ink-2); text-transform: uppercase; letter-spacing: .03em; }
   .sim-col h3 small { text-transform: none; letter-spacing: 0; font-weight: 400; }
-  .sim-item { padding: 6px 8px; border-radius: 6px; margin: 4px 0; font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
+  .sim-item { padding: 6px 8px; border-radius: 8px; margin: 4px 0; font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
   .sim-item small { flex-basis: 100%; font-size: 11.5px; }
   .sim-item.hit { background: var(--ok-bg); color: var(--ok); font-weight: 600; }
   .sim-item em { font-style: normal; font-size: 11.5px; background: var(--ok); color: #fff; border-radius: 9px; padding: 0 7px; }
   .sim-target { margin-top: 10px; font-size: 13px; }
-  .sim-target span { display: inline-block; margin: 3px 6px 3px 0; padding: 3px 9px; border-radius: 10px; background: #f1f2f4; }
+  .sim-target span { display: inline-block; margin: 3px 6px 3px 0; padding: 3px 9px; border-radius: 8px; background: var(--gray); }
   .sim-target span.ours { background: var(--ok-bg); color: var(--ok); font-weight: 600; }
-  .sim-target span.co { background: var(--accent-2); color: var(--accent); }
-  #sim-final { margin-top: 16px; border-top: 2px solid var(--line); padding-top: 12px; }
-  #sim-final h3, #sim-why h3, #sim-judge h3 { font-size: 16px; margin: 0 0 8px; }
+  .sim-target span.co { background: var(--accent-2); color: var(--red); }
+  #sim-final { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 12px; }
+  #sim-final h3, #sim-why h3, #sim-judge h3 { font-size: 18px; margin: 0 0 8px; }
   .sim-big { font-size: 16px; }
   .sim-big b { font-size: 22px; }
+  .sim-table { border-collapse: collapse; }
+  .sim-table th, .sim-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
   .sim-table td.sim-ours { color: var(--ok); font-weight: 700; }
-  .sim-note { font-size: 13px; background: var(--warn-bg); border-radius: 6px; padding: 10px 12px; max-width: 820px; }
-  #sim-why, #sim-judge { margin-top: 16px; border-top: 2px solid var(--line); padding-top: 12px; }
+  .sim-note { font-size: 13px; background: var(--warn-bg); border-radius: 8px; padding: 10px 12px; max-width: 820px; }
+  #sim-why, #sim-judge { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 12px; }
   .sim-list { font-size: 13px; padding-left: 18px; max-width: 860px; }
   .sim-list li { margin: 4px 0; }
-  .sim-judge { margin-top: 8px; font-size: 12.5px; color: var(--ink-2); background: #f6f8fa; border-radius: 6px; padding: 6px 10px; }
-  @media (max-width: 820px) { .layout { grid-template-columns: 1fr; } nav.side { display: none; } .sim-cols, .sim-tiles { grid-template-columns: 1fr; } }
+  .sim-judge { margin-top: 8px; font-size: 12.5px; color: var(--ink-2); background: var(--gray); border-radius: 8px; padding: 6px 10px; }
+  @media (max-width: 1100px) { .hdr__nav, .contacts { display: none; } }
+  @media (max-width: 820px) { .layout { grid-template-columns: 1fr; } aside { display: none; } .sim-cols, .sim-tiles, .widgets { grid-template-columns: 1fr; } .hdr__icons { display: none; } }
 </style>
 </head>
 <body>
-<div class="mock">
-  <span><b>Макет встраивания</b> — так блок советника выглядел бы в личном кабинете магазина. Это не настоящий кабинет.</span>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l2 2"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .8 3 2.8 3 6"/></symbol>
+  <symbol id="i-contact" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7.5 17c.8-2 2.5-3 4.5-3s3.7 1 4.5 3"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.5 11h10.5l2-8H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 12h18"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></symbol>
+  <symbol id="i-pct" viewBox="0 0 24 24"><path d="M5 19L19 5"/><circle cx="7" cy="7" r="2"/><circle cx="17" cy="17" r="2"/></symbol>
+</svg>
+
+<div class="demo">
+  <span><b>Демо-макет хакатона «ИИкузница»</b>: устройство и вид кабинета Softline с блоком советника. Это не настоящий кабинет — войти нельзя, клиенты — примеры стенда.</span>
   <label>Клиент: <select id="client"></select></label>
-  <a href="#sim" style="color:#9fd3ff">▶ Симуляция: три месяца за минуту</a>
-  <a href="./">← стенд</a>
+  <a href="#sim">▶ Симуляция: три месяца за минуту</a>
+  <a href="./">Стенд советника</a>
 </div>
-<header class="bar">
-  <div class="logo">Личный кабинет<small>магазин программ и оборудования</small></div>
-  <div class="who" id="who"></div>
-</header>
-<div class="layout">
-  <nav class="side">
-    <a class="on" href="#" data-home="1">Главная</a>
-    <a href="#lic">Лицензии и подписки</a>
-    <a href="#sim">Симуляция: три месяца</a>
-    <a href="#">Заказы</a>
-    <a href="#">Документы</a>
-    <a href="#">Поддержка</a>
+
+<header class="hdr">
+  <div class="hdr__row">
+    <a class="logo" href="#"><span class="logo__mark"><i></i><i></i><i></i><i></i></span><span class="logo__text">софтлайн<small>цифровой актив</small></span></a>
+    <span class="btn-cat"><svg class="i"><use href="#i-menu"/></svg>Каталог</span>
+    <div class="search"><span>Название продукта, имя производителя или артикул (SKU)</span><i><svg class="i"><use href="#i-search"/></svg></i></div>
+    <div class="contacts"><b>8 (800) 232-00-23</b><span>sales@softline.com</span></div>
+    <div class="hdr__icons">
+      <span><svg class="i"><use href="#i-user"/></svg>Профиль</span>
+      <span><svg class="i"><use href="#i-heart"/></svg>Избранное</span>
+      <span><svg class="i"><use href="#i-cart"/></svg>Корзина</span>
+    </div>
+  </div>
+  <nav class="hdr__nav">
+    <span><svg class="i" style="width:16px;height:16px"><use href="#i-pct"/></svg>Акции</span><span>Запросить КП</span><span>ИИ</span><span>Производители</span>
+    <span>Офисное ПО</span><span>Антивирусы</span><span>Защита информации</span><span>Компьютеры</span><span>Блог</span>
+    <span class="r">Услуги и решения ↗</span><span>Softline.ru ↗</span>
   </nav>
+</header>
+
+<div class="layout">
+  <aside>
+    <div class="side__window">
+      <div class="avatar"><svg class="i" style="width:26px;height:26px"><use href="#i-bag"/></svg></div>
+      <div class="who" id="who"></div>
+      <nav class="menu">
+        <a href="#" data-page="home" class="on"><svg class="i"><use href="#i-home"/></svg>Главная</a>
+        <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-doc"/></svg>Договоры</a>
+        <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-card"/></svg>Счета и платежи</a>
+        <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-key"/></svg>Ключи и дистрибутивы</a>
+        <a href="#products" data-page="products"><svg class="i"><use href="#i-grid"/></svg>Продукты</a>
+        <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-tag"/></svg>Пробные лицензии</a>
+        <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-users"/></svg>Пользователи</a>
+        <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-contact"/></svg>Контакты</a>
+        <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-bell"/></svg>Уведомления</a>
+        <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-user"/></svg>Профиль<svg class="i ext"><use href="#i-ext"/></svg></a>
+        <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-mail"/></svg>Подписки<svg class="i ext"><use href="#i-ext"/></svg></a>
+      </nav>
+    </div>
+    <div class="side__window side__shop"><svg class="i"><use href="#i-cart"/></svg>Интернет-магазин</div>
+  </aside>
+
   <main>
-    <section class="panel" id="sim" hidden>
+    <section id="sim" hidden>
       <h2>Симуляция: три месяца за минуту <small id="sim-window"></small></h2>
       <p class="hint" style="max-width:none">Клиенты группы A из данных организаторов. У каждого — тройка нашего советника и тройка базового способа организаторов «совместные покупки», обе на дату конца обучения; затем видно, что клиент на самом деле купил за три месяца. Счётчики — попадания: совет, который клиент потом купил. Популярность считается рядом.</p>
       <div class="sim-controls" id="sim-controls">
@@ -145,32 +275,79 @@
       <div id="sim-why" hidden></div>
       <div id="sim-judge" hidden></div>
     </section>
-    <section class="panel" id="lic">
-      <h2>Лицензии и подписки <small id="today"></small></h2>
-      <div id="licenses"></div>
-    </section>
-    <section class="panel">
-      <h2>Вам может подойти <small>советы по вашим покупкам, с объяснением</small></h2>
+
+    <section id="page-home" class="page">
+      <div class="widgets">
+        <a class="info-widget" href="#products">
+          <span class="iw__icon"><svg class="i" style="width:26px;height:26px"><use href="#i-grid"/></svg><em class="iw__badge" id="w-badge" hidden></em></span>
+          <span><div class="iw__title">Продукты</div><div class="iw__text" id="w-products">—</div></span>
+        </a>
+        <div class="info-widget">
+          <span class="iw__icon"><svg class="i" style="width:26px;height:26px"><use href="#i-key"/></svg></span>
+          <span><div class="iw__title">Ключи и дистрибутивы</div><div class="iw__text muted">В макете раздел не повторяется</div></span>
+        </div>
+      </div>
+      <h2 class="h2">Вам может подойти <small>советы по вашим покупкам, с объяснением</small></h2>
       <div id="block"></div>
       <div id="popular"></div>
-    </section>
-    <section class="panel">
-      <details>
+      <details class="contract">
         <summary><b>Что кабинет получил от советника</b> — ответ в формате нынешнего блока: поля link, name, vendorName и price те же, reason и slot — новые</summary>
         <pre id="contract"></pre>
         <p class="hint">Тот же ответ кабинет получает одним запросом к серверу советника: <code>POST /api/advice</code> с типом клиента,
-          датой и покупками (семейство, дата, срок). Языковая модель на запрос не вызывается, ответ — около миллисекунды.</p>
+          датой и покупками (семейство, дата, срок), или вставляет виджет одним тегом — <a href="embed.html">страница встраивания</a>.
+          Языковая модель на запрос не вызывается, ответ — около миллисекунды.</p>
       </details>
+    </section>
+
+    <section id="page-products" class="page" hidden>
+      <h1 class="h1">Продукты <small id="today"></small></h1>
+      <div class="psearch"><svg class="i"><use href="#i-search"/></svg>Поиск по названию продукта</div>
+      <div class="filters"><span>Вендор</span><span>Номер договора</span><span>Тип продукта</span><span>Истекшие продукты</span><span>Год поставки</span></div>
+      <div id="licenses"></div>
+      <p class="note">Продление с советом о старшей редакции и готовая замена ушедшего продукта — от советника; остальное повторяет таблицу кабинета.</p>
     </section>
   </main>
 </div>
+<div class="feedback">Отзыв о сайте</div>
 <footer>
-  Советы считает тот же движок, что на стенде (engine.js), по открытым данным магазина; языковая модель на запрос не вызывается.
+  Демо-макет: советы считает тот же движок, что на стенде (engine.js), по открытым данным магазина; языковая модель на запрос не вызывается.
   Решения менеджера — общие со стендом: замена, принятая на вкладке «Связи на проверку», здесь появляется сразу.
 </footer>
 <script src="engine.js"></script>
 <script src="track.js"></script>
 <script src="cabinet.js"></script>
 <script src="cabinet-sim.js"></script>
+<script>
+/* Разделы кабинета: «Главная» и «Продукты» (#products), симуляция — #sim (её показывает cabinet-sim.js). */
+(function () {
+  "use strict";
+  function route() {
+    const sim = location.hash === "#sim";
+    const id = location.hash === "#products" ? "page-products" : "page-home";
+    if (!sim) document.querySelectorAll("main > section.page").forEach((s) => { s.hidden = s.id !== id; });
+    document.querySelectorAll(".menu a[data-page]").forEach((a) => a.classList.toggle("on", !sim && "page-" + a.dataset.page === id));
+    document.title = (sim ? "Симуляция" : id === "page-products" ? "Продукты" : "Главная") + " — макет кабинета Softline с советником";
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+  route();
+  // виджет «Продукты» на главной — по таблице продуктов: что можно продлить и где готова замена
+  const lic = document.getElementById("licenses");
+  const plural = (n, a, b, c) => (n % 10 === 1 && n % 100 !== 11 ? a : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? b : c);
+  function widget() {
+    const renew = lic.querySelectorAll('a[href*="sovetnik_renew"]').length;
+    const repl = lic.querySelectorAll("[data-repl]").length;
+    const parts = [];
+    if (renew) parts.push(`${renew} ${plural(renew, "продукт", "продукта", "продуктов")} можно продлить`);
+    if (repl) parts.push(`для ${repl} ${plural(repl, "продукта", "продуктов", "продуктов")} есть замена`);
+    document.getElementById("w-products").textContent = parts.join(", ") || "Продления и замены не требуются";
+    const badge = document.getElementById("w-badge");
+    badge.hidden = !(renew + repl);
+    badge.textContent = "+" + (renew + repl);
+  }
+  new MutationObserver(widget).observe(lic, { childList: true });
+  widget();
+})();
+</script>
 </body>
 </html>

@@ -283,3 +283,29 @@ textarea { font: inherit; color: var(--ink); border: 1px solid var(--axis); bord
 .journal { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
 .journal th, .journal td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line, #e3e6ea); vertical-align: top; }
 .journal tr:last-child td { font-weight: 600; border-bottom: 0; }
+
+/* ---- вид Softline, как в личном кабинете lk.softline.ru: шрифт Inter, бордовый акцент, панели с тонкой тенью */
+:root {
+  --accent: #a50f2d; --page: #ffffff; --surface: #ffffff; --ink: #121519; --ink-2: #4f5866; --muted: #768297; --hair: #e4e7ec;
+  --ring: rgba(60, 66, 87, 0.16); --sl-gray: #f2f3f5;
+  --sl-shadow: 0 1px 1px rgba(0, 0, 0, .12), 0 0 0 1px rgba(60, 66, 87, .16), 0 2px 5px rgba(60, 66, 87, .08);
+}
+body { font-family: Inter, Arial, Tahoma, Helvetica, sans-serif; background: #fff; }
+.sl-bar { display: flex; align-items: center; gap: 18px; padding: 12px 28px; border-bottom: 1px solid var(--hair); flex-wrap: wrap; }
+.sl-logo { display: flex; align-items: center; gap: 8px; color: var(--accent); }
+.logo__mark { display: grid; grid-template-columns: 11px 11px; gap: 1px; }
+.logo__mark i { width: 11px; height: 11px; background: #d6d9de; }
+.logo__mark i:first-child { background: var(--accent); }
+.logo__text { font-weight: 700; font-size: 20px; line-height: 1; letter-spacing: -.01em; }
+.logo__text small { display: block; font-size: 10px; font-weight: 500; margin-top: 3px; }
+.sl-bar__title { font-weight: 600; font-size: 15px; padding-left: 18px; border-left: 1px solid var(--hair); }
+.sl-bar__links { margin-left: auto; display: flex; gap: 10px; }
+.sl-bar__links a { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 8px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 500; }
+.sl-bar__links a + a { background: #fff; color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+h1 { font-size: 32px; line-height: 40px; font-weight: 700; }
+.tab { font-size: 14px; }
+.tab.is-active { color: var(--accent); border-bottom-color: var(--accent); }
+.panel { border: 0; border-radius: 16px; box-shadow: var(--sl-shadow); }
+.btn { border-radius: 8px; border-color: #c9ced6; font-weight: 500; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.top__link { color: var(--accent); }

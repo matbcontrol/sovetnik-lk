@@ -46,6 +46,8 @@
   const className = (n) => (n && n.cls && data.classes[n.cls]) || "";
   const fmtDate = (iso) => (iso ? iso.slice(0, 10).split("-").reverse().join(".") : "—");
   const addMonths = (iso, m) => new Date(E.addMonths(E.parseDate(iso), m)).toISOString().slice(0, 10);
+  const MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  const fmtLong = (iso) => { const [y, m, d] = iso.slice(0, 10).split("-"); return `${+d} ${MONTHS[+m - 1]} ${y}`; };
   const days = (from, to) => Math.round((Date.parse(to) - Date.parse(from)) / 864e5);
   const price = (n) => (n.price ? `от ${nf.format(Math.round(n.price))} ₽` : n.sale !== 1 && n.req === 1 ? "цена по запросу" : "");
   // те же метки перехода, что ставит блок кабинета: показы и переходы считаются теми же средствами
@@ -76,7 +78,10 @@
     const ex = examples[i];
     const client = JSON.parse(JSON.stringify(ex.client));
     client.today = client.today || new Date().toISOString().slice(0, 10);
-    $("#who").innerHTML = `<b>${client.type === "b2b" ? "Организация" : "Частное лицо"}</b>${esc(ex.title.split(":")[0])}`;
+    const [head, tail] = ex.title.split(":");
+    const name = /^(Организация|Частное лицо)$/.test(head.trim()) && tail ? tail.trim() : head.trim();
+    $("#who").innerHTML = `<b>${esc(name.charAt(0).toUpperCase() + name.slice(1))}</b>`
+      + `<span>${client.type === "b2b" ? "Организация" : "Частное лицо"} · пример стенда</span>`;
     $("#today").textContent = `на ${fmtDate(client.today)}`;
 
     // клиент видит только подтверждённое; продление — в строке своей лицензии, а не в блоке советов
@@ -105,10 +110,9 @@
       const n = node(p.family);
       const end = p.term ? addMonths(p.date, p.term) : null;
       const left = end ? days(client.today, end) : null;
-      const status = end == null ? '<span class="st st--none">срок не указан</span>'
-        : left < 0 ? `<span class="st st--bad">истекла ${fmtDate(end)}</span>`
-          : left <= 120 ? `<span class="st st--warn">истекает через ${left} дн.</span>`
-            : `<span class="st st--ok">активна до ${fmtDate(end)}</span>`;
+      const status = end == null ? '<span class="st st--none">Срок не указан</span>'
+        : (left < 0 ? '<span class="st st--bad">Истёк</span>' : left <= 120 ? '<span class="st st--warn">Истекает</span>'
+          : '<span class="st st--ok">Активен</span>') + `<div class="pdate">${fmtLong(end)}</div>`;
       let action = "";
       const r = renew.find((x) => fromPurchase(x, p.family));
       const rep = replacements.find((x) => fromPurchase(x, p.family));
@@ -119,6 +123,7 @@
       } else if (rep && ((left != null && left < 0) || n.sale !== 1)) {
         const wait = pending(rep);
         action = `<button class="btn" data-repl="${k}">Подобрать замену</button>
+          <div class="hint">${wait ? "Замена ждёт подтверждения менеджера" : "Доступна замена — готова сразу"}</div>
           <div class="repl ${wait ? "repl--wait" : ""}" id="repl-${k}" hidden>
             ${wait ? "<b>Замена подготовлена и ждёт подтверждения менеджера.</b> " : "<b>Замена готова сразу.</b> "}
             «${esc(rep.name)}», ${esc(price(node(rep.family)))}. ${esc(rep.why)}
@@ -128,10 +133,12 @@
       } else if (left != null && left < 0) {
         action = '<span class="hint">Срок истёк. Продление этого продукта советник не нашёл.</span>';
       }
-      return `<tr><td><b>${esc(n.name || p.family)}</b><div class="hint">${esc([n.vendor, className(n)].filter(Boolean).join(" · "))}</div></td>
-        <td>куплена ${fmtDate(p.date)}${p.term ? `<br>на ${p.term} мес.` : ""}</td><td>${status}</td><td>${action || "—"}</td></tr>`;
+      return `<tr><td><div class="pvend"><b>${esc(n.vendor || (p.family.split("/")[0] || "").replace(/^./, (c) => c.toUpperCase()))}</b> <span>· № ${k + 1}</span></div>
+        <div class="pname">${esc(n.name || p.family)}</div>
+        <div class="ptags">${esc([className(n), `куплен ${fmtDate(p.date)}`, p.term ? `${p.term} мес.` : ""].filter(Boolean).join(" · "))}</div></td>
+        <td>${status}</td><td class="pact">${action}</td></tr>`;
     });
-    $("#licenses").innerHTML = `<table><tr><th>Продукт</th><th>Покупка</th><th>Статус</th><th>Что сделать</th></tr>${rows.join("")}</table>`;
+    $("#licenses").innerHTML = `<table><tr><th>Информация о продукте</th><th>Срок истечения</th><th></th></tr>${rows.join("")}</table>`;
     document.querySelectorAll("[data-repl]").forEach((b) => b.addEventListener("click", () => {
       const box = $(`#repl-${b.dataset.repl}`);
       box.hidden = !box.hidden;
