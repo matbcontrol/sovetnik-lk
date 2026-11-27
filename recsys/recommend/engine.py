@@ -307,11 +307,13 @@ class Graph:
         known = {(e["src"], e["dst"]) for e in edges if e["type"] != "same_line"}
         edges += [e for e in spec_links() if e["src"] in nodes and e["dst"] in nodes
                   and (e["src"], e["dst"]) not in known]
-        # связи, которыми агент каталога закрыл «дыры»: подтверждены цитатой, клиент видит их сразу
+        # Связи, которыми агент каталога закрыл «дыры»: подтверждены цитатой, клиент видит их сразу. Вердикт разметки
+        # по той же паре главнее при любом виде связи: запрет «уже есть / то же самое / не связано» при выдаче
+        # не проверяется у редакций и версий, поэтому размеченную пару отсекаем здесь.
         from recsys.graph.agent_links import read as agent_links
         known = {(e["src"], e["dst"]) for e in edges if e["type"] != "same_line"}
         edges += [e for e in (agent_links() if agent else []) if e["src"] in nodes and e["dst"] in nodes
-                  and (e["src"], e["dst"]) not in known]
+                  and (e["src"], e["dst"]) not in known and (e["src"], e["dst"]) not in families]
         veto = sorted((a, b, v.verdict) for (a, b), v in families.items() if not v.shown)
         classes = read(CLASS_FILE) if CLASS_FILE.exists() else {}
         class_veto = sorted(p for p, v in classes.items() if v.verdict in ("has", "same"))

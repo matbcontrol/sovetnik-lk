@@ -64,3 +64,21 @@ def test_agent_links_enter_the_line_table_under_line_keys(tmp_path):
     assert lines[("101", "202")].source == "агент каталога"
     assert lines[("101", "404")].verdict == "unrelated"            # вердикт разметки главнее
     assert not any("v/" in a or "v/" in b for a, b in lines)        # ключей узлов графа в таблице нет
+
+
+def test_agent_upgrade_outside_catalog_line_is_shown_as_next_step(tmp_path):
+    """Старшая редакция от агента: в графе — «следующая ступень» с его же фразой, в таблице блока — «нужно»."""
+    from recsys.llm.pair_verdicts import add_agent_links
+
+    p = table(tmp_path, "v/home,v/pro,upgrade,агент каталога,0.7,Добавляет шифрование диска и удалённый рабочий стол,«BitLocker»,graph,m,2026-11-27\n")
+    links = agent_links.read(p)
+    assert [(e["type"], e["source"]) for e in links] == [("upgrade", "агент каталога")]
+    nodes = {k: node(k, "c/os") for k in ("v/home", "v/pro")}
+    client = Client("b2b", [Purchase("v/home", date(2026, 6, 1), 0)], today=TODAY)
+    recs = Recommender(Graph(nodes, links, [], {})).recommend(client, 3)
+    assert [(r.family, r.slot) for r in recs] == [("v/pro", "next")]
+    assert recs[0].why == "Добавляет шифрование диска и удалённый рабочий стол."
+    assert recs[0].label == "найдено агентом каталога, подтверждено цитатой"
+    lines = {}
+    assert add_agent_links(lines, links, {"v/home": "11", "v/pro": "12"}) == 1
+    assert lines[("11", "12")].verdict == "need"

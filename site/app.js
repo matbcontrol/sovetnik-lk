@@ -44,10 +44,12 @@
   // Связи агента, которых ещё нет в собранном графе: живой запуск на этой странице или запуск после последней
   // сборки данных. Клиент видит их сразу; без цитаты связь идёт только в очередь менеджера.
   const liveEdges = [], liveQuotes = {}, liveQueue = [];
+  // пары, по которым разметка сказала «уже есть», «то же самое» или «не связано»: связь агента её не перебивает
+  const vetoPairs = new Set((data.veto || []).map((v) => `${v[0]}|${v[1]}`));
   {
     const known = new Set(data.edges.map((e) => `${e[0]}|${e[1]}`));
     for (const h of holesOf(holesData)) for (const l of h.links || []) {
-      if (!nodeIds.has(h.family) || !nodeIds.has(l.dst) || known.has(`${h.family}|${l.dst}`)) continue;
+      if (!nodeIds.has(h.family) || !nodeIds.has(l.dst) || known.has(`${h.family}|${l.dst}`) || vetoPairs.has(`${h.family}|${l.dst}`)) continue;
       const e = holeEdge(h.family, l);
       if (l.status === "graph") { liveEdges.push(e); if (l.quote) liveQuotes[ekey(e)] = l.quote; }
       else liveQueue.push({ src: e[0], dst: e[1], type: e[2], confidence: e[4], evidence: e[5], quote: l.quote || "" });
@@ -1254,7 +1256,7 @@
       holeRuns.unshift(res);
       holeBy.set(res.family, res);
       for (const l of res.links || []) {
-        if (!nodeIds.has(l.dst)) continue;
+        if (!nodeIds.has(l.dst) || vetoPairs.has(`${res.family}|${l.dst}`)) continue;
         const edge = holeEdge(res.family, l);
         if (l.status !== "graph") { addQueueRow({ src: edge[0], dst: edge[1], type: edge[2], confidence: edge[4], evidence: edge[5], quote: l.quote || "" }); continue; }
         if (data.edges.concat(liveEdges).some((e) => e[0] === edge[0] && e[1] === edge[1])) continue;
