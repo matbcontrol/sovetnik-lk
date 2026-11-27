@@ -106,5 +106,12 @@
    "solo": 69,
    "on_sale": 69
   }
- ]
+ ],
+ "agent": {
+  "links": 3,
+  "products": 3,
+  "gained": 1,
+  "solo_before": 3476,
+  "solo_now": 3475
+ }
 }

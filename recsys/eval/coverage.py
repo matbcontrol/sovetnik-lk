@@ -18,6 +18,12 @@ from recsys.recommend.engine import LABEL, PICK_SOURCE, Client, Graph, Purchase,
 
 BOUGHT, TODAY = date(2026, 3, 1), date(2026, 11, 27)
 OUT = ROOT / "reports" / "coverage.json"
+HOLES = ROOT / "reports" / "catalog_holes.json"     # очередь для агента каталога: товары в продаже без личного совета
+HOLES_TOP = 400
+# С каких товаров агенту начинать: с верхних в своём классе магазина, программы раньше оборудования. При равном месте
+# первыми идут товары, у чьего класса связь с другими классами есть, а подходящего всем товара нет: там нужен подбор
+# под конкретную модель — это и есть работа агента.
+ORDER = {"class_only": 0, "manager": 1, "nothing": 2, "judged": 3}
 PICK_LABELS = {LABEL[s] for s in PICK_SOURCE.values()}
 TIERS = ("own_need", "own_kit", "class_need", "class_kit")
 WHY = ("manager", "judged", "class_only", "nothing")
@@ -26,6 +32,28 @@ WHY = ("manager", "judged", "class_only", "nothing")
 def personal(r: Recommender, who: str, fam: str) -> list:
     client = Client(who, [Purchase(fam, BOUGHT)], today=TODAY)
     return [x for x in r.recommend(client, 5) if x.slot != "renew" and not x.fallback]
+
+
+def home(n: dict) -> bool:
+    """Товар для дома: совет считаем для частного лица, остальным — для организации."""
+    return n.get("client_types") == "b2c" or "для дома" in (n.get("class_name") or "").lower()
+
+
+def agent_gain(g: Graph | None = None) -> dict:
+    """Что дал агент каталога: у скольких товаров в продаже личный совет появился только благодаря его связям."""
+    from recsys.graph import agent_links
+
+    g = g or Graph.load()
+    links = [r for r in agent_links.read() if r["src"] in g.nodes and r["dst"] in g.nodes]
+    sources = sorted({r["src"] for r in links if g.nodes[r["src"]]["on_sale"] == "1"})
+    gained = []
+    if sources:
+        now, before = Recommender(g), Recommender(Graph.load(agent=False))
+        for fam in sources:
+            who = "b2c" if home(g.nodes[fam]) else "b2b"
+            if personal(now, who, fam) and not personal(before, who, fam):
+                gained.append(fam)
+    return {"links": len(links), "products": len(sources), "gained": len(gained)}
 
 
 def tier(recs: list) -> str:
@@ -49,12 +77,12 @@ def main() -> None:
     stat: dict[str, Counter] = defaultdict(Counter)
     solo_class: Counter = Counter()
     size_class: Counter = Counter()
+    holes: list[dict] = []
     for fam, n in g.nodes.items():
         if n["on_sale"] != "1":
             continue
         kind = "hardware" if n.get("kind") == "hardware" else "software"
-        home = n.get("client_types") == "b2c" or "для дома" in (n.get("class_name") or "").lower()
-        who, other = ("b2c", "b2b") if home else ("b2b", "b2c")
+        who, other = ("b2c", "b2b") if home(n) else ("b2b", "b2c")
         s = stat[kind]
         s["on_sale"] += 1
         size_class[n.get("class_name") or ""] += 1
@@ -68,13 +96,16 @@ def main() -> None:
         if not personal(to_client, other, fam):
             s["solo_any_client"] += 1
         if personal(to_manager, who, fam):
-            s["manager"] += 1                             # подсказка есть, но сама пара не проверена: ждёт менеджера
+            why = "manager"                               # подсказка есть, но сама пара не проверена: ждёт менеджера
         elif fam in judged:
-            s["judged"] += 1                              # пары с этим товаром проверяли — ни одна не подошла
+            why = "judged"                                # пары с этим товаром проверяли — ни одна не подошла
         elif n["class"] in linked:
-            s["class_only"] += 1                          # класс связан с другими, но универсального товара нет
+            why = "class_only"                            # класс связан с другими, но универсального товара нет
         else:
-            s["nothing"] += 1                             # у класса нет связей
+            why = "nothing"                               # у класса нет связей
+        s[why] += 1
+        rank = int(n["store_rank"]) if str(n.get("store_rank") or "").isdigit() else 9999
+        holes.append({"family": fam, "name": n["name"], "class": n.get("class_name") or "", "product": kind, "why": why, "rank": rank})
     total: Counter = Counter()
     for s in stat.values():
         total.update(s)
@@ -85,8 +116,15 @@ def main() -> None:
         "total": {x: total[x] for x in keys},
         "solo_classes": [{"class": c, "solo": k, "on_sale": size_class[c]} for c, k in solo_class.most_common(12)],
     }
+    gain = agent_gain(g)
+    out["agent"] = {**gain, "solo_before": total["solo"] + gain["gained"], "solo_now": total["solo"]}
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    # очередь для агента: открытый каталог, без данных задачи; первыми идут верхние товары своих классов
+    holes.sort(key=lambda h: (h["rank"], h["product"] != "software", ORDER[h["why"]], h["class"], h["name"]))
+    HOLES.write_text(json.dumps({"today": TODAY.isoformat(), "total": len(holes), "shown": min(len(holes), HOLES_TOP),
+                                 "order": "по месту товара в своём классе магазина; при равном месте — сначала программы, затем товары, у класса которых связь есть, а общего для всех товара нет",
+                                 "holes": holes[:HOLES_TOP]}, ensure_ascii=False, indent=1), encoding="utf-8")
     title = {"software": "программы", "hardware": "оборудование"}
     for k, s in out["kinds"].items():
         print(f"{title[k]}: в продаже {s['on_sale']}, с личным советом {s['with_advice']} "
@@ -100,7 +138,10 @@ def main() -> None:
           f"без совета {t['solo']} ({t['solo'] / t['on_sale']:.0%}); без совета клиенту любого типа {t['solo_any_client']}")
     print("классы, где без совета больше всего товаров:",
           "; ".join(f"{x['class']} — {x['solo']} из {x['on_sale']}" for x in out["solo_classes"][:8]))
-    print("записано:", OUT)
+    a = out["agent"]
+    print(f"агент каталога: связей в графе {a['links']}, товаров-источников {a['products']}, из них совет появился только "
+          f"благодаря агенту у {a['gained']}; без совета было {a['solo_before']}, стало {a['solo_now']}")
+    print("записано:", OUT, "и", HOLES)
 
 
 if __name__ == "__main__":

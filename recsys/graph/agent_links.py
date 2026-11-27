@@ -56,22 +56,43 @@ def quotes(path=PATH) -> dict[str, str]:
 
 
 REPORT = ROOT / "reports" / "agent_holes.json"
+CATALOG_HOLES = ROOT / "reports" / "catalog_holes.json"    # товары каталога без личного совета (recsys.eval.coverage)
 SITE_REPORT = ROOT / "site" / "data" / "agent_holes.json"
+QUEUE_SHOWN = 60
 
 
-def publish(report=REPORT, out=SITE_REPORT) -> int:
-    """Копия отчёта агента для страницы стенда: что он сделал с каждой разобранной дырой.
+def publish(report=REPORT, out=SITE_REPORT, catalog=CATALOG_HOLES) -> int:
+    """Копия отчёта агента для страницы стенда: что он сделал с каждой разобранной дырой и что на очереди.
 
-    Дыры идут по алфавиту: порядок разбора — это порядок очереди по числу клиентов, а он считается
-    по закрытым данным и на открытую страницу попадать не должен. Отчёта нет — пустой список,
-    чтобы страница не спотыкалась о «не найдено».
+    Разобранные дыры идут по алфавиту: порядок разбора — это порядок очереди по числу клиентов, а он считается
+    по закрытым данным и на открытую страницу попадать не должен. Очередь — товары открытого каталога без
+    личного совета, которые агент ещё не разбирал. Отчёта нет — пустой список, чтобы страница не спотыкалась.
     """
     import json
 
     data = json.loads(report.read_text(encoding="utf-8")) if report.exists() else {}
     holes = data.get("holes") or []
     holes = sorted(holes.values() if isinstance(holes, dict) else holes, key=lambda h: str(h.get("name", "")).lower())
+    done = {h.get("family") for h in holes}
+    listed = json.loads(catalog.read_text(encoding="utf-8")) if catalog.exists() else {}
+    queue = [{"family": h["family"], "name": h["name"], "cls": h.get("class", "")}
+             for h in listed.get("holes", []) if h.get("family") not in done][:QUEUE_SHOWN]
+    # счётчик «товаров без личного совета: было → стало». «Было» — охват без связей агента, он от агента не зависит;
+    # «стало» пересчитывается здесь, чтобы после живого запуска страница показала новое число без пересборки отчётов.
+    gain = {}
+    cov = ROOT / "reports" / "coverage.json"
+    try:
+        c = json.loads(cov.read_text(encoding="utf-8")) if cov.exists() else {}
+        base = (c.get("agent") or {}).get("solo_before")
+        if base:
+            from recsys.eval.coverage import agent_gain
+            a = agent_gain()
+            gain = {"on_sale": c["total"]["on_sale"], "before": base, "now": base - a["gained"], "gained": a["gained"],
+                    "links": a["links"]}
+    except Exception:                                        # счётчик — украшение: копия отчёта важнее
+        gain = {}
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"holes": holes, "summary": data.get("summary", {})}, ensure_ascii=False, indent=1),
-                   encoding="utf-8")
+    out.write_text(json.dumps({"holes": holes, "summary": data.get("summary", {}), "gain": gain, "queue": queue,
+                               "queue_total": gain.get("now") or listed.get("total", 0)},
+                              ensure_ascii=False, indent=1), encoding="utf-8")
     return len(holes)

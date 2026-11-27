@@ -1,0 +1,3208 @@
+{
+ "today": "2026-11-27",
+ "total": 3475,
+ "shown": 400,
+ "order": "по месту товара в своём классе магазина; при равном месте — сначала программы, затем товары, у класса которых связь есть, а общего для всех товара нет",
+ "holes": [
+  {
+   "family": "rarsoft/rar-winrar",
+   "name": "Архиватор WinRAR 7",
+   "class": "Архиваторы",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "anydesk/anydesk",
+   "name": "AnyDesk",
+   "class": "Другие решения удаленного доступа",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "ibik/ibik-aster-xp",
+   "name": "Ibik АСТЕР",
+   "class": "Другие системные утилиты",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "niisokb/safemobile",
+   "name": "SafeMobile",
+   "class": "Защита данных на смартфоне",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "redhelper/redhelper",
+   "name": "RedHelper",
+   "class": "Коммуникации (SaaS)",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "internetschoolec/teachbase",
+   "name": "Teachbase",
+   "class": "Курсы по личному развитию",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "softlineuniverse/zashhishhennoe-rabocee-mesto-dlia-sotrudnikov",
+   "name": "Защищенное рабочее место для сотрудников",
+   "class": "Облачные платформы (Импортозамещение)",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "scoutargument/scout-argument",
+   "name": "Scout Argument",
+   "class": "Отраслевые решения",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "spider-project/spider-project",
+   "name": "Spider Project",
+   "class": "Программное обеспечение для ведения дел",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "pogumax/pogumax-designer",
+   "name": "Pogumax Designer",
+   "class": "Программное обеспечение для проекционного дизайна",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "idex/impact-lms",
+   "name": "iMpact LMS",
+   "class": "Программы для бизнес-образования",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "visionero/visionero",
+   "name": "ПАК «Визионеро»",
+   "class": "Программы для медицины",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "smath/smath-studio",
+   "name": "SMath Studio",
+   "class": "Расчетные системы и Научное программное обеспечение",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "peredovietechnologii/rudesktop",
+   "name": "RuDesktop",
+   "class": "Российские решения удаленного доступа (Импортозамещение)",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "litres/litres-abonement",
+   "name": "ЛитРес Абонемент",
+   "class": "Сервисы развлечений",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "vrconcept/vr-concept",
+   "name": "VR CONCEPT",
+   "class": "Системы автоматизации",
+   "product": "software",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "steema-software/teechart-pro-activex",
+   "name": "Steema TeeChart Pro ActiveX",
+   "class": "ActiveX",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "riskstrategy/tamara",
+   "name": "Тамара",
+   "class": "Аналитические платформы",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "drweb/drweb-security-space",
+   "name": "Dr.Web Security Space",
+   "class": "Антивирусы для дома",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "cyberlink-corp/cyberlink-myedit-audio",
+   "name": "Cyberlink MyEdit Audio",
+   "class": "Аудиоредакторы",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "tehnologii-upravleniya-i-razvitiya/bolshaya-biblioteka-biznes-analitika-i-spetsialista-po-biznes-pr",
+   "name": "Большая библиотека бизнес-аналитика и специалиста по бизнес-процессам. Версия 4.0",
+   "class": "Бизнес-литература",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "yandex/yandeks-brauzer",
+   "name": "Яндекс Браузер",
+   "class": "Браузеры и утилиты",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "aggsoftware/virtual-null-modem",
+   "name": "Virtual Null Modem",
+   "class": "Внешние устройства",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "ems/ems-advanced-excel-report",
+   "name": "EMS Advanced Excel Report",
+   "class": "Другие библиотеки",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "cloudiway/cloud-migration-solutions",
+   "name": "Cloud Migration Solutions",
+   "class": "Другие приложения",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "paragon/paragon-hfs-for-windows",
+   "name": "HFS+ for Windows by Paragon Software",
+   "class": "Другие утилиты",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "icecreamsoftware/ebook-reader-pro",
+   "name": "Icecream Ebook Reader PRO",
+   "class": "Другие утилиты для работы с текстом",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "advion/udalennyi-rabocii-stol-s-gpt",
+   "name": "Удаленный рабочий стол с GPT",
+   "class": "ИИ",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "technosoft/tehnosoft-teplos",
+   "name": "Технософт Теплос 2.1",
+   "class": "Инженерные калькуляторы",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "kb-panorama/karty-regionov-rf-v-formate-sxf",
+   "name": "Карты регионов РФ в формате SXF",
+   "class": "Карты и сервисы",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "codeindustry/imageprinter-pro",
+   "name": "ImagePrinter Pro",
+   "class": "Конвертеры и кодировщики",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "nanosoft/nanocad-oblaka-tochek",
+   "name": "nanoCAD Облака точек",
+   "class": "Лазерное сканирование",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "ipsechinsky/uchebnyy-komplekt-kvadrosim",
+   "name": "Учебный комплект «‎Квадросим»",
+   "class": "Обучающие программы",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "sarsys/sprecord-voip",
+   "name": "SpRecord VoIP",
+   "class": "ПО для IP-телефонии",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "cyberlink-corp/cyberlink-youcam",
+   "name": "Cyberlink YouCam",
+   "class": "ПО для видеонаблюдения",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "enterprisedt/enterprise-dt-edtftpj",
+   "name": "Enterprise DT edtFTPj",
+   "class": "Программное обеспечение Java",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "wondershare/wondershare-dr-fone",
+   "name": "Wondershare Dr.Fone",
+   "class": "Программное обеспечение для восстановления данных",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "hypermethod-ibs/hypermethod-eclass",
+   "name": "HyperMethod eClass",
+   "class": "Программное обеспечение для интернета",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "parentalcontrol/kroha-snimki-ekrana",
+   "name": "Kroha Снимки экрана",
+   "class": "Программное обеспечение для родительского контроля",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "gemma/gemma-3dpostprotsessor",
+   "name": "ГеММа-3D.Постпроцессор",
+   "class": "Программное обеспечение для технической поддержки",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "unicraftec/unicraft",
+   "name": "Unicraft",
+   "class": "Программное обеспечение для управления в организации",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "crmm/create-version",
+   "name": "Create Version",
+   "class": "Программное обеспечение для управления проектами",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "perfectsoft/printstore-pro",
+   "name": "PrintStore Pro",
+   "class": "Программное обеспечение для учета компьютеров",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "gisoft/avtomatizirovannaya-sistema-upravleniya-uchebnyim-zavedeniem-asu",
+   "name": "АСУ УЗ Universys Web Server",
+   "class": "Программы для ВУЗов",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "csoft-development/csoft-project-studiocs-arhitektura",
+   "name": "CSoft Project StudioCS Архитектура",
+   "class": "Программы для архитекторов",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "jijitechnologies/planner-manager",
+   "name": "Apps4.Pro Planner Manager",
+   "class": "Программы для бизнес-планирования",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "hystax/khaysteks-migratsiya-mezhdu-platformami-virtualizatsii",
+   "name": "Хайстекс - миграция между платформами виртуализации",
+   "class": "Программы для виртуализации",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "ipi-soft/ipi-motion-capture-1",
+   "name": "iPi Motion Capture",
+   "class": "Программы для дизайна, визуализации и анимации",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "polysoft/polisoft-konsalting-bcad",
+   "name": "bCAD",
+   "class": "Программы для мебельного производства",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "iobit/iobit-driver-booster-pro",
+   "name": "IObit Driver Booster PRO",
+   "class": "Программы для настройки системы",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "mst/fireguard",
+   "name": "FireGuard",
+   "class": "Программы для пожарной безопасности",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "tsentr-bezopasnosti-informatsii-tsbi/tsbi-fiks",
+   "name": "ЦБИ ФИКС",
+   "class": "Программы для разработки ПО",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "netsoftware-1/net-control-classroom",
+   "name": "Net Control 2 Classroom",
+   "class": "Прочие программы",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "etersoft/wineetersoft-network",
+   "name": "WINE@Etersoft",
+   "class": "Расширения системы",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "varwin/vr-dlya-obrazovaniya",
+   "name": "VR для образования",
+   "class": "Решения дополненной и виртуальной реальности AR/VR",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "efficientlab/efficientlab-controlio",
+   "name": "EfficientLab Controlio",
+   "class": "Сетевые утилиты (SaaS)",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "navicat/navicat-cloud",
+   "name": "Navicat Cloud",
+   "class": "Системы автоматизации (SaaS)",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "contentai/abbyy-lingvo-x6-multiligual",
+   "name": "Lingvo by Content AI Выпуск x6 Многоязычная",
+   "class": "Словари",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "northwoodssoftware/northwoods-software-godiagram",
+   "name": "Northwoods Software GoDiagram",
+   "class": "Схемы и диаграммы",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "rosreestrxml/rosreestrpdf",
+   "name": "RosreestrPDF",
+   "class": "Текстовые конвертеры",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "sltechnicaldirect/sertifikat-na-texniceskuiu-podderzku-oborudovaniia-it-ekspert-ri",
+   "name": "Сертификат на техническую поддержку оборудования «IT-Эксперт рядом»",
+   "class": "Техническая поддержка оборудования",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "sltechnicaldirect/servis-nepreryvnogo-obsledovaniia-softline-high-safety",
+   "name": "Сервис непрерывного обследования Softline High Safety",
+   "class": "Техническая поддержка программного обеспечения",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "softline/virtualnyy-ofis-softline",
+   "name": "Виртуальный офис Softline",
+   "class": "Управление бизнесом (SaaS)",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "ipzerkaliy/keyran",
+   "name": "Keyran",
+   "class": "Утилиты",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "wondershare/wondershare-uniconverter",
+   "name": "Wondershare UniConverter",
+   "class": "Файловые менеджеры",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "auditit/auditit-vash-finansovyiy-analitik",
+   "name": "AuditIT «Ваш финансовый аналитик»",
+   "class": "Финансовое программное обеспечение",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "prostoy-soft/kulinarnyie-retseptyi",
+   "name": "Кулинарные рецепты",
+   "class": "Электронные библиотеки",
+   "product": "software",
+   "why": "judged",
+   "rank": 1
+  },
+  {
+   "family": "urovo/accdt50-rb01-406937",
+   "name": "POS-аксессуар Urovo Чехол для DT50",
+   "class": "POS-аксессуары",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "gpbatteries/4891199226199-534791",
+   "name": "Алкалиновые батарейки GP Super Alkaline 15А АA - 20 шт. в пленке",
+   "class": "Аккумуляторы и батареи для компьютерной техники",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "rem/r-32-8s-i-440-k-392800",
+   "name": "для ИБП REM Блок распределения питания R-32-8S-I-440-K",
+   "class": "Аксессуары для ИБП",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "digma/dgstpi1wt-425491",
+   "name": "DIGMA Pro i1 Наконечники , DGSTPI1WT",
+   "class": "Аксессуары для планшетов",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "yealink/cam50-updated-472635",
+   "name": "Yealink CAM50 USB-камера для телефонов SIP-T58W, MP58, шт",
+   "class": "Аксессуары для телефонов",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "katyusha/cbm247p-434508",
+   "name": "КАТЮША Тумба, CBM247p",
+   "class": "Аксессуары к офисной технике",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "ubiquiti/amo-5g10-520374",
+   "name": "Антенна UBIQUITI AMO-5G10",
+   "class": "Антенны",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "bosch/pcr9a5i90m-510635",
+   "name": "Газовая варочная панель Bosch PCR9A5I90M",
+   "class": "Варочные панели",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "patriot/512309216-349021",
+   "name": "Газонокосилка роторная Patriot PT 1433E (512309216) электрическая 1400Вт",
+   "class": "Газонокосилки",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "patriot/474101040-349053",
+   "name": "Генератор Patriot 2700i 2.5кВт",
+   "class": "Генераторы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "bosch/cmg7241b1-448057",
+   "name": "Электрический духовой шкаф Bosch CMG7241B1",
+   "class": "Духовые шкафы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "seagate/st2400mm0129-149671",
+   "name": "Гибридный диск SEAGATE Enterprise Performance 2.5 2400Gb 10K SAS 12Gb/s",
+   "class": "Жесткие диски",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "defender/64247-87852",
+   "name": "Игровой манипулятор Defender Omega 64247",
+   "class": "Игровые манипуляторы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "yealink/exp50-192014",
+   "name": "Консоль Yealink EXP50",
+   "class": "Консоли для телефонов",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "lsi/05-50031-00-268879",
+   "name": "Контроллер LSI 9480-8i8e",
+   "class": "Контроллеры",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "bosch/tsm6a011w-407651",
+   "name": "Электрическая кофемолка Bosch TSM6A011",
+   "class": "Кофемолки",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "hikvision/ds-1280zj-dm18-268886",
+   "name": "Крепление Hikvision DS-1280ZJ",
+   "class": "Крепления",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "zombie/zombie-10-red-390036",
+   "name": "Кресло игровое ZOMBIE 10",
+   "class": "Кресла и стулья",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "panasonic/er-gy10cm520-218953",
+   "name": "Машинки для стрижки волос Panasonic ER-GY10CM520",
+   "class": "Машинки для стрижки волос",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "bosch/smd6zc804e-510630",
+   "name": "Встраиваемая посудомоечная машина Bosch SMD6ZC804E",
+   "class": "Посудомоечные машины",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "defender/50559-344068",
+   "name": "Defender Игровой коврик Black 50559",
+   "class": "Прочие аксессуары",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "hp/3ed78a-396263",
+   "name": "Картридж пурпурный HP Inc. 712, 3ED78A",
+   "class": "Расходные материалы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "dell/450-amjz-487327",
+   "name": "DELL Power Supply 700W Single Hot-Plug, MM HLAC (ONLY FOR 200-240Vac) Titanium",
+   "class": "Серверные опции",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "asus/usb-n10-nano-85860",
+   "name": "Сетевая карта ASUS USB-N10 NANO",
+   "class": "Сетевые карты",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "ippon/1398367-430386",
+   "name": "Батарея для ИБП Ippon Innova RT II 1000/1500 36В 7Ач для Innova RT II 1000/1500",
+   "class": "Силовые модули для ИБП",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "powerman/powerman-battery-12v-9ah-521177",
+   "name": "Сменная батарея для ИБП Powerman CA1290",
+   "class": "Сменные батареи для ИБП",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "hikvision/las30-57cn-rj45-267326",
+   "name": "Сопутствующее оборудование Hikvision POE LAS30-57CN-RJ45",
+   "class": "Сопутствующее оборудование",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "polarline/32pl12tc-413472",
+   "name": "Телевизор POLARLINE 32PL12TC",
+   "class": "Телевизоры",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "panasonic/er-gb42-k520-220019",
+   "name": "Триммер Panasonic ER-GB42-K520",
+   "class": "Триммеры",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "makita/ur3000-348743",
+   "name": "Триммер электрический Makita UR3000 450Вт неразбор.штан. реж.эл.:леска",
+   "class": "Триммеры садовые",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "dahua/dh-hac-hdw1231tlmqp-a-0280b-526873",
+   "name": "Камера видеонаблюдения аналоговая Dahua DH-HAC-HDW1231TLMQP-A-0280B 2.8-2.8мм HD-CVI HD-TVI цв. корп.:белый",
+   "class": "Умный дом",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "philips/bhd500-00-481928",
+   "name": "Фены Philips BHD500/00",
+   "class": "Фены",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "atlant/xm-4012-022-288443",
+   "name": "ATLANT XM-4012-022",
+   "class": "Холодильники",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "singer/simple-3229-208008",
+   "name": "Швейные машины Singer Simple 3229",
+   "class": "Швейные машины",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "makita/td0100-339514",
+   "name": "Ударный шуруповерт MAKITA TD0100",
+   "class": "Шуруповерты",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "hyundai/h-hs1415-406142",
+   "name": "Щипцы для завивки волос Hyundai H-HS1415",
+   "class": "Щипцы для завивки волос",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "cactus/cs-psw-124x221-91919",
+   "name": "Экран Cactus Wallscreen CS-PSW-124X221",
+   "class": "Экраны",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "panasonic/es-sa40-s520-221073",
+   "name": "Электробритвы Panasonic ES-SA40-S",
+   "class": "Электробритвы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 1
+  },
+  {
+   "family": "picaso/picaso-1-469819",
+   "name": "PICASO 3D Сопло латунь 0.3, 0.4, 0.5, 0.8 мм",
+   "class": "3D Расходники и комплектующие",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "hikvision/ds-2cd2h23g2-izs-406054",
+   "name": "IP-камера Hikvision DS-2CD2H23G2-IZS",
+   "class": "IP-видеокамеры",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "yealink/sip-t44u-472637",
+   "name": "IP-телефон Yealink SIP-T44U",
+   "class": "IP-телефоны",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "dahua/dh-pfa111-541130",
+   "name": "Адаптер Dahua DH-PFA111",
+   "class": "Аксессуары для систем безопасности",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "mertech/m-er3084-467049",
+   "name": "Весы MERCURY M-ER 333BFU-150.50 LCD",
+   "class": "Весы складские",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "defender/65117-534189",
+   "name": "Defender Акустическая 2.0 система Solar 7 6Вт, подсветка, питание от USB",
+   "class": "Графические планшеты",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "dahua/dhi-vth5241dw-s2-428237",
+   "name": "Домофоны Dahua Видеодомофон DHI-VTH5241DW-S2",
+   "class": "Домофоны",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "yealink/ptc25-475277",
+   "name": "Конференц-связь Yealink Collaboration Touch Panel PTC25",
+   "class": "Конференц-связь",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "d-link/dmc-f02sc-b1a-409136",
+   "name": "Трансивер D-LINK DMC-F02SC",
+   "class": "Медиаконвертеры, трансиверы",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "hp/bb874a-450594",
+   "name": "HPE StoreEver LTO-7 Ultrium 15000 External Tape Drive",
+   "class": "Опции к системам хранения",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "canon/6246c003-465297",
+   "name": "Плоттер Canon imagePROGRAF TM-350",
+   "class": "Плоттеры",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "yealink/w56h-192896",
+   "name": "Дополнительная трубка Yealink W56H",
+   "class": "Телефоны DECT",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "new-united/etalon-et-15m-340130",
+   "name": "Шредер NEW UNITED Etalon ET-15M",
+   "class": "Шредеры",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 1
+  },
+  {
+   "family": "delonghi/dsks040-542006",
+   "name": "Соединительный кит Delonghi/ Соединительный кит для стиральной и сушильной машин с выдвижной полкой DSKS008 (8105 H VERANO)",
+   "class": "Аксессуары для бытовой техники",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "makita/e-06270-368539",
+   "name": "Набор принадлежностей Makita E-06270 212 предметов (жесткий кейс)",
+   "class": "Аксессуары и наборы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "dahua/dh-hac-hdbw1231rap-z-a-424909",
+   "name": "Аналоговая видеокамера Dahua DH-HAC-HDBW1231RAP-Z-A",
+   "class": "Аналоговые видеокамеры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "hyundai/hyb-h3824-474273",
+   "name": "Погружной блендер Hyundai HYB-H3824",
+   "class": "Блендеры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "hyundai/h-dvd200-292421",
+   "name": "Плеер DVD Hyundai H-DVD200 черный Караоке ПДУ",
+   "class": "Видеоплееры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "makita/ub1103-348746",
+   "name": "Воздуходувка-пылесос Makita UB1103 600Вт пит.:от сети синий",
+   "class": "Воздуходувки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "kitfort/2913-396740",
+   "name": "Ирригатор KITFORT КТ-2913",
+   "class": "Ирригаторы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "buro/bu-hdmi2-0-extnd-1-5m-509816",
+   "name": "Кабели Buro BU-HDMI2.0-EXTND-1.5M",
+   "class": "Кабели",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "agestar/3fbcp1-103633",
+   "name": "AgeStar Переходник 3FBCP1",
+   "class": "Кабели, переходники, разъемы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "netac/nt02p600stn-016g-r-426768",
+   "name": "Карта памяти Netac SDHC P600 16GB",
+   "class": "Карты памяти",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "yandex/yndx-00026blu-468449",
+   "name": "Колонки Яндекс Yandex Станция Лайт 2 (синий)",
+   "class": "Колонки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "delonghi/ecam350-35-w-456347",
+   "name": "Автоматическая кофемашина DeLonghi ECAM350.35.W",
+   "class": "Кофемашины",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "kitchenaid/5kfc3516eac-534663",
+   "name": "Кухонный комбайн KitchenAid 5KFC3516",
+   "class": "Кухонные комбайны",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "electrolux/kmfe172tex-497006",
+   "name": "Встраиваемая микроволновая печь Electrolux KMFE172TEX",
+   "class": "Микроволновые печи",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "karcher/1-324-030-0-348727",
+   "name": "Минимойка Karcher K 4 Power Control 1800Вт",
+   "class": "Минимойки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "newland/nls-nquire1000-w4-sl-497711",
+   "name": "Моноблок NEWLAND Nquire 1000 Manta III",
+   "class": "Моноблоки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "hewlett-packard/p27194-b21-521604",
+   "name": "HPE DL300 Gen10+ 2U 8SFF x1Tmode U.3 Kit",
+   "class": "Монтажные комплекты, ЗИП",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "bosch/mfws420w-541922",
+   "name": "Мясорубка Bosch/ Мясорубка Bosch, мощность 1900 Вт, цвет белый",
+   "class": "Мясорубки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "deko/065-0942-348660",
+   "name": "Опрыскиватель Deko DKSP10 аккум. наплеч. 16л желтый (065-0942)",
+   "class": "Опрыскиватели",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "kitfort/927-207347",
+   "name": "KITFORT КТ-927",
+   "class": "Отпариватели",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "kitfort/9102-1-541994",
+   "name": "Пароочиститель KitFort КТ-9102-1, черный/фиолетовый",
+   "class": "Паровые станции",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "gigaset/s30054-s6535-s301-476972",
+   "name": "Проводной телефоны Gigaset DA180",
+   "class": "Проводные телефоны",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "karcher/1-198-053-0-482934",
+   "name": "Напольный пылесос Kärcher VC 3",
+   "class": "Пылесосы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "panasonic/kx-tgf310rum-84649",
+   "name": "Системный телефон Panasonic KX TGF310",
+   "class": "Системные телефоны и факсы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "patriot/426108130-349591",
+   "name": "Снегоуборщик бензин. Patriot СИБИРЬ 130 CЕТ 13л.с.",
+   "class": "Снегоуборщики",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "eliars/5-537312",
+   "name": "БПЛА ПП-А5 Антидроновое ружьё (РЭБ)",
+   "class": "Средства радио-электронной борьбы (РЭБ)",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "praktik/s24099033458-390676",
+   "name": "Стеллаж Практик ES 150KD пол.:4 разборная 1450x750x300мм серебристый (S24099033458)",
+   "class": "Стеллажи",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "suvenirnaia-produkciia/pwr-002-539880",
+   "name": "Аккумулятор Omni Qi 10000 мАч, ver.2, красный, брендированный с логотипом «Софтлайн»",
+   "class": "Сувенирная продукция",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "kitfort/1904-406876",
+   "name": "Сушилки для овощей и фруктов KITFORT КТ-1904",
+   "class": "Сушилки для овощей и фруктов",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "bosch/tat3p423-473851",
+   "name": "Тостер Bosch TAT3P423",
+   "class": "Тостеры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "scarlett/sc-ah986m22-338315",
+   "name": "Scarlett SC-AH986M22",
+   "class": "Увлажнители воздуха",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "panasonic/ni-m250tgtw-207072",
+   "name": "Утюг Panasonic NI-M250TGTW",
+   "class": "Утюги",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "resanta/75-2-1-330099",
+   "name": "Технический фен Ресанта ФЭ-2000К 2000Вт темп.50/350/550С",
+   "class": "Фены технические",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "netac/nt03um1n-032g-32pn-471182",
+   "name": "Флешка Netac UM1 32GB",
+   "class": "Флешки USB",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "makita/rp0900-337005",
+   "name": "Фрезер Makita RP0900 900Вт 27000об/мин макс.ход:35мм",
+   "class": "Фрезеры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "panasonic/sd-b2510wts-346751",
+   "name": "Хлебопечи Panasonic SD-B2510WTS",
+   "class": "Хлебопечи",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "hyundai/hyk-g3026-453567",
+   "name": "Чайник Hyundai HYK-G3026",
+   "class": "Чайники",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "ferm/jsm1023-330193",
+   "name": "Электролобзик FERM JSM1023",
+   "class": "Электролобзики",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "redverg/rd-gc25-12-352260",
+   "name": "Бензопила RedVerg RD-GC25-12",
+   "class": "Электропилы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "makita/gb801-335223",
+   "name": "Электроточило Makita GB801 120Вт 2850об/мин d=205мм t=19мм",
+   "class": "Электроточила",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 1
+  },
+  {
+   "family": "iomanketolog/anketologbox",
+   "name": "AnketologBox",
+   "class": "Аналитические платформы",
+   "product": "software",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "eazyone_sia/private-eazybi",
+   "name": "Private eazyBI",
+   "class": "Другие системные утилиты",
+   "product": "software",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "trtechnologies/voicelab",
+   "name": "VoiceLab — AI-платформа анализа коммуникаций",
+   "class": "Отраслевые решения",
+   "product": "software",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "gsc/gsc-contacts-for-gmail",
+   "name": "GSC Contacts for Gmail",
+   "class": "Почтовые утилиты",
+   "product": "software",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "vkkb/vkkb-biznes-kurs",
+   "name": "ВККБ БИЗНЕС-КУРС",
+   "class": "Программы для бизнес-образования",
+   "product": "software",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "proxyman/proxyman",
+   "name": "Proxyman",
+   "class": "Программы для разработки ПО",
+   "product": "software",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "tektonit/remote-manipulator-system",
+   "name": "RMS Удаленный доступ 7.1",
+   "class": "Российские решения удаленного доступа (Импортозамещение)",
+   "product": "software",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "meisterlabs/meisterlabs-business",
+   "name": "MindMeister Business",
+   "class": "Управление бизнесом (SaaS)",
+   "product": "software",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "turbosoft/turboftp-sdk",
+   "name": "TurboFTP SDK",
+   "class": "Download-менеджеры",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "tehnologii-upravleniya-i-razvitiya/bolshaya-biblioteka-po-informatsionnoy-bezopasnosti-i-zashchite-",
+   "name": "Большая библиотека по информационной безопасности и защите ИТ-систем",
+   "class": "Бизнес-литература",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "aggsoftware/advanced-serial-port-monitor",
+   "name": "Advanced Serial Port Monitor",
+   "class": "Внешние устройства",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "ems/ems-advanced-data-export-net",
+   "name": "EMS Advanced Data Export .NET",
+   "class": "Другие библиотеки",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "cloudiway/cloudiway-managed-migrations",
+   "name": "Cloudiway Managed Migrations",
+   "class": "Другие приложения",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "wondershare/filmora-mobile",
+   "name": "Filmora Mobile",
+   "class": "Другие программы для смартфонов",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "iobit/iobit-smart-defrag",
+   "name": "IObit Smart Defrag",
+   "class": "Другие утилиты",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "mobilesystems/mobioffice",
+   "name": "MobiOffice",
+   "class": "Другое офисное ПО",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "alpinagpt/alpinagpt-korporativnaia-platforma-vnedreniia-iskusstvennogo-int",
+   "name": "AlpinaGPT. Корпоративная платформа внедрения искусственного интеллекта",
+   "class": "ИИ",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "technosoft/tehnosoft-tehnolog",
+   "name": "Технософт Технолог 3.1",
+   "class": "Инженерные калькуляторы",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "videosoft/movavika-konverter",
+   "name": "Мовавика Конвертер",
+   "class": "Конвертеры и кодировщики",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "cvsnt/cvs-avto",
+   "name": "CVS Авто",
+   "class": "ПО для видеонаблюдения",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "rapo/sarma-pleer-dlya-linux",
+   "name": "Сарма. Плеер для Linux",
+   "class": "Плееры",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "mpmanagement/iuridiceskoe-soprovozdenie-biznesa-po-personalnym-dannym-po-152-",
+   "name": "Юридическое сопровождение бизнеса по персональным данным по 152-ФЗ",
+   "class": "Правовое и кадровое обслуживание",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "prostoy-soft/uchet-posetiteley",
+   "name": "Учет посетителей",
+   "class": "Программное обеспечение для ведения дел",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "ems/ems-sql-backup-for-sql-server",
+   "name": "EMS SQL Backup for SQL Server",
+   "class": "Программное обеспечение для восстановления данных",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "skd/revers-8000",
+   "name": "РЕВЕРС 8000",
+   "class": "Программное обеспечение для контроля доступа",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "wondershare/wondershare-edrawmax",
+   "name": "Wondershare EdrawMax",
+   "class": "Программное обеспечение для проекционного дизайна",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "teslascada/teslascada2",
+   "name": "TeslaSCADA2",
+   "class": "Программное обеспечение для управления бизнесом",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "crmm/teach-version",
+   "name": "Teach Version",
+   "class": "Программное обеспечение для управления проектами",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "jijitechnologies/planner-gantt",
+   "name": "Apps4.Pro Planner Gantt",
+   "class": "Программы для бизнес-планирования",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "3dio/flatiron",
+   "name": "3D-IO Flatiron",
+   "class": "Программы для дизайна, визуализации и анимации",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "csoft-development/csoft-spds-graphics",
+   "name": "CSoft СПДС GraphiCS 2026",
+   "class": "Программы для документооборота",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "ryabinov/topografiya",
+   "name": "Топография",
+   "class": "Программы для кадастра и градостроительства",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "kb-panorama/konvertor-krupnomasshtabnyih-kart-v-format-dxf",
+   "name": "Конвертор крупномасштабных карт в формат DXF",
+   "class": "Программы для картографии и фотограмметрии",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "kerishproducts/kerish-doctor",
+   "name": "Kerish Doctor",
+   "class": "Программы для настройки системы",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "seismosoft/frp-designer",
+   "name": "FRP Designer",
+   "class": "Программы для научных расчетов",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "softprogramm/ithelper-versiia-optimizer-dlia-biznesa",
+   "name": "ItHelper версия Optimizer для бизнеса",
+   "class": "Программы для удаления информации",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "netsoftware-1/net-control-pro",
+   "name": "Net Control 2 Pro",
+   "class": "Прочие программы",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "elcomsoft-coltd/elcomsoft-system-recovery",
+   "name": "ElcomSoft System Recovery",
+   "class": "Расширения системы",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "eligovision/ev-toolbox",
+   "name": "EV Toolbox",
+   "class": "Решения дополненной и виртуальной реальности AR/VR",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "aggsoftware/tcp-com-bridge",
+   "name": "TCP COM Bridge",
+   "class": "Серверное ПО",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "fast-reports/moiotchety-oblako",
+   "name": "МоиОтчеты Облако",
+   "class": "Системы автоматизации (SaaS)",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "northwoodssoftware/northwoods-software-gojs",
+   "name": "Northwoods Software GoJS",
+   "class": "Схемы и диаграммы",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "rosreestrxml/rosreestrxml",
+   "name": "RosreestrXML",
+   "class": "Текстовые конвертеры",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "sunrav/sunrav-web-class",
+   "name": "SunRav WEB Class",
+   "class": "Тесты",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "sltechnicaldirect/sertifikat-na-texniceskuiu-podderzku-subd",
+   "name": "Сертификат на техническую поддержку СУБД",
+   "class": "Техническая поддержка программного обеспечения",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "isbc/ds-d100ikwf-b-542342",
+   "name": "Комплект домофона HiWatch DS-D100IKWF(B) белый",
+   "class": "Умный дом",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "ipzerkaliy/botmek",
+   "name": "BotMek",
+   "class": "Утилиты",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "wondershare/wondershare-recoverit",
+   "name": "Wondershare Recoverit",
+   "class": "Файловые менеджеры",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "wondershare/wondershare-virbo",
+   "name": "Wondershare Virbo",
+   "class": "Шаблоны и клипарты",
+   "product": "software",
+   "why": "judged",
+   "rank": 2
+  },
+  {
+   "family": "urovo/accdt50-pgrip01-404967",
+   "name": "POS-аксессуар Urovo Пистолетная рукоять для DT50",
+   "class": "POS-аксессуары",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "asus/90ig09n0-mo0b10-500830",
+   "name": "Адаптер ASUS USB-BT540/ ASUS USB-BT540",
+   "class": "Адаптеры Bluetooth",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "gopower/00-00019864-406534",
+   "name": "Аккумулятор для компьютерной техники GoPower Батарея LR03 BL",
+   "class": "Аккумуляторы и батареи для компьютерной техники",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "elemy/ats-1204-16-416104",
+   "name": "ELEMY ATS, 1U, 220B, 16A, Индикация: OLED-дисплей, Мониторинг: WEB, SNMP, Modbus-TCP, Вход (2) C20, Выход (1) C19 (9) C13",
+   "class": "Аксессуары для ИБП",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "yealink/uvc84-472691",
+   "name": "Yealink UVC84 USB-видеокамера (4k, 12Х PTZ, UVC1.0, VCH, USB-A, AMS 2 года)",
+   "class": "Аксессуары для телефонов",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "ricoh/dgp7491-396424",
+   "name": "Ролик подхвата бумаги Ricoh DGP7491",
+   "class": "Аксессуары к офисной технике",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "ubiquiti/uacc-uk-ultra-panel-antenna-520455",
+   "name": "Антенна UBIQUITI UACC-UK-Ultra-Panel-Antenna",
+   "class": "Антенны",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "bosch/pgp6b6k90r-498061",
+   "name": "Газовая варочная панель Bosch PGP6B6K90R",
+   "class": "Варочные панели",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "patriot/512109004-349358",
+   "name": "Газонокосилка роторная Patriot PT42LS (512109004) бензиновая",
+   "class": "Газонокосилки",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "patriot/474101046-349055",
+   "name": "Генератор Patriot 3000il 3.5кВт",
+   "class": "Генераторы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "bosch/csg7364b1-448058",
+   "name": "Электрический духовой шкаф Bosch CSG7364B1",
+   "class": "Духовые шкафы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "a-data/ahv620s-2tu31-cwh-539564",
+   "name": "Жесткий диск ADATA 2.5 HV620 Slim 2 TB 5.4K USB 3.1",
+   "class": "Жесткие диски",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "powercom/spd-1100u-lcd-345910",
+   "name": "ИБП Powercom Spider SPD SPD-1100U LCD",
+   "class": "ИБП (Источники бесперебойного питания)",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "razer/rz06-05200200-r3m1-500856",
+   "name": "Игровой манипулятор Razer Gaming Controller Wolverine V3 Pro",
+   "class": "Игровые манипуляторы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "yealink/exp43-472642",
+   "name": "EXP43, цветной экран, для телефонов SIP-T43U, SIP-T46U, SIP-T48U, шт",
+   "class": "Консоли для телефонов",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "dell/403-bcrz-487307",
+   "name": "DELL BOSS-N1 controller card + with 2 M.2 960GB NVMe",
+   "class": "Контроллеры",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "hikvision/ds-1475zj-sus-267509",
+   "name": "Крепление Hikvision DS-1475ZJ",
+   "class": "Крепления",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "byurokrat/ch-868n-grey-381441",
+   "name": "Кресло руководителя Бюрократ CH-868N",
+   "class": "Кресла и стулья",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "panasonic/er217s520-218957",
+   "name": "Машинки для стрижки волос Panasonic ER217S520",
+   "class": "Машинки для стрижки волос",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "hp/2y9h0a-b19-503206",
+   "name": "Плоттер HP Inc. Designjet T850",
+   "class": "Плоттеры",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "bosch/smv25ax06e-498062",
+   "name": "Встраиваемая посудомоечная машина Bosch SMV25AX06E",
+   "class": "Посудомоечные машины",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "razer/rz02-04490100-r3m1-408914",
+   "name": "Razer Игровой коврик Strider Chroma RZ02-04490100-R3M1",
+   "class": "Прочие аксессуары",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "dell/412-aavet-441406",
+   "name": "Dell Technologies Heat Sink 412-AAVEt",
+   "class": "Серверные опции",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "ippon/1192976-430382",
+   "name": "Батарея для ИБП Ippon Smart Winner II 2000E BP 48В 14Ач для Smart Winner II 2000E",
+   "class": "Силовые модули для ИБП",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "apcc/smx120rmbp2u-128992",
+   "name": "Сменная батарея для ИБП APC Батареи ИБП SMX120",
+   "class": "Сменные батареи для ИБП",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "hikvision/las60-57cn-rj45-267469",
+   "name": "Сопутствующее оборудование Hikvision POE LAS60-57CN-RJ45",
+   "class": "Сопутствующее оборудование",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "polarline/32pl14tc-sm-413473",
+   "name": "Телевизор POLARLINE 32PL14TC-SM",
+   "class": "Телевизоры",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "panasonic/er-gn30-k520-220018",
+   "name": "Триммер Panasonic ER-GN30-K",
+   "class": "Триммеры",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "makita/ur3500-348744",
+   "name": "Триммер электрический Makita UR3500 700Вт неразбор.штан. реж.эл.:леска",
+   "class": "Триммеры садовые",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "dyson/hd17-pro-ceramic-pink-rose-gold-113332-01-510682",
+   "name": "фен Dyson/ HD17 Pro Ceramic Pink/Rose Gold 113332-01",
+   "class": "Фены",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "atlant/xm-6021-031-316359",
+   "name": "ATLANT XM-6021-031",
+   "class": "Холодильники",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "singer/tradition-2282-208015",
+   "name": "Швейные машины Singer Tradition 2282",
+   "class": "Швейные машины",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "makita/dtw251rme-344511",
+   "name": "Ударный гайковерт MAKITA DTW251RME",
+   "class": "Шуруповерты",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 2
+  },
+  {
+   "family": "picaso/picaso-3-469807",
+   "name": "PICASO 3D Стекло подогреваемой платформы для линейки X",
+   "class": "3D Расходники и комплектующие",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "dahua/dhi-ark30t-w2-868-541131",
+   "name": "Клавиатура Dahua DHI-ARK30T-W2(868)",
+   "class": "Аксессуары для систем безопасности",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "mertech/m-er3635-467031",
+   "name": "Весы M-ER 725PM-15,2 (15\", USB, Ethernet, Wi-Fi)",
+   "class": "Весы складские",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "huion/h1060p-221253",
+   "name": "Графический планшет HUION H1060P",
+   "class": "Графические планшеты",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "dahua/dhi-vth5421hw-w-541102",
+   "name": "Домофоны Dahua Видеодомофон DHI-VTH5421H(W/B)-W",
+   "class": "Домофоны",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "yealink/cp935w-base-472646",
+   "name": "Конференц-связь Yealink CP935W",
+   "class": "Конференц-связь",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "tp-link/tl-sm5110-lr-375805",
+   "name": "Трансивер TP-LINK TL-SM5110-LR",
+   "class": "Медиаконвертеры, трансиверы",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "hp/q2079an-450596",
+   "name": "HPE Ultrium LTO9 45TB bar code non custom labeled cartridge 20 pack (for libraries & autoloaders; incl. 20 x Q2078L)",
+   "class": "Опции к системам хранения",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "d-link/dge-560sx-d1a-336989",
+   "name": "Сетевая карта D-LINK DGE-560SX",
+   "class": "Сетевые карты",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "gigaset/s30852-h3021-s204-489837",
+   "name": "SIP-DECT телефон Gigaset 550A, 1 трубка , автоответчик",
+   "class": "Телефоны DECT",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "fellowes/fs-44060-399992",
+   "name": "Шредер Fellowes PowerShred LX50",
+   "class": "Шредеры",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 2
+  },
+  {
+   "family": "delonghi/dsks008-542005",
+   "name": "Соединительный кит Delonghi/ Соединительный кит для стиральной и сушильной машин с выдвижной полкой DSKS008 (EMILIA 8106 H)",
+   "class": "Аксессуары для бытовой техники",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "makita/197599-5-368510",
+   "name": "Батарея аккумуляторная Makita BL1830 18В 3Ач Li-Ion (197599-5)",
+   "class": "Аксессуары и наборы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "dahua/dh-hac-hdw1200clqp-il-a-0280b-438329",
+   "name": "Аналоговая видеокамера Dahua DH-HAC-HDW1200CLQP-IL-A S6 DH-HAC-HDW1200CLQP-IL-A-0280B-S6",
+   "class": "Аналоговые видеокамеры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "kitfort/3052-482943",
+   "name": "Погружной блендер KITFORT КТ-3052",
+   "class": "Блендеры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "redverg/rd-be2500-348987",
+   "name": "Воздуходувка-пылесос RedVerg RD-BE2500 2500Вт пит.:от сети серый/черный",
+   "class": "Воздуходувки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "kitfort/2914-403617",
+   "name": "Ирригатор KITFORT КТ-2914",
+   "class": "Ирригаторы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "adaptec/mw2r3zm-a-535952",
+   "name": "Кабель Apple MW2R3ZM/A, Lightning (m) - USB Type-C (m), 2м, MFI, белый",
+   "class": "Кабели",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "buro/bu-cop-050-342634",
+   "name": "Buro Витая пара cat5E",
+   "class": "Кабели, переходники, разъемы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "netac/nt02p500eco-016g-s-471474",
+   "name": "Карта памяти Netac MicroSDHC P500 ECO 16GB",
+   "class": "Карты памяти",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "sven/sv-0120702wn-93509",
+   "name": "Колонки SVEN SPS-702 (коричневый)",
+   "class": "Колонки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "kitfort/730-406269",
+   "name": "Капельная кофемашина KITFORT КТ-730",
+   "class": "Кофемашины",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "kitchenaid/5kfc3516eer-534664",
+   "name": "Кухонный комбайн KitchenAid 5KFC3516",
+   "class": "Кухонные комбайны",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "hyundai/hym-d3002-406140",
+   "name": "Микроволновая печь Hyundai HYM-D3002",
+   "class": "Микроволновые печи",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "karcher/1-180-580-0-348731",
+   "name": "Минимойка Karcher K 5 basic 2100Вт",
+   "class": "Минимойки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "newland/nls-nquire500-w4-sl-497688",
+   "name": "Моноблок NEWLAND Nquire 500 Skate II",
+   "class": "Моноблоки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "hewlett-packard/bc029a-521605",
+   "name": "HPE StoreEver 1U Generic Rack Mount Kit",
+   "class": "Монтажные комплекты, ЗИП",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "bosch/mfw68640-541921",
+   "name": "Мясорубка BOSCH/ РОЗНИЧНЫЙ ЭКСКЛЮЗИВ!! 800/2200Вт, 4.3 кг/мин., черный/метал фронт, реверс, отсек для хран., 3 диска, кебаб",
+   "class": "Мясорубки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "patriot/755302530-349070",
+   "name": "Опрыскиватель Patriot PT-12AC аккум. ранц. 12л оранжевый (755302530)",
+   "class": "Опрыскиватели",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "kitfort/966-342729",
+   "name": "KITFORT КТ-966",
+   "class": "Отпариватели",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "ritmix/80002229-539315",
+   "name": "Проводной телефоны RITMIX RT-002",
+   "class": "Проводные телефоны",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "karcher/1-628-170-0-468537",
+   "name": "Строительный пылесос Kärcher WD 3 P",
+   "class": "Пылесосы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "gigaset/s30350-h224-r101-509107",
+   "name": "Телефон проводной Gigaset DESK 600 черный",
+   "class": "Системные телефоны и факсы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "redverg/rd-sb56-7-348999",
+   "name": "Снегоуборщик бензин. RedVerg RD-SB56/7 7л.с.",
+   "class": "Снегоуборщики",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "praktik/s24199153402-539994",
+   "name": "Стеллаж Практик MS пол.:4 единая 1850x1000x300мм серый (S24199153402)",
+   "class": "Стеллажи",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "suvenirnaia-produkciia/spk-004-539881",
+   "name": "Беспроводная Bluetooth колонка Music TWS софт-тач, белый, брендированная с логотипом Softline",
+   "class": "Сувенирная продукция",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "bosch/tat5p425-473850",
+   "name": "Тостер Bosch TAT5P425",
+   "class": "Тостеры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "hyundai/h-si01623-338403",
+   "name": "Утюг Hyundai H-SI01623",
+   "class": "Утюги",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "resanta/75-2-2-335977",
+   "name": "Технический фен Ресанта ФЭ-2000ЭК 2000Вт темп.50/50-550/50-550С",
+   "class": "Фены технические",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "gopower/00-00025961-488707",
+   "name": "Флешка GoPower SLIDER 4GB",
+   "class": "Флешки USB",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "panasonic/sd-r2520wts-346752",
+   "name": "Хлебопечи Panasonic SD-R2520WTS",
+   "class": "Хлебопечи",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "kitfort/6110-512651",
+   "name": "Чайник KITFORT КТ-6110",
+   "class": "Чайники",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "makita/4326-335094",
+   "name": "Электролобзик MAKITA 4326",
+   "class": "Электролобзики",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "makita/jr3070ct-335628",
+   "name": "Сабельная пила MAKITA JR3070CT",
+   "class": "Электропилы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "patriot/160301503-335388",
+   "name": "Электроточило Patriot BG 110 100Вт 9000об/мин d=50мм t=13мм",
+   "class": "Электроточила",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 2
+  },
+  {
+   "family": "robovoice/robovoice",
+   "name": "Robovoice",
+   "class": "Другие приложения",
+   "product": "software",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "softline/uemaas",
+   "name": "UEMaaS",
+   "class": "Управление бизнесом (IaaS)",
+   "product": "software",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "xformation/x-formation-license-statistics",
+   "name": "X-Formation License Statistics",
+   "class": "Другие системные утилиты",
+   "product": "software",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "trieru/watersteampro",
+   "name": "WaterSteamPro",
+   "class": "Инженерные калькуляторы",
+   "product": "software",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "planoplan/planoplan",
+   "name": "Планоплан (Planoplan)",
+   "class": "Программное обеспечение для проекционного дизайна",
+   "product": "software",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "inn-sol/inn-sol-1",
+   "name": "INN-SOL",
+   "class": "Расширения системы",
+   "product": "software",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "litemanagerteam/litemanager",
+   "name": "LiteManager",
+   "class": "Российские решения удаленного доступа (Импортозамещение)",
+   "product": "software",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "lpgenerator/lpgenerator",
+   "name": "LPgenerator",
+   "class": "Управление бизнесом (SaaS)",
+   "product": "software",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "cerebro/cerebro",
+   "name": "Cerebro",
+   "class": "Утилиты",
+   "product": "software",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "potential/tsifrovaya-platforma-nextbox",
+   "name": "Цифровая платформа Nextbox",
+   "class": "Файловые менеджеры",
+   "product": "software",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "fast-reports/fastreport-vcl",
+   "name": "FastReport VCL",
+   "class": "VCL",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "riskstrategy/modelrisk",
+   "name": "МоделРиск",
+   "class": "Аналитические платформы",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "tehnologii-upravleniya-i-razvitiya/bolshaya-biblioteka-po-iskusstvennomu-intellektu-i-robotizatsii",
+   "name": "Большая библиотека по искусственному интеллекту и роботизации",
+   "class": "Бизнес-литература",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "revisorlab/revisor-video-management-system",
+   "name": "Revisor Video Management System",
+   "class": "Внешние устройства",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "ems/ems-advanced-query-builder",
+   "name": "EMS Advanced Query Builder",
+   "class": "Другие библиотеки",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "paragon/paragon-image-mounter",
+   "name": "Paragon Image Mounter",
+   "class": "Другие утилиты",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "navitelnavigator/navitel-navigator-ukraina",
+   "name": "Навител Навигатор. Украина",
+   "class": "Карты и сервисы",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "ksplus/sike-elektronnyy-kurs-slesar-remontnik",
+   "name": "Sike. Электронный курс «Слесарь-ремонтник»",
+   "class": "Обучающие программы",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "digital_rebellion/digital-rebellion-cineplay",
+   "name": "Digital Rebellion CinePlay",
+   "class": "Плееры",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "alt-n-technologies-ltd/activesync-for-mdaemon",
+   "name": "MDaemon ActiveSync",
+   "class": "Почтовые утилиты",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "prostoy-soft/upravlenie-proektami",
+   "name": "Управление проектами",
+   "class": "Программное обеспечение для ведения дел",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "ams-software/feniks",
+   "name": "ФЕНИКС",
+   "class": "Программное обеспечение для восстановления данных",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "hypermethod-ibs/hypermethod-elearning-server-5g",
+   "name": "HyperMethod eLearning Server 5G",
+   "class": "Программное обеспечение для интернета",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "ams-software/pdf-commander",
+   "name": "PDF Commander",
+   "class": "Программное обеспечение для работы с документами",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "businessstudio/business-studio",
+   "name": "Business Studio",
+   "class": "Программное обеспечение для управления бизнесом",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "10-strike-software/10-strayk-inventarizatsiya-kompyuterov-pro",
+   "name": "«10-Страйк: Инвентаризация Компьютеров Pro»",
+   "class": "Программное обеспечение для учета компьютеров",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "inecit/biznes-analitik",
+   "name": "Бизнес-аналитик 2.0",
+   "class": "Программы для бизнес-планирования",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "kb-panorama/kompleks-avtomatizirovannogo-deshifrirovaniya-i-vektorizatsii-da",
+   "name": "Комплекс автоматизированного дешифрирования и векторизации данных ДЗЗ",
+   "class": "Программы для картографии и фотограмметрии",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "ascon/kompas-3d-home",
+   "name": "КОМПАС-3D HOME",
+   "class": "Программы для машиностроения",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "iobit/iobit-start-menu-dlya-windows-8-i-10",
+   "name": "IObit Start Menu",
+   "class": "Программы для настройки системы",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "mst/fenix-server",
+   "name": "Fenix Server",
+   "class": "Программы для пожарной безопасности",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "softprogramm/ithelper-versiia-optimizer-s-gpt",
+   "name": "ItHelper версия Optimizer с GPT",
+   "class": "Программы для удаления информации",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "netsoftware-1/net-control-smallclass",
+   "name": "Net Control 2 SmallClass",
+   "class": "Прочие программы",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "yandex/yandeks-360",
+   "name": "Яндекс 360 для бизнеса",
+   "class": "Российское офисное ПО (Импортозамещение)",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "aggsoftware/gps-tracker-data-logger",
+   "name": "GPS Tracker Data Logger",
+   "class": "Связь",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "lab50/gosjava",
+   "name": "ГосJava",
+   "class": "Системы автоматизации",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "fast-reports/moiotchety-publikator",
+   "name": "МоиОтчеты Публикатор",
+   "class": "Системы автоматизации (SaaS)",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "icecreamsoftware/pdf-converter-pro",
+   "name": "Icecream PDF Converter PRO",
+   "class": "Текстовые конвертеры",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "sunrav/sunrav-testofficepro-xt",
+   "name": "SunRav TestOfficePro XT",
+   "class": "Тесты",
+   "product": "software",
+   "why": "judged",
+   "rank": 3
+  },
+  {
+   "family": "urovo/accdt40-hbldt40s-404968",
+   "name": "POS-аксессуар Urovo Аккумулятор для DT40",
+   "class": "POS-аксессуары",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "gopower/00-00016676-406514",
+   "name": "Аккумулятор для компьютерной техники GoPower Аккумулятор LA-12120",
+   "class": "Аккумуляторы и батареи для компьютерной техники",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "rem/r-10-9s-i-440-z-392799",
+   "name": "для ИБП REM Блок распределения питания R-10-9S-I-440-Z",
+   "class": "Аксессуары для ИБП",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "yealink/vp59-teams-edition-472695",
+   "name": "Yealink VP59-Teams Edition (Видеотерминал, IPS, Android, WiFi, Bluetooth, HDMI, камера, без БП, AMS 2 года)",
+   "class": "Аксессуары для телефонов",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "xerox/097s04907-172788",
+   "name": "Дополнительный лоток на 520 листов с тумбой XEROX VersaLink B7025/30/35/ C7000/ C7020/25/30",
+   "class": "Аксессуары к офисной технике",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "ubiquiti/uma-d-520373",
+   "name": "Антенна UBIQUITI UMA-D",
+   "class": "Антенны",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "bosch/pnp6b6k40-536323",
+   "name": "Газовая варочная панель Bosch PNP6B6K40",
+   "class": "Варочные панели",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "patriot/474101025-349056",
+   "name": "Генератор Patriot GP 1000i 0.9кВт",
+   "class": "Генераторы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "bosch/hba534eb3-536321",
+   "name": "Электрический духовой шкаф Bosch HBA534EB3",
+   "class": "Духовые шкафы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "razer/rz06-05210100-r3m1-486843",
+   "name": "Игровой манипулятор Razer Gaming Controller Wolverine V3 Tournament Ed",
+   "class": "Игровые манипуляторы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "hewlett-packard/836267-001-521575",
+   "name": "HPE Smart Array E208e-p SR Gen10 (8 External Lanes/No Cache) 12G SAS PCIe Plug-in Controller (804398-B21)",
+   "class": "Контроллеры",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "hikvision/ds-1275zj-sus-267503",
+   "name": "Крепление Hikvision DS-1275ZJ",
+   "class": "Крепления",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "knight/knight-outrider-ltd-382083",
+   "name": "Кресло игровое KNIGHT OUTRIDER",
+   "class": "Кресла и стулья",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "bosch/smv25ex02e-498066",
+   "name": "Встраиваемая посудомоечная машина Bosch SMV25EX02E",
+   "class": "Посудомоечные машины",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "canon/6386b001-95269",
+   "name": "Картридж пурпурный Canon CLI-42, 6386B001",
+   "class": "Расходные материалы",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "dell/450-akml-441401",
+   "name": "Dell Technologies Hot Plug Redundant Power Supply 450-AKML",
+   "class": "Серверные опции",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "powercom/vgd-ii-c20-507212",
+   "name": "Батарея для ИБП Powercom VGD-II-C20 для VGD-II-33",
+   "class": "Силовые модули для ИБП",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "delta/hr-12-7-2-518203",
+   "name": "Сменная батарея для ИБП Delta HR 12-7.2",
+   "class": "Сменные батареи для ИБП",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "osnovo/sw-8030-d-90w-382265",
+   "name": "Сопутствующее оборудование OSNOVO Удлинитель SW-8030/D",
+   "class": "Сопутствующее оборудование",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "polarline/32pl54tc-413469",
+   "name": "Телевизор POLARLINE 32PL54TC",
+   "class": "Телевизоры",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "panasonic/er407k520-220017",
+   "name": "Триммер Panasonic ER407",
+   "class": "Триммеры",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "makita/ur3501-348745",
+   "name": "Триммер электрический Makita UR3501 1000Вт неразбор.штан. реж.эл.:леска",
+   "class": "Триммеры садовые",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "dahua/dhi-ard1731-w2-868-483314",
+   "name": "Умный дом Dahua Датчик движения DHI-ARD1731-W2(868)",
+   "class": "Умный дом",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "electrolux/lrb3ae12s-510609",
+   "name": "Встраиваемый холодильник ELECTROLUX/ Встраиваемый холодильник , механическое управление, полезный объём: 208 л, перенавешиваемые двери, 54.8x54.9x121.8 см, белый",
+   "class": "Холодильники",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "janome/sew-line-500s-207988",
+   "name": "Швейные машины Janome Sew Line 500s",
+   "class": "Швейные машины",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "makita/dtw251z-337008",
+   "name": "Ударный гайковерт MAKITA DTW251Z",
+   "class": "Шуруповерты",
+   "product": "hardware",
+   "why": "class_only",
+   "rank": 3
+  },
+  {
+   "family": "picaso/picaso-1-469811",
+   "name": "PICASO 3D Нагревательный блок в сборе 250",
+   "class": "3D Расходники и комплектующие",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "hikvision/ds-2cd2783g2-izs-380350",
+   "name": "IP-камера Hikvision DS-2CD2783G2-IZS",
+   "class": "IP-видеокамеры",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "dahua/dhi-ard822-w2-868-541143",
+   "name": "Кнопка тревоги Dahua DHI-ARD822-W2(868)",
+   "class": "Аксессуары для систем безопасности",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "mertech/m-er3637-467032",
+   "name": "Весы M-ER 725PM-15,2 (VISION-AI, 15\", USB, Ethernet, Wi-Fi)",
+   "class": "Весы складские",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "huion/h610x-348792",
+   "name": "Графический планшет HUION Inspiroy H610X",
+   "class": "Графические планшеты",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "dahua/dh-vth2421fw-541104",
+   "name": "Домофоны Dahua Видеодомофон DH-VTH2421F(W/B)",
+   "class": "Домофоны",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "yealink/uvc85-byod-200-475271",
+   "name": "Конференц-связь Yealink UVC 85",
+   "class": "Конференц-связь",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "d-link/431xt-b1a-421533",
+   "name": "Трансивер D-LINK DEM 431XT",
+   "class": "Медиаконвертеры, трансиверы",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "infortrend/rss12j5hio2-0010-468585",
+   "name": "Infortrend expansion board for expansion enclosure with 2 x 12Gb/s SAS ports, type 2 (repl RSS12J1HIO2-0010,RSS12J4HIO2-0010)",
+   "class": "Опции к системам хранения",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "a4tech/b-072-344103",
+   "name": "A4tech Игровой коврик Bloody B-072 B-072",
+   "class": "Прочие аксессуары",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "d-link/dge-560sx-10-d1a-541190",
+   "name": "Сетевая карта D-LINK DGE-560SX",
+   "class": "Сетевые карты",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "panasonic/kx-tg2512ru2-465395",
+   "name": "SIP-DECT телефон Panasonic TG2512, 2 трубки",
+   "class": "Телефоны DECT",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "fellowes/fs-44075-399988",
+   "name": "Шредер Fellowes PowerShred LX70",
+   "class": "Шредеры",
+   "product": "hardware",
+   "why": "manager",
+   "rank": 3
+  },
+  {
+   "family": "bosch/wtz27510-541998",
+   "name": "Соединительный элемент для сушильных машин серии WQB",
+   "class": "Аксессуары для бытовой техники",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "makita/b-68432-368537",
+   "name": "Набор оснастки Makita B-68432 (102пред.) для шуруповертов/дрелей",
+   "class": "Аксессуары и наборы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "dahua/dh-hac-hfw1231rp-z-a-428359",
+   "name": "Аналоговая видеокамера Dahua DH-HAC-HFW1231RP-Z-A",
+   "class": "Аналоговые видеокамеры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "kitfort/1340-3-393127",
+   "name": "Стационарный блендер KITFORT КТ-1340-3",
+   "class": "Блендеры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "buro/bhp-dpp-1-2-2-321090",
+   "name": "Buro AV BHP_DPP_1.2-2",
+   "class": "Кабели, переходники, разъемы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "netac/nt02p500eco-016g-r-471475",
+   "name": "Карта памяти Netac MicroSDHC P500 ECO 16GB",
+   "class": "Карты памяти",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "yandex/yndx-00054org-448981",
+   "name": "Колонки Яндекс Яндекс.Станция Миди",
+   "class": "Колонки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "philips/ep2224-10-510672",
+   "name": "Автоматическая кофемашина Philips EP2224",
+   "class": "Кофемашины",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "kitchenaid/5kfp0719ebm-534667",
+   "name": "Кухонный комбайн KitchenAid 5KFP0719",
+   "class": "Кухонные комбайны",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "electrolux/kmfe264tex-497005",
+   "name": "Electrolux KMFE264TEX",
+   "class": "Микроволновые печи",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "patriot/322306098-349048",
+   "name": "Минимойка Patriot GT590 Imperial 2050Вт",
+   "class": "Минимойки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "newland/nls-nquire700-w4-sl-497703",
+   "name": "Моноблок NEWLAND Nquire 700 Stingray II",
+   "class": "Моноблоки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "broadcom/lsi00291-521657",
+   "name": "Broadcom/LSI BBU-BRACKET-05 for BBU07, BBU08, BBU09, CVM01, CVM02, for seies 9260, 9271, 9361, 9380, 9460, 9480 (LSI00291 / L5-25376-00 ), 1 year",
+   "class": "Монтажные комплекты, ЗИП",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "bosch/mfw68680-541924",
+   "name": "Мясорубка BOSCH/ РОЗНИЧНЫЙ ЭКСКЛЮЗИВ!! 800/2200Вт, 4.3 кг/мин., черный/метал фронт, реверс, отсек для хран., 3 диска, кебаб, колбас",
+   "class": "Мясорубки",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "patriot/755302510-349071",
+   "name": "Опрыскиватель Patriot PT-16AC аккум. ранц. 16л оранжевый (755302510)",
+   "class": "Опрыскиватели",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "kitfort/977-1-338214",
+   "name": "KITFORT КТ-977-1",
+   "class": "Отпариватели",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "ritmix/15118369-532550",
+   "name": "Проводной телефоны RITMIX RT-330",
+   "class": "Проводные телефоны",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "kitfort/535-1-475162",
+   "name": "Вертикальный пылесос KITFORT КТ-535-1",
+   "class": "Пылесосы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "praktik/s24199154402-539995",
+   "name": "Стеллаж Практик MS пол.:4 единая 1850x1000x400мм серый (S24199154402)",
+   "class": "Стеллажи",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "suvenirnaia-produkciia/sfl-001-539629",
+   "name": "Значок фирменный металлический «Софтлайн», 20х20мм.",
+   "class": "Сувенирная продукция",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "kitchenaid/5kmt221eer-534649",
+   "name": "Тостер KitchenAid 5KMT221E",
+   "class": "Тостеры",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "scarlett/si30k23-340739",
+   "name": "Утюг Scarlett SC-SI30K23",
+   "class": "Утюги",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "makita/hg6531ck-381160",
+   "name": "Технический фен Makita HG6531CK 2000Вт темп.50-650С",
+   "class": "Фены технические",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "gopower/00-00025959-488903",
+   "name": "Флешка GoPower TITAN 128GB",
+   "class": "Флешки USB",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "kitfort/616-403616",
+   "name": "Чайник KITFORT КТ-616",
+   "class": "Чайники",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "makita/4327-330455",
+   "name": "Электролобзик MAKITA 4327",
+   "class": "Электролобзики",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "makita/uc3041a-368562",
+   "name": "Цепная пила MAKITA UC3041A",
+   "class": "Электропилы",
+   "product": "hardware",
+   "why": "nothing",
+   "rank": 3
+  },
+  {
+   "family": "softline/softlain-ofis",
+   "name": "Софтлайн Бизнес Коммуникации",
+   "class": "Управление бизнесом (IaaS)",
+   "product": "software",
+   "why": "manager",
+   "rank": 4
+  },
+  {
+   "family": "celoxis/celoxis",
+   "name": "Celoxis",
+   "class": "Программное обеспечение для ведения дел",
+   "product": "software",
+   "why": "nothing",
+   "rank": 4
+  },
+  {
+   "family": "safib/assistent",
+   "name": "АССИСТЕНТ",
+   "class": "Российские решения удаленного доступа (Импортозамещение)",
+   "product": "software",
+   "why": "nothing",
+   "rank": 4
+  },
+  {
+   "family": "ozeki-informatics-ltd/ozeki-ng-sms-gateway",
+   "name": "Ozeki NG SMS Gateway",
+   "class": "Связь",
+   "product": "software",
+   "why": "nothing",
+   "rank": 4
+  },
+  {
+   "family": "meisterlabs/meisterlabs-pro",
+   "name": "MindMeister Pro",
+   "class": "Управление бизнесом (SaaS)",
+   "product": "software",
+   "why": "nothing",
+   "rank": 4
+  },
+  {
+   "family": "turbosoft/turbopgp",
+   "name": "TurboPGP",
+   "class": "Download-менеджеры",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "steema-software/steema-teechart-vcl",
+   "name": "TeeChart VCL/FMX",
+   "class": "VCL",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "kaspersky/kaspersky-premium",
+   "name": "Kaspersky Premium + Who Calls",
+   "class": "Антивирусы для дома",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "tehnologii-upravleniya-i-razvitiya/bolshaya-biblioteka-risk-menedzhera-i-spetsialista-po-operatsion",
+   "name": "Большая библиотека риск-менеджера и специалиста по операционным рискам. Версия 3.0",
+   "class": "Бизнес-литература",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  },
+  {
+   "family": "aggsoftware/usb-hid-logger",
+   "name": "USB HID Logger",
+   "class": "Внешние устройства",
+   "product": "software",
+   "why": "judged",
+   "rank": 4
+  }
+ ]
+}

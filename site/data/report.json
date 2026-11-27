@@ -750,7 +750,7 @@
     "kit_only": 0.422068463219228
    }
   },
-  "agent_links": 1
+  "agent_links": 3
  },
  "holes": {
   "today": "2026-11-23",
@@ -878,6 +878,13 @@
     "solo": 69,
     "on_sale": 69
    }
-  ]
+  ],
+  "agent": {
+   "links": 3,
+   "products": 3,
+   "gained": 1,
+   "solo_before": 3476,
+   "solo_now": 3475
+  }
  }
 }

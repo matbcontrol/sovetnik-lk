@@ -2306,11 +2306,111 @@
    "date": "2026-11-27 13:32"
   },
   {
+   "family": "rarsoft/rar-winrar",
+   "name": "Архиватор WinRAR 7",
+   "class": "Архиваторы",
+   "outcome": "no_grounded_link",
+   "explanation": "товара нет в продаже",
+   "links": [],
+   "dropped": [
+    {
+     "dst": "rarsoft/arkhivator-winrar-713",
+     "kind": "new_version",
+     "type": "new_version",
+     "reason": "",
+     "evidence": "",
+     "quote_agent": "",
+     "why": "товара нет в продаже"
+    }
+   ],
+   "steps": [
+    {
+     "tool": "judged",
+     "args": {
+      "id": "rarsoft/rar-winrar"
+     },
+     "thought": "без модели: исходные сведения",
+     "result": {
+      "verdicts": {},
+      "pairs": []
+     },
+     "ask": 0
+    },
+    {
+     "tool": "line",
+     "args": {
+      "id": "rarsoft/rar-winrar"
+     },
+     "thought": "без модели: исходные сведения",
+     "result": [
+      {
+       "id": "rarsoft/arkhivator-winrar-713",
+       "name": "Архиватор WinRAR 7.13",
+       "vendor": "",
+       "class": "Архиваторы",
+       "sale": "по запросу",
+       "edition": "",
+       "version": "7.13"
+      }
+     ],
+     "ask": 0
+    },
+    {
+     "tool": "addons",
+     "args": {
+      "id": "rarsoft/rar-winrar"
+     },
+     "thought": "без модели: исходные сведения",
+     "result": [
+      {
+       "note": "товаров «для WinRAR / Архиватор» в каталоге нет"
+      }
+     ],
+     "ask": 0
+    },
+    {
+     "tool": "class_companions",
+     "args": {
+      "class_id": "diski-i-fayli/arhivatori"
+     },
+     "thought": "без модели: исходные сведения",
+     "result": [
+      {
+       "note": "для этого класса связей с другими классами пока нет"
+      }
+     ],
+     "ask": 0
+    },
+    {
+     "tool": "требование кода",
+     "args": {},
+     "thought": "итог без поиска не принят",
+     "result": "Сначала поищи сам: вызови хотя бы один инструмент (search_catalog, addons, line, spec, get_product), потом дай итог.",
+     "ask": 1
+    },
+    {
+     "tool": "итог",
+     "args": {},
+     "thought": "Для архиватора WinRAR есть новая версия в линейке, но в каталоге нет других товаров, образующих обоснованный комплект или расширение.",
+     "result": "советы",
+     "ask": 2
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "model_requests": 2,
+   "tokens": {
+    "in": 4077,
+    "out": 253
+   },
+   "seconds": 6.0,
+   "date": "2026-11-27 13:51"
+  },
+  {
    "family": "ascon/kompas-3d-home",
    "name": "КОМПАС-3D HOME",
    "class": "Программы для машиностроения",
    "outcome": "no_grounded_link",
-   "explanation": "Для домашней некоммерческой редакции САПР нет обоснованных дополнений в каталоге",
+   "explanation": "Для домашней некоммерческой САПР дополнительное оборудование из каталога избыточно",
    "links": [],
    "dropped": [],
    "steps": [
@@ -2551,21 +2651,46 @@
      "ask": 0
     },
     {
+     "tool": "требование кода",
+     "args": {},
+     "thought": "итог без поиска не принят",
+     "result": "Сначала поищи сам: вызови хотя бы один инструмент (search_catalog, addons, line, spec, get_product), потом дай итог.",
+     "ask": 1
+    },
+    {
+     "tool": "get_product",
+     "args": {
+      "id": "rangevision/rangevision-spectrum-469929"
+     },
+     "thought": "Для КОМПАС-3D HOME (домашняя некоммерческая САПР) из компаньонов класса подходит 3D-сканер и плоттер. Проверим 3D-сканер RangeVision Spectrum.",
+     "result": {
+      "id": "rangevision/rangevision-spectrum-469929",
+      "name": "3D-сканер RangeVision Spectrum",
+      "vendor": "RangeVision",
+      "class": "3D Сканеры",
+      "sale": "в продаже",
+      "class_id": "3d-oborudovanie/3d-scanners",
+      "description": "",
+      "links": []
+     },
+     "ask": 2
+    },
+    {
      "tool": "итог",
      "args": {},
-     "thought": "Для КОМПАС-3D Home нет подходящих связанных товаров, так как это некоммерческая домашняя редакция, а проф. модули и оборудование несовместимы или избыточны для личного использования.",
+     "thought": "Проверил 3D-сканеры и плоттеры из компаньонов класса. Больше товаров предлагать не нужно, так как нет подходящих обоснованных вариантов.",
      "result": "советы",
-     "ask": 1
+     "ask": 3
     }
    ],
    "model": "gemini-3.5-flash-lite",
-   "model_requests": 1,
+   "model_requests": 3,
    "tokens": {
-    "in": 2911,
-    "out": 101
+    "in": 9062,
+    "out": 313
    },
-   "seconds": 124.0,
-   "date": "2026-11-27 13:25"
+   "seconds": 4.5,
+   "date": "2026-11-27 13:47"
   },
   {
    "family": "litres/litres-abonement",
@@ -3017,17 +3142,327 @@
   }
  ],
  "summary": {
-  "holes": 11,
+  "holes": 12,
   "by_outcome": {
    "closed": 3,
-   "no_grounded_link": 8
+   "no_grounded_link": 9
   },
   "links_to_graph": 3,
   "links_to_queue": 0,
-  "links_dropped": 4,
-  "tool_calls_by_model": 27,
-  "tokens_in": 58186,
-  "tokens_out": 2463,
-  "seconds": 844.0
- }
+  "links_dropped": 5,
+  "tool_calls_by_model": 31,
+  "tokens_in": 68414,
+  "tokens_out": 2928,
+  "seconds": 730.5
+ },
+ "gain": {
+  "on_sale": 8592,
+  "before": 3476,
+  "now": 3475,
+  "gained": 1,
+  "links": 3
+ },
+ "queue": [
+  {
+   "family": "anydesk/anydesk",
+   "name": "AnyDesk",
+   "cls": "Другие решения удаленного доступа"
+  },
+  {
+   "family": "ibik/ibik-aster-xp",
+   "name": "Ibik АСТЕР",
+   "cls": "Другие системные утилиты"
+  },
+  {
+   "family": "niisokb/safemobile",
+   "name": "SafeMobile",
+   "cls": "Защита данных на смартфоне"
+  },
+  {
+   "family": "redhelper/redhelper",
+   "name": "RedHelper",
+   "cls": "Коммуникации (SaaS)"
+  },
+  {
+   "family": "internetschoolec/teachbase",
+   "name": "Teachbase",
+   "cls": "Курсы по личному развитию"
+  },
+  {
+   "family": "softlineuniverse/zashhishhennoe-rabocee-mesto-dlia-sotrudnikov",
+   "name": "Защищенное рабочее место для сотрудников",
+   "cls": "Облачные платформы (Импортозамещение)"
+  },
+  {
+   "family": "scoutargument/scout-argument",
+   "name": "Scout Argument",
+   "cls": "Отраслевые решения"
+  },
+  {
+   "family": "spider-project/spider-project",
+   "name": "Spider Project",
+   "cls": "Программное обеспечение для ведения дел"
+  },
+  {
+   "family": "pogumax/pogumax-designer",
+   "name": "Pogumax Designer",
+   "cls": "Программное обеспечение для проекционного дизайна"
+  },
+  {
+   "family": "idex/impact-lms",
+   "name": "iMpact LMS",
+   "cls": "Программы для бизнес-образования"
+  },
+  {
+   "family": "visionero/visionero",
+   "name": "ПАК «Визионеро»",
+   "cls": "Программы для медицины"
+  },
+  {
+   "family": "smath/smath-studio",
+   "name": "SMath Studio",
+   "cls": "Расчетные системы и Научное программное обеспечение"
+  },
+  {
+   "family": "peredovietechnologii/rudesktop",
+   "name": "RuDesktop",
+   "cls": "Российские решения удаленного доступа (Импортозамещение)"
+  },
+  {
+   "family": "vrconcept/vr-concept",
+   "name": "VR CONCEPT",
+   "cls": "Системы автоматизации"
+  },
+  {
+   "family": "steema-software/teechart-pro-activex",
+   "name": "Steema TeeChart Pro ActiveX",
+   "cls": "ActiveX"
+  },
+  {
+   "family": "riskstrategy/tamara",
+   "name": "Тамара",
+   "cls": "Аналитические платформы"
+  },
+  {
+   "family": "cyberlink-corp/cyberlink-myedit-audio",
+   "name": "Cyberlink MyEdit Audio",
+   "cls": "Аудиоредакторы"
+  },
+  {
+   "family": "tehnologii-upravleniya-i-razvitiya/bolshaya-biblioteka-biznes-analitika-i-spetsialista-po-biznes-pr",
+   "name": "Большая библиотека бизнес-аналитика и специалиста по бизнес-процессам. Версия 4.0",
+   "cls": "Бизнес-литература"
+  },
+  {
+   "family": "yandex/yandeks-brauzer",
+   "name": "Яндекс Браузер",
+   "cls": "Браузеры и утилиты"
+  },
+  {
+   "family": "aggsoftware/virtual-null-modem",
+   "name": "Virtual Null Modem",
+   "cls": "Внешние устройства"
+  },
+  {
+   "family": "ems/ems-advanced-excel-report",
+   "name": "EMS Advanced Excel Report",
+   "cls": "Другие библиотеки"
+  },
+  {
+   "family": "cloudiway/cloud-migration-solutions",
+   "name": "Cloud Migration Solutions",
+   "cls": "Другие приложения"
+  },
+  {
+   "family": "paragon/paragon-hfs-for-windows",
+   "name": "HFS+ for Windows by Paragon Software",
+   "cls": "Другие утилиты"
+  },
+  {
+   "family": "icecreamsoftware/ebook-reader-pro",
+   "name": "Icecream Ebook Reader PRO",
+   "cls": "Другие утилиты для работы с текстом"
+  },
+  {
+   "family": "advion/udalennyi-rabocii-stol-s-gpt",
+   "name": "Удаленный рабочий стол с GPT",
+   "cls": "ИИ"
+  },
+  {
+   "family": "technosoft/tehnosoft-teplos",
+   "name": "Технософт Теплос 2.1",
+   "cls": "Инженерные калькуляторы"
+  },
+  {
+   "family": "kb-panorama/karty-regionov-rf-v-formate-sxf",
+   "name": "Карты регионов РФ в формате SXF",
+   "cls": "Карты и сервисы"
+  },
+  {
+   "family": "codeindustry/imageprinter-pro",
+   "name": "ImagePrinter Pro",
+   "cls": "Конвертеры и кодировщики"
+  },
+  {
+   "family": "nanosoft/nanocad-oblaka-tochek",
+   "name": "nanoCAD Облака точек",
+   "cls": "Лазерное сканирование"
+  },
+  {
+   "family": "ipsechinsky/uchebnyy-komplekt-kvadrosim",
+   "name": "Учебный комплект «‎Квадросим»",
+   "cls": "Обучающие программы"
+  },
+  {
+   "family": "sarsys/sprecord-voip",
+   "name": "SpRecord VoIP",
+   "cls": "ПО для IP-телефонии"
+  },
+  {
+   "family": "cyberlink-corp/cyberlink-youcam",
+   "name": "Cyberlink YouCam",
+   "cls": "ПО для видеонаблюдения"
+  },
+  {
+   "family": "enterprisedt/enterprise-dt-edtftpj",
+   "name": "Enterprise DT edtFTPj",
+   "cls": "Программное обеспечение Java"
+  },
+  {
+   "family": "wondershare/wondershare-dr-fone",
+   "name": "Wondershare Dr.Fone",
+   "cls": "Программное обеспечение для восстановления данных"
+  },
+  {
+   "family": "hypermethod-ibs/hypermethod-eclass",
+   "name": "HyperMethod eClass",
+   "cls": "Программное обеспечение для интернета"
+  },
+  {
+   "family": "parentalcontrol/kroha-snimki-ekrana",
+   "name": "Kroha Снимки экрана",
+   "cls": "Программное обеспечение для родительского контроля"
+  },
+  {
+   "family": "gemma/gemma-3dpostprotsessor",
+   "name": "ГеММа-3D.Постпроцессор",
+   "cls": "Программное обеспечение для технической поддержки"
+  },
+  {
+   "family": "unicraftec/unicraft",
+   "name": "Unicraft",
+   "cls": "Программное обеспечение для управления в организации"
+  },
+  {
+   "family": "crmm/create-version",
+   "name": "Create Version",
+   "cls": "Программное обеспечение для управления проектами"
+  },
+  {
+   "family": "perfectsoft/printstore-pro",
+   "name": "PrintStore Pro",
+   "cls": "Программное обеспечение для учета компьютеров"
+  },
+  {
+   "family": "gisoft/avtomatizirovannaya-sistema-upravleniya-uchebnyim-zavedeniem-asu",
+   "name": "АСУ УЗ Universys Web Server",
+   "cls": "Программы для ВУЗов"
+  },
+  {
+   "family": "csoft-development/csoft-project-studiocs-arhitektura",
+   "name": "CSoft Project StudioCS Архитектура",
+   "cls": "Программы для архитекторов"
+  },
+  {
+   "family": "jijitechnologies/planner-manager",
+   "name": "Apps4.Pro Planner Manager",
+   "cls": "Программы для бизнес-планирования"
+  },
+  {
+   "family": "hystax/khaysteks-migratsiya-mezhdu-platformami-virtualizatsii",
+   "name": "Хайстекс - миграция между платформами виртуализации",
+   "cls": "Программы для виртуализации"
+  },
+  {
+   "family": "ipi-soft/ipi-motion-capture-1",
+   "name": "iPi Motion Capture",
+   "cls": "Программы для дизайна, визуализации и анимации"
+  },
+  {
+   "family": "polysoft/polisoft-konsalting-bcad",
+   "name": "bCAD",
+   "cls": "Программы для мебельного производства"
+  },
+  {
+   "family": "mst/fireguard",
+   "name": "FireGuard",
+   "cls": "Программы для пожарной безопасности"
+  },
+  {
+   "family": "tsentr-bezopasnosti-informatsii-tsbi/tsbi-fiks",
+   "name": "ЦБИ ФИКС",
+   "cls": "Программы для разработки ПО"
+  },
+  {
+   "family": "netsoftware-1/net-control-classroom",
+   "name": "Net Control 2 Classroom",
+   "cls": "Прочие программы"
+  },
+  {
+   "family": "etersoft/wineetersoft-network",
+   "name": "WINE@Etersoft",
+   "cls": "Расширения системы"
+  },
+  {
+   "family": "varwin/vr-dlya-obrazovaniya",
+   "name": "VR для образования",
+   "cls": "Решения дополненной и виртуальной реальности AR/VR"
+  },
+  {
+   "family": "efficientlab/efficientlab-controlio",
+   "name": "EfficientLab Controlio",
+   "cls": "Сетевые утилиты (SaaS)"
+  },
+  {
+   "family": "navicat/navicat-cloud",
+   "name": "Navicat Cloud",
+   "cls": "Системы автоматизации (SaaS)"
+  },
+  {
+   "family": "contentai/abbyy-lingvo-x6-multiligual",
+   "name": "Lingvo by Content AI Выпуск x6 Многоязычная",
+   "cls": "Словари"
+  },
+  {
+   "family": "northwoodssoftware/northwoods-software-godiagram",
+   "name": "Northwoods Software GoDiagram",
+   "cls": "Схемы и диаграммы"
+  },
+  {
+   "family": "rosreestrxml/rosreestrpdf",
+   "name": "RosreestrPDF",
+   "cls": "Текстовые конвертеры"
+  },
+  {
+   "family": "sltechnicaldirect/sertifikat-na-texniceskuiu-podderzku-oborudovaniia-it-ekspert-ri",
+   "name": "Сертификат на техническую поддержку оборудования «IT-Эксперт рядом»",
+   "cls": "Техническая поддержка оборудования"
+  },
+  {
+   "family": "sltechnicaldirect/servis-nepreryvnogo-obsledovaniia-softline-high-safety",
+   "name": "Сервис непрерывного обследования Softline High Safety",
+   "cls": "Техническая поддержка программного обеспечения"
+  },
+  {
+   "family": "softline/virtualnyy-ofis-softline",
+   "name": "Виртуальный офис Softline",
+   "cls": "Управление бизнесом (SaaS)"
+  },
+  {
+   "family": "ipzerkaliy/keyran",
+   "name": "Keyran",
+   "cls": "Утилиты"
+  }
+ ],
+ "queue_total": 3475
 }

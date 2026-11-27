@@ -1064,16 +1064,26 @@
   const holeRuns = holesOf(holesData);
   const holeBy = new Map(holeRuns.map((h) => [h.family, h]));
   const holeQueue = (priv && priv.holes) || [];             // очередь с числом клиентов — только в закрытом стенде
+  // счётчик «товаров без совета: было → стало» и очередь товаров каталога, которые агент ещё не разбирал
+  let holeExtra = holesData && !Array.isArray(holesData) ? holesData : {};
   let holeCur = null, holesLive = false;
+  const GROUP = { clients: "Очередь по клиентам кабинета", done: "Разобрано агентом", catalog: "Товары каталога без совета — на очереди" };
   function holeList() {
     const seen = new Set(), out = [];
     for (const q of holeQueue) {
       if (q.family) seen.add(q.family);
-      out.push({ family: q.family || "", name: q.name || q.family || "", cls: q.cls || "", clients: q.clients || 0, b2b: q.b2b || 0, b2c: q.b2c || 0,
+      out.push({ group: "clients", family: q.family || "", name: q.name || q.family || "", cls: q.cls || "", clients: q.clients || 0, b2b: q.b2b || 0, b2c: q.b2c || 0,
                  renew: !!q.renew, sale: q.sale !== false, rebuy: q.rebuy, other: q.other, run: (q.family && holeBy.get(q.family)) || null });
     }
     for (const h of holeRuns) {
-      if (!seen.has(h.family)) out.push({ family: h.family, name: h.name || nodeNameAll(h.family), cls: h.class || "", clients: null, renew: false, sale: true, run: h });
+      if (seen.has(h.family)) continue;
+      seen.add(h.family);
+      out.push({ group: "done", family: h.family, name: h.name || nodeNameAll(h.family), cls: h.class || "", clients: null, renew: false, sale: true, run: h });
+    }
+    // на очереди — только когда агента можно запустить: без сервера и ключа список без кнопки ни к чему
+    if (holesLive) for (const q of holeExtra.queue || []) {
+      if (seen.has(q.family) || !nodeIds.has(q.family)) continue;
+      out.push({ group: "catalog", family: q.family, name: q.name || nodeNameAll(q.family), cls: q.cls || "", clients: null, renew: false, sale: true, run: null });
     }
     return out;
   }
@@ -1094,38 +1104,50 @@
     const n = (o) => done.filter((x) => holeResult(x.run) === o).length;
     const tally = `закрыто ${n("closed")}, найден только комплект ${n("kit")}, ждёт менеджера ${n("queue")}, нового не найдено ${n("known") + n("no_grounded_link")}`;
     const sum = (xs) => xs.reduce((t, x) => t + (x.clients || 0), 0);
-    const parts = ["Дыра — товар, за которым стоят клиенты кабинета без совета по делу: им блок показывает только комплект или «Часто докупают»."];
+    const gain = holeExtra.gain || {};
+    const parts = [gain.before
+      ? `Дыра — товар в продаже, владельцу которого блоку нечего посоветовать лично. Таких товаров было <b>${nf.format(gain.before)}</b> из ${nf.format(gain.on_sale)}, стало <b>${nf.format(gain.now)}</b>: агент каталога нашёл совет к ${nf.format(gain.gained)}.`
+      : "Дыра — товар в продаже, владельцу которого блоку нечего посоветовать лично."];
+    parts.push(`Агент разобрал: ${done.length} — ${tally}.`);
     if (holeQueue.length) {
-      const open = list.filter((x) => x.clients != null && holeOpen(x)), renew = list.filter((x) => x.renew);
+      const open = list.filter((x) => x.group === "clients" && holeOpen(x)), renew = list.filter((x) => x.renew);
       const rest = holeQueue.length - open.length - renew.length;
       const closed = done.filter((x) => holeResult(x.run) === "closed");
-      parts.push(`Дыр в очереди: ${nf.format(holeQueue.length)}, по убыванию числа клиентов кабинета за ними. Агент берёт товары открытого каталога в продаже: таких ${nf.format(open.length)}, клиентов за ними ${nf.format(sum(open))}.`);
+      parts.push(`Клиенты кабинета без совета по делу стоят за ${nf.format(holeQueue.length)} товарами. Агент берёт товары открытого каталога в продаже: таких ${nf.format(open.length)}, клиентов за ними ${nf.format(sum(open))}.`);
       if (renew.length) parts.push(`Нужно продление, а не совет: ${nf.format(renew.length)} (клиентов ${nf.format(sum(renew))}).`);
       if (rest > 0) parts.push(`Без карточки в открытом каталоге или не в продаже: ${nf.format(rest)} — наружу их не отправляем.`);
-      parts.push(`Разобрано: ${done.length} — ${tally}.${sum(closed) ? ` Клиентов за закрытыми: ${nf.format(sum(closed))}.` : ""}`);
+      if (sum(closed)) parts.push(`Клиентов за закрытыми дырами: ${nf.format(sum(closed))}.`);
     } else {
       const hs = report && report.holes, wo = hs && hs.without_advice;
       if (hs && hs.holes && wo) {
         const rn = hs.renew || {}, renewClients = (rn.clients_b2b || 0) + (rn.clients_b2c || 0);
-        parts.push(`По данным кабинета на ${esc(String(hs.today || "").split("-").reverse().join("."))} таких товаров ${nf.format(hs.holes)}, без обоснованного совета из-за них ${nf.format((wo.B2B || 0) + (wo.B2C || 0))} клиентов`
-          + (rn.holes ? `; из них ${nf.format(renewClients)} стоят за ${nf.format(rn.holes)} товарами, которым нужно продление, а не совет.` : "."));
+        parts.push(`По данным кабинета на ${esc(String(hs.today || "").split("-").reverse().join("."))} без совета по делу ${nf.format((wo.B2B || 0) + (wo.B2C || 0))} клиентов, за ними ${nf.format(hs.holes)} товара`
+          + (rn.holes ? `; ${nf.format(renewClients)} из этих клиентов стоят за ${nf.format(rn.holes)} товарами, которым нужно продление, а не совет.` : "."));
       }
-      parts.push(`Агент разобрал: ${done.length} — ${tally}.`);
     }
     const bf = report && report.block_fill, was = bf && bf.before_holes;
     if (was && (was.b2b.own !== bf.b2b.own || was.b2c.own !== bf.b2c.own)) {
       parts.push(`Обоснованный совет в блоке: у организаций было ${pct(was.b2b.own)}, стало ${pct(bf.b2b.own)}; у частных лиц было ${pct(was.b2c.own)}, стало ${pct(bf.b2c.own)}.`);
     }
     $("#holes-sum").innerHTML = parts.join(" ");
-    $("#holes-list").innerHTML = list.slice(0, 90).map((x, i) => `<li data-h="${i}" class="${holeCur === i ? "is-cur" : ""}">${esc(x.name)}
-      <small>${x.clients != null ? `клиентов: ${nf.format(x.clients)} · ` : ""}<span class="mark mark--${x.run && ["closed", "kit"].includes(holeResult(x.run)) ? "yes" : "no"}">${esc(holeState(x))}</span></small></li>`).join("");
-    $$("#holes-list li").forEach((li) => li.addEventListener("click", () => { holeCur = +li.dataset.h; renderHoles(); showHole(list[holeCur]); }));
+    const groups = new Set(list.map((x) => x.group));
+    let shown = "";
+    $("#holes-list").innerHTML = list.slice(0, 200).map((x, i) => {
+      // подзаголовок группы — когда групп больше одной: в открытом стенде список один, и заголовок ему не нужен
+      const title = GROUP[x.group] + (x.group === "catalog" && holeExtra.queue_total ? ` (первые ${(holeExtra.queue || []).length} из ${nf.format(holeExtra.queue_total)})` : "");
+      const head = groups.size > 1 && x.group !== shown ? `<li class="sep" style="border:0;background:none;cursor:default;padding:8px 2px 0;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">${esc(title)}</li>` : "";
+      shown = x.group;
+      return `${head}<li data-h="${i}" class="${holeCur === i ? "is-cur" : ""}">${esc(x.name)}
+      <small>${x.group === "clients" ? `клиентов: ${nf.format(x.clients)} · ` : ""}<span class="mark mark--${x.run && ["closed", "kit"].includes(holeResult(x.run)) ? "yes" : "no"}">${esc(holeState(x))}</span></small></li>`;
+    }).join("");
+    $$("#holes-list li[data-h]").forEach((li) => li.addEventListener("click", () => { holeCur = +li.dataset.h; renderHoles(); showHole(list[holeCur]); }));
   }
   /** Что блок показывает владельцу товара: расчёт на странице по тому же графу, что и вкладка «Клиент». */
   function holeCards(x) {
     const node = graph.nodes.get(x.family);
     if (!node) return "";
-    const type = x.clients != null ? (x.b2b >= x.b2c ? "b2b" : "b2c") : (node.b2b ? "b2b" : "b2c");
+    // тип клиента: в очереди кабинета — тот, каких клиентов за дырой больше; иначе как в отчёте об охвате каталога
+    const type = x.clients != null ? (x.b2b >= x.b2c ? "b2b" : "b2c") : (/для дома/i.test(className(node)) ? "b2c" : "b2b");
     const res = new E.Recommender(graph, recOpts({ fill: false, unverified: false }))
       .recommend({ type, today: state.today, purchases: [{ family: x.family, date: isoShift(state.today, -2), term: null }] }, 5);
     const recs = res.recs.filter((r) => r.slot !== "renew").slice(0, 3);
@@ -1217,6 +1239,8 @@
         queue.push(edgeRow(edge));
       }
       rebuild(); render(true);
+      const fresh = await getJson("data/agent_holes.json");  // сервер уже пересчитал счётчик «было → стало» и очередь
+      if (fresh && !Array.isArray(fresh)) holeExtra = fresh;
       const list = holeList();
       holeCur = list.findIndex((h) => h.family === res.family);
       renderHoles(); showHole(list[holeCur]);
@@ -1342,6 +1366,7 @@
     const ping = await getJson("api/ping");
     if (!ping) return;                                    // стенд открыт без сервера: живого запуска нет
     holesLive = !!(ping.agent && ping.holes);
+    if (holesLive) renderAgent();                          // появились кнопка запуска и очередь товаров каталога
     if (!ping.agent) {
       // сервер есть, но модель недоступна: говорим прямо, а не показываем форму, которая упадёт
       $("#agent-live").hidden = false;

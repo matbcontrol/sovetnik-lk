@@ -20,6 +20,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -31,6 +32,7 @@ from recsys.config import INTERIM, ROOT
 CALLS = INTERIM / "llm_calls.jsonl"
 CACHE = INTERIM / "llm_cache"
 EXHAUSTED = INTERIM / "llm_exhausted.json"      # модели, у которых на сегодня исчерпан суточный лимит
+QUIRKS: dict[str, dict] = {}                    # что совместимый сервис отверг у модели: «адрес|модель» -> настройки запроса
 
 
 def load_env(path: Path = ROOT / ".env") -> None:
@@ -69,9 +71,19 @@ class LLM:
         else:
             self.key = os.environ.get("LLM_API_KEY", "").strip()
             self.base = os.environ.get("LLM_BASE_URL", "").strip().rstrip("/")
+            # запасной список мог остаться от Google: чужие модели на этом адресе не ответят, а очередь пойдёт их перебирать
+            self.models = [m for m in self.models if not m.lower().startswith(("gemini", "gemma"))]
+            if not self.base:
+                raise LLMError("Адрес сервиса не задан: впишите LLM_BASE_URL в .env.")
         if not self.key:
             raise LLMError("Ключ модели не задан: скопируйте .env.example в .env и впишите ключ.")
         self.http = requests.Session()
+
+    def _scrub(self, text: str) -> str:
+        """Текст ошибки сервиса без ключа: некоторые сервисы повторяют его в ответе, а ошибка уходит в журнал и на стенд."""
+        if self.key:
+            text = text.replace(self.key, "<ключ>")
+        return re.sub(r"\b(sk|ak|key)-[A-Za-z0-9*_\-]{6,}", "<ключ>", text)
 
     # ---- служебное -----------------------------------------------------------------------
 
@@ -169,25 +181,42 @@ class LLM:
                     "generationConfig": {"temperature": temperature, "responseMimeType": "application/json"},
                 }, timeout=120)
             if r.status_code != 200:
-                raise LLMError(f"HTTP {r.status_code}: {r.text[:900]}")
+                raise LLMError(f"HTTP {r.status_code}: {self._scrub(r.text[:900])}")
             body = r.json()
             text = "".join(p.get("text", "") for p in body["candidates"][0]["content"]["parts"])
             usage = body.get("usageMetadata", {})
             return text, int(usage.get("promptTokenCount", 0)), int(usage.get("candidatesTokenCount", 0))
-        r = self.http.post(
-            f"{self.base}/chat/completions",
-            headers={"Authorization": f"Bearer {self.key}", "Content-Type": "application/json"},
-            json={
-                "model": self.model, "temperature": temperature,
-                "response_format": {"type": "json_object"},
-                "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
-            }, timeout=120)
-        if r.status_code != 200:
-            raise LLMError(f"HTTP {r.status_code}: {r.text[:300]}")
-        body = r.json()
-        usage = body.get("usage", {})
-        return (body["choices"][0]["message"]["content"],
-                int(usage.get("prompt_tokens", 0)), int(usage.get("completion_tokens", 0)))
+        # Совместимые сервисы расходятся в мелочах: одни не знают response_format, другие требуют выключить режим
+        # рассуждений у ответа без потоковой выдачи. Что сервис отверг у модели — запоминаем и больше не шлём.
+        quirks = QUIRKS.setdefault(f"{self.base}|{self.model}", {})
+        for _ in range(3):
+            body = {"model": self.model, "temperature": temperature,
+                    "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}
+            if not quirks.get("plain"):
+                body["response_format"] = {"type": "json_object"}
+            if "thinking" in quirks:
+                body["enable_thinking"] = quirks["thinking"]
+            r = self.http.post(f"{self.base}/chat/completions",
+                               headers={"Authorization": f"Bearer {self.key}", "Content-Type": "application/json"},
+                               json=body, timeout=180)
+            if r.status_code == 200:
+                break
+            text = r.text[:600]
+            if r.status_code == 400 and "enable_thinking" in text and quirks.get("thinking") is not False:
+                quirks["thinking"] = False                       # ответ целиком, без потока: рассуждения выключаем
+                continue
+            if r.status_code == 400 and not quirks.get("plain") and ("response_format" in text or "json_object" in text):
+                quirks["plain"] = True                           # формат ответа задаём только словами запроса
+                continue
+            raise LLMError(f"HTTP {r.status_code}: {self._scrub(text[:300])}")
+        else:
+            raise LLMError(f"HTTP {r.status_code}: {self._scrub(r.text[:300])}")
+        data = r.json()
+        usage = data.get("usage") or {}
+        content = data["choices"][0]["message"].get("content") or ""
+        if isinstance(content, list):                            # ответ частями: берём только текст
+            content = "".join(p.get("text", "") for p in content if isinstance(p, dict))
+        return content, int(usage.get("prompt_tokens", 0)), int(usage.get("completion_tokens", 0))
 
 
 def _strip_fence(text: str) -> str:
