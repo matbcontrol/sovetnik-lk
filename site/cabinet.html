@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Главная — макет кабинета Softline с советником</title>
+<title>Главная — макет личного кабинета с советником</title>
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<!-- Макет повторяет устройство и вид личного кабинета Softline (lk.softline.ru): шапка магазина, серое боковое меню,
-     «Главная» с виджетами и таблица «Продукты». Свой у макета только блок советника и его следы в таблице. -->
+<!-- Макет повторяет устройство и раскладку личного кабинета магазина (lk.softline.ru): шапка, серое боковое меню,
+     «Главная» с виджетами и таблица «Продукты». Стили, значки и картинки свои; знака, имени сайта и контактов магазина нет —
+     это макет, а не копия сайта. Свой по смыслу у макета блок советника и его следы в таблице. -->
 <style>
   :root {
     --red: #a50f2d; --red-dark: #870b24; --ink: #121519; --ink-2: #768297; --gray: #f2f3f5; --line: #e4e7ec;
@@ -35,9 +36,11 @@
   .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--red); }
   .logo__text { font-weight: 700; font-size: 20px; line-height: 1; letter-spacing: -.01em; }
   .logo__text small { display: block; font-size: 10px; font-weight: 500; letter-spacing: .02em; color: var(--red); margin-top: 3px; }
+  .logo__mark i:first-child { background: var(--red); }
+  body.clean .demo { display: none; }
+  .mark { font-size: 12px; color: var(--ink-2); }
   .logo__mark { display: grid; grid-template-columns: 11px 11px; gap: 1px; }
   .logo__mark i { width: 11px; height: 11px; background: #d6d9de; }
-  .logo__mark i:first-child { background: var(--red); }
   .btn-cat { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 10px 20px; border: 0; border-radius: 10px; background: var(--red); color: #fff; font: 500 14px Inter, Arial, sans-serif; }
   .search { flex: 1; display: flex; height: 44px; border: .8px solid var(--red); border-radius: 9px; overflow: hidden; }
   .search span { flex: 1; display: flex; align-items: center; padding: 0 14px; color: #9aa3b2; font-size: 14px; }
@@ -63,6 +66,8 @@
   .menu a.on { background: #e3e5e9; }
   .menu a.off { cursor: default; }
   .menu a .ext { margin-left: auto; width: 16px; height: 16px; color: var(--ink-2); }
+  .menu a.menu__sim { margin-top: 10px; border-top: 1px solid #dfe2e7; border-radius: 0 0 8px 8px; padding-top: 12px; color: var(--red); }
+  .menu a.menu__sim.on { border-radius: 8px; }
   .side__shop { display: flex; align-items: center; gap: 12px; padding: 16px 24px; }
   main { min-width: 0; padding-bottom: 40px; }
   .h1 { font-size: 40px; line-height: 48px; font-weight: 700; margin: 8px 0 24px; }
@@ -218,7 +223,6 @@
     <a class="logo" href="#"><span class="logo__mark"><i></i><i></i><i></i><i></i></span><span class="logo__text">софтлайн<small>цифровой актив</small></span></a>
     <span class="btn-cat"><svg class="i"><use href="#i-menu"/></svg>Каталог</span>
     <div class="search"><span>Название продукта, имя производителя или артикул (SKU)</span><i><svg class="i"><use href="#i-search"/></svg></i></div>
-    <div class="contacts"><b>8 (800) 232-00-23</b><span>sales@softline.com</span></div>
     <div class="hdr__icons">
       <span><svg class="i"><use href="#i-user"/></svg>Профиль</span>
       <span><svg class="i"><use href="#i-heart"/></svg>Избранное</span>
@@ -249,6 +253,7 @@
         <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-bell"/></svg>Уведомления</a>
         <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-user"/></svg>Профиль<svg class="i ext"><use href="#i-ext"/></svg></a>
         <a class="off" title="В макете этого раздела нет"><svg class="i"><use href="#i-mail"/></svg>Подписки<svg class="i ext"><use href="#i-ext"/></svg></a>
+        <a href="#sim" data-page="sim" class="menu__sim"><svg class="i"><use href="#i-pct"/></svg>Симуляция: три месяца</a>
       </nav>
     </div>
     <div class="side__window side__shop"><svg class="i"><use href="#i-cart"/></svg>Интернет-магазин</div>
@@ -310,9 +315,15 @@
 </div>
 <div class="feedback">Отзыв о сайте</div>
 <footer>
+  <b class="mark">Макет кабинета для хакатона «ИИкузница» — не настоящий кабинет: войти и оплатить здесь нельзя.</b><br>
   Демо-макет: советы считает тот же движок, что на стенде (engine.js), по открытым данным магазина; языковая модель на запрос не вызывается.
   Решения менеджера — общие со стендом: замена, принятая на вкладке «Связи на проверку», здесь появляется сразу.
 </footer>
+<script>
+  // запись видео на своём компьютере: ?clean убирает тёмную полосу макета (метка «макет» остаётся в подвале);
+  // на открытом стенде полоса остаётся всегда
+  if (/[?&]clean(=|&|$)/.test(location.search) && !/\.github\.io$/.test(location.hostname)) document.body.classList.add("clean");
+</script>
 <script src="engine.js"></script>
 <script src="track.js"></script>
 <script src="cabinet.js"></script>
@@ -325,8 +336,8 @@
     const sim = location.hash === "#sim";
     const id = location.hash === "#products" ? "page-products" : "page-home";
     if (!sim) document.querySelectorAll("main > section.page").forEach((s) => { s.hidden = s.id !== id; });
-    document.querySelectorAll(".menu a[data-page]").forEach((a) => a.classList.toggle("on", !sim && "page-" + a.dataset.page === id));
-    document.title = (sim ? "Симуляция" : id === "page-products" ? "Продукты" : "Главная") + " — макет кабинета Softline с советником";
+    document.querySelectorAll(".menu a[data-page]").forEach((a) => a.classList.toggle("on", sim ? a.dataset.page === "sim" : "page-" + a.dataset.page === id));
+    document.title = (sim ? "Симуляция" : id === "page-products" ? "Продукты" : "Главная") + " — макет личного кабинета с советником";
     window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", route);

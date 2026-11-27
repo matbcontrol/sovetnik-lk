@@ -292,12 +292,11 @@ textarea { font: inherit; color: var(--ink); border: 1px solid var(--axis); bord
 }
 body { font-family: Inter, Arial, Tahoma, Helvetica, sans-serif; background: #fff; }
 .sl-bar { display: flex; align-items: center; gap: 18px; padding: 12px 28px; border-bottom: 1px solid var(--hair); flex-wrap: wrap; }
-.sl-logo { display: flex; align-items: center; gap: 8px; color: var(--accent); }
+.sl-logo { display: flex; align-items: center; gap: 8px; color: var(--ink); }
 .logo__mark { display: grid; grid-template-columns: 11px 11px; gap: 1px; }
 .logo__mark i { width: 11px; height: 11px; background: #d6d9de; }
-.logo__mark i:first-child { background: var(--accent); }
 .logo__text { font-weight: 700; font-size: 20px; line-height: 1; letter-spacing: -.01em; }
-.logo__text small { display: block; font-size: 10px; font-weight: 500; margin-top: 3px; }
+.logo__text small { display: block; font-size: 10px; font-weight: 500; margin-top: 3px; color: var(--muted); }
 .sl-bar__title { font-weight: 600; font-size: 15px; padding-left: 18px; border-left: 1px solid var(--hair); }
 .sl-bar__links { margin-left: auto; display: flex; gap: 10px; }
 .sl-bar__links a { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 8px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 500; }
