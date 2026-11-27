@@ -145,5 +145,69 @@
    "tokens_out": 19008,
    "seconds": 366.9
   }
+ },
+ "measured_wide_thinking": {
+  "links_file": "agent_restore_wide_thinking.csv",
+  "products": 26,
+  "note": "Разница между «вернул сам» и «с менеджером» — связи без дословной цитаты (1): агент их назвал, но в граф не поставил. По 20 товарам из 26 агент ответил «обоснованной связи нет».",
+  "products_with_agent_link": 6,
+  "owners_with_access": 1666,
+  "clients_with_access": 4324,
+  "with_own_ground_advice": {
+   "before": {
+    "all": 1665,
+    "b2b": 1070,
+    "b2c": 595
+   },
+   "hidden": {
+    "all": 1665,
+    "b2b": 1070,
+    "b2c": 595
+   },
+   "restored": {
+    "all": 1665,
+    "b2b": 1070,
+    "b2c": 595
+   },
+   "proposed": {
+    "all": 1665,
+    "b2b": 1070,
+    "b2c": 595
+   }
+  },
+  "lost_when_hidden": 0,
+  "returned_by_agent": 0,
+  "share_returned": null,
+  "returned_with_manager": 0,
+  "share_returned_with_manager": null,
+  "lost_share_of_all_clients": 0.0,
+  "returned_share_of_all_clients": 0.0,
+  "agent_links": 10,
+  "agent_links_confirmed": 9,
+  "agent_links_to_products_outside_graph": 0,
+  "pairs_vs_labelling": {
+   "пары нет в разметке": 4,
+   "то же решение": 5,
+   "тот же вердикт": 5,
+   "решение другое": 1
+  },
+  "pairs_vs_labelling_confirmed": {
+   "пары нет в разметке": 4,
+   "то же решение": 4,
+   "тот же вердикт": 4,
+   "решение другое": 1
+  },
+  "check_rules": "связь идёт в граф, если критик подтвердил её дословной цитатой; цитата из названия или класса товара не считается, «нужно» требует, чтобы один товар называл другой. Правила ужесточены после первого прогона по просмотру связей живого графа, не по ответам выборок",
+  "need_pairs_hidden": 86,
+  "need_pairs_found_by_agent": 4,
+  "need_pairs_proposed_by_agent": 5,
+  "need_pairs_hidden_in_catalog": 54,
+  "share_of_hidden_need_found": 0.07407407407407407,
+  "agent_run": {
+   "tool_calls_by_model": 256,
+   "tokens_in": 396399,
+   "tokens_out": 369681,
+   "seconds": 5318.3
+  }
  }
 }
