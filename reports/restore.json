@@ -15,5 +15,10 @@
   "largest_product_clients": 736
  },
  "how": "клиент «держится» на товаре, если все его обоснованные карточки — «нужно» от покупки этого товара",
- "measured": {}
+ "measured": {},
+ "queue_wide": {
+  "products": 26,
+  "need_pairs_hidden": 54,
+  "owners_with_access": 1895
+ }
 }

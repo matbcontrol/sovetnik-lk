@@ -16,6 +16,13 @@
         Берутся товары из очереди, для которых агент что-то написал. Три состояния блока у их владельцев:
         было (вся разметка), спрятали (без вердиктов этих товаров), вернул агент (спрятанное плюс его связи
         с подтверждающей цитатой). Связь агента «комплект» обоснованным советом не считается, как и в блоке.
+
+Широкая выборка. Шесть товаров очереди видели все, кто настраивал агента. Чтобы проверка не была подогнана
+под них, есть вторая очередь:  python -m recsys.rank.restore --wide
+В неё идут все остальные товары каталога, у которых в разметке есть хотя бы одно «нужно» на другой товар
+каталога (агент может его назвать). Замер по ней:
+        python -m recsys.rank.restore --links ПУТЬ --queue data/private/task/restore_wide.json
+Он пишется в отчёт отдельным ключом measured_wide; главное число там — сколько спрятанных «нужно» агент нашёл.
 """
 from __future__ import annotations
 
@@ -29,6 +36,7 @@ from recsys.config import INTERIM, ROOT, TASK_DIR
 from recsys.rank.fill import AGENT, OWN, stand_state, strongest
 
 QUEUE = TASK_DIR / "restore.json"
+WIDE = TASK_DIR / "restore_wide.json"
 REPORT = ROOT / "reports" / "restore.json"
 MIN_CLIENTS = 2                      # в очередь идут товары, от которых зависят хотя бы два клиента кабинета
 SHOWN = ("need", "kit")              # решения «советовать»
@@ -115,7 +123,9 @@ def build_queue() -> None:
         "how": "клиент «держится» на товаре, если все его обоснованные карточки — «нужно» от покупки этого товара",
     }
     old = json.loads(REPORT.read_text(encoding="utf-8")) if REPORT.exists() else {}
-    summary["measured"] = old.get("measured", {})          # замер шага 2 сохраняется, пока не пересчитан
+    for k in ("measured", "queue_wide", "measured_wide"):   # замеры и вторая очередь сохраняются, пока не пересчитаны
+        if k in old or k == "measured":
+            summary[k] = old.get(k, {})
     REPORT.write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"клиентов кабинета {summary['clients_with_access']}: {dict(state)}")
     q = summary["queue"]
@@ -124,13 +134,59 @@ def build_queue() -> None:
     print(f"очередь: {QUEUE}\nотчёт: {REPORT}")
 
 
+def build_wide() -> None:
+    """Вторая очередь: товары каталога со спрятанным «нужно» на товар каталога, кроме шести из основной очереди."""
+    task, attrs, last, cat, uni, verdicts, prices = stand_state()
+    _, to_key = family_keys()
+    main = {h["line"] for h in json.loads(QUEUE.read_text(encoding="utf-8"))["holes"]} if QUEUE.exists() else set()
+    pairs: dict[str, Counter] = defaultdict(Counter)
+    need_to: dict[str, list[str]] = defaultdict(list)
+    for (a, b), v in verdicts.table.items():
+        if (v.source or "").startswith(AGENT):
+            continue
+        pairs[a][v.verdict] += 1
+        if v.verdict == "need" and b in to_key:
+            need_to[a].append(b)
+    sample = {}
+    for item in sorted(task.names):
+        sample.setdefault(attrs[item].line, item)
+    owners = Counter()
+    for c, h in uni.fold.history.items():
+        if task.clients.get(c, {}).get("lk_access") == "да":
+            owners.update({attrs[x].line for x in h})
+    rows = []
+    for ln in sorted(need_to, key=lambda x: (-owners[x], x)):
+        if ln in main or ln not in to_key or ln not in sample:
+            continue
+        item = sample[ln]
+        offer = cat.offer_of(item) or {}
+        rows.append({
+            "line": ln, "family_id": ln, "family": to_key[ln], "item": item, "name": task.names[item],
+            "catalog_name": offer.get("name", ""), "url": offer.get("url", ""),
+            "class_id": attrs[item].cls, "vendor": attrs[item].vendor, "clients": owners[ln],
+            "kind": "закрывает агент", "hidden_pairs": dict(pairs[ln]),
+            "need_to": [{"line": b, "family": to_key[b]} for b in sorted(need_to[ln])],
+        })
+    WIDE.write_text(json.dumps({"today": last.isoformat(), "holes": rows}, ensure_ascii=False, indent=1), encoding="utf-8")
+    report = json.loads(REPORT.read_text(encoding="utf-8")) if REPORT.exists() else {}
+    report["queue_wide"] = {"products": len(rows), "need_pairs_hidden": sum(len(r["need_to"]) for r in rows),
+                            "owners_with_access": sum(r["clients"] for r in rows)}
+    REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+    q = report["queue_wide"]
+    print(f"широкая очередь: товаров {q['products']}, спрятанных «нужно» на товары каталога {q['need_pairs_hidden']}")
+    print(f"очередь: {WIDE}")
+    print(f"отчёт: {REPORT}")
+
+
 def measure(path: Path) -> None:
     from recsys.graph import agent_links
     from recsys.llm.pair_verdicts import Verdict, Verdicts
 
-    if not QUEUE.exists():
-        sys.exit(f"нет очереди ({QUEUE}): сначала python -m recsys.rank.restore")
-    queue = {h["line"]: h for h in json.loads(QUEUE.read_text(encoding="utf-8"))["holes"]}
+    qfile = Path(sys.argv[sys.argv.index("--queue") + 1]) if "--queue" in sys.argv else QUEUE
+    key = "measured" if qfile.resolve() == QUEUE.resolve() else "measured_wide"
+    if not qfile.exists():
+        sys.exit(f"нет очереди ({qfile}): сначала python -m recsys.rank.restore" + (" --wide" if key != "measured" else ""))
+    queue = {h["line"]: h for h in json.loads(qfile.read_text(encoding="utf-8"))["holes"]}
     task, attrs, last, cat, uni, verdicts, prices = stand_state()
     now = uni.fold
     to_id, _ = family_keys()
@@ -201,11 +257,11 @@ def measure(path: Path) -> None:
     }
     if "--dry-run" not in sys.argv:                        # пробный прогон отчёты не трогает
         report = json.loads(REPORT.read_text(encoding="utf-8")) if REPORT.exists() else {}
-        report["measured"] = measured
+        report[key] = measured
         REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
-        private = json.loads(QUEUE.read_text(encoding="utf-8"))
+        private = json.loads(qfile.read_text(encoding="utf-8"))
         private["measured"] = per
-        QUEUE.write_text(json.dumps(private, ensure_ascii=False, indent=1), encoding="utf-8")
+        qfile.write_text(json.dumps(private, ensure_ascii=False, indent=1), encoding="utf-8")
 
     print(f"товаров, разобранных агентом: {len(tried)}; их владельцев в кабинете {len(owners)} из {total}")
     print(f"обоснованный совет у владельцев: было {w['all']} -> спрятали {g['all']} -> вернул агент {b['all']} "
@@ -227,6 +283,8 @@ def main() -> None:
     sys.stdout.reconfigure(encoding="utf-8")
     if "--links" in sys.argv:
         measure(Path(sys.argv[sys.argv.index("--links") + 1]))
+    elif "--wide" in sys.argv:
+        build_wide()
     else:
         build_queue()
 
