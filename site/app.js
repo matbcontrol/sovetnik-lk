@@ -946,7 +946,7 @@
           <div class="tile"><dt>Товаров в выборке</dt><dd>${nf.format(m.products)}</dd><small>связь агент дал к ${nf.format(m.products_with_agent_link || 0)}, к остальным ответил «связи нет»</small></div>
           <div class="tile"><dt>Связей агента</dt><dd>${nf.format(m.agent_links || 0)}</dd><small>с дословной цитатой из карточки товара — ${nf.format(m.agent_links_confirmed || 0)}</small></div>
           <div class="tile"><dt>Решение совпало с разметкой</dt><dd>${j.same} из ${j.known}</dd><small>ещё ${nf.format(j.fresh)} пар в разметке нет: их агент предложил сам</small></div>
-          <div class="tile"><dt>Найдено спрятанных «нужно»</dt><dd>${nf.format(found)} из ${nf.format(need)}</dd><small>${need ? pct(found / need) : "—"}: агент осторожен и находит мало</small></div>
+          <div class="tile"><dt>Найдено спрятанных «нужно»</dt><dd>${nf.format(found)} из ${nf.format(need)}</dd><small>${need ? pct(found / need) : "—"} — с подтверждением; всего агент назвал ${nf.format(m.need_pairs_proposed_by_agent != null ? m.need_pairs_proposed_by_agent : found)}, остальное ждёт менеджера</small></div>
         </dl>
         <p class="hint">${noteOf(m)}Клиентский счёт у этой выборки пуст: владельцев этих товаров держат советы по вариантам своей линейки, от спрятанной разметки они не зависят (с советом по делу ${all(m.with_own_ground_advice.before)} из ${nf.format(m.owners_with_access || 0)} и до, и после). Поэтому здесь считаются пары.${runLine(m)}</p>`;
     };
@@ -966,7 +966,7 @@
     let verdict = "";
     if (ok(top) && ok(wide)) {
       const j = judged(wide), need = hiddenNeed(wide);
-      verdict = `<p style="margin:8px 0 2px"><b>Итог.</b> На ${nf.format(top.products)} товарах агент настраивался: сам вернул совет ${top.share_returned != null ? pct(top.share_returned, 0) : "—"} клиентов, с согласием менеджера — ${top.share_returned_with_manager != null ? pct(top.share_returned_with_manager, 0) : "—"}. На ${nf.format(wide.products)} остальных он проверялся: связей ${nf.format(wide.agent_links || 0)}, с цитатой ${nf.format(wide.agent_links_confirmed || 0)}, решение совпало с разметкой в ${j.same} случаях из ${j.known}, но из ${nf.format(need)} спрятанных «нужно» найдено ${nf.format(wide.need_pairs_found_by_agent || 0)}. Агент точен и осторожен: разметку он пока не заменяет, а дополняет.</p>`;
+      verdict = `<p style="margin:8px 0 2px"><b>Итог.</b> На ${nf.format(top.products)} товарах агент настраивался: сам вернул совет ${top.share_returned != null ? pct(top.share_returned, 0) : "—"} клиентов, с согласием менеджера — ${top.share_returned_with_manager != null ? pct(top.share_returned_with_manager, 0) : "—"}. На ${nf.format(wide.products)} остальных он проверялся: связей ${nf.format(wide.agent_links || 0)}, с цитатой ${nf.format(wide.agent_links_confirmed || 0)}, решение совпало с разметкой в ${j.same} случаях из ${j.known}, но из ${nf.format(need)} спрятанных «нужно» он назвал ${nf.format(wide.need_pairs_proposed_by_agent != null ? wide.need_pairs_proposed_by_agent : (wide.need_pairs_found_by_agent || 0))}, с подтверждением — ${nf.format(wide.need_pairs_found_by_agent || 0)}. Агент осторожен и находит мало: разметку он не заменяет, а дополняет.</p>`;
     }
     return `<h2>Проверка агента: спрятали — вернул</h2>
       <p class="hint" style="margin-top:6px">${intro}</p>
