@@ -195,6 +195,21 @@ def main() -> None:
 
             out["why"]["official"] = {s: official(s) for s in ("A B2B", "B B2B", "A B2C", "A все")}
             out["why"]["official_source"] = c.get("product_group_source", "")
+    p = ROOT / "reports" / "proof.json"
+    if p.exists():                                       # счёт организаторов на наших ответах, значимость, отпечатки файлов
+        proof = json.loads(p.read_text(encoding="utf-8"))
+        r = ROOT / "reports" / "robust.json"
+        if r.exists():                                   # устойчивость: другие семена, ранние разрезы, правило «та же линейка»
+            rb = json.loads(r.read_text(encoding="utf-8"))
+            splits = {}
+            for k, v in rb.items():
+                if k.startswith("split "):
+                    date_, _, who_ = k[len("split "):].partition(": ")
+                    splits.setdefault(date_, {})[who_] = {s: v.get(s) for s in ("A B2B", "B B2B")}
+            proof["robust"] = {"seeds_A_B2B": rb.get("seeds_A_B2B"), "seeds_B_B2B": rb.get("seeds_B_B2B"),
+                               "splits": splits, "no_catalog": {s: (rb.get("no_catalog (as value.py)") or {}).get(s)
+                                                                for s in ("A B2B", "B B2B")}}
+        out["proof"] = proof
     p = ROOT / "reports" / "ai_judge.json"
     if p.exists():                                       # ИИ-тест: слепая оценка наборов виртуальными клиентами, только сводка
         out["ai_judge"] = json.loads(p.read_text(encoding="utf-8"))

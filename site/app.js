@@ -837,7 +837,8 @@
       { name: "Для сравнения: с полной историей", value: full["A B2B"], ci: reg.full.ci["A B2B"], ours: true },
     ], 0.2);
     const rub = (x) => nf.format(Math.round(x / 1000)) + " тыс. ₽";
-    return `${fillHtml(r.block_fill)}
+    return `${proofHtml(r.proof)}
+      ${fillHtml(r.block_fill)}
       ${restoreHtml(r.restore)}
       <h2 style="margin-top:26px">Проверка на истории по протоколу организаторов</h2>
       <p class="hint" style="margin-top:6px">Обезличенный датасет организаторов${r.dataset ? `, версия ${esc(String(r.dataset).replace(/^dataset_v?|\.xlsx$/g, ""))}` : ""}. Советы даны по покупкам до ${esc(r.protocol.train_until)}, засчитываются новые для клиента товары, купленные с ${esc(r.protocol.test_from)}. Модель и её режимы обучались только на периоде до даты разреза.</p>
@@ -995,6 +996,47 @@
         <div class="tile"><dt>То же, частные лица</dt><dd>${pct(c.own, 0)}</dd><small>ещё ${pct(c.kit_only, 0)} получат только «комплект» — совет «если ещё нет…»</small></div>
       </dl>
       <p class="hint" style="margin:6px 0 14px">Клиенты с доступом в кабинет на ${esc(f.today)}: ${nf.format(b.clients)} организаций и ${nf.format(c.clients)} частных лиц. «Обоснованный совет» — карточка с собственным основанием: вердикт «нужно», связь графа (версия, редакция, замена) или другой вариант своей линейки. У организаций ещё ${pct(b.kit_only)} получат только «комплект». Оговорки: у нас доля клиентов, у заказчика — доля визитов; у частных лиц прибавка над нынешним показом держится на «комплекте», который на истории пока не сбывался.</p>`;
+  }
+
+  /** Доказательства, которые можно проверить: счёт организаторов на наших ответах, значимость, устойчивость. */
+  function proofHtml(p) {
+    if (!p || !p.segments) return "";
+    const S = p.segments, num = (x) => String(x).replace(".", ",");
+    const pv = (x) => (x < 1e-3 ? `меньше 10<sup>${Math.ceil(Math.log10(x))}</sup>` : num(x.toFixed(2)));
+    const line = (k, title) => {
+      const r = S[k];
+      if (!r) return "";
+      const o = r["наша система"], pp = r["популярность"], cc = r["совместные покупки"];
+      return `<tr><td>${esc(title)} <small style="color:var(--muted)">(${nf.format(r.clients)})</small></td><td class="num"><b>${num(o.p3)} %</b></td><td class="num">${num(pp.p3)} %</td><td class="num">${num(cc.p3)} %</td><td class="num">${o.variant_share_ != null ? "" : ""}${num(o["variant_share_%"])} % / ${num(cc["variant_share_%"])} %</td></tr>`;
+    };
+    const sig = (k, title) => {
+      const r = S[k];
+      if (!r) return "";
+      const a = r["против: популярность"], b = r["против: совместные покупки"];
+      const worst = a.diff_pp <= b.diff_pp ? a : b, pmax = Math.max(a.p_sign, b.p_sign);
+      return `<li><b>${esc(title)}:</b> разница с лучшим базовым способом +${num(worst.diff_pp)} п.п., 95 % интервал от +${num(worst.ci95_pp[0])} до +${num(worst.ci95_pp[1])}; клиентов, которым наш набор угадал больше, — ${nf.format(worst.clients_better)}, меньше — ${nf.format(worst.clients_worse)}; вероятность получить такой перевес случайно — ${pv(pmax)}.</li>`;
+    };
+    const rb = p.robust || {}, sp = rb.splits || {}, pc = (x) => (x == null ? "—" : pct(x));
+    const seeds = (a) => (a && a.length ? `${pc(Math.min(...a))} – ${pc(Math.max(...a))}` : "—");
+    const splitRow = (d) => {
+      const x = sp[d];
+      if (!x || !x.model) return "";
+      const lbl = d.split("-").reverse().join(".");
+      return `<tr><td>разрез ${lbl}</td><td class="num"><b>${pc(x.model["A B2B"])}</b></td><td class="num">${pc((x.popularity || {})["A B2B"])}</td><td class="num">${pc((x["co-purchase"] || {})["A B2B"])}</td><td class="num">${pc((x["same-line rule"] || {})["A B2B"])}</td></tr>`;
+    };
+    const c = S["A B2C"] && S["A B2C"]["против: популярность"];
+    return `<h2>Доказательства, которые можно проверить</h2>
+      <p class="hint" style="margin-top:6px">${esc(p.how || "")} Датасет ${esc(p.dataset || "")} (SHA-256 ${esc(String(p.dataset_sha256 || "").slice(0, 16))}…), файл наших ответов — ${nf.format(p.answers_clients || 0)} троек (SHA-256 ${esc(String(p.answers_sha256 || "").slice(0, 16))}…): организаторы могут прогнать его своим скриптом и получить те же числа.</p>
+      <h3>1. Их скрипт, наши ответы: Precision@3</h3>
+      <table class="links"><tr><th>Клиенты</th><th class="num">Наша система</th><th class="num">Популярность</th><th class="num">Совместные покупки</th><th class="num">Доля вариантов: наша / совместные</th></tr>
+        ${line("A B2B", "Организации, группа A")}${line("B B2B", "Организации с одной покупкой, группа B")}${line("A B2C", "Частные лица, группа A")}${line("A all", "Все клиенты группы A")}</table>
+      <h3>2. Перевес не случаен</h3>
+      <ul class="hint" style="margin:6px 0 0 18px;padding:0">${sig("A B2B", "Организации, группа A")}${sig("B B2B", "Холодный старт, группа B")}
+        ${c ? `<li><b>Частные лица:</b> перевес над популярностью не доказан — разница +${num(c.diff_pp)} п.п., интервал от ${num(c.ci95_pp[0])} до +${num(c.ci95_pp[1])}. Это пишем прямо.</li>` : ""}</ul>
+      ${sp["2026-06-01"] || sp["2026-03-02"] ? `<h3>3. Перевес держится на других разрезах и при другом обучении</h3>
+      <table class="links"><tr><th>Организации, группа A</th><th class="num">Наша система</th><th class="num">Популярность</th><th class="num">Совместные покупки</th><th class="num">Правило «та же линейка»</th></tr>
+        ${splitRow("2026-03-02")}${splitRow("2026-06-01")}</table>
+      <p class="hint">Тот же расчёт, но обучение до марта или до июня и проверка на следующих покупках — перевес тот же. Правило «советуй другую редакцию той же линейки» — сильный простой способ, сильнее базовых; система обгоняет и его. Пять обучений с разными случайными семенами дают ${seeds(rb.seeds_A_B2B)} у организаций группы A и ${seeds(rb.seeds_B_B2B)} на холодном старте; без знаний каталога остаётся ${pc((rb.no_catalog || {})["A B2B"])} — всё ещё вдвое выше базовых.</p>` : ""}`;
   }
 
   /** Почему система обгоняет базовые способы организаторов: откуда берутся попадания. Деление — по правилу
