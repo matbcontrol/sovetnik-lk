@@ -76,8 +76,8 @@
     const client = Object.assign({}, ex.client, { client_id: $("#cid").value.trim() });
     if ($("#pilot").checked) client.control_share = 0.5;
     $("#snippet").textContent = `<div id="sovetnik"></div>\n<script src="${new URL("widget.js", location.href).href}"><\/script>\n`
-      + `<script>Sovetnik.mount("#sovetnik", ${JSON.stringify(client, null, 1)}, { control: "render" });<\/script>`;
-    const res = await window.Sovetnik.mount("#sovetnik", client, { control: "render" });
+      + `<script>Sovetnik.mount("#sovetnik", ${JSON.stringify(client, null, 1)}, { control: "render", title: false });<\/script>`;
+    const res = await window.Sovetnik.mount("#sovetnik", client, { control: "render", title: false });
     if (!res) return;
     $("#arm").textContent = res.group === "control" ? "контроль" : "тест";
     $("#arm").className = "arm" + (res.group === "control" ? " arm--control" : "");

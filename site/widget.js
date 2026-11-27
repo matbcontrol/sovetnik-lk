@@ -115,7 +115,7 @@
     s.id = "svt-css";
     s.textContent = `.svt{font:inherit;color:#121519;line-height:1.45}
 .svt-adv{border-top:1px solid #e4e7ec}
-.svt-adv__row{display:grid;grid-template-columns:minmax(150px,.85fr) minmax(0,2fr) minmax(150px,.7fr);gap:24px;padding:18px 4px;border-bottom:1px solid #e4e7ec;align-items:start}
+.svt-adv__row{display:grid;grid-template-columns:minmax(170px,.85fr) minmax(0,2fr) minmax(170px,.7fr);gap:28px;padding:20px 4px;border-bottom:1px solid #e4e7ec;align-items:start}
 .svt-adv__basis{font-size:13px;color:#768297}
 .svt-adv__basis b{display:block;margin:3px 0 4px;font-size:14px;font-weight:500;color:#121519}
 .svt-badge{display:inline-block;border-radius:8px;padding:2px 6px;font-size:13px;line-height:18px;font-weight:500;border:.8px solid}
@@ -137,6 +137,7 @@
 .svt-also__row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:14px 4px;border-top:1px solid #e4e7ec}
 .svt-also__row b{font-weight:500}.svt-also__row span{display:block;margin-top:2px;font-size:13px;color:#768297}
 .svt-note{font-size:13px;color:#768297;margin-top:8px}
+.svt-h2{margin:0;font-size:24px;line-height:32px;font-weight:600}.svt-lead{margin:4px 0 14px;font-size:14px;color:#768297}
 @media (max-width:760px){.svt-adv__row{grid-template-columns:1fr;gap:10px}.svt-adv__buy{flex-direction:row;flex-wrap:wrap;align-items:center}.svt-also__row{grid-template-columns:1fr}}`;
     document.head.appendChild(s);
   }
@@ -166,8 +167,10 @@
     return `<div class="svt-adv__basis">${esc(KIND[c.slot] || "К вашей покупке")}<b>${esc(b.name)}</b>${term}</div>`;
   }
 
-  function render(el, res, client) {
+  function render(el, res, client, opts) {
     const control = res.group === "control";
+    const head = opts && opts.title === false ? "" : `<h2 class="svt-h2">Вам может подойти</h2>
+      <p class="svt-lead">Подобрано по вашим лицензиям: у каждого совета видно, к какой покупке он и почему.</p>`;
     let prev = null;
     const rows = res.renew.concat(res.data).map((c, k) => {
       const row = `<article class="svt-adv__row">${basis(client, c, prev)}
@@ -181,7 +184,7 @@
     }).join("");
     const also = res.popular.map((c, k) => `<div class="svt-also__row"><div><b>${esc(c.name)}</b><span>${esc(c.reason)}</span></div>
       ${go(c, k + 1, false, "Открыть")}${inv(c, k + 1)}</div>`).join("");
-    el.innerHTML = `<div class="svt">
+    el.innerHTML = `<div class="svt">${control ? "" : head}
       ${rows ? `<div class="svt-adv">${rows}</div>` : ""}
       ${!control && !rows ? '<div class="svt-note">Личных советов по этим покупкам пока нет: показываем только проверенное.</div>' : ""}
       ${also ? `<section class="svt-also"><h3>${control ? "Нынешний блок кабинета" : "Часто докупают"}</h3>
@@ -218,7 +221,7 @@
       el.innerHTML = "";
       return res;
     }
-    render(el, res, client || {});
+    render(el, res, client || {}, opts || {});
     return res;
   }
 
