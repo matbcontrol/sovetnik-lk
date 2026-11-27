@@ -27,7 +27,6 @@ from __future__ import annotations
 
 import itertools
 import json
-import re
 import sys
 from collections import Counter, defaultdict
 from datetime import date
@@ -36,13 +35,12 @@ from recsys.config import ROOT
 from recsys.rank.breakdown import kind_of
 from recsys.rank.data import OFFICIAL, load_task, make_fold
 from recsys.rank.features import Attr, FoldStats, build_attrs
+from recsys.rank.unified import RENEW_KINDS, RENEW_NAME, is_renewal  # noqa: F401  (те же определения, что в блоке)
 
 REPORT = ROOT / "reports" / "top3_composition.json"
 RENEWAL, SAME, EDITION, NEW, ORPHAN = ("продление купленного", "вариант той же группы", "другая редакция или версия",
                                        "новый продукт", "продление без продукта")
 KINDS = (RENEWAL, SAME, EDITION, NEW, ORPHAN)
-RENEW_KINDS = ("renewal", "support")
-RENEW_NAME = re.compile(r"продлени|renewal|техническ\w* поддержк|техподдержк|сопровождени|\bsupport\b", re.I)
 SEGS = ("A все", "A B2B", "A B2C", "B все", "B B2B", "B B2C")
 # что убираем из тройки в каждом варианте
 FILTERS = {
@@ -51,12 +49,6 @@ FILTERS = {
     "без любых продлений": (RENEWAL, ORPHAN),
     "без продлений и вариантов той же группы": (RENEWAL, ORPHAN, SAME),
 }
-
-
-def is_renewal(item: str, attrs: dict[str, Attr], names: dict[str, str]) -> bool:
-    """Товар-продление: по виду лицензии, по номеру платежа подписки в названии или по слову в названии."""
-    a = attrs.get(item)
-    return bool(a and (a.kind in RENEW_KINDS or a.period is not None)) or bool(RENEW_NAME.search(names.get(item, "")))
 
 
 def place_kind(item: str, history: list[str], attrs: dict[str, Attr], names: dict[str, str]) -> str:

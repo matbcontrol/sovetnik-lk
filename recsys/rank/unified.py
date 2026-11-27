@@ -58,6 +58,14 @@ ADDON_KINDS = ("media", "support", "renewal", "extension")
 ADDON_NAME = re.compile(r"продлени|renewal|расширени[ея]|медиапакет|media ?pack|дистрибутив|установочн\w* комплект"
                         r"|сертификат на (?:техническ|сопровожд)|техническ\w* поддержк|техподдержк|сопровождени"
                         r"|\bsupport\b|\bupgrade\b|апгрейд|лицензия на обновление|для обновления|дополнительн", re.I)
+# Товар-продление: продление лицензии, поддержка или очередной платёж подписки. Заказчик (ответ 27.11.2026):
+# продление купленного в блоке рекомендаций нежелательно, для него в кабинете свой сценарий. Поэтому такой
+# товар никогда не стоит среди личных советов и в строке «Часто докупают». В строку «Пора продлить» он идёт,
+# только если продлевает ту же группу товаров, что куплена у клиента. Продление соседней редакции или
+# комплектации («у клиента Стандартный — продлите Расширенный») не показывается вовсе: на истории из 46
+# таких карточек не сбылась ни одна.
+RENEW_KINDS = ("renewal", "support")
+RENEW_NAME = re.compile(r"продлени|renewal|техническ\w* поддержк|техподдержк|сопровождени|\bsupport\b", re.I)
 PRICE_CAP = 5.0
 RENEW_MAX, NEW_MAX = 2, 3
 RECENT_DAYS = 183
@@ -98,6 +106,12 @@ SPECIAL = re.compile(r"academ|академ|образоват|educat|учебн|
 def special_licence(name: str) -> bool:
     """Лицензия не для обычного коммерческого клиента (по названию товара)."""
     return bool(SPECIAL.search(name or ""))
+
+
+def is_renewal(item: str, attrs: dict, names: dict[str, str]) -> bool:
+    """Товар-продление: по виду лицензии, по номеру платежа подписки в названии или по слову в названии."""
+    a = attrs.get(item)
+    return bool(a and (a.kind in RENEW_KINDS or a.period is not None)) or bool(RENEW_NAME.search(names.get(item, "")))
 
 
 @dataclass
@@ -324,10 +338,11 @@ class Unified:
             o = cat.offer_of(b)
             ab = at[b]
             variant = ab.line in own_lines or (ab.nline and ab.nline in own_lines)
+            renew = bool(variant) and is_renewal(b, at, self.task.names)     # продление той же группы товаров
             out[b] = Scored(
                 item=b, p=p, basis="модель", grounded=any(vec[COL[n]] > 0 for n in OWN_GROUND),
                 title=(o or {}).get("name") or self.task.names.get(b, b), url=(o or {}).get("url", ""),
-                price=cat.price(o), slot="renew" if variant and self._is_renewal(ab, h) else "new",
+                price=cat.price(o), slot="renew" if renew else "new",
                 features={n: vec[COL[n]] for n in ("pair_n", "same_line", "same_vkey", "since_line", "pop_follow")},
             )
         # товары каталога по проверенным связям открытого графа
@@ -362,10 +377,6 @@ class Unified:
                     title=offer["name"], url=offer["url"], price=cat.price(offer), src=a, evidence=link["evidence"],
                 )
         return sorted(out.values(), key=lambda s: (-s.p, s.item))
-
-    def _is_renewal(self, ab, history: list[str]) -> bool:
-        """Продление купленного: тот же продукт, а сам товар — продление, поддержка или очередной платёж подписки."""
-        return ab.kind in ("renewal", "support") or ab.period is not None
 
     def months_left(self, c: str, item: str) -> int | None:
         """Сколько месяцев осталось до конца срока купленной лицензии того же продукта; None — срок неизвестен.
@@ -549,6 +560,8 @@ class Unified:
         item = s.replaces or s.item
         if item in self.addon_items and not variant and kind_of(item, h, self.at) == "новый продукт":
             return "дополнение к продукту, которого у клиента нет"
+        if s.slot != "renew" and is_renewal(item, self.at, self.task.names):
+            return "продление другой редакции или комплектации: в советы не идёт"
         if cap and s.price and s.price > PRICE_CAP * cap:
             return "намного дороже прошлых покупок клиента"
         if no_home and ((s.replaces or s.item) in self.home_items or HOME.search(s.title)):

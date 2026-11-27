@@ -16,19 +16,19 @@
  "protocol_equals_value_report": true,
  "cabinet_view": {
   "precision@3_of_three_best_cards": {
-   "A все": 0.12363996043521268,
-   "A B2B": 0.12141280353200883,
+   "A все": 0.11968348170128584,
+   "A B2B": 0.11699779249448122,
    "A B2C": 0.14285714285714282,
-   "B все": 0.1492248062015504,
-   "B B2B": 0.14965986394557823,
+   "B все": 0.14341085271317827,
+   "B B2B": 0.14285714285714285,
    "B B2C": 0.14666666666666667
   },
   "clients_with_a_hit_among_shown": {
-   "A все": 0.3768545994065282,
-   "A B2B": 0.3675496688741722,
+   "A все": 0.3649851632047478,
+   "A B2B": 0.3543046357615894,
    "A B2C": 0.45714285714285713,
-   "B все": 0.45348837209302323,
-   "B B2B": 0.4489795918367347,
+   "B все": 0.436046511627907,
+   "B B2B": 0.42857142857142855,
    "B B2C": 0.48
   },
   "cards": {
@@ -38,11 +38,11 @@
     "renew_hits": 45,
     "clients_with_renew": 97,
     "new_cards": 890,
-    "new_hits": 53,
+    "new_hits": 49,
     "clients_with_new": 300,
-    "popular_cards": 224,
+    "popular_cards": 222,
     "popular_hits": 16,
-    "clients_with_popular": 224,
+    "clients_with_popular": 222,
     "clients_without_new": 2,
     "clients_without_cards": 0
    },
@@ -52,11 +52,11 @@
     "renew_hits": 47,
     "clients_with_renew": 100,
     "new_cards": 993,
-    "new_hits": 59,
+    "new_hits": 55,
     "clients_with_new": 335,
-    "popular_cards": 260,
+    "popular_cards": 258,
     "popular_hits": 24,
-    "clients_with_popular": 259,
+    "clients_with_popular": 257,
     "clients_without_new": 2,
     "clients_without_cards": 0
    },
@@ -66,11 +66,11 @@
     "renew_hits": 30,
     "clients_with_renew": 48,
     "new_cards": 425,
-    "new_hits": 27,
+    "new_hits": 24,
     "clients_with_new": 145,
-    "popular_cards": 122,
+    "popular_cards": 121,
     "popular_hits": 9,
-    "clients_with_popular": 122,
+    "clients_with_popular": 121,
     "clients_without_new": 2,
     "clients_without_cards": 0
    },
@@ -80,11 +80,11 @@
     "renew_hits": 32,
     "clients_with_renew": 50,
     "new_cards": 498,
-    "new_hits": 30,
+    "new_hits": 27,
     "clients_with_new": 170,
-    "popular_cards": 148,
+    "popular_cards": 147,
     "popular_hits": 16,
-    "clients_with_popular": 147,
+    "clients_with_popular": 146,
     "clients_without_new": 2,
     "clients_without_cards": 0
    },
@@ -121,16 +121,16 @@
    "клиентов": 337,
    "с продлением": 100,
    "с личным советом": 335,
-   "со строкой «часто докупают»": 259,
-   "карточек": 1368,
+   "со строкой «часто докупают»": 257,
+   "карточек": 1366,
    "товаров вне продаж": 20,
    "подстановок преемника": 1,
    "убрано: нет в продаже": 455,
-   "убрано: продлевать рано": 456
+   "убрано: продлевать рано": 439
   },
   "basis": {
    "модель": 1087,
-   "часто докупают": 260,
+   "часто докупают": 258,
    "новая версия": 14,
    "замена": 6,
    "старшая редакция": 1
@@ -153,7 +153,7 @@
     "popular_cards": 0,
     "popular_hits": 0,
     "clients_without_cards": 2,
-    "clients_with_a_hit_among_shown": 0.3211920529801324
+    "clients_with_a_hit_among_shown": 0.3079470198675497
    },
    "A B2C": {
     "popular_cards": 0,
@@ -164,10 +164,10 @@
   },
   "всегда одна карточка": {
    "A B2B": {
-    "popular_cards": 224,
+    "popular_cards": 222,
     "popular_hits": 16,
     "clients_without_cards": 0,
-    "clients_with_a_hit_among_shown": 0.3675496688741722
+    "clients_with_a_hit_among_shown": 0.3543046357615894
    },
    "A B2C": {
     "popular_cards": 35,
@@ -178,10 +178,10 @@
   },
   "по свободным местам, не меньше одной": {
    "A B2B": {
-    "popular_cards": 224,
+    "popular_cards": 222,
     "popular_hits": 16,
     "clients_without_cards": 0,
-    "clients_with_a_hit_among_shown": 0.3675496688741722
+    "clients_with_a_hit_among_shown": 0.3543046357615894
    },
    "A B2C": {
     "popular_cards": 36,
