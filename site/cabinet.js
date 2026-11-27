@@ -51,6 +51,8 @@
   // те же метки перехода, что ставит блок кабинета: показы и переходы считаются теми же средствами
   const shopUrl = (url, slot, pos) => (url ? url + (url.includes("?") ? "&" : "?")
     + `utm_source=lk.softline.ru&utm_medium=internal&utm_campaign=reco&utm_content=sovetnik_${slot}&utm_term=${pos}` : "");
+  const invoice = (slot, pos, name) => `<button class="btn" type="button" data-invoice data-slot="${esc(slot)}" data-pos="${pos}" `
+    + `data-item="${esc(name)}">Запросить счёт</button>`;
   const fromPurchase = (r, fam) => (r.paths || []).some((p) => p.src === fam);
   // совет по связи класса или замена по классу, которую менеджер ещё не принял
   const pending = (r) => (r.paths || []).length > 0 && r.paths.every((p) => (p.class || p.type === "analog_class") && !approved.has(p.key));
@@ -111,7 +113,7 @@
       const r = renew.find((x) => fromPurchase(x, p.family));
       const rep = replacements.find((x) => fromPurchase(x, p.family));
       if (r) {
-        action = `<a class="btn btn--fill" href="${esc(shopUrl(r.url, "renew", k + 1))}" target="_blank" rel="noopener">Продлить</a>`
+        action = `<a class="btn btn--fill" href="${esc(shopUrl(r.url, "renew", k + 1))}" target="_blank" rel="noopener">Продлить</a> ${invoice("renew", k + 1, r.name)}`
           + `<div class="hint">${esc(r.why)}</div>`
           + (r.also ? `<div class="hint"><b>Заодно.</b> ${esc(r.also)}</div>` : "");
       } else if (rep && ((left != null && left < 0) || n.sale !== 1)) {
@@ -148,7 +150,8 @@
         <p class="card__why">${esc(r.why)}</p>
         <details class="why"><summary>Почему этот товар</summary><ul>${why}</ul></details>
         <div class="card__foot"><span class="card__price">${esc(price(n))}</span>
-          <a class="btn btn--fill" href="${esc(shopUrl(r.url, r.slot, k + 1))}" target="_blank" rel="noopener">Подробнее</a></div>
+          <a class="btn btn--fill" href="${esc(shopUrl(r.url, r.slot, k + 1))}" target="_blank" rel="noopener">Подробнее</a>
+          ${invoice(r.slot, k + 1, r.name)}</div>
         <span class="chip">${esc(r.label)}</span>
       </article>`;
     }).join("");
@@ -156,6 +159,7 @@
       : `<div class="empty">${client.purchases.length ? "Личных советов по вашим покупкам пока нет: показываем только проверенное." : "Покупок пока нет, поэтому личных советов нет."}</div>`;
     $("#popular").innerHTML = !pops.length ? "" : `<h2 style="margin-top:18px;font-size:15px">Часто докупают <small>не личный совет</small></h2>`
       + pops.map((r, k) => `<div class="row"><b>${esc(r.name)}</b><span class="hint" style="margin:0;flex:1">${esc(r.why)}</span>
-        <a class="btn" href="${esc(shopUrl(r.url, "popular", k + 1))}" target="_blank" rel="noopener">Открыть</a></div>`).join("");
+        <a class="btn" href="${esc(shopUrl(r.url, "popular", k + 1))}" target="_blank" rel="noopener">Открыть</a>
+        ${invoice("popular", k + 1, r.name)}</div>`).join("");
   }
 })();

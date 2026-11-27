@@ -1637,6 +1637,35 @@
     });
   })();
 
+  // ---- журнал кабинета: показы, переходы и запросы счёта по видам совета (пишет cabinet.html через track.js)
+  const JOURNAL_SLOT = { renew: "Продление", next: "Следующая ступень", missing: "К вашему продукту", kit: "Типовой набор",
+    replace: "Замена", popular: "Часто докупают" };
+  const share = (a, b) => (b ? `${nf.format(a)} из ${nf.format(b)} · ${pct(a / b)}` : "—");
+  let journalSeen = "";
+  async function journal() {
+    if (!window.Track) return;
+    const s = await window.Track.stats();
+    const key = JSON.stringify(s);
+    if (key === journalSeen) return;
+    journalSeen = key;
+    $("#journal-where").textContent = s.where;
+    const t = s.total;
+    if (!t.shows) {
+      $("#journal").innerHTML = `<p class="hint">Пока пусто. Откройте <a href="cabinet.html" target="_blank" rel="noopener">кабинет клиента</a>
+        и нажмите «Подробнее» или «Запросить счёт» — здесь появятся показы, переходы и запросы счёта по видам совета.</p>`;
+      return;
+    }
+    const row = (name, r) => `<tr><td>${esc(name)}</td><td>${nf.format(r.shows)}</td><td>${share(r.clicks, r.shows)}</td>`
+      + `<td>${share(r.invoices, r.shows)}</td><td>${share(r.invoices, r.clicks)}</td></tr>`;
+    const rows = Object.keys(JOURNAL_SLOT).filter((k) => s.by_slot[k]).map((k) => row(JOURNAL_SLOT[k], s.by_slot[k])).join("");
+    $("#journal").innerHTML = `<table class="journal"><tr><th>Вид совета</th><th>Показы</th><th>Кликабельность: переходы</th>`
+      + `<th>Конверсия: счета к показам</th><th>Счета к переходам</th></tr>${rows}${row("Всего", t)}</table>`
+      + `<p class="hint">Заходов на страницу кабинета: ${nf.format(s.views)}. Показ карточки за один заход считается один раз.
+        Действия посетителей стенда, не прогноз продаж. В кабинете Softline те же события дают метки utm_content=sovetnik_&lt;вид совета&gt; в ссылках.</p>`;
+  }
+  journal();
+  setInterval(() => { if (!document.hidden && $("#pane-client").classList.contains("is-active")) journal(); }, 3000);
+
   // ---- запуск
   syncControls();
   if (!priv) $("#d-on").parentElement.hidden = true;     // открытый стенд: клиентов из данных задачи в нём нет

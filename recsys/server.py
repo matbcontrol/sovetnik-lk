@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:                      # запуск файлом, а не модулем
     sys.path.insert(0, str(ROOT))
 
+from recsys import events  # noqa: E402
 from recsys.agent.agent import place  # noqa: E402
 from recsys.agent.tools import Catalog  # noqa: E402
 from recsys.llm.client import LLM, LLMError  # noqa: E402
@@ -103,7 +104,8 @@ class Watched:
 
 class Handler(SimpleHTTPRequestHandler):
     def log_message(self, fmt: str, *args) -> None:        # в журнал — только обращения к агенту
-        if "/api/" in str(args[0] if args else ""):       # у ответа «файл не найден» первым идёт код, а не строка запроса
+        line = str(args[0] if args else "")
+        if "/api/" in line and "/api/event" not in line:   # у ответа «файл не найден» первым идёт код, а не строка запроса
             super().log_message(fmt, *args)
 
     def end_headers(self) -> None:                         # данные стенда пересобираются — кеш браузера не нужен
@@ -121,6 +123,8 @@ class Handler(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
         if self.path.startswith("/api/ping"):
             return self._json(200, agent_ready())
+        if self.path.startswith("/api/events"):             # итог журнала кабинета для панели стенда
+            return self._json(200, events.summarize(events.read()))
         if self.path.startswith("/api/hole/progress"):     # без LOCK: страница спрашивает, пока агент занят
             return self._json(200, {"family": PROGRESS["family"], "steps": list(PROGRESS["steps"]), "done": PROGRESS["done"]})
         super().do_GET()
@@ -156,7 +160,21 @@ class Handler(SimpleHTTPRequestHandler):
                 PROGRESS["done"] = True
         self._json(200, res)
 
+    def _event(self) -> None:
+        """Показ, переход или запрос счёта со страницы кабинета — строка в журнал (data/private/events.jsonl)."""
+        try:
+            size = min(int(self.headers.get("Content-Length") or 0), 4000)
+            ev = events.clean(json.loads(self.rfile.read(size).decode("utf-8") or "{}"))
+        except (ValueError, json.JSONDecodeError):
+            ev = None
+        if ev is None:
+            return self._json(400, {"error": "ожидается событие: kind show|click|invoice и вид совета slot"})
+        events.append(ev)
+        self._json(200, {"ok": True})
+
     def do_POST(self) -> None:
+        if self.path.startswith("/api/event"):
+            return self._event()
         if self.path.startswith("/api/hole"):
             return self._hole()
         if not self.path.startswith("/api/place"):

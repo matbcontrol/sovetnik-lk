@@ -278,3 +278,8 @@ textarea { font: inherit; color: var(--ink); border: 1px solid var(--axis); bord
 .status--wait { color: #9a6700; }
 @media (max-width: 640px) { .renew__row { flex-direction: column; gap: 4px; } }
 .top__link { display: inline-block; margin-top: 8px; font-size: 14px; }
+
+/* журнал кабинета */
+.journal { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+.journal th, .journal td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line, #e3e6ea); vertical-align: top; }
+.journal tr:last-child td { font-weight: 600; border-bottom: 0; }
