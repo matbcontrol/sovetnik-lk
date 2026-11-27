@@ -421,23 +421,25 @@ def save(results: list[dict], links_file: Path = LINKS_FILE, report_file: Path =
     report_file.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def families_from(path: Path, top: int, private: bool, cat: HoleTools, any_kind: bool = False) -> list[str]:
+def families_from(path: Path, top: int, private: bool, cat: HoleTools, restore: bool = False) -> list[str]:
     """Дыры из очереди recsys.rank.holes по убыванию числа клиентов: только kind «закрывает агент» и только товары
-    каталога (по ключу семейства, family_id фида или адресу). Линейку без товара каталога — только с --private."""
+    каталога (по ключу семейства, family_id фида или адресу). Линейку без товара каталога — только с --private.
+    restore=True — очередь проверки «спрятали — вернул»: без отбора по kind и по продаже (у снятого с продажи
+    товара владельцы есть, советовать им нужно так же)."""
     data = json.loads(path.read_text(encoding="utf-8"))
     holes = (data.get("holes") or data.get("restore") or data.get("items") or next(
         (v for v in data.values() if isinstance(v, list)), [])) if isinstance(data, dict) else data
     by_id = {r.get("family_id"): k for k, r in cat.nodes.items() if r.get("family_id")}
     out, skipped, renew = [], 0, 0
     for h in sorted(holes, key=lambda x: -(x.get("clients") or 0)):
-        if not any_kind and h.get("kind") and h["kind"] != "закрывает агент":
+        if not restore and h.get("kind") and h["kind"] != "закрывает агент":
             renew += 1                                   # «нужно продление, а не совет» — агенту закрывать нечего
             continue
         k = h.get("family") or ""
         k = k if k in cat.nodes else by_id.get(str(h.get("family_id") or ""), "")
         if not k and h.get("url"):
             k = h["url"].split("store.softline.ru/")[-1].strip("/")
-        if k in cat.nodes and cat.nodes[k].get("on_sale") == "1":
+        if k in cat.nodes and (restore or cat.nodes[k].get("on_sale") == "1"):
             out.append(k)
         else:
             skipped += 1
@@ -462,7 +464,7 @@ def main() -> None:
     from recsys.llm.client import LLM
 
     cat = HoleTools()
-    fams = list(args.family) + (families_from(args.holes, args.top, args.private, cat, any_kind=args.as_new)
+    fams = list(args.family) + (families_from(args.holes, args.top, args.private, cat, restore=args.as_new)
                                 if args.holes else [])
     fams = [f for f in dict.fromkeys(fams) if f in cat.nodes]
     if not fams:
