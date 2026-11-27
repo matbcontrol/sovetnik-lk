@@ -699,45 +699,45 @@
   "kinds": {
    "software": {
     "on_sale": 1817,
-    "with_advice": 1075,
+    "with_advice": 1076,
     "own_need": 189,
-    "own_kit": 374,
+    "own_kit": 375,
     "class_need": 36,
     "class_kit": 476,
-    "solo": 742,
-    "solo_any_client": 729,
+    "solo": 741,
+    "solo_any_client": 728,
     "manager": 11,
-    "judged": 649,
+    "judged": 648,
     "class_only": 1,
     "nothing": 81
    },
    "hardware": {
     "on_sale": 6775,
-    "with_advice": 3860,
-    "own_need": 69,
-    "own_kit": 110,
-    "class_need": 268,
-    "class_kit": 3413,
-    "solo": 2915,
-    "solo_any_client": 2778,
-    "manager": 395,
+    "with_advice": 4040,
+    "own_need": 535,
+    "own_kit": 179,
+    "class_need": 175,
+    "class_kit": 3151,
+    "solo": 2735,
+    "solo_any_client": 2598,
+    "manager": 380,
     "judged": 0,
-    "class_only": 1987,
+    "class_only": 1822,
     "nothing": 533
    }
   },
   "total": {
    "on_sale": 8592,
-   "with_advice": 4935,
-   "own_need": 258,
-   "own_kit": 484,
-   "class_need": 304,
-   "class_kit": 3889,
-   "solo": 3657,
-   "solo_any_client": 3507,
-   "manager": 406,
-   "judged": 649,
-   "class_only": 1988,
+   "with_advice": 5116,
+   "own_need": 724,
+   "own_kit": 554,
+   "class_need": 211,
+   "class_kit": 3627,
+   "solo": 3476,
+   "solo_any_client": 3326,
+   "manager": 391,
+   "judged": 648,
+   "class_only": 1823,
    "nothing": 614
   },
   "solo_classes": [
@@ -772,11 +772,6 @@
     "on_sale": 168
    },
    {
-    "class": "Корпуса",
-    "solo": 143,
-    "on_sale": 143
-   },
-   {
     "class": "Аксессуары для ИБП",
     "solo": 141,
     "on_sale": 141
@@ -787,11 +782,6 @@
     "on_sale": 290
    },
    {
-    "class": "Жесткие диски",
-    "solo": 106,
-    "on_sale": 106
-   },
-   {
     "class": "Системы автоматизации",
     "solo": 99,
     "on_sale": 106
@@ -800,6 +790,16 @@
     "class": "Телефоны DECT",
     "solo": 80,
     "on_sale": 80
+   },
+   {
+    "class": "IP-телефоны",
+    "solo": 79,
+    "on_sale": 104
+   },
+   {
+    "class": "POS-аксессуары",
+    "solo": 69,
+    "on_sale": 69
    }
   ]
  }

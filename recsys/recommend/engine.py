@@ -69,6 +69,8 @@ LABEL = {
     "названия": "выведено из названий",
     "название товара": "сказано в названии товара",
     "серия в названии": "та же серия по названию: комплект",
+    "характеристики каталога": "совместимо по характеристикам каталога",
+    "характеристики каталога: комплект": "совместимо по характеристикам каталога: комплект",
     "таблица замещения АРПП": "реестр российского ПО",
     "реестр и класс": "тот же класс из реестра, ждёт проверки менеджером",
     "продажи": "подтверждено покупками",
@@ -95,7 +97,11 @@ VERDICT_SOURCE = {"need": "разметка: нужно", "kit": "разметк
 # Серия, прочитанная в названиях (recsys.graph.name_links): курс той же серии, картридж той же серии другого
 # цвета. Это тоже «комплект»: с условием «Если…», последней карточкой, не больше одного.
 SERIES_SOURCE = "серия в названии"
-KIT_SOURCES = (VERDICT_SOURCE["kit"], SERIES_SOURCE)
+# Совместимость, проверенная по характеристикам каталога (recsys.graph.spec_links): сокет, тип памяти,
+# форм-фактор. Какой класс к какому нужен, решила разметка классов; здесь известно, какой товар подходит.
+SPEC_SOURCE, SPEC_KIT = "характеристики каталога", "характеристики каталога: комплект"
+KIT_SOURCES = (VERDICT_SOURCE["kit"], SERIES_SOURCE, SPEC_KIT)
+ONE_PER_CLASS = (*VERDICT_SOURCE.values(), SPEC_SOURCE)     # из чужого класса по такой связи — один совет
 # Товар, проверенный для класса: разметчик судил не пару с конкретным товаром клиента, а «подходит ли товар Б
 # любому товару класса А» (или только товарам того же производителя). Так получают совет оборудование и
 # малоизвестные программы, у которых своих проверенных пар нет. Совет слабее проверенной пары товаров.
@@ -280,6 +286,11 @@ class Graph:
         from recsys.graph.name_links import read as name_links
         known = {(e["src"], e["dst"]) for e in edges if e["type"] != "same_line"}
         edges += [e for e in name_links() if e["src"] in nodes and e["dst"] in nodes
+                  and (e["src"], e["dst"]) not in known]
+        # совместимость по характеристикам каталога: сокет платы и процессора, тип памяти, корпус и блок питания
+        from recsys.graph.spec_links import read as spec_links
+        known = {(e["src"], e["dst"]) for e in edges if e["type"] != "same_line"}
+        edges += [e for e in spec_links() if e["src"] in nodes and e["dst"] in nodes
                   and (e["src"], e["dst"]) not in known]
         veto = sorted((a, b, v.verdict) for (a, b), v in families.items() if not v.shown)
         classes = read(CLASS_FILE) if CLASS_FILE.exists() else {}
@@ -495,7 +506,7 @@ class Recommender:
         t, ev = edge["type"], edge.get("evidence", "")
         if edge.get("source") in PICK_SOURCE.values():
             return f"{ev.rstrip('. ')}."                 # товар проверен для класса: причина написана для клиента
-        if edge.get("source") in (*VERDICT_SOURCE.values(), SERIES_SOURCE) and not edge.get("class"):
+        if edge.get("source") in (*VERDICT_SOURCE.values(), SERIES_SOURCE, SPEC_KIT) and not edge.get("class"):
             return f"{ev.rstrip('. ')}."                 # пара товаров проверена заранее: причина уже написана для клиента
         if edge.get("class"):
             cname = self.g.class_names.get(edge["class"], edge["class"])
@@ -602,7 +613,7 @@ class Recommender:
                 direct = direct or t == "analog_ru"
                 if t in ("upgrade", "new_version"):
                     e = {**e, "group": f"next:{fam}"}           # на одну покупку — одна «следующая ступень» в блоке
-                if t == "complements" and e.get("source") in VERDICT_SOURCE.values():
+                if t == "complements" and e.get("source") in ONE_PER_CLASS:
                     # проверенная пара товаров: из чужого класса в блоке один совет (два антивируса к одной
                     # системе не нужны). В своём классе у продукта бывает несколько разных дополнений
                     # (к криптопровайдеру — служба штампов времени и TLS-сервер): их не склеиваем.
