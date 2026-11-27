@@ -910,7 +910,102 @@
     }
    }
   },
-  "product_group": "group_id товара в фиде магазина; у товара без привязки к каталогу — линейка по названию"
+  "product_group": "group_id товара в фиде магазина; у товара без привязки к каталогу — линейка по названию",
+  "official": {
+   "A B2B": {
+    "ours": {
+     "hits": 135,
+     "variant": 63,
+     "new": 72,
+     "variant_share": 46.7,
+     "p3_new": 0.07947019867549669
+    },
+    "copurchase": {
+     "hits": 41,
+     "variant": 5,
+     "new": 36,
+     "variant_share": 12.2,
+     "p3_new": 0.039735099337748346
+    },
+    "popularity": {
+     "hits": 34,
+     "variant": 0,
+     "new": 34,
+     "variant_share": 0.0,
+     "p3_new": 0.037527593818984545
+    }
+   },
+   "B B2B": {
+    "ours": {
+     "hits": 78,
+     "variant": 40,
+     "new": 38,
+     "variant_share": 51.3,
+     "p3_new": 0.08616780045351474
+    },
+    "copurchase": {
+     "hits": 20,
+     "variant": 2,
+     "new": 18,
+     "variant_share": 10.0,
+     "p3_new": 0.04081632653061224
+    },
+    "popularity": {
+     "hits": 23,
+     "variant": 0,
+     "new": 23,
+     "variant_share": 0.0,
+     "p3_new": 0.05215419501133787
+    }
+   },
+   "A B2C": {
+    "ours": {
+     "hits": 23,
+     "variant": 2,
+     "new": 21,
+     "variant_share": 8.7,
+     "p3_new": 0.2
+    },
+    "copurchase": {
+     "hits": 16,
+     "variant": 1,
+     "new": 15,
+     "variant_share": 6.2,
+     "p3_new": 0.14285714285714285
+    },
+    "popularity": {
+     "hits": 21,
+     "variant": 0,
+     "new": 21,
+     "variant_share": 0.0,
+     "p3_new": 0.2
+    }
+   },
+   "A все": {
+    "ours": {
+     "hits": 158,
+     "variant": 65,
+     "new": 93,
+     "variant_share": 41.1,
+     "p3_new": 0.09198813056379822
+    },
+    "copurchase": {
+     "hits": 57,
+     "variant": 6,
+     "new": 51,
+     "variant_share": 10.5,
+     "p3_new": 0.050445103857566766
+    },
+    "popularity": {
+     "hits": 55,
+     "variant": 0,
+     "new": 55,
+     "variant_share": 0.0,
+     "p3_new": 0.05440158259149357
+    }
+   }
+  },
+  "official_source": "колонка product_group датасета (организаторы)"
  },
  "ai_judge": {
   "cases": 120,

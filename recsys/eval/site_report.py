@@ -177,6 +177,24 @@ def main() -> None:
 
         out["why"] = {"clients": c.get("groups", {}), "segments": {s: seg(s) for s in ("A B2B", "B B2B", "A B2C")},
                       "product_group": c.get("product_group", "")}
+        # деление попаданий по правилу организаторов (product_group из датасета v5): вариант купленного или новый продукт
+        off = c.get("official_split") or {}
+        if off:
+            n = c.get("groups", {})
+
+            def official(s: str) -> dict:
+                row = {}
+                for ru, en in who.items():
+                    x = (off.get(ru) or {}).get(s)
+                    if not x:
+                        continue
+                    new, var = x.get("новый продукт: попаданий", 0), x.get("вариант: попаданий", 0)
+                    row[en] = {"hits": new + var, "variant": var, "new": new, "variant_share": x.get("variant_share_%"),
+                               "p3_new": new / (3 * n[s]) if n.get(s) else None}
+                return row
+
+            out["why"]["official"] = {s: official(s) for s in ("A B2B", "B B2B", "A B2C", "A все")}
+            out["why"]["official_source"] = c.get("product_group_source", "")
     p = ROOT / "reports" / "ai_judge.json"
     if p.exists():                                       # ИИ-тест: слепая оценка наборов виртуальными клиентами, только сводка
         out["ai_judge"] = json.loads(p.read_text(encoding="utf-8"))
