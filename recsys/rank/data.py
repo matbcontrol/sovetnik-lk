@@ -73,6 +73,13 @@ def load_task(dataset: Path = DATASET, items_path: Path = ITEMS) -> Task:
     rows = [Row(c, date.fromisoformat(w), o, i)
             for c, w, o, i in zip(sales["client_id"], sales["order_week"], sales["order_id"], sales["item_id"])]
     items = {}
+    if items_path == ITEMS and not items_path.exists():
+        # В чистой копии репозитория таблицы товаров нет (она строится из закрытого датасета), а без неё модель
+        # молча учится без признаков каталога: A B2B 14,79 % вместо 14,90 %. Поэтому строим её сами — тем же
+        # recsys.catalog.items, что и вручную; он читает датасет сам и сюда не возвращается.
+        from recsys.catalog import items as catalog_items
+        print(f"нет {items_path.name} — строю из датасета и открытого фида (python -m recsys.catalog.items)")
+        catalog_items.main()
     if items_path.exists():
         with items_path.open(encoding="utf-8") as f:
             items = {r["item_id"]: r for r in csv.DictReader(f)}
