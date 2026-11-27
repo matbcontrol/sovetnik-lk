@@ -16,6 +16,9 @@
         Берутся товары из очереди, для которых агент что-то написал. Три состояния блока у их владельцев:
         было (вся разметка), спрятали (без вердиктов этих товаров), вернул агент (спрятанное плюс его связи
         с подтверждающей цитатой). Связь агента «комплект» обоснованным советом не считается, как и в блоке.
+        Прячутся все товары, которые агент разбирал, — и те, где он ответил «связи нет» (список берётся из его
+        отчёта рядом со связями, то же имя с расширением .json). Отдельно считается четвёртое состояние: вместе
+        со связями без дословной цитаты, которые ушли в очередь менеджера, — что вернётся после его согласия.
 
 Широкая выборка. Шесть товаров очереди видели все, кто настраивал агента. Чтобы проверка не была подогнана
 под них, есть вторая очередь:  python -m recsys.rank.restore --wide
@@ -190,28 +193,45 @@ def measure(path: Path) -> None:
     task, attrs, last, cat, uni, verdicts, prices = stand_state()
     now = uni.fold
     to_id, _ = family_keys()
-    links = []                                             # (линейка А, линейка Б, решение, подтверждена ли цитатой)
+    links = []                                # (линейка А, линейка Б, решение, подтверждена ли цитатой, фраза)
+    off_graph = 0
     for r in agent_links.rows(path):
         a, b = to_id.get(r["src"], ""), to_id.get(r["dst"], "")
-        if a in queue and b:
-            links.append((a, b, "kit" if r["source"] == agent_links.KIT else "need", r.get("status") == "graph",
-                          r.get("evidence", "")))
-    tried = sorted({a for a, *_ in links})
+        if a not in queue:
+            continue
+        if not b:
+            off_graph += 1
+            continue
+        links.append((a, b, "kit" if r["source"] == agent_links.KIT else "need", r.get("status") == "graph",
+                      r.get("evidence", "")))
+    # Разобранные товары — все из отчёта агента, включая те, где он ответил «связи нет»: спрятать нужно и их,
+    # иначе замер считал бы только удачи. Отчёт лежит рядом со связями, с тем же именем и расширением .json.
+    tried = {a for a, *_ in links}
+    summary = {}
+    side = path.with_suffix(".json")
+    if side.exists():
+        rep = json.loads(side.read_text(encoding="utf-8"))
+        holes = rep.get("holes") or []
+        tried |= {to_id.get(h.get("family", ""), "") for h in (holes.values() if isinstance(holes, dict) else holes)}
+        summary = rep.get("summary") or {}
+    tried = sorted(tried & set(queue))
     if not tried:
-        sys.exit(f"в {path} нет связей для товаров из очереди: агент ещё не разбирал их или ключи семейств другие")
+        sys.exit(f"в {path} нет товаров из очереди: агент ещё не разбирал их или ключи семейств другие")
 
     base = {k: v for k, v in verdicts.table.items() if not (v.source or "").startswith(AGENT)}
     hidden = {k: v for k, v in base.items() if k[0] not in tried}
-    restored = dict(hidden)
+    restored, proposed = dict(hidden), dict(hidden)
     for a, b, decision, confirmed, why in links:
+        proposed[(a, b)] = Verdict(decision, why, AGENT, "")            # всё, что агент предложил
         if confirmed:
-            restored[(a, b)] = Verdict(decision, why, AGENT, "")
+            restored[(a, b)] = Verdict(decision, why, AGENT, "")        # только с дословной цитатой
 
     owners = [c for c in sorted(now.history) if task.clients.get(c, {}).get("lk_access") == "да"
               and any(attrs[x].line in tried for x in now.history[c])]
     was = grounded(uni, Verdicts(base), prices, owners)
     gone = grounded(uni, Verdicts(hidden), prices, owners)
     back = grounded(uni, Verdicts(restored), prices, owners)
+    maybe = grounded(uni, Verdicts(proposed), prices, owners) if proposed != restored else back
 
     def count(flags: dict, clients: list[str]) -> dict:
         g = Counter(task.clients[c]["client_group"] for c in clients if flags[c])
@@ -220,14 +240,16 @@ def measure(path: Path) -> None:
     per = []
     for a in tried:
         own = [c for c in owners if any(attrs[x].line == a for x in now.history[c])]
-        w, g, b = count(was, own), count(gone, own), count(back, own)
         mine = [x for x in links if x[0] == a]
         need_was = {k[1] for k, v in base.items() if k[0] == a and v.verdict == "need"}
-        need_now = {x[1] for x in mine if x[2] == "need" and x[3]}
-        per.append({"line": a, "name": queue[a]["name"], "owners": len(own), "with_advice_before": w["all"],
-                    "with_advice_hidden": g["all"], "with_advice_restored": b["all"],
-                    "agent_links": len(mine), "agent_need_confirmed": len(need_now),
-                    "need_pairs_hidden": len(need_was), "need_pairs_found": len(need_was & need_now)})
+        need_sure = {x[1] for x in mine if x[2] == "need" and x[3]}
+        need_any = {x[1] for x in mine if x[2] == "need"}
+        per.append({"line": a, "name": queue[a]["name"], "owners": len(own),
+                    "with_advice_before": count(was, own)["all"], "with_advice_hidden": count(gone, own)["all"],
+                    "with_advice_restored": count(back, own)["all"], "with_advice_proposed": count(maybe, own)["all"],
+                    "agent_links": len(mine), "agent_links_confirmed": sum(x[3] for x in mine),
+                    "need_pairs_hidden": len(need_was), "need_pairs_found": len(need_was & need_sure),
+                    "need_pairs_proposed": len(need_was & need_any)})
 
     # сверка решений агента со спрятанной разметкой по тем же парам
     agree = Counter()
@@ -238,22 +260,30 @@ def measure(path: Path) -> None:
         else:
             agree["то же решение" if (v.verdict in SHOWN) == (decision in SHOWN) else "решение другое"] += 1
             agree["тот же вердикт"] += v.verdict == decision
-    need_hidden = sum(p["need_pairs_hidden"] for p in per)
-    need_found = sum(p["need_pairs_found"] for p in per)
+    need_hidden = sum(x["need_pairs_hidden"] for x in per)
+    need_found = sum(x["need_pairs_found"] for x in per)
+    need_proposed = sum(x["need_pairs_proposed"] for x in per)
 
     total = sum(task.clients.get(c, {}).get("lk_access") == "да" for c in now.history)
-    w, g, b = count(was, owners), count(gone, owners), count(back, owners)
-    lost, returned = w["all"] - g["all"], b["all"] - g["all"]
+    w, g, b, m = count(was, owners), count(gone, owners), count(back, owners), count(maybe, owners)
+    lost, returned, with_manager = w["all"] - g["all"], b["all"] - g["all"], m["all"] - g["all"]
     measured = {
-        "links_file": path.name, "products": len(tried), "owners_with_access": len(owners),
-        "clients_with_access": total,
-        "with_own_ground_advice": {"before": w, "hidden": g, "restored": b},
+        "links_file": path.name, "products": len(tried),
+        "products_with_agent_link": len({a for a, *_ in links}),
+        "owners_with_access": len(owners), "clients_with_access": total,
+        # restored — только связи с дословной цитатой (идут в граф сами); proposed — вместе с теми, что ждут менеджера
+        "with_own_ground_advice": {"before": w, "hidden": g, "restored": b, "proposed": m},
         "lost_when_hidden": lost, "returned_by_agent": returned,
         "share_returned": returned / lost if lost else None,
+        "returned_with_manager": with_manager,
+        "share_returned_with_manager": with_manager / lost if lost else None,
         "lost_share_of_all_clients": lost / total, "returned_share_of_all_clients": returned / total,
         "agent_links": len(links), "agent_links_confirmed": sum(x[3] for x in links),
+        "agent_links_to_products_outside_graph": off_graph,
         "pairs_vs_labelling": dict(agree),
         "need_pairs_hidden": need_hidden, "need_pairs_found_by_agent": need_found,
+        "need_pairs_proposed_by_agent": need_proposed,
+        "agent_run": {k: summary[k] for k in ("tool_calls_by_model", "tokens_in", "tokens_out", "seconds") if k in summary},
     }
     if "--dry-run" not in sys.argv:                        # пробный прогон отчёты не трогает
         report = json.loads(REPORT.read_text(encoding="utf-8")) if REPORT.exists() else {}
@@ -263,16 +293,20 @@ def measure(path: Path) -> None:
         private["measured"] = per
         qfile.write_text(json.dumps(private, ensure_ascii=False, indent=1), encoding="utf-8")
 
-    print(f"товаров, разобранных агентом: {len(tried)}; их владельцев в кабинете {len(owners)} из {total}")
+    print(f"товаров, разобранных агентом: {len(tried)} (со связью {measured['products_with_agent_link']}); "
+          f"их владельцев в кабинете {len(owners)} из {total}")
     print(f"обоснованный совет у владельцев: было {w['all']} -> спрятали {g['all']} -> вернул агент {b['all']} "
-          f"(организации {w['b2b']} -> {g['b2b']} -> {b['b2b']}; частные лица {w['b2c']} -> {g['b2c']} -> {b['b2c']})")
+          f"-> с очередью менеджера {m['all']} (организации {w['b2b']} -> {g['b2b']} -> {b['b2b']} -> {m['b2b']}; "
+          f"частные лица {w['b2c']} -> {g['b2c']} -> {b['b2c']} -> {m['b2c']})")
     if lost:
-        print(f"потеряли совет {lost} клиентов ({lost / total:.1%} кабинета), агент вернул {returned} ({returned / lost:.0%})")
+        print(f"потеряли совет {lost} клиентов ({lost / total:.1%} кабинета); агент вернул сам {returned} "
+              f"({returned / lost:.0%}), вместе с предложенным менеджеру {with_manager} ({with_manager / lost:.0%})")
     print(f"связей агента {len(links)}, с цитатой {measured['agent_links_confirmed']}; сверка с разметкой: {dict(agree)}; "
-          f"спрятанных «нужно» {need_hidden}, агент нашёл {need_found}")
-    for p in per:
-        print(f"   {p['name'][:56]:56} владельцев {p['owners']:>4}: {p['with_advice_before']} -> {p['with_advice_hidden']} "
-              f"-> {p['with_advice_restored']}; «нужно» найдено {p['need_pairs_found']} из {p['need_pairs_hidden']}")
+          f"спрятанных «нужно» {need_hidden}: найдено с цитатой {need_found}, предложено {need_proposed}")
+    for x in per:
+        print(f"   {x['name'][:52]:52} владельцев {x['owners']:>4}: {x['with_advice_before']} -> {x['with_advice_hidden']} "
+              f"-> {x['with_advice_restored']} -> {x['with_advice_proposed']}; «нужно» {x['need_pairs_found']}"
+              f"/{x['need_pairs_proposed']} из {x['need_pairs_hidden']}")
     print("пробный прогон: отчёты не записаны" if "--dry-run" in sys.argv else f"отчёт: {REPORT}")
 
 
