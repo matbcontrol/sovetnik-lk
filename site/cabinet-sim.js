@@ -82,27 +82,28 @@
   // ---- «почему это работает» (report.why) и слепая оценка ИИ-клиентами (report.ai_judge) — если поля есть в отчёте
   const times = (a, b) => (b ? `${(a / b).toFixed(1).replace(".", ",")}×` : "—");
   function whyHtml(w) {
-    const seg = w && w.segments && w.segments["A B2B"];
+    // деление попаданий — по правилу организаторов (product_group датасета v5), как на «Цифрах» стенда
+    const off = w && w.official, seg = off && off["A B2B"], segs = w && w.segments && w.segments["A B2B"];
     if (!seg || !seg.ours || !seg.copurchase || !seg.popularity) return "";
-    const kinds = [["продление купленного", "Продление того, что у клиента уже есть, — вовремя по сроку лицензии"],
-                   ["другая редакция или версия", "Старшая редакция или новая версия купленного продукта"],
-                   ["вариант той же группы", "Другой вариант той же лицензии: больше мест, другой срок"],
-                   ["новый продукт", "Новый для клиента продукт"]];
-    const cell = (m, k) => nf.format((m.hits || {})[k] || 0);
-    const o = seg.ours, c = seg.copurchase, pp = seg.popularity, b = w.segments["B B2B"] || {};
-    const best = (f) => Math.max(c[f] || 0, pp[f] || 0);
-    const bBest = Math.max((b.copurchase || {}).protocol || 0, (b.popularity || {}).protocol || 0);
+    const n = (v) => nf.format(v || 0);
+    const share = (v) => `${String(v != null ? v : 0).replace(".", ",")} %`;
+    const o = seg.ours, c = seg.copurchase, pp = seg.popularity, best = Math.max(c.p3_new || 0, pp.p3_new || 0);
+    const bb = off["B B2B"] || {}, bc = off["A B2C"] || {};
+    const row = (title, v, mine) => `<tr><td>${mine ? `<b>${title}</b>` : title}</td><td class="${mine ? "sim-ours" : ""}">${n(v.hits)}</td>
+      <td>${n(v.variant)} (${share(v.variant_share)})</td><td class="${mine ? "sim-ours" : ""}">${n(v.new)}</td><td>${v.p3_new != null ? pct(v.p3_new) : "—"}</td></tr>`;
+    const noRenew = segs && segs.ours && segs.copurchase
+      ? ` Если убрать из тройки продления купленного — их в кабинете ведёт свой сценарий, — остаётся ${pct(segs.ours.no_renewals)} против ${pct(Math.max(segs.copurchase.no_renewals || 0, (segs.popularity || {}).no_renewals || 0))} у лучшего базового способа.` : "";
     return `<h3>Почему это работает</h3>
-      <p class="hint" style="max-width:none">Организации группы A: чем оказался совет, который сбылся.</p>
-      <table class="sim-table"><tr><th>Вид попадания</th><th>Наш советник</th><th>Совместные покупки</th><th>Популярность</th></tr>
-        ${kinds.map(([k, label]) => `<tr><td>${esc(label)}</td><td class="sim-ours">${cell(o, k)}</td><td>${cell(c, k)}</td><td>${cell(pp, k)}</td></tr>`).join("")}
-        <tr><td><b>Всего попаданий</b></td><td class="sim-ours">${nf.format(o.hits_total || 0)}</td><td>${nf.format(c.hits_total || 0)}</td><td>${nf.format(pp.hits_total || 0)}</td></tr></table>
+      <p class="hint" style="max-width:none">Организации группы A. Деление — по правилу организаторов, по колонке product_group датасета v5: <b>вариант</b> — группа угаданного товара уже есть в истории клиента (базовая лицензия и продление, другой срок, количество, месяц подписки), <b>новый продукт</b> — такой группы в истории нет.</p>
+      <table class="sim-table"><tr><th></th><th>Попаданий</th><th>Варианты купленного</th><th>Новые продукты</th><th>Precision@3 только по новым</th></tr>
+        ${row("Наш советник", o, true)}${row("Совместные покупки", c)}${row("Популярность", pp)}</table>
       <ul class="sim-list">
-        <li><b>Советник знает жизненный цикл лицензии:</b> когда истекает срок и что продаётся следом — продление, старшая редакция, новая версия. Совместные покупки смотрят на корзину и не видят времени, популярность не видит клиента: ${pct(o.protocol)} против ${pct(best("protocol"))} у лучшего базового способа — в ${times(o.protocol, best("protocol"))} больше.</li>
-        <li><b>Перевес держится и без продлений:</b> ${pct(o.no_renewals)} против ${pct(best("no_renewals"))}; без продлений и вариантов той же группы — ${pct(o.no_renew_variants)} против ${pct(best("no_renew_variants"))}.</li>
-        <li><b>Холодный старт:</b> у организаций группы B с одной покупкой — ${b.ours ? `${pct(b.ours.protocol)} против ${pct(bBest)}` : "—"}: знания каталога о линейке, редакциях и классе товара работают и без истории.</li>
-        <li><b>Где перевеса нет:</b> совсем новых для клиента продуктов советник угадывает столько же, сколько популярность (${cell(o, "новый продукт")} и ${cell(pp, "новый продукт")}). Здесь блок берёт качеством: каждый совет проверен на паре с товаром клиента и объяснён.</li>
-      </ul>`;
+        <li><b>Советник знает жизненный цикл лицензии.</b> ${share(o.variant_share)} наших попаданий — варианты купленного: продление вовремя, другой срок, больше мест. У совместных покупок таких ${share(c.variant_share)}, у популярности ни одного: они не видят ни времени, ни того, что у клиента уже есть.${noRenew}</li>
+        <li><b>И новых продуктов советник угадывает вдвое больше:</b> ${n(o.new)} против ${n(c.new)} и ${n(pp.new)}, ${pct(o.p3_new)} против ${pct(best)} у лучшего базового способа (${times(o.p3_new, best)}). Здесь работают знания каталога — линейка и редакции, проверенные пары «купил А — советовать ли Б».</li>
+        ${bb.ours ? `<li><b>Холодный старт.</b> У организаций группы B одна покупка: ${n(bb.ours.hits)} попаданий против ${n((bb.copurchase || {}).hits)} и ${n((bb.popularity || {}).hits)}, из них новых продуктов ${n(bb.ours.new)} против ${n((bb.copurchase || {}).new)} и ${n((bb.popularity || {}).new)}.</li>` : ""}
+        ${bc.ours ? `<li><b>Где перевеса нет.</b> У частных лиц новых продуктов ${n(bc.ours.new)} против ${n((bc.popularity || {}).new)} у популярности: покупки у них похожи друг на друга, и популярное почти так же хорошо. Здесь блок берёт качеством: каждый совет проверен на паре с товаром клиента и объяснён.</li>` : ""}
+      </ul>
+      <p class="hint" style="max-width:none">Оговорка: product_group организаторов мельче их же словесного правила — Kaspersky Standard на 5 и на 10 устройств, разные лицензии КриптоПро CSP попадают в разные группы. По нашей более строгой мерке, где смена редакции и продление — тот же продукт, из ${n(o.new)} «новых» по-настоящему новых продуктов 23, как у популярности.</p>`;
   }
   const shares = (m) => {                     // {ours, base, tie}: числа оценок или уже доли — привести к долям
     if (!m) return null;
