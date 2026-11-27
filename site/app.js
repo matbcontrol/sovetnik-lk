@@ -1487,6 +1487,7 @@
     const rows = [];
     const of = (x, n) => `${Math.round(x * n)} из ${n}`;
     if (e.runs) {
+      if (e.model) rows.push(["Модель экзамена", e.model]);   // прогоны ниже сделаны этой моделью; стоимость товара — по замеру ниже
       rows.push(["Прогонов в экзамене", e.runs]);
       rows.push(["Класс совпал с рубрикой магазина", of(e.class_exact, e.runs)]);
       if (e.class_code_only != null) rows.push(["…один код, без модели", of(e.class_code_only, e.runs)]);
