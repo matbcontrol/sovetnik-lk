@@ -1,0 +1,1592 @@
+{
+ "how": "выборка сверки recsys.llm.pair_verdicts check (уровень классов, seed 11, -n 30); ответы из кеша сверки, без новых вызовов API; эталон — первая разметка",
+ "trust_threshold": 0.85,
+ "pairs": 166,
+ "labelling_shows": 60,
+ "models": {
+  "gemini-3.6-flash": {
+   "pairs": 166,
+   "decided": 166,
+   "to_manager": 0,
+   "советовать": {
+    "pairs": 91,
+    "agrees_with_labelling": 56,
+    "accuracy": 0.615,
+    "ci95": [
+     0.513,
+     0.709
+    ]
+   },
+   "не советовать": {
+    "pairs": 75,
+    "agrees_with_labelling": 71,
+    "accuracy": 0.947,
+    "ci95": [
+     0.871,
+     0.979
+    ]
+   },
+   "accuracy": 0.765,
+   "ci95": [
+    0.695,
+    0.823
+   ],
+   "same_decision_in_check_report": 0.765
+  },
+  "deepseek-v4-pro, без рассуждения": {
+   "pairs": 166,
+   "decided": 166,
+   "to_manager": 0,
+   "советовать": {
+    "pairs": 104,
+    "agrees_with_labelling": 52,
+    "accuracy": 0.5,
+    "ci95": [
+     0.406,
+     0.594
+    ]
+   },
+   "не советовать": {
+    "pairs": 62,
+    "agrees_with_labelling": 54,
+    "accuracy": 0.871,
+    "ci95": [
+     0.766,
+     0.933
+    ]
+   },
+   "accuracy": 0.639,
+   "ci95": [
+    0.563,
+    0.708
+   ],
+   "same_decision_in_check_report": 0.639
+  },
+  "deepseek-v4-pro, с рассуждением": {
+   "pairs": 166,
+   "decided": 166,
+   "to_manager": 0,
+   "советовать": {
+    "pairs": 59,
+    "agrees_with_labelling": 44,
+    "accuracy": 0.746,
+    "ci95": [
+     0.622,
+     0.839
+    ]
+   },
+   "не советовать": {
+    "pairs": 107,
+    "agrees_with_labelling": 91,
+    "accuracy": 0.85,
+    "ci95": [
+     0.771,
+     0.906
+    ]
+   },
+   "accuracy": 0.813,
+   "ci95": [
+    0.747,
+    0.865
+   ],
+   "same_decision_in_check_report": 0.813
+  }
+ },
+ "pairs_of_models": {
+  "gemini-3.6-flash + deepseek-v4-pro, без рассуждения": {
+   "pairs": 166,
+   "decided": 119,
+   "to_manager": 47,
+   "советовать": {
+    "pairs": 74,
+    "agrees_with_labelling": 49,
+    "accuracy": 0.662,
+    "ci95": [
+     0.549,
+     0.76
+    ]
+   },
+   "не советовать": {
+    "pairs": 45,
+    "agrees_with_labelling": 44,
+    "accuracy": 0.978,
+    "ci95": [
+     0.884,
+     0.996
+    ]
+   },
+   "accuracy": 0.782,
+   "ci95": [
+    0.699,
+    0.846
+   ]
+  },
+  "gemini-3.6-flash + deepseek-v4-pro, с рассуждением": {
+   "pairs": 166,
+   "decided": 124,
+   "to_manager": 42,
+   "советовать": {
+    "pairs": 54,
+    "agrees_with_labelling": 42,
+    "accuracy": 0.778,
+    "ci95": [
+     0.651,
+     0.868
+    ]
+   },
+   "не советовать": {
+    "pairs": 70,
+    "agrees_with_labelling": 68,
+    "accuracy": 0.971,
+    "ci95": [
+     0.902,
+     0.992
+    ]
+   },
+   "accuracy": 0.887,
+   "ci95": [
+    0.819,
+    0.932
+   ]
+  },
+  "deepseek-v4-pro, без рассуждения + deepseek-v4-pro, с рассуждением": {
+   "pairs": 166,
+   "decided": 111,
+   "to_manager": 55,
+   "советовать": {
+    "pairs": 54,
+    "agrees_with_labelling": 41,
+    "accuracy": 0.759,
+    "ci95": [
+     0.631,
+     0.854
+    ]
+   },
+   "не советовать": {
+    "pairs": 57,
+    "agrees_with_labelling": 52,
+    "accuracy": 0.912,
+    "ci95": [
+     0.811,
+     0.962
+    ]
+   },
+   "accuracy": 0.838,
+   "ci95": [
+    0.758,
+    0.895
+   ]
+  }
+ },
+ "rule": {
+  "models": [
+   "gemini-3.6-flash",
+   "deepseek-v4-pro, с рассуждением"
+  ],
+  "automated_decisions": [
+   "не советовать"
+  ],
+  "decided_without_manager": 70,
+  "share_without_manager": 0.422,
+  "to_manager": 96,
+  "to_manager_first": 54,
+  "errors_without_manager": 2,
+  "errors": [
+   {
+    "a": "Сменные батареи для ИБП (Сменная батарея для ИБП Powerman CA1290; Сменная батарея для ИБП APC Батареи ИБП SMX120; Сменная батарея для ИБП Delta HR 12-7.2)",
+    "b": "Аксессуары для ИБП (для ИБП REM Блок распределения питания R-32-8S-I; ELEMY ATS, 1U, 220B, 16A, Индикация: OLED-диспле; для ИБП REM Блок распределения питания R-10-9S-I)",
+    "labelling": "комплект",
+    "gemini-3.6-flash": "не связано",
+    "deepseek-v4-pro, с рассуждением": "не связано"
+   },
+   {
+    "a": "Материнские платы (Материнская плата SUPERMICRO Socket SP5 System o; Материнская плата MSI Intel B760 PRO B760M-A WIF; Материнская плата ASUS AMD B650 ROG STRIX B650-A)",
+    "b": "Оперативная память (Оперативная память Patriot Desktop DDR3 1600МГц ; Оперативная память DIGMA DDR3L 8Gb, DGMAS3160000; Оперативная память Kingston Desktop DDR4 3200МГц)",
+    "labelling": "комплект",
+    "gemini-3.6-flash": "уже есть",
+    "deepseek-v4-pro, с рассуждением": "уже есть"
+   }
+  ],
+  "agreement": {
+   "pairs": 166,
+   "decided": 124,
+   "to_manager": 42,
+   "советовать": {
+    "pairs": 54,
+    "agrees_with_labelling": 42,
+    "accuracy": 0.778,
+    "ci95": [
+     0.651,
+     0.868
+    ]
+   },
+   "не советовать": {
+    "pairs": 70,
+    "agrees_with_labelling": 68,
+    "accuracy": 0.971,
+    "ci95": [
+     0.902,
+     0.992
+    ]
+   },
+   "accuracy": 0.887,
+   "ci95": [
+    0.819,
+    0.932
+   ]
+  },
+  "note": "доли — на выборке сверки: она нарочно трудная (половина отвергнутых пар когда-то предложена облегчённой моделью); первая разметка — не истина: два независимых разметчика сходятся в 86 %"
+ },
+ "silently_rejected_good_pairs": {
+  "одна модель: gemini-3.6-flash": {
+   "pairs": 4,
+   "need": 0,
+   "kit": 4
+  },
+  "одна модель: deepseek-v4-pro, без рассуждения": {
+   "pairs": 8,
+   "need": 0,
+   "kit": 8
+  },
+  "одна модель: deepseek-v4-pro, с рассуждением": {
+   "pairs": 16,
+   "need": 6,
+   "kit": 10
+  },
+  "согласие двух: gemini-3.6-flash + deepseek-v4-pro, с рассуждением": {
+   "pairs": 2,
+   "need": 0,
+   "kit": 2
+  }
+ },
+ "answers": [
+  {
+   "a": "networking/firewall",
+   "b": "networking/switch",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "elektroinstrument/shurupoverty",
+   "b": "elektroinstrument/aksessuary-i-nabory",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "diski-i-fayli/rezervnoe-kopirovanie",
+   "b": "portable-memory/externalhdd",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "parts/zvukovye-karty",
+   "b": "gadgets/headphones",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie",
+   "b": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "networking/switch",
+   "b": "peripherals/ups",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "san-nas/san-storage",
+   "b": "peripherals/ups",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "servers/rackmount-servers",
+   "b": "operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "computers/notebook",
+   "b": "accessories_comp/bags_for_notes",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "diski-i-fayli/rezervnoe-kopirovanie",
+   "b": "san-nas/nas",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "computers/desktop",
+   "b": "peripherals/displays",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "servers/chassis1",
+   "b": "parts/cpu",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "computers/nettop",
+   "b": "ofisnie-programmi/rossiyskie-ofisnoe-po-importozameshchenie",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "internet-i-set/obschenie",
+   "b": "gadgets/headphones",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "security/ip-videocams",
+   "b": "portable-memory/flash-memory",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "photo-video/tvset",
+   "b": "photo-video/holders",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "internet-i-set/obschenie",
+   "b": "gadgets/webcam",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "office/scanner",
+   "b": "delovie-programmi/rabota-s-dokumentami",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "multimedia/audioredaktori",
+   "b": "gadgets/headphones",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "security/videoregistratory",
+   "b": "parts/hdd",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "servers/chassis1",
+   "b": "parts/ram",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "computers/all-in-ones",
+   "b": "antivirusi-bezopasnost/antivirusi-organizatsii",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "gadgets/webcam",
+   "b": "gadgets/headphones",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "servers/rackmount-servers",
+   "b": "peripherals/ups",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "san-nas/nas",
+   "b": "peripherals/ups",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "computers/nettop",
+   "b": "peripherals/keyboards",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "gadgets/smartphones",
+   "b": "gadgets/zaryadnye-ustroystva",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "internet-i-set/telefoniya",
+   "b": "ip-telephonia/voip-gates",
+   "labelling": "need",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "san-nas/san-storage",
+   "b": "diski-i-fayli/rezervnoe-kopirovanie",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "internet-i-set/pochtovie-programmi",
+   "b": "antivirusi-bezopasnost/antivirusi-organizatsii",
+   "labelling": "need",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "ii/obucenie-i-konsalting-v-sfere-ii",
+   "b": "elektronnye-knigi/biznes-literatura",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "networking/firewall",
+   "b": "networking/access-point",
+   "labelling": "kit",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "gadgets/chekhly-dlya-smartfonov",
+   "b": "portable/powerbank",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "bytovaya-tekhnika/dukhovye-shkafy",
+   "b": "bytovaya-tekhnika/varochnye-paneli",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "peripherals/ups_battery_pack",
+   "b": "peripherals/accessoires-pour-ups",
+   "labelling": "kit",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "grafika-i-dizayn/tsifrovoe-foto",
+   "b": "office/graphic_pad",
+   "labelling": "kit",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "dom-i-dacha/generatory",
+   "b": "peripherals/ups",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "sapr/geoinformatsionnie-sistemi",
+   "b": "office/plotters",
+   "labelling": "kit",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "text/tekstovie-redaktori",
+   "b": "office/scanner",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "san-nas/san-options",
+   "b": "servers/montazhnye-komplekty-zip",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "programmi-dlya-mac-os/system-programms",
+   "b": "portable-memory/externalhdd",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "accessories_comp/covers_for_tablets",
+   "b": "gadgets/zaryadnye-ustroystva",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "networking/adsl",
+   "b": "peripherals/ups",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "networking/3g-routers",
+   "b": "networking/switch",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "photo-video/holders",
+   "b": "parts/cables",
+   "labelling": "kit",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "distantsionnoe-obuchenie/edu-internet",
+   "b": "obrazovanie-i-nauka/obuchayuschie-programmi",
+   "labelling": "kit",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "accessories_comp/bags_for_notes",
+   "b": "portable/powerbank",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "sapr/arhitektura",
+   "b": "office/plotters",
+   "labelling": "kit",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "parts/motherboard",
+   "b": "parts/ram",
+   "labelling": "kit",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "parts/ssd",
+   "b": "parts/hdd",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "same"
+  },
+  {
+   "a": "torgovoe-oborudovanie/detektory-banknot",
+   "b": "torgovoe-oborudovanie/schetchiki-banknot-monet",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "multimedia/videoredaktori",
+   "b": "diski-i-fayli/rezervnoe-kopirovanie",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "networking/transceivers",
+   "b": "parts/cables",
+   "labelling": "kit",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "gadgets/smartphones",
+   "b": "portable/powerbank",
+   "labelling": "kit",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "antivirusi-bezopasnost/kontrol-dostupa",
+   "b": "security/ustroystva-kontrolya-dostupa",
+   "labelling": "kit",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "internet-i-set/programmi-dlya-seti",
+   "b": "antivirusi-bezopasnost/security-internet-i-set",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "peripherals/keyboards",
+   "b": "peripherals/displays",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "gadgets/headphones",
+   "b": "parts/zvukovye-karty",
+   "labelling": "kit",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "ip-telephonia/voip-gates",
+   "b": "peripherals/ups",
+   "labelling": "kit",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "beauty-and-health/mashinki-dlya-strizhki-volos",
+   "b": "beauty-and-health/trimmery",
+   "labelling": "kit",
+   "gemini-3.6-flash": "same",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "ip-telephonia/consoles",
+   "b": "ip-telephonia/voip-telephone",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "obrazovanie-i-nauka/nauchnie-rascheti",
+   "b": "computers/desktop",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "has",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "sapr/lazernoe-skanirovanie",
+   "b": "sapr/bazovie-produkti",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "torgovoe-oborudovanie/pos-aksessuary",
+   "b": "torgovoe-oborudovanie/terminaly-sbora-dannykh",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "servers/montazhnye-komplekty-zip",
+   "b": "servers/rackmount-servers",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "grafika-i-dizayn/3d-grafika",
+   "b": "computers/desktop",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "has",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie",
+   "b": "servers/rackmount-servers",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "parts/ram",
+   "b": "parts/cpu",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "sapr/kadastr-i-gradostroitelstvo",
+   "b": "sapr/geoinformatsionnie-sistemi",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "parts/coolers",
+   "b": "parts/cpu",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "portable-memory/hdd-external-case",
+   "b": "parts/ssd",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "sapr/infrastruktura-iziskaniya-genplan-transport",
+   "b": "sapr/bazovie-produkti",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "obrazovanie-i-nauka/obuchayuschie-programmi",
+   "b": "computers/notebook",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "has",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "peripherals/accessoires-pour-ups",
+   "b": "peripherals/ups",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "ip-telephonia/voip-gates",
+   "b": "networking/switch",
+   "labelling": "has",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "antivirusi-bezopasnost/antivirusi",
+   "b": "operating-systems/windows-11-licenzii-home-i-pro",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "has",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "networking/wifi-adapters",
+   "b": "networking/routers",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "parts/ram",
+   "b": "parts/motherboard",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "photo-video/ekran",
+   "b": "photo-video/projector",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "sapr/selskoe-khozyaystvo",
+   "b": "sapr/geoinformatsionnie-sistemi",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+   "b": "operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "peripherals/ups_battery_pack",
+   "b": "peripherals/ups",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "has",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "sistemnie-programmi/rasshireniya-sistemi",
+   "b": "operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "delovie-programmi/biznes-plan",
+   "b": "ofisnie-programmi/ms-office",
+   "labelling": "has",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "internet-i-set/videonabludenie",
+   "b": "security/ip-videocams",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "servers/server-options",
+   "b": "servers/rackmount-servers",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+   "b": "sapr/bazovie-produkti",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "san-nas/san-options",
+   "b": "san-nas/san-storage",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "3d-oborudovanie/3d-scanners",
+   "b": "computers/all-in-ones",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "has",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "internet-i-set/pochtovie-utiliti",
+   "b": "internet-i-set/pochtovie-programmi",
+   "labelling": "has",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "text/raspoznavanie-teksta-i-rechi",
+   "b": "text/tekstovie-redaktori",
+   "labelling": "same",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "same"
+  },
+  {
+   "a": "programmi-dlya-mobilnih-ustroystv/mobilnie-ustroystva-zaschita-informatsii",
+   "b": "antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov",
+   "labelling": "same",
+   "gemini-3.6-flash": "same",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "same"
+  },
+  {
+   "a": "gadgets/chekhly-dlya-smartfonov",
+   "b": "gadgets/aksessuary",
+   "labelling": "same",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov",
+   "b": "programmi-dlya-mobilnih-ustroystv/mobilnie-ustroystva-zaschita-informatsii",
+   "labelling": "same",
+   "gemini-3.6-flash": "same",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "same"
+  },
+  {
+   "a": "grafika-i-dizayn/shabloni-i-kliparti",
+   "b": "multimedia/videoredaktori",
+   "labelling": "same",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "has"
+  },
+  {
+   "a": "ip-telephonia/konferents-svyaz",
+   "b": "ip-telephonia/spikerfony",
+   "labelling": "same",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "accessories_comp/usb-hub",
+   "b": "accessories_comp/docking",
+   "labelling": "same",
+   "gemini-3.6-flash": "same",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "diski-i-fayli/rezervnoe-kopirovanie",
+   "b": "diski-i-fayli/vosstanovlenie-dannih",
+   "labelling": "same",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "internet-i-set/videonabludenie",
+   "b": "security/videoregistratory",
+   "labelling": "same",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "same"
+  },
+  {
+   "a": "bytovaya-tekhnika/kukhonnye-kombayny",
+   "b": "bytovaya-tekhnika/blendery",
+   "labelling": "same",
+   "gemini-3.6-flash": "same",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "ofisnie-programmi/drugoe-ofisnoe-po",
+   "b": "delovie-programmi/rabota-s-dokumentami",
+   "labelling": "same",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie",
+   "b": "programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie",
+   "labelling": "same",
+   "gemini-3.6-flash": "same",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "same"
+  },
+  {
+   "a": "text/tekstovie-redaktori",
+   "b": "text/raspoznavanie-teksta-i-rechi",
+   "labelling": "same",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "same"
+  },
+  {
+   "a": "torgovoe-oborudovanie/skanery-shtrikhkodov",
+   "b": "torgovoe-oborudovanie/terminaly-sbora-dannykh",
+   "labelling": "same",
+   "gemini-3.6-flash": "same",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "ip-telephonia/spikerfony",
+   "b": "ip-telephonia/konferents-svyaz",
+   "labelling": "same",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "sapr/kartografiya-fotogrammetriya",
+   "b": "sapr/geoinformatsionnie-sistemi",
+   "labelling": "same",
+   "gemini-3.6-flash": "same",
+   "deepseek-v4-pro, без рассуждения": "same",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "sistemnie-programmi/rossiyskaya-virtualizatsiya-importozameshchenie",
+   "b": "sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "torgovoe-oborudovanie/monobloki",
+   "b": "torgovoe-oborudovanie/skanery-shtrikhkodov",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "servers/chassis1",
+   "b": "servers/server-options",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "elektroinstrument/perforatory",
+   "b": "elektroinstrument/aksessuary-i-nabory",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "portable-memory/usb-flash",
+   "b": "antivirusi-bezopasnost/antivirusi",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "sapr/pojarnaya-bezopasnost",
+   "b": "sapr/stroitelstvo",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "remote-access/rossiyskie-resheniya-udalennogo-dostupa-importozameshchenie",
+   "b": "antivirusi-bezopasnost/antivirusi-organizatsii",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "torgovoe-oborudovanie/printery",
+   "b": "office/expendables",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "has",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "obrazovanie-i-nauka/programmi-dlya-vuzov",
+   "b": "peripherals/displays",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "sapr/arhitektura",
+   "b": "sapr/dizayn-vizualizatsiya-i-animatsiya",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "parts/ssd",
+   "b": "parts/cables",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "buhgalteriya-sklad-kadry/skladskie-programmi",
+   "b": "buhgalteriya-sklad-kadry/torgovlya",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "security/ustroystva-kontrolya-dostupa",
+   "b": "security/klaviatura-dlya-upravleniya",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "bytovaya-tekhnika/kofemashiny",
+   "b": "bytovaya-tekhnika/kofemolki",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "delovie-programmi/rabota-s-dokumentami",
+   "b": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "ip-telephonia/system-phones",
+   "b": "peripherals/voltage_regulator",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "obrazovanie-i-nauka/nauchnie-rascheti",
+   "b": "parts/ram",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "has",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "sistemnie-programmi/vneshnie-ustroystva",
+   "b": "parts/cables",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "servers/rackmount-servers",
+   "b": "servers/server-options",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "saas/setevie-utiliti",
+   "b": "antivirusi-bezopasnost/antivirusi-organizatsii",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "sapr/lazernoe-skanirovanie",
+   "b": "3d-oborudovanie/3d-scanners",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "need",
+   "deepseek-v4-pro, с рассуждением": "need"
+  },
+  {
+   "a": "ii/otraslevye-reseniia",
+   "b": "antivirusi-bezopasnost/antivirusi-organizatsii",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "office/brochurateur",
+   "b": "office/expendables",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "remote-access/drugie-resheniya-udalennogo-dostupa",
+   "b": "antivirusi-bezopasnost/antivirusi-organizatsii",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "sapr/kadastr-i-gradostroitelstvo",
+   "b": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "dom-i-dacha/generatory",
+   "b": "elektroinstrument/dreli",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "bytovaya-tekhnika/mikrovolnovye-pechi",
+   "b": "bytovaya-tekhnika/dukhovye-shkafy",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "internet-i-set/cms",
+   "b": "antivirusi-bezopasnost/mezhsetevye-ekrany",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "parts/odd",
+   "b": "parts/cables",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "need",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "sapr/injenerniy-soft",
+   "b": "delovie-programmi/rabota-s-dokumentami",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "parts/chassis",
+   "b": "3d-oborudovanie/3d-scanners",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "portable/accessories_for_tablets",
+   "b": "internet-i-set/programmi-dlya-seti",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "accessories_comp/notebook-stand",
+   "b": "obrazovanie-i-nauka/obuchayuschie-programmi",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "antivirusi-bezopasnost/antivirusi-organizatsii",
+   "b": "networking/wifi-adapters",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "networking/powerline",
+   "b": "obrazovanie-i-nauka/programmi-dlya-vuzov",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "peripherals/ups",
+   "b": "bytovaya-tekhnika/feny",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "operating-systems/os-linux-unix",
+   "b": "beauty-and-health/trimmery",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "security/ip-videocams",
+   "b": "computers/all-in-ones",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "antivirusi-bezopasnost/security-internet-i-set",
+   "b": "sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "parts/ssd",
+   "b": "multimedia/pleyeri",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "networking/transceivers",
+   "b": "sistemnie-programmi/nastroyka-sistemi",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "networking/routers",
+   "b": "elektroinstrument/rubanki",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "grafika-i-dizayn/3d-grafika",
+   "b": "networking/access-point",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "operating-systems/rossiyskie-operatsionnye-sistemy-importozameshchenie",
+   "b": "bytovaya-tekhnika/kholodilniki",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "ip-telephonia/voip-gates",
+   "b": "ip-telephonia/voip-telephone",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "kit",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "kit"
+  },
+  {
+   "a": "office/schreder",
+   "b": "oblachnye-resheniya-iaas/upravlenie-biznesom-iaas",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "ip-telephonia/accessories_for_phones",
+   "b": "buhgalteriya-sklad-kadry/upravlenie-logistikoy",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "dom-i-dacha/generatory",
+   "b": "ip-telephonia/provodnye-telefony",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "programmirovanie/bazi-dannih",
+   "b": "accessories_comp/notebook-stand",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "grafika-i-dizayn/shabloni-i-kliparti",
+   "b": "bytovaya-tekhnika/kofemashiny",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "security/umnyy-dom",
+   "b": "saas/setevie-utiliti",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "accessories_comp/docking",
+   "b": "accessories_comp/usb-hub",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "same",
+   "deepseek-v4-pro, без рассуждения": "kit",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "dom-i-dacha/generatory",
+   "b": "bytovaya-tekhnika/shveynye-mashiny",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "gadgets/game-manipulators",
+   "b": "accessories_comp/bags_for_notes",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "security/domofony",
+   "b": "gadgets/aksessuary",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "ip-telephonia/consoles",
+   "b": "portable-memory/usb-flash",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "multimedia/audioredaktori",
+   "b": "dom-i-dacha/trimmery-sadovye",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "programmirovanie/bazi-dannih",
+   "b": "networking/network-card",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "buhgalteriya-sklad-kadry/upravlenie-logistikoy",
+   "b": "networking/network-card",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  },
+  {
+   "a": "sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie",
+   "b": "office/schreder",
+   "labelling": "unrelated",
+   "gemini-3.6-flash": "unrelated",
+   "deepseek-v4-pro, без рассуждения": "unrelated",
+   "deepseek-v4-pro, с рассуждением": "unrelated"
+  }
+ ]
+}
