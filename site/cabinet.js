@@ -26,7 +26,18 @@
   let votes = {};
   try { votes = JSON.parse(localStorage.getItem("sovetnik.votes.v1") || "{}"); } catch (e) { votes = {}; }
   const edges = data.edges.filter((e) => votes[`${e[0]}|${e[1]}|${e[2]}`] !== "no");
-  const graph = new E.Graph(Object.assign({}, data, { edges }));
+  // принятое менеджером из предложений агента каталога («Связи на проверку») — тот же след, что на стенде
+  let agentStore = {};
+  try { agentStore = JSON.parse(localStorage.getItem("sovetnik.agent.v1") || "{}"); } catch (e) { agentStore = {}; }
+  const nodeIds = new Set(data.nodes.map((n) => n.id));
+  const agentNodes = new Map(), agentEdges = [];
+  for (const [k, p] of Object.entries(agentStore)) {
+    if (votes[k] !== "ok" || !p || !p.edge) continue;
+    if (p.node && !nodeIds.has(p.node.id)) agentNodes.set(p.node.id, p.node);
+    agentEdges.push(p.edge);
+  }
+  const graph = new E.Graph(Object.assign({}, data, {
+    nodes: data.nodes.concat(Array.from(agentNodes.values())), edges: edges.concat(agentEdges) }));
   const byVote = (v) => new Set(Object.keys(votes).filter((k) => votes[k] === v && /^(c[lrp]|pk)\|/.test(k)));
   const approved = byVote("ok"), rejected = byVote("no");
   const engine = (extra) => new E.Recommender(graph, Object.assign({ fill: false, unverified: false, approved, rejected }, extra));
@@ -44,9 +55,17 @@
   // совет по связи класса или замена по классу, которую менеджер ещё не принял
   const pending = (r) => (r.paths || []).length > 0 && r.paths.every((p) => (p.class || p.type === "analog_class") && !approved.has(p.key));
 
+  // ?family=вендор/семейство[&type=b2c] — клиент с одной этой покупкой: так видно любой товар глазами его владельца
+  const qs = new URLSearchParams(location.search);
+  const fam = qs.get("family");
+  if (fam && graph.nodes.has(fam)) {
+    const today = (examples[0] && examples[0].client.today) || new Date().toISOString().slice(0, 10);
+    examples.unshift({ title: `Клиент с одной покупкой: ${node(fam).name}`, client: {
+      type: qs.get("type") === "b2c" ? "b2c" : "b2b", today, purchases: [{ family: fam, date: addMonths(today, -6), term: 12 }] } });
+  }
   const sel = $("#client");
   sel.innerHTML = examples.map((x, i) => `<option value="${i}">${esc(x.title)}</option>`).join("");
-  const start = Number(new URLSearchParams(location.search).get("client") || 0);
+  const start = Number(qs.get("client") || 0);
   sel.value = String(Math.min(Math.max(Number.isFinite(start) ? start : 0, 0), examples.length - 1));
   sel.addEventListener("change", () => show(+sel.value));
   show(+sel.value);
