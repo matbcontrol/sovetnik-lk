@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from recsys.agent.holes import HoleTools, close_hole, edges_of, norm
+from recsys.agent.holes import HoleTools, close_hole, edges_of, link_rule, norm
 
 FAM = "nanosoft/platforma-nanocad"
 SEARCH = {"thought": "ищу", "calls": [{"tool": "search_catalog", "args": {"query": "nanoCAD"}}]}
@@ -36,6 +36,22 @@ def candidate(cat):
     pytest.skip("у класса нет спутников без вердикта")
 
 
+def quote_a(cat):
+    """Цитата из описания А с его опорным словом: подтверждает «нужно» и не совпадает с названием."""
+    words = ((cat.desc.get(FAM) or {}).get("description") or "").split()
+    i = next((i for i, w in enumerate(words) if "nanocad" in w.lower()), None)
+    if i is None:
+        pytest.skip("в описании нет опорного слова")
+    return " ".join(words[max(0, i - 2): i + 3])
+
+
+def quote_b(cat, d):
+    words = ((cat.desc.get(d) or {}).get("description") or "").split()
+    if len(words) < 5:
+        pytest.skip("у товара нет описания")
+    return " ".join(words[:5])
+
+
 def vetoed_one(cat):
     return next(b for b, v in cat.by_a.get(FAM, []) if v == "unrelated")
 
@@ -49,7 +65,7 @@ def run(cat, critic):
 
 
 def test_quote_found_in_text_goes_to_graph(cat):
-    ok, res = run(cat, lambda d: {"i": 0, "keep": True, "quote": " ".join(cat.text(d).split()[:4]), "why": "ок"})
+    ok, res = run(cat, lambda d: {"i": 0, "keep": True, "quote": quote_a(cat), "why": "ок"})
     assert res["outcome"] == "closed"
     assert [(l["dst"], l["status"]) for l in res["links"]] == [(ok, "graph")]
     whys = " ".join(d["why"] for d in res["dropped"])
@@ -111,13 +127,27 @@ def test_upgrade_to_edition_outside_catalog_line(cat):
     cat.as_new = {a}
     try:
         final = {"final": {"links": [{"dst": b, "kind": "upgrade", "reason": "старшая редакция"}]}}
-        critic = {"verdicts": [{"i": 0, "keep": True, "quote": " ".join(cat.text(b).split()[:4]), "why": "ок"}]}
+        critic = {"verdicts": [{"i": 0, "keep": True, "quote": quote_b(cat, b), "why": "ок"}]}
         look = {"thought": "смотрю", "calls": [{"tool": "get_product", "args": {"id": b}}]}
         res = close_hole(FakeLLM([look, final, critic]), cat, a, persist=False)
     finally:
         cat.as_new = set()
     assert [(l["dst"], l["kind"], l["status"]) for l in res["links"]] == [(b, "upgrade", "graph")]
     assert res["outcome"] == "closed"
+
+
+def test_link_rules(cat):
+    """Правила после критика: название вместо цитаты, «нужно» без упоминания А, А на базе Б."""
+    nano, mod = "nanosoft/platforma-nanocad", "ippekshev/modplus-nanocad"
+    lms, bx = "idex/impact-lms", "1s-bitriks/1s-bitriks24-1"
+    if not all(k in cat.nodes for k in (nano, mod, lms, bx)):
+        pytest.skip("нет товаров в каталоге")
+    assert "название" in link_rule(cat, nano, {"dst": mod, "kind": "kit", "quote": cat.nodes[mod]["name"]})
+    assert link_rule(cat, nano, {"dst": mod, "kind": "need", "quote": quote_b(cat, mod)}) == ""    # ModPlus nanoCAD
+    assert "на базе" in link_rule(cat, lms, {"dst": bx, "kind": "need", "quote": "на базе Битрикс24"})
+    other = next(k for k, n in cat.nodes.items() if n.get("class") == cat.nodes[mod].get("class") and k != mod
+                 and "nanocad" not in n["name"].lower() and n.get("on_sale") == "1")
+    assert "без упоминания" in link_rule(cat, nano, {"dst": other, "kind": "need", "quote": quote_b(cat, other)})
 
 
 def test_norm_ignores_quotes_case_and_spaces():

@@ -226,6 +226,84 @@ class HoleTools(Catalog):
         return super().call(tool, args)
 
 
+STOP = {"для", "for", "the", "and", "или", "при", "без", "with"}
+# Б сделан для А: «ModPlus для nanoCAD», «совместим с …», «подключается к …»
+LINK_WORDS = r"(?:для|for|к|под|совместим\w*\s+с|работает\s+с|подключ\w*\s+к|интегр\w*\s+с)"
+# А сделан на базе Б: у владельца А продукт Б, скорее всего, уже есть
+BASE_WORDS = (r"(?:на\s+базе|на\s+платформе|на\s+основе|в\s+среде|внутри|работает\s+в|встраива\w*\s+в|"
+              r"модуль\s+для|расширени\w+\s+для|плагин\w*\s+для|приложени\w+\s+для)")
+
+
+def header(cat: "HoleTools", k: str) -> str:
+    n = cat.nodes.get(k) or {}
+    return norm(f"{n.get('name', '')} {n.get('class_name', '')}")
+
+
+def anchors(cat: "HoleTools", k: str, top: int = 2) -> list[str]:
+    """Опорные слова названия — самые редкие в каталоге; без номеров моделей, служебных слов, слов класса и бренда
+    (у «Кофемолка Bosch TSM6A011W» опорных слов нет: кофемолка — класс, Bosch — бренд, остальное — номер модели)."""
+    n = cat.nodes.get(k) or {}
+    cls, brand = norm(n.get("class_name", "")), {norm(k.split("/")[0])} | set(norm(n.get("vendor", "")).split())
+    words = {w for w in re.findall(r"[^\W_]{3,}", n.get("name", "")) if not w.isdigit()
+             and sum(c.isdigit() for c in w) < 3 and norm(w) not in STOP and norm(w)[:6] not in cls
+             and norm(w) not in brand}
+    return [norm(w) for w in sorted(words, key=lambda w: (-cat.idf.get(w.lower(), 0.0), w))[:top]]
+
+
+def flat(s: str) -> str:
+    return re.sub(r"[^\w]+", " ", norm(s)).strip()
+
+
+def lead(cat: "HoleTools", k: str) -> str:
+    """Начало названия — два первых значимых слова: «Traffic Inspector», «Postgres Pro»."""
+    words = [w for w in flat((cat.nodes.get(k) or {}).get("name", "")).split() if w not in STOP]
+    return " ".join(words[:2]) if len(words) >= 2 else (words[0] if words and len(words[0]) >= 5 else "")
+
+
+def _any(words: list[str]) -> str:
+    return r"(?<![^\W_])(?:" + "|".join(re.escape(w) for w in words) + ")"
+
+
+def link_rule(cat: "HoleTools", fam: str, l: dict) -> str:
+    """Правила в коде после критика. Пусто — связь с цитатой идёт клиенту; иначе — почему она ждёт менеджера."""
+    q, dst = norm(l.get("quote", "")), l["dst"]
+    if q and (q in header(cat, fam) or q in header(cat, dst)):
+        return "цитата — это название или класс товара, а не подтверждение"
+    if l.get("kind") != "need":
+        return ""
+    a_text, a_name = norm(cat.text(fam)), norm((cat.nodes.get(fam) or {}).get("name", ""))
+    own_b = [w for w in anchors(cat, dst) if w not in a_name]          # слова Б, которых нет у А (не общий бренд)
+    if own_b and re.search(BASE_WORDS + r"\s+(?:\S+\s+){0,3}?" + _any(own_b), a_text):
+        return "А работает на базе Б: у владельца Б, скорее всего, уже есть"
+    # «нужно» держится, если Б называет А (опорное слово А в цитате или в названии Б: «ModPlus nanoCAD»)
+    # или А называет Б (начало названия Б в тексте А); общий бренд и слова класса не в счёт
+    anc_a, b_name = anchors(cat, fam), norm((cat.nodes.get(dst) or {}).get("name", ""))
+    b_lead = lead(cat, dst)
+    if (anc_a and (re.search(_any(anc_a), q) or re.search(_any(anc_a), b_name))) or (b_lead and f" {b_lead}" in f" {flat(a_text)}"):
+        return ""
+    return "«нужно» без упоминания А в цитате или названии Б — на проверку менеджеру"
+
+
+def settle(res: dict) -> None:
+    """Исход дыры по её связям: «закрыта» — только связью сильнее комплекта."""
+    if not res["links"]:
+        return
+    kinds = {k["kind"] for k in res["links"] if k["status"] == "graph"}
+    res["outcome"] = "closed" if kinds - {"kit"} else "kit_only" if kinds else "queue"
+    res["explanation"] = "найден только комплект: обоснованного совета сильнее комплекта нет" if res["outcome"] == "kit_only" else ""
+
+
+def recheck(cat: "HoleTools", res: dict) -> list[str]:
+    """Те же правила по готовому результату, без вызовов модели: связь, не прошедшая их, уходит в очередь менеджера."""
+    moved = []
+    for l in res["links"]:
+        if l["status"] == "graph" and (note := link_rule(cat, res["family"], l)):
+            l.update(status="queue", quote_note=note)
+            moved.append(f"{res['family']} -> {l['dst']}: {note}")
+    settle(res)
+    return moved
+
+
 def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bool = True) -> dict:
     """Ищет до трёх обоснованных советов к товару fam. Возвращает исход, связи, журнал шагов и расход.
 
@@ -342,9 +420,12 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bo
             if not v.get("keep"):
                 dropped.append({**l, "why": "критик: " + str(v.get("why", "нет вердикта"))[:160]})
             else:
-                kept.append({**l, "quote": quote if found else "", "critic": str(v.get("why", ""))[:160],
-                             "status": "graph" if found else "queue",
-                             "quote_note": "" if found else ("цитаты в тексте нет" if quote else "критик не привёл цитату")})
+                rec = {**l, "quote": quote if found else "", "critic": str(v.get("why", ""))[:160],
+                       "status": "graph" if found else "queue",
+                       "quote_note": "" if found else ("цитаты в тексте нет" if quote else "критик не привёл цитату")}
+                if found and (note := link_rule(cat, fam, rec)):
+                    rec.update(status="queue", quote_note=note)
+                kept.append(rec)
     # «закрыта» — только если появилась связь сильнее комплекта: замер показа блока комплект обоснованным советом не считает
     graph_kinds = {k["kind"] for k in kept if k["status"] == "graph"}
     outcome = ("closed" if graph_kinds - {"kit"} else "kit_only" if graph_kinds else "queue" if kept else "no_grounded_link")
@@ -460,7 +541,18 @@ def main() -> None:
     ap.add_argument("--verbose", action="store_true")
     ap.add_argument("--as-new", action="store_true", help="товар как заведённый сегодня: без его вердиктов и вето линеек")
     ap.add_argument("--out", type=Path, help="файл связей вместо knowledge/agent_links.csv; отчёт — рядом, .json")
+    ap.add_argument("--recheck", type=Path, help="отчёт агента: применить правила связей заново, без модели "
+                                                 "(reports/agent_holes.json или data/interim/agent_restore*.json)")
     args = ap.parse_args()
+    if args.recheck:
+        cat = HoleTools()
+        report = json.loads(args.recheck.read_text(encoding="utf-8"))
+        moved = [m for r in report["holes"].values() for m in recheck(cat, r)]
+        links = LINKS_FILE if args.recheck.resolve() == REPORT.resolve() else args.recheck.with_suffix(".csv")
+        save(list(report["holes"].values()), links, args.recheck)
+        print("\n".join(moved) or "правила ничего не поменяли")
+        print(f"в очередь менеджера: {len(moved)}; записано: {links}, {args.recheck}")
+        return
     from recsys.llm.client import LLM
 
     cat = HoleTools()
