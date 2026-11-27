@@ -923,9 +923,10 @@
     const hiddenNeed = (m) => (m.need_pairs_hidden_in_catalog != null ? m.need_pairs_hidden_in_catalog : (m.need_pairs_hidden || 0));
     /** Пояснение из отчёта замера: без названий товаров; точку в конце ставим сами. */
     const noteOf = (m) => (m.note ? esc(String(m.note).trim().replace(/[.\s]+$/, "")) + ". " : "");
+    const took = (sec) => (sec >= 180 ? `${nf.format(Math.round(sec / 60))} мин` : `${nf.format(Math.round(sec))} с`);
     const runLine = (m) => {
       const run = m.agent_run || {};
-      return run.tokens_in ? ` Прогон: обращений модели к инструментам — ${nf.format(run.tool_calls_by_model || 0)}, ${kilo(run.tokens_in)} токенов на вход и ${kilo(run.tokens_out || 0)} на выход, ${nf.format(Math.round(run.seconds || 0))} с.` : "";
+      return run.tokens_in ? ` Прогон: обращений модели к инструментам — ${nf.format(run.tool_calls_by_model || 0)}, ${kilo(run.tokens_in)} токенов на вход и ${kilo(run.tokens_out || 0)} на выход, ${took(run.seconds || 0)}.` : "";
     };
     /** Замер в клиентах: было → спрятали → вернул агент сам → вместе с очередью менеджера. */
     const byClients = (m, title) => {
@@ -969,7 +970,12 @@
     if (ok(top) && ok(wide)) {
       const j = judged(wide), need = hiddenNeed(wide);
       const ja = judgedAuto(wide);
-      verdict = `<p style="margin:8px 0 2px"><b>Итог.</b> На ${nf.format(top.products)} товарах агент настраивался: сам вернул совет ${top.share_returned != null ? pct(top.share_returned, 0) : "—"} клиентов, с согласием менеджера — ${top.share_returned_with_manager != null ? pct(top.share_returned_with_manager, 0) : "—"}. На ${nf.format(wide.products)} остальных он проверялся. Агент предлагает связи менеджеру: его предложения совпали с разметкой в ${j.same} случаях из ${j.known}. Без согласия менеджера в граф идёт только то, что подтверждено цитатой из описания, — таких связей ${nf.format(wide.agent_links_confirmed || 0)}${ja ? `, сверить с разметкой удалось ${ja.known}, совпала ${ja.same}` : ""}. Из ${nf.format(need)} спрятанных «нужно» он назвал ${nf.format(wide.need_pairs_proposed_by_agent != null ? wide.need_pairs_proposed_by_agent : (wide.need_pairs_found_by_agent || 0))}, с подтверждением — ${nf.format(wide.need_pairs_found_by_agent || 0)}. Агент — помощник менеджера с предложениями, а не автомат: разметку он не заменяет, а дополняет.</p>`;
+      verdict = `<p style="margin:8px 0 2px"><b>Итог.</b> На ${nf.format(top.products)} товарах агент настраивался: сам вернул совет ${top.share_returned != null ? pct(top.share_returned, 0) : "—"} клиентов, с согласием менеджера — ${top.share_returned_with_manager != null ? pct(top.share_returned_with_manager, 0) : "—"}. На ${nf.format(wide.products)} остальных он проверялся. Агент предлагает связи менеджеру: его предложения совпали с разметкой в ${j.same} случаях из ${j.known}. Без согласия менеджера в граф идёт только то, что подтверждено цитатой из описания, — таких связей ${nf.format(wide.agent_links_confirmed || 0)}${ja ? `, сверить с разметкой удалось ${ja.known}, совпала ${ja.same}` : ""}. Из ${nf.format(need)} спрятанных «нужно» он назвал ${nf.format(wide.need_pairs_proposed_by_agent != null ? wide.need_pairs_proposed_by_agent : (wide.need_pairs_found_by_agent || 0))}, с подтверждением — ${nf.format(wide.need_pairs_found_by_agent || 0)}. ${(() => {
+        // тот же прогон с рассуждением модели: точнее и находит больше, но в разы дольше и дороже
+        if (!ok(think)) return "";
+        const jt = judgedAuto(think), a = (wide.agent_run || {}).seconds || 0, b = (think.agent_run || {}).seconds || 0;
+        return ` С рассуждением модели на тех же товарах в граф сами идут ${nf.format(think.agent_links_confirmed || 0)} связей${jt ? `, с разметкой совпало ${jt.same} из ${jt.known} сверяемых` : ""}, спрятанных «нужно» возвращено ${nf.format(think.need_pairs_found_by_agent || 0)} из ${nf.format(hiddenNeed(think))}${a && b ? ` — но прогон шёл ${took(b)} вместо ${took(a)}` : ""}.`;
+      })()} Агент — помощник менеджера с предложениями, а не автомат: разметку он не заменяет, а дополняет.</p>`;
     }
     return `<h2>Проверка агента: спрятали — вернул</h2>
       <p class="hint" style="margin-top:6px">${intro}</p>
