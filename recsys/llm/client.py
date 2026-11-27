@@ -4,8 +4,9 @@
   LLM_PROVIDER=google             — Google AI Studio (GOOGLE_API_KEY, LLM_MODEL; запасные модели
                                     через запятую в LLM_MODELS — на бесплатном тарифе суточный лимит
                                     считается на каждую модель отдельно)
-  LLM_PROVIDER=openai_compatible  — любой совместимый сервис, например Yandex AI Studio
-                                    (LLM_BASE_URL, LLM_API_KEY, LLM_MODEL)
+  LLM_PROVIDER=openai_compatible  — любой совместимый сервис: DeepSeek, Alibaba Model Studio, Yandex AI Studio
+                                    (LLM_BASE_URL, LLM_API_KEY, LLM_MODEL). Режим рассуждений задаёт
+                                    LLM_THINKING: off (по умолчанию), on или auto; усилие — LLM_EFFORT.
 
 Каждый вызов записывается в data/interim/llm_calls.jsonl (назначение, модель, токены, время) —
 из этого журнала считается стоимость. Ответы кешируются по содержимому запроса: повторный
@@ -77,7 +78,29 @@ class LLM:
                 raise LLMError("Адрес сервиса не задан: впишите LLM_BASE_URL в .env.")
         if not self.key:
             raise LLMError("Ключ модели не задан: скопируйте .env.example в .env и впишите ключ.")
+        # Режим рассуждений у совместимого сервиса: off (по умолчанию) — выключить, on — включить, auto — как решит
+        # сервис. С рассуждением ответ идёт в разы дольше и дороже (оно оплачивается как выход), поэтому по умолчанию
+        # выключено; LLM_EFFORT — усилие рассуждений (low, high, max), если сервис его знает.
+        self.thinking = os.environ.get("LLM_THINKING", "off").strip().lower() or "off"
+        self.effort = os.environ.get("LLM_EFFORT", "").strip().lower()
         self.http = requests.Session()
+
+    def _thinking_fields(self) -> dict:
+        """Поля тела запроса, которыми совместимый сервис включает или выключает режим рассуждений.
+
+        У сервисов они разные. Незнакомому сервису ничего не шлём — он решает сам; так же ведёт себя LLM_THINKING=auto.
+        """
+        if self.provider == "google" or self.thinking not in ("on", "off"):
+            return {}
+        on = self.thinking == "on"
+        if "deepseek" in self.base:                                 # api-docs.deepseek.com, раздел Thinking Mode
+            fields: dict = {"thinking": {"type": "enabled" if on else "disabled"}}
+            if on and self.effort in ("low", "high", "max"):
+                fields["reasoning_effort"] = self.effort
+            return fields
+        if "dashscope" in self.base or "aliyuncs" in self.base:     # Alibaba Model Studio
+            return {"enable_thinking": on}
+        return {}
 
     def _scrub(self, text: str) -> str:
         """Текст ошибки сервиса без ключа: некоторые сервисы повторяют его в ответе, а ошибка уходит в журнал и на стенд."""
@@ -106,17 +129,20 @@ class LLM:
             spent[2] += 1
         CALLS.parent.mkdir(parents=True, exist_ok=True)
         with CALLS.open("a", encoding="utf-8") as f:
-            f.write(json.dumps({
-                "time": time.strftime("%Y-%m-%dT%H:%M:%S"), "purpose": purpose, "provider": self.provider,
-                "model": self.model, "tokens_in": tokens_in, "tokens_out": tokens_out,
-                "seconds": round(seconds, 2), "cached": cached,
-            }, ensure_ascii=False) + "\n")
+            row = {"time": time.strftime("%Y-%m-%dT%H:%M:%S"), "purpose": purpose, "provider": self.provider,
+                   "model": self.model, "tokens_in": tokens_in, "tokens_out": tokens_out,
+                   "seconds": round(seconds, 2), "cached": cached}
+            if self._thinking_fields():
+                row["thinking"] = self.thinking                 # с рассуждением выход дороже: расход считается отдельно
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
     # ---- вызов ---------------------------------------------------------------------------
 
     def _digest(self, model: str, system: str, user: str, temperature: float) -> str:
-        return hashlib.sha256(json.dumps([self.provider, model, system, user, temperature],
-                                         ensure_ascii=False).encode("utf-8")).hexdigest()[:32]
+        key = [self.provider, model, system, user, temperature]
+        if self.thinking == "on" and self._thinking_fields():
+            key.append("thinking:" + (self.effort or "on"))    # ответ с рассуждением — другой ответ: кеш у него свой
+        return hashlib.sha256(json.dumps(key, ensure_ascii=False).encode("utf-8")).hexdigest()[:32]
 
     def _mark_exhausted(self, model: str) -> None:
         self.exhausted[model] = time.strftime("%Y-%m-%d")
@@ -140,14 +166,16 @@ class LLM:
                 return json.loads(cache_file.read_text(encoding="utf-8"))
         today = time.strftime("%Y-%m-%d")
         queue = [m for m in self.models if self.exhausted.get(m) != today]
-        last = ""
+        last, not_json = "", 0
         for attempt in range(retries):
             if not queue:
                 raise LLMError(f"Суточный лимит исчерпан у всех моделей из списка ({purpose}). Последняя ошибка: {last}")
             self.model = queue[0]
             t0 = time.time()
             try:
-                text, t_in, t_out = self._call(system, user, temperature)
+                # ответ пришёл, но не JSON (у части сервисов — одни пробелы): тот же запрос при той же температуре
+                # вернул бы то же самое, поэтому повтор идёт чуть «теплее»
+                text, t_in, t_out = self._call(system, user, min(0.6, temperature + 0.2 * not_json))
                 data = json.loads(_strip_fence(text))
             except (requests.RequestException, LLMError, json.JSONDecodeError, KeyError, IndexError) as e:
                 last = f"{type(e).__name__}: {str(e)[:900]}"
@@ -157,7 +185,10 @@ class LLM:
                     self._mark_exhausted(self.model)          # суточный лимит: до завтра эту модель не трогаем
                     queue.pop(0)
                     continue
-                if len(queue) > 1:
+                if isinstance(e, json.JSONDecodeError):
+                    not_json += 1
+                    time.sleep(1)                             # сервис жив, ждать нечего
+                elif len(queue) > 1:
                     queue.append(queue.pop(0))                # перегрузка или сбой: пробуем следующую модель
                     time.sleep(min(20, 2 * (attempt + 1)))
                 else:
@@ -189,24 +220,31 @@ class LLM:
         # Совместимые сервисы расходятся в мелочах: одни не знают response_format, другие требуют выключить режим
         # рассуждений у ответа без потоковой выдачи. Что сервис отверг у модели — запоминаем и больше не шлём.
         quirks = QUIRKS.setdefault(f"{self.base}|{self.model}", {})
-        for _ in range(3):
+        if "json" not in (system + user).lower():
+            system += " Ответ — только JSON."                    # режим JSON-ответа требует слова «json» в запросе
+        for _ in range(4):
             body = {"model": self.model, "temperature": temperature,
                     "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}
             if not quirks.get("plain"):
                 body["response_format"] = {"type": "json_object"}
-            if "thinking" in quirks:
-                body["enable_thinking"] = quirks["thinking"]
+            thinking = {} if quirks.get("no_thinking") else self._thinking_fields()
+            body.update(thinking)
+            if "enable_thinking" in quirks:
+                body["enable_thinking"] = quirks["enable_thinking"]
             r = self.http.post(f"{self.base}/chat/completions",
                                headers={"Authorization": f"Bearer {self.key}", "Content-Type": "application/json"},
-                               json=body, timeout=180)
+                               json=body, timeout=300 if self.thinking == "on" else 180)
             if r.status_code == 200:
                 break
             text = r.text[:600]
-            if r.status_code == 400 and "enable_thinking" in text and quirks.get("thinking") is not False:
-                quirks["thinking"] = False                       # ответ целиком, без потока: рассуждения выключаем
+            if r.status_code == 400 and "enable_thinking" in text and quirks.get("enable_thinking") is not False:
+                quirks["enable_thinking"] = False                # ответ целиком, без потока: рассуждения выключаем
                 continue
             if r.status_code == 400 and not quirks.get("plain") and ("response_format" in text or "json_object" in text):
                 quirks["plain"] = True                           # формат ответа задаём только словами запроса
+                continue
+            if r.status_code == 400 and thinking and ("thinking" in text or "reasoning_effort" in text):
+                quirks["no_thinking"] = True                     # сервис не знает наших полей режима: решает сам
                 continue
             raise LLMError(f"HTTP {r.status_code}: {self._scrub(text[:300])}")
         else:
