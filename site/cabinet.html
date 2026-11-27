@@ -73,6 +73,7 @@
   .h1 { font-size: 40px; line-height: 48px; font-weight: 700; margin: 8px 0 24px; }
   .h1 small { font-size: 14px; font-weight: 400; color: var(--ink-2); margin-left: 12px; }
   .h2 { font-size: 24px; line-height: 32px; font-weight: 600; margin: 32px 0 16px; }
+  .lead { margin: -4px 0 16px; font-size: 14px; color: var(--ink-2); }
   .h2 small { font-size: 14px; font-weight: 400; color: var(--ink-2); margin-left: 10px; }
   .hint { font-size: 13px; color: var(--ink-2); margin-top: 6px; max-width: 560px; line-height: 1.45; }
   .hint b { color: var(--ink); }
@@ -87,6 +88,35 @@
   .iw__text.muted { color: var(--ink-2); }
 
   /* блок советника — карточками в стиле «Популярных решений» */
+  /* советы — строками, как таблица лицензий кабинета: основание (ваша лицензия и срок) → совет → цена */
+  .adv { border-top: 1px solid var(--line); }
+  .adv__row { display: grid; grid-template-columns: minmax(170px, 0.85fr) minmax(0, 2fr) minmax(170px, 0.7fr); gap: 28px; padding: 20px 4px; border-bottom: 1px solid var(--line); align-items: start; }
+  .adv__basis { font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+  .adv__basis b { display: block; margin: 3px 0 4px; font-size: 14px; font-weight: 500; color: var(--ink); }
+  .adv__term { font-size: 13px; color: var(--ink-2); }
+  .adv__term--soon { color: #a15c07; }
+  .adv__term--gone { color: var(--red); }
+  .adv__name { font-size: 16px; font-weight: 600; line-height: 1.35; color: var(--ink); }
+  .adv__vendor { margin-top: 2px; font-size: 13px; color: var(--ink-2); }
+  .adv__why { margin: 10px 0 0; max-width: 64ch; font-size: 14px; line-height: 1.55; }
+  .adv details { margin-top: 8px; }
+  .adv details summary { cursor: pointer; font-size: 13px; color: var(--ink-2); }
+  .adv details summary:hover, .adv details[open] summary { color: var(--ink); }
+  .adv details ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+  .adv__buy { display: flex; flex-direction: column; gap: 8px; }
+  .adv__price { margin-bottom: 4px; font-size: 20px; font-weight: 600; white-space: nowrap; }
+  .also { margin-top: 32px; }
+  .also__title { margin: 0; font-size: 16px; font-weight: 600; }
+  .also__note { margin: 4px 0 10px; font-size: 13px; color: var(--ink-2); }
+  .also__row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 14px 4px; border-top: 1px solid var(--line); }
+  .also__row.row { background: none; border-radius: 0; margin: 0; box-shadow: none; padding: 14px 4px; }
+  .also__row b { font-weight: 500; }
+  .also__row span { display: block; margin-top: 2px; font-size: 13px; color: var(--ink-2); }
+  @media (max-width: 900px) {
+    .adv__row { grid-template-columns: 1fr; gap: 10px; }
+    .adv__buy { flex-direction: row; flex-wrap: wrap; align-items: center; }
+    .also__row { grid-template-columns: 1fr; }
+  }
   .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
   .card { background: var(--gray); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px; }
   .card__kind { font-size: 12px; font-weight: 500; color: var(--red); }
@@ -292,7 +322,8 @@
           <span><div class="iw__title">Ключи и дистрибутивы</div><div class="iw__text muted">В макете раздел не повторяется</div></span>
         </div>
       </div>
-      <h2 class="h2">Вам может подойти <small>советы по вашим покупкам, с объяснением</small></h2>
+      <h2 class="h2">Вам может подойти</h2>
+      <p class="lead">Подобрано по вашим лицензиям: у каждого совета видно, к какой покупке он и почему.</p>
       <div id="block"></div>
       <div id="popular"></div>
       <details class="contract">

@@ -145,28 +145,51 @@
     }));
   }
 
+  // основание совета — лицензия клиента, от которой он идёт, и её срок: «почему именно мне»
+  function basisOf(client, r, prev) {
+    const KIND = { next: "Старшая редакция для", missing: "Нужно к", kit: "Если ещё нет — к", replace: "Замена для" };
+    const src = ((r.paths || [])[0] || {}).src;
+    if (!src) return `<div class="adv__basis">${esc(r.slotTitle || "")}</div>`;
+    if (src === prev) return `<div class="adv__basis">${esc(KIND[r.slot] || "К вашей покупке")} этой же лицензии</div>`;
+    const p = client.purchases.find((x) => x.family === src);
+    const end = p && p.term ? addMonths(p.date, p.term) : null;
+    const left = end ? days(client.today, end) : null;
+    const term = end == null ? "" : left < 0 ? `<span class="adv__term adv__term--gone">истекла ${fmtDate(end)}</span>`
+      : left <= 120 ? `<span class="adv__term adv__term--soon">истекает через ${left} дн.</span>`
+        : `<span class="adv__term">действует до ${fmtDate(end)}</span>`;
+    return `<div class="adv__basis">${esc(KIND[r.slot] || "К вашей покупке")}<b>${esc(node(src).name || src)}</b>${term}</div>`;
+  }
+
   function renderBlock(client, personal, pops) {
-    const cards = personal.map((r, k) => {
+    let prev = null;
+    const rows = personal.map((r, k) => {
+      const basis = basisOf(client, r, prev);
+      prev = ((r.paths || [])[0] || {}).src || null;
       const n = node(r.family);
-      const why = (r.paths || []).slice(0, 3).map((p) => `<li>из покупки «${esc(node(p.src).name || p.src)}»: `
-        + `${esc((E.TYPE_TITLE || {})[p.type] || p.type)} — ${esc((E.LABEL || {})[p.source] || p.source || "")}</li>`).join("");
-      return `<article class="card">
-        <div class="card__kind">${esc(r.slotTitle)}</div>
-        <div class="card__name">${esc(r.name)}</div>
-        <div class="card__vendor">${esc([r.vendor, className(n)].filter(Boolean).join(" · "))}</div>
-        <p class="card__why">${esc(r.why)}</p>
-        <details class="why"><summary>Почему этот товар</summary><ul>${why}</ul></details>
-        <div class="card__foot"><span class="card__price">${esc(price(n))}</span>
+      const pr = price(n);
+      const checks = (r.label ? [`<li>${esc(r.label)}</li>`] : []).concat((r.paths || []).slice(0, 3).map((p) => `<li>из покупки «${esc(node(p.src).name || p.src)}»: `
+        + `${esc((E.TYPE_TITLE || {})[p.type] || p.type)}${p.source ? `, ${esc((E.LABEL || {})[p.source] || p.source)}` : ""}</li>`)).join("");
+      return `<article class="adv__row">
+        ${basis}
+        <div class="adv__main">
+          <div class="adv__name card__name">${esc(r.name)}</div>
+          <div class="adv__vendor">${esc(r.vendor || "")}</div>
+          <p class="adv__why">${esc(r.why)}</p>
+          ${checks ? `<details><summary>Как проверено</summary><ul>${checks}</ul></details>` : ""}
+        </div>
+        <div class="adv__buy">
+          ${pr ? `<div class="adv__price">${esc(pr)}</div>` : ""}
           <a class="btn btn--fill" href="${esc(shopUrl(r.url, r.slot, k + 1))}" target="_blank" rel="noopener">Подробнее</a>
-          ${invoice(r.slot, k + 1, r.name)}</div>
-        <span class="chip">${esc(r.label)}</span>
+          ${invoice(r.slot, k + 1, r.name)}
+        </div>
       </article>`;
     }).join("");
-    $("#block").innerHTML = personal.length ? `<div class="cards">${cards}</div>`
+    $("#block").innerHTML = personal.length ? `<div class="adv">${rows}</div>`
       : `<div class="empty">${client.purchases.length ? "Личных советов по вашим покупкам пока нет: показываем только проверенное." : "Покупок пока нет, поэтому личных советов нет."}</div>`;
-    $("#popular").innerHTML = !pops.length ? "" : `<h2 style="margin-top:18px;font-size:15px">Часто докупают <small>не личный совет</small></h2>`
-      + pops.map((r, k) => `<div class="row"><b>${esc(r.name)}</b><span class="hint" style="margin:0;flex:1">${esc(r.why)}</span>
+    $("#popular").innerHTML = !pops.length ? "" : `<section class="also"><h3 class="also__title">Часто докупают</h3>
+        <p class="also__note">Это не личный совет, а то, что чаще всего берут клиенты вашего типа.</p>`
+      + pops.map((r, k) => `<div class="also__row row"><div><b>${esc(r.name)}</b><span>${esc(r.why)}</span></div>
         <a class="btn" href="${esc(shopUrl(r.url, "popular", k + 1))}" target="_blank" rel="noopener">Открыть</a>
-        ${invoice("popular", k + 1, r.name)}</div>`).join("");
+        ${invoice("popular", k + 1, r.name)}</div>`).join("") + "</section>";
   }
 })();
