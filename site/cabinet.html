@@ -93,9 +93,11 @@
   .adv__row { display: grid; grid-template-columns: minmax(170px, 0.85fr) minmax(0, 2fr) minmax(170px, 0.7fr); gap: 28px; padding: 20px 4px; border-bottom: 1px solid var(--line); align-items: start; }
   .adv__basis { font-size: 13px; line-height: 1.45; color: var(--ink-2); }
   .adv__basis b { display: block; margin: 3px 0 4px; font-size: 14px; font-weight: 500; color: var(--ink); }
-  .adv__term { font-size: 13px; color: var(--ink-2); }
-  .adv__term--soon { color: #a15c07; }
-  .adv__term--gone { color: var(--red); }
+  /* значки статуса — цвета настоящего кабинета («Активен», «Истекает», «Истёк») */
+  .badge { display: inline-block; border-radius: 8px; padding: 2px 6px; font: 500 13px/18px Inter, Arial, sans-serif; border: 0.8px solid; }
+  .badge--ok { background: #e6f7e9; border-color: #cfe4d3; color: #006817; }
+  .badge--soon { background: #fcf6df; border-color: #f7e6bb; color: #c65300; }
+  .badge--gone { background: #ffebf0; border-color: #f3ced4; color: #b2041b; }
   .adv__name { font-size: 16px; font-weight: 600; line-height: 1.35; color: var(--ink); }
   .adv__vendor { margin-top: 2px; font-size: 13px; color: var(--ink-2); }
   .adv__why { margin: 10px 0 0; max-width: 64ch; font-size: 14px; line-height: 1.55; }
@@ -105,6 +107,8 @@
   .adv details ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
   .adv__buy { display: flex; flex-direction: column; gap: 8px; }
   .adv__price { margin-bottom: 4px; font-size: 20px; font-weight: 600; white-space: nowrap; }
+  .adv__more { align-self: flex-start; font-size: 14px; font-weight: 500; color: var(--red); text-decoration: none; }
+  .adv__more:hover { text-decoration: underline; }
   .also { margin-top: 32px; }
   .also__title { margin: 0; font-size: 16px; font-weight: 600; }
   .also__note { margin: 4px 0 10px; font-size: 13px; color: var(--ink-2); }

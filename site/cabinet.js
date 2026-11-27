@@ -154,9 +154,9 @@
     const p = client.purchases.find((x) => x.family === src);
     const end = p && p.term ? addMonths(p.date, p.term) : null;
     const left = end ? days(client.today, end) : null;
-    const term = end == null ? "" : left < 0 ? `<span class="adv__term adv__term--gone">истекла ${fmtDate(end)}</span>`
-      : left <= 120 ? `<span class="adv__term adv__term--soon">истекает через ${left} дн.</span>`
-        : `<span class="adv__term">действует до ${fmtDate(end)}</span>`;
+    const term = end == null ? "" : left < 0 ? `<span class="badge badge--gone">истекла ${fmtDate(end)}</span>`
+      : left <= 120 ? `<span class="badge badge--soon">истекает через ${left} дн.</span>`
+        : `<span class="badge badge--ok">активна до ${fmtDate(end)}</span>`;
     return `<div class="adv__basis">${esc(KIND[r.slot] || "К вашей покупке")}<b>${esc(node(src).name || src)}</b>${term}</div>`;
   }
 
@@ -179,8 +179,8 @@
         </div>
         <div class="adv__buy">
           ${pr ? `<div class="adv__price">${esc(pr)}</div>` : ""}
-          <a class="btn btn--fill" href="${esc(shopUrl(r.url, r.slot, k + 1))}" target="_blank" rel="noopener">Подробнее</a>
-          ${invoice(r.slot, k + 1, r.name)}
+          ${invoice(r.slot, k + 1, r.name).replace('class="btn"', 'class="btn btn--fill"')}
+          <a class="adv__more" href="${esc(shopUrl(r.url, r.slot, k + 1))}" target="_blank" rel="noopener">Подробнее о товаре</a>
         </div>
       </article>`;
     }).join("");
