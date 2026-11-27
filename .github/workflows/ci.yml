@@ -1,0 +1,54 @@
+# Проверка на каждый коммит: тесты и образ советника, который собирается, запускается и отвечает на запрос кабинета.
+name: Тесты и образ
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Тесты (без данных организаторов — их в репозитории нет)
+        run: python -m pytest -q
+
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Собрать образ
+        run: docker build -t sovetnik .
+      - name: Запустить и спросить совет, как это сделает кабинет
+        run: |
+          docker run -d --name sovetnik -p 8765:8765 -e SOVETNIK_CONTROL_SHARE=0.5 sovetnik
+          for i in $(seq 1 60); do curl -sf -o /dev/null http://127.0.0.1:8765/api/ping && break; sleep 1; done
+          body='{"type":"b2b","today":"2026-11-26","client_id":"client-001","purchases":[{"family":"kaspersky/kaspersky-endpoint-security-dlya-biznesa-standartnyiy","date":"2026-05-11","term":12}]}'
+          curl -sf -X POST http://127.0.0.1:8765/api/advice -H 'Content-Type: application/json' -d "$body" | tee advice.json
+          echo
+          curl -sf -X POST http://127.0.0.1:8765/api/advice -H 'Content-Type: application/json' -d "${body/client-001/client-004}" | tee control.json
+          echo
+          python3 - <<'PY'
+          import json
+          test, control = json.load(open("advice.json")), json.load(open("control.json"))
+          assert test["group"] == "test" and test["status"] == "shown" and test["data"] and test["model_calls"] == 0, test
+          assert control["group"] == "control" and control["data"] == [], control
+          print("тест:", [c["name"] for c in test["data"]], "| контроль:", control["status"], "| мс:", test["ms"])
+          PY
+          curl -sf -X POST http://127.0.0.1:8765/api/event -H 'Content-Type: application/json' \
+            -d '{"kind":"invoice","slot":"next","pos":1,"item":"проверка","view":"ci","group":"test"}'
+          echo
+          curl -sf http://127.0.0.1:8765/api/pilot
+          echo
+          for page in / cabinet.html embed.html widget.js; do curl -sf -o /dev/null "http://127.0.0.1:8765/$page"; done
+      - name: Журнал контейнера
+        if: always()
+        run: docker logs sovetnik || true

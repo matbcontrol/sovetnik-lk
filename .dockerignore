@@ -1,0 +1,9 @@
+# в образ не попадают ключи, данные организаторов и служебное
+.git
+.venv
+.env
+.env.*
+data/private
+data/raw
+**/__pycache__
+**/*.pyc
