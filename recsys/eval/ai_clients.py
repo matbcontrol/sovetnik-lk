@@ -99,7 +99,8 @@ def answers() -> tuple[list[dict], list[dict]]:
                 click = click if click <= len(block) else 0
                 buy = buy if buy <= len(block) else 0
                 row[arm] = {"scores": list(v.get(s) or []), "click": click, "buy": buy,
-                            "buy_hit": bool(buy and block[buy - 1]["hit"]), "shown": len(block)}
+                            "buy_hit": bool(buy and block[buy - 1]["hit"]), "shown": len(block),
+                            "hits": [bool(x["hit"]) for x in block]}
             out.append(row)
     return cases, out
 
@@ -124,6 +125,28 @@ def summary() -> dict:
                 "useless_share": round(sum(1 for s in scores if s == 0) / len(scores), 3) if scores else None,
                 "empty_sets": sum(1 for x in a if not x["shown"]),
             }
+        # есть ли у ИИ-клиента сигнал: сбывается ли «купил бы» чаще, чем «не купил бы», и растёт ли доля
+        # купленного с оценкой пользы (оба набора вместе; реальные покупки — с 07.09 по 23.11.2026)
+        yes = no = yes_hit = no_hit = 0
+        by_score: dict[int, list[int]] = {0: [0, 0], 1: [0, 0], 2: [0, 0]}
+        for r in sel:
+            for arm in ("ours", "base"):
+                x = r[arm]
+                for k, hit in enumerate(x["hits"], 1):
+                    if x["buy"] == k:
+                        yes, yes_hit = yes + 1, yes_hit + hit
+                    else:
+                        no, no_hit = no + 1, no_hit + hit
+                    sc = x["scores"][k - 1] if k - 1 < len(x["scores"]) else None
+                    if sc in (0, 1, 2):
+                        by_score[sc][0] += 1
+                        by_score[sc][1] += hit
+        res["signal"] = {
+            "would_buy": {"items": yes, "bought": yes_hit, "share": round(yes_hit / yes, 3) if yes else None},
+            "would_not_buy": {"items": no, "bought": no_hit, "share": round(no_hit / no, 3) if no else None},
+            "by_score": {str(k): {"items": v[0], "bought": v[1], "share": round(v[1] / v[0], 3) if v[0] else None}
+                         for k, v in by_score.items()},
+        }
         return res
 
     judges = sorted({r["judge"] for r in rows})
