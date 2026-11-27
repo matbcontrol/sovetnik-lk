@@ -1,0 +1,72 @@
+{
+ "today": "2026-11-23",
+ "current_block_fill_by_visits": 0.556,
+ "how": "доля клиентов по самому сильному виду совета в блоке стенда; по клиентам, а не по визитам",
+ "kinds": {
+  "need": "есть совет «нужно»",
+  "graph": "связь графа: версия, редакция или замена",
+  "line": "другой вариант своей линейки",
+  "kit": "только «комплект»",
+  "renew": "только продление",
+  "popular": "только «Часто докупают»",
+  "none": "пусто"
+ },
+ "own_ground": [
+  "need",
+  "graph",
+  "line"
+ ],
+ "personal_cards_by_kind_with_access": {
+  "need": 3458,
+  "kit": 2695,
+  "line": 2301,
+  "graph": 255
+ },
+ "groups": {
+  "с доступом в кабинет: B2B": {
+   "clients": 1578,
+   "by_strongest_advice": {
+    "need": 924,
+    "graph": 176,
+    "line": 333,
+    "kit": 114,
+    "renew": 2,
+    "popular": 29,
+    "none": 0
+   },
+   "share_with_own_ground_advice": 0.9081115335868187,
+   "share_with_any_personal_advice": 0.9803548795944234,
+   "share_with_any_card": 1.0
+  },
+  "с доступом в кабинет: B2C": {
+   "clients": 2746,
+   "by_strongest_advice": {
+    "need": 1445,
+    "graph": 16,
+    "line": 54,
+    "kit": 1159,
+    "renew": 1,
+    "popular": 68,
+    "none": 3
+   },
+   "share_with_own_ground_advice": 0.5517115804806992,
+   "share_with_any_personal_advice": 0.9737800436999272,
+   "share_with_any_card": 0.9989075018208303
+  },
+  "с доступом в кабинет: все": {
+   "clients": 4324,
+   "by_strongest_advice": {
+    "need": 2369,
+    "graph": 192,
+    "line": 387,
+    "kit": 1273,
+    "renew": 3,
+    "popular": 97,
+    "none": 3
+   },
+   "share_with_own_ground_advice": 0.6817761332099908,
+   "share_with_any_personal_advice": 0.9761794634597595,
+   "share_with_any_card": 0.9993061979648473
+  }
+ }
+}
