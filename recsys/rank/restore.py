@@ -259,14 +259,15 @@ def measure(path: Path) -> None:
                     "need_pairs_hidden_in_catalog": sum(x in to_key for x in need_was)})
 
     # сверка решений агента со спрятанной разметкой по тем же парам
-    agree = Counter()
+    agree, agree_sure = Counter(), Counter()                # все связи агента и только те, что прошли в граф
     for a, b, decision, confirmed, _ in links:
         v = base.get((a, b))
-        if v is None:
-            agree["пары нет в разметке"] += 1
-        else:
-            agree["то же решение" if (v.verdict in SHOWN) == (decision in SHOWN) else "решение другое"] += 1
-            agree["тот же вердикт"] += v.verdict == decision
+        for cnt in ([agree, agree_sure] if confirmed else [agree]):
+            if v is None:
+                cnt["пары нет в разметке"] += 1
+            else:
+                cnt["то же решение" if (v.verdict in SHOWN) == (decision in SHOWN) else "решение другое"] += 1
+                cnt["тот же вердикт"] += v.verdict == decision
     need_hidden = sum(x["need_pairs_hidden"] for x in per)
     need_found = sum(x["need_pairs_found"] for x in per)
     need_proposed = sum(x["need_pairs_proposed"] for x in per)
@@ -294,6 +295,10 @@ def measure(path: Path) -> None:
         "agent_links": len(links), "agent_links_confirmed": sum(x[3] for x in links),
         "agent_links_to_products_outside_graph": off_graph,
         "pairs_vs_labelling": dict(agree),
+        "pairs_vs_labelling_confirmed": dict(agree_sure),
+        "check_rules": "связь идёт в граф, если критик подтвердил её дословной цитатой; цитата из названия или "
+                       "класса товара не считается, «нужно» требует, чтобы один товар называл другой. Правила "
+                       "ужесточены после первого прогона по просмотру связей живого графа, не по ответам выборок",
         "need_pairs_hidden": need_hidden, "need_pairs_found_by_agent": need_found,
         "need_pairs_proposed_by_agent": need_proposed,
         "need_pairs_hidden_in_catalog": need_in_catalog,
@@ -316,7 +321,8 @@ def measure(path: Path) -> None:
     if lost:
         print(f"потеряли совет {lost} клиентов ({lost / total:.1%} кабинета); агент вернул сам {returned} "
               f"({returned / lost:.0%}), вместе с предложенным менеджеру {with_manager} ({with_manager / lost:.0%})")
-    print(f"связей агента {len(links)}, с цитатой {measured['agent_links_confirmed']}; сверка с разметкой: {dict(agree)}; "
+    print(f"связей агента {len(links)}, с цитатой {measured['agent_links_confirmed']}; сверка с разметкой: {dict(agree)}, "
+          f"из них прошедшие в граф: {dict(agree_sure)}; "
           f"спрятанных «нужно» {need_hidden} (из них на товары каталога {need_in_catalog}): "
           f"найдено с цитатой {need_found}, предложено {need_proposed}")
     for x in per:
