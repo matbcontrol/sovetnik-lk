@@ -30,7 +30,7 @@
    "clients_b2c": 1139
   }
  },
- "agent_links_in_verdict_table": 3,
+ "agent_links_in_verdict_table": 2,
  "closed_by_agent": {
   "holes": 0,
   "clients_b2b": 0,

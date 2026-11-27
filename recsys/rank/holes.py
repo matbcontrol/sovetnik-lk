@@ -11,7 +11,10 @@
   нужно продление, а не совет — владельцы в основном покупают ту же линейку снова и почти ничего другого
                                не берут (rebuy_share, other_share считаются по всем продажам): связку здесь
                                искать не из чего, это сценарий продлений кабинета.
-Сначала идут дыры для агента по убыванию числа клиентов кабинета за ними, потом остальные.
+Сначала идут дыры для агента по убыванию числа клиентов кабинета за ними, потом остальные. Если есть файл
+data/interim/hole_catalog_advice.json (что каталожный движок даёт владельцу одного этого товара), внутри
+дыр для агента первыми идут «пусто», затем «только комплект», последними «совет есть»: в последних связка
+в каталоге уже есть, а дыра оттого, что клиент советуемое купил или его нет в продажах.
 
 «Закрыто». Если в таблице вердиктов есть связи агента каталога (источник «агент каталога…»), очередь
 считается дважды — без них и с ними: дыра, которая была и исчезла, закрыта агентом.
@@ -28,13 +31,17 @@ import json
 import sys
 from collections import Counter, defaultdict
 
-from recsys.config import ROOT, TASK_DIR
+from recsys.config import INTERIM, ROOT, TASK_DIR
 from recsys.rank.fill import OWN, stand_state, without_agent
 
 QUEUE = TASK_DIR / "holes.json"
 REPORT = ROOT / "reports" / "holes.json"
 AGENT_KIND, NO_CATALOG, RENEWAL = "закрывает агент", "нет в каталоге", "нужно продление, а не совет"
 KIND_ORDER = (AGENT_KIND, NO_CATALOG, RENEWAL)
+# Что каталожный движок даёт владельцу одного этого товара (выгружает основная сессия, файл необязателен):
+# {family_id: "пусто" | "только комплект" | "совет есть"}. Агента ведём с пустых: там связке есть куда встать.
+CATALOG_ADVICE = INTERIM / "hole_catalog_advice.json"
+ADVICE_ORDER = ("пусто", "только комплект", "", "совет есть")
 REBUY_MIN, OTHER_MAX = 0.30, 0.10       # «нужно продление, а не совет»: продлевают часто, другое берут редко
 OWNERS_MIN = 30                         # по меньшему числу владельцев о привычках линейки судить нельзя
 
@@ -95,6 +102,8 @@ def main() -> None:
     for item in sorted(task.names):
         sample.setdefault(attrs[item].line, item)
 
+    advice = json.loads(CATALOG_ADVICE.read_text(encoding="utf-8")) if CATALOG_ADVICE.exists() else {}
+
     def kind_of(ln: str) -> str:
         n = owners[ln]
         if n >= OWNERS_MIN and rebuy[ln] / n >= REBUY_MIN and other[ln] / n <= OTHER_MAX:
@@ -112,11 +121,14 @@ def main() -> None:
             "clients": cnt["B2B"] + cnt["B2C"], "clients_b2b": cnt["B2B"], "clients_b2c": cnt["B2C"],
             "clients_only_this": cnt["only"], "owners": owners[ln],
             "rebuy_share": round(rebuy[ln] / n, 4), "other_share": round(other[ln] / n, 4),
-            "kind": kind_of(ln), "judged": dict(judged.get(ln, {})),
+            "kind": kind_of(ln), "catalog_advice": advice.get(ln, ""), "judged": dict(judged.get(ln, {})),
         }
 
-    queue = sorted((row(ln, cnt) for ln, cnt in behind.items()),
-                   key=lambda h: (KIND_ORDER.index(h["kind"]), -h["clients"], h["line"]))
+    def rank(h: dict) -> tuple:
+        state = ADVICE_ORDER.index(h["catalog_advice"]) if h["catalog_advice"] in ADVICE_ORDER else 2
+        return (KIND_ORDER.index(h["kind"]), state if h["kind"] == AGENT_KIND else 0, -h["clients"], h["line"])
+
+    queue = sorted((row(ln, cnt) for ln, cnt in behind.items()), key=rank)
     closed = sorted((row(ln, cnt) for ln, cnt in behind_before.items() if ln not in behind),
                     key=lambda h: (-h["clients"], h["line"]))
     QUEUE.write_text(json.dumps({"today": last.isoformat(), "holes": queue, "closed_by_agent": closed},
