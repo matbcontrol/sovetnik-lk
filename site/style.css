@@ -263,6 +263,7 @@ textarea { font: inherit; color: var(--ink); border: 1px solid var(--axis); bord
 
 /* строка «Пора продлить» над советами, очередь на проверку, ответ в формате кабинета */
 .renew--popular { border-left-color: var(--popular) !important; margin-top: 14px; margin-bottom: 0 !important; }
+.renew--check { border-style: dashed !important; border-left-color: var(--muted) !important; margin-top: 14px; margin-bottom: 0 !important; }
 .renew { border: 1px solid var(--hair); border-left: 3px solid var(--renew); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; background: #fff; }
 .renew h3 { margin: 0 0 6px; }
 .renew__row { display: flex; gap: 14px; justify-content: space-between; align-items: flex-start; padding: 6px 0; border-top: 1px dotted var(--hair); }

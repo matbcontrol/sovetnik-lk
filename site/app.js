@@ -213,6 +213,14 @@
       <div><b>${esc(r.name)}</b><p>${esc(r.text)}</p></div>
       ${r.url ? `<a href="${esc(shopUrl(r.url, "popular", i + 1))}" target="_blank" rel="noopener">Открыть в магазине</a>` : ""}</div>`).join("");
   }
+  /** Неподтверждённое — отдельной строкой: проверена связь классов, а не пара с товаром клиента. */
+  function renderUnconfirmed(rows) {
+    const el = $("#unconfirmed");
+    el.hidden = !rows.length;
+    el.innerHTML = !rows.length ? "" : "<h3>Совместимость требует проверки</h3>" + rows.map((r, i) => `<div class="renew__row">
+      <div><b>${esc(r.name)}</b><p>${esc(r.text)}</p></div>
+      ${r.url ? `<a href="${esc(shopUrl(r.url, "unconfirmed", i + 1))}" target="_blank" rel="noopener">Открыть в магазине</a>` : ""}</div>`).join("");
+  }
   /** Тот же ответ в виде, который блок кабинета получает сейчас, плюс объяснение и вид совета. */
   function renderContract(rows) {
     const el = $("#contract");
@@ -237,17 +245,27 @@
   function render(keepOwned) {
     if (dstate.on) return renderData();
     const t0 = performance.now();
-    const rec = new E.Recommender(graph, recOpts({ fill: false, minConfidence: state.minConf }));
+    // в блоке — только подтверждённое; то, что ждёт менеджера, идёт отдельной строкой ниже
+    const rec = new E.Recommender(graph, recOpts({ fill: false, minConfidence: state.minConf, unverified: false }));
     const res = rec.recommend({ type: state.type, today: state.today, purchases: state.purchases }, 5);
     // продление выносим в отдельную строку, три места в блоке — для новых советов
     const renew = res.recs.filter((r) => r.slot === "renew").slice(0, 2);
     last = { recs: res.recs.filter((r) => r.slot !== "renew").slice(0, 3), bans: res.bans };
     renderRenew(renew.map((r) => ({ name: r.name, text: r.why + (r.also ? " Заодно: " + r.also : ""), url: r.url })));
     // «часто докупают» — отдельной строкой: первый популярный товар, который не повторяет советы и не лежит у клиента
-    const filled = new E.Recommender(graph, recOpts({ fill: true, minConfidence: state.minConf }))
+    const filled = new E.Recommender(graph, recOpts({ fill: true, minConfidence: state.minConf, unverified: false }))
       .recommend({ type: state.type, today: state.today, purchases: state.purchases }, 6);
     const pops = filled.recs.filter((r) => r.slot === "popular").slice(0, state.purchases.length ? 1 : 3);
     renderPopular(pops.map((r) => ({ name: r.name, text: "Не личный совет. " + r.why, url: r.url })));
+    let loose = [];
+    if (state.unverified) {
+      const have = new Set(res.recs.map((r) => r.family));
+      const pendingOnly = (r) => r.paths.length && r.paths.every((p) => (p.class || p.type === "analog_class") && !approved.has(p.key));
+      loose = new E.Recommender(graph, recOpts({ fill: false, minConfidence: state.minConf, unverified: true }))
+        .recommend({ type: state.type, today: state.today, purchases: state.purchases }, 10)
+        .recs.filter((r) => !have.has(r.family) && pendingOnly(r)).slice(0, 2);
+    }
+    renderUnconfirmed(loose.map((r) => ({ name: r.name, text: r.why + " Проверена связь классов, а не эта пара товаров.", url: r.url })));
     const waiting = new Set(res.bans.filter((b) => b.reason === E.PENDING).map((b) => b.key)).size;
     const pend = $("#pending");
     pend.hidden = !waiting;
@@ -451,6 +469,7 @@
     const popular = (c.popular || {})[mode] || [];
     renderPopular(popular.map((x) => ({ name: item(x.item).title || item(x.item).name, text: x.why + (x.hit ? " Сбылось: клиент купил этот товар после даты совета." : ""), url: item(x.item).url })));
     $("#pending").hidden = true;
+    renderUnconfirmed([]);
     renderContract(recs.map((x) => ({ link: item(x.item).url || null, name: item(x.item).name, vendorName: item(x.item).vendor || null, price: item(x.item).price || null, slot: x.slot, reason: x.why })));
     const fact = $("#fact");
     if (c.mode === "test") {

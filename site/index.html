@@ -78,7 +78,7 @@
             <input type="range" id="minconf" min="0" max="0.95" step="0.05" value="0">
             <small>Левее — шире охват, правее — только подтверждённые связи.</small>
           </label>
-          <label class="check"><input type="checkbox" id="unverified"> <span>Показать и то, что ждёт проверки менеджера</span></label>
+          <label class="check"><input type="checkbox" id="unverified"> <span>Показать отдельной строкой и то, что требует проверки совместимости</span></label>
         </div>
       </aside>
 
@@ -91,6 +91,7 @@
           <div class="renew" id="renew" hidden></div>
           <div class="cards" id="cards"></div>
           <div class="renew renew--popular" id="popular" hidden></div>
+          <div class="renew renew--check" id="unconfirmed" hidden></div>
           <p class="hint pending" id="pending" hidden></p>
           <div class="fact" id="fact" hidden></div>
           <details class="contract" id="contract" hidden></details>
