@@ -1,2 +1,4 @@
 src,dst,type,source,confidence,evidence,quote,status,model,date
 contentai/abbyy-aligner,contentai/abbyy-lingvo-x6-multiligual,complements,агент каталога: комплект,0.5,Если ещё нет электронного словаря: Lingvo поможет точно переводить термины при обработке текстов,позволяет выполнять перевод с 19 языков,graph,gemini-3.6-flash,2026-11-27
+microsoft/microsoft-office-dlya-doma-i-biznesa-2024,ams-software/pdf-commander,complements,агент каталога: комплект,0.5,Если ещё нет PDF-редактора: для удобного редактирования и объединения готовых PDF-документов,удобный инструментарий для соединения нескольких PDF в один,graph,gemini-3.6-flash,2026-11-27
+microsoft/microsoft-windows-11-home,kaspersky/kaspersky-standard,complements,агент каталога: комплект,0.5,Если ещё нет антивируса: защитит домашний компьютер с Windows от угроз и вирусов,защитить сразу несколько домашних устройств от угроз,graph,gemini-3.5-flash-lite,2026-11-27
