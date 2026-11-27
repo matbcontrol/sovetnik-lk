@@ -16,6 +16,11 @@
 Запуск:
   python -m recsys.agent.holes --family vendor/slug [--family ...]
   python -m recsys.agent.holes --holes data/private/task/holes.json --top 20
+  python -m recsys.agent.holes --as-new --holes data/private/task/restore.json --out data/interim/agent_restore.csv
+
+Режим --as-new — проверка «спрятали — вернул»: товар считается заведённым сегодня. Агент не видит вердиктов пар
+с ним, вето таблицы линеек не действует, «что уже советуем» считается по графу без этих вердиктов и без связей
+агента. Результат пишется в отдельный файл (--out), в живой граф и на стенд не попадает.
 """
 from __future__ import annotations
 
@@ -134,18 +139,27 @@ class HoleTools(Catalog):
                     self.line[e["src"]].add(e["dst"])
                     self.line[e["dst"]].add(e["src"])
         self._rec = None
+        self.as_new: set[str] = set()            # товары «как будто заведены сегодня» (проверка «спрятали — вернул»)
+        self._hidden: dict[str, object] = {}
 
     def advised_now(self, fam: str) -> list[dict]:
-        """Что блок кабинета уже советует владельцу одного этого товара — тем же движком, что на стенде."""
+        """Что блок кабинета уже советует владельцу одного этого товара — тем же движком, что на стенде.
+        Для товара из as_new — по графу без вердиктов пар с ним и без связей агента."""
         from datetime import date, timedelta
 
         from recsys.recommend.engine import Client, Graph, Purchase, Recommender
-        if self._rec is None:
-            self._rec = Recommender(Graph.load())
+        if fam in self.as_new:
+            if fam not in self._hidden:
+                self._hidden[fam] = Recommender(graph_without(fam))
+            rec = self._hidden[fam]
+        else:
+            if self._rec is None:
+                self._rec = Recommender(Graph.load())
+            rec = self._rec
         n = self.nodes.get(fam, {})
         home = (n.get("client_types") == "b2c" or "для дома" in n.get("class_name", "").lower()) and n.get("b2b_only") != "1"
         today = date.today()
-        recs = self._rec.recommend(Client("b2c" if home else "b2b", [Purchase(fam, today - timedelta(days=183))], today=today), k=3)
+        recs = rec.recommend(Client("b2c" if home else "b2b", [Purchase(fam, today - timedelta(days=183))], today=today), k=3)
         return [{"id": r.family, "name": r.name[:70], "kind": "kit" if r.slot == "kit" else r.slot}
                 for r in recs if not r.fallback and r.slot != "renew"]
 
@@ -181,6 +195,8 @@ class HoleTools(Catalog):
         return out or [{"note": f"товаров «для {' / '.join(words)}» в каталоге нет"}]
 
     def judged(self, id: str) -> dict:
+        if id in self.as_new:
+            return {"note": "товар заведён сегодня: разметки пар по нему ещё нет"}
         rows = self.by_a.get(id, [])
         return {"verdicts": dict(Counter(RU[v] for _, v in rows)),
                 "pairs": [{"id": b, "name": self.nodes.get(b, {}).get("name", b)[:60], "verdict": RU[v]} for b, v in rows[:25]]}
@@ -272,7 +288,8 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bo
     final = final or {}
 
     # ---- правила в коде, потом критик по цитате
-    vetoed = dict(cat.by_a.get(fam, []))                 # любая уже размеченная пара: повторять известное незачем
+    # любая уже размеченная пара: повторять известное незачем; у товара «как нового» разметки нет
+    vetoed = {} if fam in cat.as_new else dict(cat.by_a.get(fam, []))
     advised = {a["id"] for a in now}
     proposed, dropped = [], []
     for link in (final.get("links") or [])[:6]:
@@ -285,7 +302,7 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bo
                "товара нет в продаже" if cat.nodes[dst].get("on_sale") != "1" else
                "неизвестный вид совета" if kind not in KINDS else
                f"уже рассужено: «{RU[vetoed[dst]]}»" if dst in vetoed else
-               "уже рассужено" if dst in cat.line_veto.get(fam, ()) else
+               "уже рассужено" if dst in cat.line_veto.get(fam, ()) and fam not in cat.as_new else
                "это уже советуется владельцу" if dst in advised else
                "второй комплект клиент не увидит" if kind == "kit" and any(a["kind"] == "kit" for a in now) else
                "редакция или версия не из линейки товара" if kind in ("upgrade", "new_version") and dst not in cat.line.get(fam, ()) else
@@ -326,7 +343,7 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bo
         explanation = str(final.get("none_reason") or "").strip() or "; ".join(d["why"] for d in dropped[:3]) or \
             "агент не нашёл в каталоге товара, который подходит именно к этому"
     spent = getattr(llm, "spent", [0, 0, 0])
-    res = {"family": fam, "name": n["name"], "class": n.get("class_name", ""), "outcome": outcome,
+    res = {"family": fam, "name": n["name"], "class": n.get("class_name", ""), "outcome": outcome, "as_new": fam in cat.as_new,
            "explanation": explanation, "links": kept, "dropped": dropped, "steps": steps,
            "model": getattr(llm, "model", ""), "model_requests": asks + (1 if proposed else 0),
            "tokens": {"in": spent[0] - spent0[0], "out": spent[1] - spent0[1]}, "seconds": round(time.time() - t0, 1),
@@ -347,19 +364,38 @@ def edges_of(res: dict) -> list[dict]:
     return out
 
 
-def save(results: list[dict]) -> None:
+def graph_without(fam: str):
+    """Граф стенда, как если бы товар fam завели сегодня: без вердиктов пар с ним (в обе стороны) и без связей агента.
+    Связи каталога (названия, характеристики, таблицы магазина) и знания о классах остаются: класс нового товара известен."""
+    import recsys.llm.pair_verdicts as pv
+    from recsys.recommend.engine import Graph
+    orig = pv.read
+
+    def read_hidden(path, *a, **kw):
+        table = orig(path, *a, **kw)
+        return {p: v for p, v in table.items() if fam not in p} if Path(path) == Path(pv.FAMILY_FILE) else table
+
+    pv.read = read_hidden
+    try:
+        return Graph.load(agent=False)
+    finally:
+        pv.read = orig
+
+
+def save(results: list[dict], links_file: Path = LINKS_FILE, report_file: Path = REPORT) -> None:
     done = {r["family"] for r in results}
     rows = []
-    if LINKS_FILE.exists():
-        with LINKS_FILE.open(encoding="utf-8") as f:
+    if links_file.exists():
+        with links_file.open(encoding="utf-8") as f:
             rows = [r for r in csv.DictReader(f) if r["src"] not in done]     # перезапуск дыры заменяет её строки
     for r in results:
         rows += edges_of(r)
-    with LINKS_FILE.open("w", encoding="utf-8", newline="") as f:
+    links_file.parent.mkdir(parents=True, exist_ok=True)
+    with links_file.open("w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
         w.writeheader()
         w.writerows(rows)
-    report = json.loads(REPORT.read_text(encoding="utf-8")) if REPORT.exists() else {"holes": {}}
+    report = json.loads(report_file.read_text(encoding="utf-8")) if report_file.exists() else {"holes": {}}
     for r in results:
         report["holes"][r["family"]] = r
     holes = list(report["holes"].values())
@@ -372,18 +408,19 @@ def save(results: list[dict]) -> None:
         "tokens_in": sum(h["tokens"]["in"] for h in holes), "tokens_out": sum(h["tokens"]["out"] for h in holes),
         "seconds": round(sum(h["seconds"] for h in holes), 1),
     }
-    REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+    report_file.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def families_from(path: Path, top: int, private: bool, cat: HoleTools) -> list[str]:
+def families_from(path: Path, top: int, private: bool, cat: HoleTools, any_kind: bool = False) -> list[str]:
     """Дыры из очереди recsys.rank.holes по убыванию числа клиентов: только kind «закрывает агент» и только товары
     каталога (по ключу семейства, family_id фида или адресу). Линейку без товара каталога — только с --private."""
     data = json.loads(path.read_text(encoding="utf-8"))
-    holes = data["holes"] if isinstance(data, dict) else data
+    holes = (data.get("holes") or data.get("restore") or data.get("items") or next(
+        (v for v in data.values() if isinstance(v, list)), [])) if isinstance(data, dict) else data
     by_id = {r.get("family_id"): k for k, r in cat.nodes.items() if r.get("family_id")}
     out, skipped, renew = [], 0, 0
     for h in sorted(holes, key=lambda x: -(x.get("clients") or 0)):
-        if h.get("kind") and h["kind"] != "закрывает агент":
+        if not any_kind and h.get("kind") and h["kind"] != "закрывает агент":
             renew += 1                                   # «нужно продление, а не совет» — агенту закрывать нечего
             continue
         k = h.get("family") or ""
@@ -409,14 +446,23 @@ def main() -> None:
     ap.add_argument("--top", type=int, default=10)
     ap.add_argument("--private", action="store_true")
     ap.add_argument("--verbose", action="store_true")
+    ap.add_argument("--as-new", action="store_true", help="товар как заведённый сегодня: без его вердиктов и вето линеек")
+    ap.add_argument("--out", type=Path, help="файл связей вместо knowledge/agent_links.csv; отчёт — рядом, .json")
     args = ap.parse_args()
     from recsys.llm.client import LLM
 
     cat = HoleTools()
-    fams = list(args.family) + (families_from(args.holes, args.top, args.private, cat) if args.holes else [])
+    fams = list(args.family) + (families_from(args.holes, args.top, args.private, cat, any_kind=args.as_new)
+                                if args.holes else [])
     fams = [f for f in dict.fromkeys(fams) if f in cat.nodes]
     if not fams:
         sys.exit("Нет товаров каталога для разбора: укажите --family или --holes.")
+    out = args.out or (ROOT / "data" / "interim" / "agent_restore.csv" if args.as_new else LINKS_FILE)
+    if args.as_new and out.resolve() == LINKS_FILE.resolve():
+        sys.exit("Пробные связи --as-new в живой граф не пишем: укажите другой --out.")
+    report_file = REPORT if out.resolve() == LINKS_FILE.resolve() else out.with_suffix(".json")
+    if args.as_new:
+        cat.as_new = set(fams)
     llm, results = LLM(), []
     for fam in fams:
         print(f"дыра: {cat.nodes[fam]['name']}", flush=True)
@@ -427,8 +473,8 @@ def main() -> None:
         if res["outcome"] == "no_grounded_link":
             print(f"   обоснованной связи нет: {res['explanation'][:140]}")
         print(f"   запросов {res['model_requests']}, токенов {res['tokens']['in']}/{res['tokens']['out']}, {res['seconds']} с", flush=True)
-    save(results)
-    print(f"записано: {LINKS_FILE.relative_to(ROOT)}, {REPORT.relative_to(ROOT)}")
+    save(results, out, report_file)
+    print(f"записано: {out}, {report_file}")
 
 
 if __name__ == "__main__":

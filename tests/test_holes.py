@@ -83,5 +83,24 @@ def test_final_without_search_is_not_accepted(cat):
     assert any(s["tool"] == "search_catalog" and s["ask"] for s in res["steps"])
 
 
+def test_as_new_hides_labelling(cat):
+    """Товар «как заведённый сегодня»: агент не видит его разметки, размеченная пара не отсекается как «уже рассужено»."""
+    cat.as_new = {FAM}
+    try:
+        assert "note" in cat.judged(FAM)
+        advised = {a["id"] for a in cat.advised_now(FAM)}
+        bad = next((b for b, v in cat.by_a.get(FAM, []) if v == "unrelated" and b not in advised
+                    and cat.nodes.get(b, {}).get("on_sale") == "1" and b not in cat.line.get(FAM, ())), None)
+        if not bad:
+            pytest.skip("нет размеченной пары «не связано» с товаром в продаже вне линейки")
+        final = {"final": {"links": [{"dst": bad, "kind": "need", "reason": "проверка"}]}}
+        critic = {"verdicts": [{"i": 0, "keep": True, "quote": " ".join(cat.text(bad).split()[:4]), "why": "ок"}]}
+        res = close_hole(FakeLLM([SEARCH, final, critic]), cat, FAM, persist=False)
+    finally:
+        cat.as_new = set()
+    assert res["as_new"] and [l["dst"] for l in res["links"]] == [bad]
+    assert not any("уже рассужено" in d["why"] for d in res["dropped"])
+
+
 def test_norm_ignores_quotes_case_and_spaces():
     assert norm("  «Позволяет  выполнять» Перевод. ") == "позволяет выполнять перевод"
