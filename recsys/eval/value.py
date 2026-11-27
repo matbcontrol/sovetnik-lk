@@ -296,9 +296,19 @@ def same_line_rule(st: FoldStats, c: str) -> list[str]:
     return (ranked + fill)[:3]
 
 
+def ensure_items() -> None:
+    """Таблица товаров data/private/task/items.csv строится из датасета и открытого фида. В чистой копии репозитория
+    её нет, а без неё модель молча учится без признаков каталога (A B2B 14,79 % вместо 14,90 %). Нет — строим."""
+    from recsys.catalog import items
+    if not items.ITEMS.exists():
+        print(f"нет {items.ITEMS.name} — строю из датасета и фида (python -m recsys.catalog.items)")
+        items.main()
+
+
 def main() -> None:
     rerun_with_fixed_order("recsys.eval.value")
     sys.stdout.reconfigure(encoding="utf-8")
+    ensure_items()
     task = load_task()
     attrs = build_attrs(task)
     offers = load_feed()

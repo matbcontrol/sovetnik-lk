@@ -44,12 +44,13 @@ def model_answers() -> list[tuple]:
     """
     from datetime import date
 
-    from recsys.eval.value import Prep
+    from recsys.eval.value import Prep, ensure_items
     from recsys.rank.data import OFFICIAL, load_task, make_fold
     from recsys.rank.features import FoldStats, build_attrs
     from recsys.rank.ltr import copies, fit
     from recsys.rank.unified import Catalog, Unified
 
+    ensure_items()
     task = load_task()
     attrs = build_attrs(task)
     train = [Prep(FoldStats(task, make_fold(task, *s), attrs), "full") for s in copies(date.fromisoformat(OFFICIAL[1]))]
