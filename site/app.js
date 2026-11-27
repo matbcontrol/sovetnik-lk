@@ -515,12 +515,53 @@
         <td class="ev">${esc((e.evidence || "").replace(/; https?:\S+$/, ""))}</td></tr>`;
     }).join("");
   }
-  function showProduct(n) {
+  // Кто купил товар: по умолчанию как в отчёте об охвате (recsys.eval.coverage) — домашний продукт берёт
+  // частное лицо, остальное — организация. Раньше вкладка считала частным лицом всех, кроме товаров
+  // «только юрлицам», и советы для организаций здесь не показывались.
+  const vetoSrc = new Set((data.veto || []).map((x) => x[0]));
+  function homeProduct(n) {
+    const ct = new Set(String(n.ct || "").split("|").filter(Boolean));
+    const homeClass = String(data.classes[n.cls || ""] || "").toLowerCase().includes("для дома");
+    return ((ct.size === 1 && ct.has("b2c")) || homeClass) && n.b2b !== 1;
+  }
+  /** Почему у товара нет личного совета: ждёт менеджера, есть у другого типа клиента, отсеян запретом или кандидатов нет вовсе. */
+  function whyEmpty(n, who, client, res) {
+    const personal = (r) => r.slot !== "renew";
+    const parts = [];
+    const loose = new E.Recommender(graph, recOpts({ fill: false, unverified: true })).recommend(client, 5).recs.filter(personal);
+    if (loose.length) {
+      parts.push(`Подсказки ждут решения менеджера (${loose.length}): ${loose.slice(0, 3).map((r) => `«${esc(r.name)}»`).join(", ")}. `
+        + "У них проверена связь классов, а не эта пара товаров, поэтому клиент их пока не видит.");
+    }
+    const otherType = who === "b2b" ? "b2c" : "b2b";
+    const other = new E.Recommender(graph, recOpts({ fill: false, unverified: false })).recommend(Object.assign({}, client, { type: otherType }), 3).recs.filter(personal);
+    if (other.length) parts.push(`${otherType === "b2b" ? "Организации" : "Частному лицу"} совет есть — переключите покупателя выше.`);
+    const counts = new Map();
+    for (const b of res.bans) if (b.reason !== E.PENDING) counts.set(b.reason, (counts.get(b.reason) || 0) + 1);
+    if (counts.size) {
+      parts.push("Отсеяно запретами: " + Array.from(counts).sort((a, b) => b[1] - a[1]).slice(0, 4)
+        .map(([why, k]) => `${esc(why)} — ${k}`).join("; ") + ".");
+    }
+    if (!parts.length) {
+      const links = graph.classLinks.get(n.cls) || [];
+      const linked = Array.from(new Set(links.map((l) => data.classes[l.dst_class]).filter(Boolean)));
+      if (vetoSrc.has(n.id)) parts.push("Пары с этим товаром проверены, и ни одна не подошла: «уже есть», «то же самое» или «не связано».");
+      else if (linked.length) {
+        parts.push(`Класс «${esc(className(n))}» связан с классами ${linked.slice(0, 4).map((c) => `«${esc(c)}»`).join(", ")}, `
+          + "но товара, который подходит любому товару этого класса, нет: совместимость зависит от модели.");
+      } else parts.push(`У класса «${esc(className(n) || "без класса")}» нет связей с другими классами: разметка не нашла, что обычно нужно владельцу такого товара.`);
+    }
+    return `<div class="empty"><b>Личных советов нет.</b> ${parts.join(" ")}</div>`;
+  }
+  function showProduct(n, chosen) {
+    const who = chosen === "b2b" || chosen === "b2c" ? chosen : (homeProduct(n) ? "b2c" : "b2b");
     const out = graph.out.get(n.id) || [], inc = graph.inc.get(n.id) || [];
     const line = Array.from(graph.lineOf(n.id));
     const [st, cls] = saleState(n);
-    const rec = new E.Recommender(graph, recOpts({ fill: false }));
-    const res = rec.recommend({ type: n.b2b === 1 ? "b2b" : "b2c", today: state.today, purchases: [{ family: n.id, date: isoShift(state.today, -11), term: null }] }, 3);
+    const client = { type: who, today: state.today, purchases: [{ family: n.id, date: isoShift(state.today, -11), term: null }] };
+    // в блоке — только подтверждённое, как на вкладке «Клиент»; продление — не совет, его здесь не показываем
+    const res = new E.Recommender(graph, recOpts({ fill: false, unverified: false })).recommend(client, 4);
+    const recs = res.recs.filter((r) => r.slot !== "renew").slice(0, 3);
     const head = '<tr><th>Вид связи</th><th>Товар</th><th>Источник</th><th class="num">Уверенность</th><th>Основание</th></tr>';
     $("#prod-view").innerHTML = `
       <div class="prod__head"><strong>${esc(n.name)}</strong><span class="state state--${cls}">${st}</span>
@@ -529,7 +570,12 @@
         ${n.url ? `<a href="${esc(n.url)}" target="_blank" rel="noopener">страница в магазине</a>` : ""}</div>
       <p class="hint" style="margin-top:6px">${esc([n.vendor, className(n)].filter(Boolean).join(" · "))}</p>
       <h3>Что посоветуем клиенту, у которого есть только этот товар</h3>
-      <div class="cards">${res.recs.length ? res.recs.map(cardHtml).join("") : '<div class="empty">У товара пока нет связей — это пробел, который закрывает разметка каталога.</div>'}</div>
+      <div style="display:flex;gap:10px;align-items:center;margin:0 0 12px"><span class="hint">Покупатель:</span>
+        <div class="seg" id="prod-who" role="radiogroup" aria-label="Кто купил товар" style="max-width:320px">
+          <button type="button" data-who="b2b" class="${who === "b2b" ? "is-on" : ""}" aria-checked="${who === "b2b"}">Организация</button>
+          <button type="button" data-who="b2c" class="${who === "b2c" ? "is-on" : ""}" aria-checked="${who === "b2c"}">Частное лицо</button>
+        </div></div>
+      <div class="cards">${recs.length ? recs.map(cardHtml).join("") : whyEmpty(n, who, client, res)}</div>
       <h3>Связи от этого товара (${out.length})</h3>
       ${out.length ? `<table>${head}${linkRows(out, "dst")}</table>` : '<p class="hint">Нет.</p>'}
       <h3>Связи к этому товару (${inc.length})</h3>
@@ -537,6 +583,7 @@
       <h3>Та же линейка — не предлагаем вместе с этим товаром (${line.length})</h3>
       <p class="hint">${line.length ? line.slice(0, 30).map((f) => `<a href="#" data-open="${esc(f)}">${esc(nodeName(f))}</a>`).join(" · ") : "Нет."}</p>`;
     $$("[data-open]", $("#prod-view")).forEach((a) => a.addEventListener("click", (ev) => { ev.preventDefault(); const m = graph.nodes.get(a.dataset.open); if (m) showProduct(m); }));
+    $$("#prod-who button", $("#prod-view")).forEach((b) => b.addEventListener("click", () => showProduct(n, b.dataset.who)));
   }
 
   // =========================== вкладка «Связи на проверку» ===========================
