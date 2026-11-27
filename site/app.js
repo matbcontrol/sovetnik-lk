@@ -124,14 +124,48 @@
     if (b.dataset.tab === "numbers") renderNumbers();
   }));
 
-  // ---- шапка
-  const onSale = data.nodes.filter((n) => n.sale === 1).length;
-  const adviceEdges = data.edges.filter((e) => e[2] !== "same_line").length;
-  $("#facts").innerHTML = [
-    ["товаров в графе", nf.format(data.nodes.length)],
-    ["из них в продаже", nf.format(onSale)],
-    ["связей-советов", nf.format(adviceEdges)],
-  ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+  // ---- шапка: служебные цифры графа уступили место карточке «Коротко» (ниже)
+  $("#facts").innerHTML = "";
+
+  // ---- первый экран: «Коротко» — три числа и требования заказчика его словами; всё — из report.json
+  (function brief() {
+    const r = report || {};
+    const seg = (k) => (((r.proof || {}).segments || {})[k]) || null;
+    const a = seg("A B2B"), b = seg("B B2B");
+    if (!a) return;
+    const num = (x, d) => Number(x).toFixed(d == null ? 1 : d).replace(".", ",");
+    const ours = a["наша система"].p3, best = Math.max(a["популярность"].p3, a["совместные покупки"].p3);
+    const vs = a["против: совместные покупки"] || {};
+    const eco = r.economics || {};
+    const rows = (r.verdict_effect || {}).rows || [];
+    const before = rows.find((x) => x.title === "Без проверки пар"), now = rows.find((x) => x.stand);
+    const bBest = b ? Math.max(b["популярность"].p3, b["совместные покупки"].p3) : null;
+    const req = [
+      ["Покупает один продукт и не получает рекомендаций",
+        b ? `у организаций с одной покупкой ${num(b["наша система"].p3)} % против ${num(bBest)} % у лучшего способа организаторов` : ""],
+      ["Предлагал необходимое, объясняя почему",
+        "у каждого совета основание: из какой покупки и по какой связи; чужой продукт — только с вердиктом «нужно»"],
+      ["Совет, а не реклама",
+        before && now ? `самый частый совет — у ${Math.round(now.top_share * 100)} % организаций вместо ${Math.round(before.top_share * 100)} %` : ""],
+      ["Только совместимое",
+        "запреты по типу клиента, платформе и характеристикам каталога; неподтверждённое — отдельной строкой «требует проверки»"],
+      ["Сколько стоит один запрос",
+        eco.with_server ? `${num(eco.with_server, 2)} ₽ вместе с сервером, по шаблону организаторов` : ""],
+    ].filter(([, v]) => v);
+    $("#brief").innerHTML = `<div class="brief__nums">
+        <div><b>в ${num(ours / best)} раза</b><span>точнее у организаций: ${num(ours)} % против ${num(best)} % —
+          скрипт и датасет организаторов; лучше у ${vs.clients_better || "—"} клиентов, хуже у ${vs.clients_worse || "—"}</span></div>
+        <div><b>${eco.with_server ? num(eco.with_server, 2) + " ₽" : "—"}</b><span>за обращение вместе с сервером</span></div>
+        <div><b>0</b><span>вызовов языковой модели на запрос клиента: ответ меньше миллисекунды</span></div>
+      </div>
+      <div class="brief__req"><h2>Что просил заказчик — и где это видно</h2>
+        <ul>${req.map(([q, v]) => `<li><span class="brief__ok">✓</span><q>${esc(q)}</q> — ${esc(v)}</li>`).join("")}
+          <li><span class="brief__ok">✓</span><q>Подобрать замену</q> — замена ушедшей программы готова заранее: прямой аналог клиент видит сразу</li></ul>
+        <div class="brief__links"><a href="cabinet.html">Кабинет клиента</a><a href="embed.html">Встраивание одним тегом и пилот</a>
+          <span>У частных лиц прибавки нет: у них одна-две покупки, и популярность там сильна.</span></div>
+      </div>`;
+    $("#brief").hidden = false;
+  })();
 
   // ---- поиск товара
   const index = data.nodes.map((n) => ({ n, text: `${n.name} ${n.vendor || ""}`.toLowerCase().replace(/ё/g, "е") }));
