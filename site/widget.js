@@ -67,8 +67,8 @@
   }
 
   async function inBrowser(client) {
-    const t0 = performance.now();
-    const g = await loadEngine();
+    const g = await loadEngine();                      // первый раз — загрузка движка и графа, около секунды
+    const t0 = performance.now();                        // время ответа — без загрузки, как у сервера
     const E = window.Engine;
     const rec = (extra) => new E.Recommender(g, Object.assign({ fill: false, unverified: false, approved: new Set(), rejected: new Set() }, extra));
     const c = { type: client.type || "b2b", today: client.today || new Date().toISOString().slice(0, 10), purchases: client.purchases || [] };
