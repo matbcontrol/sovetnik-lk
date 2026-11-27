@@ -77,6 +77,9 @@ def main() -> None:
                 f"{stand['доля сбывшихся новых советов'] * 100:.1f}".replace(".", ","),
                 f"{first['доля сбывшихся новых советов'] * 100:.1f}".replace(".", ",")),
         }
+    p = ROOT / "reports" / "coverage.json"
+    if p.exists():                                       # у скольких товаров в продаже есть личный совет
+        out["coverage"] = json.loads(p.read_text(encoding="utf-8"))
     path = ROOT / "site" / "data" / "report.json"
     path.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print("записано:", path)

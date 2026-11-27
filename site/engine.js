@@ -50,6 +50,8 @@
     "разметка: нужно": "пара проверена заранее: нужно",
     "разметка: комплект": "пара проверена заранее: комплект",
     "разметка по API": "размечено моделью по API, ждёт проверки менеджером",
+    "разметка класса: нужно": "товар проверен для этого класса: нужно",
+    "разметка класса: комплект": "товар проверен для этого класса: комплект",
     "менеджер": "принято менеджером",
     "витрина": "порядок витрины магазина",
   };
@@ -67,6 +69,10 @@
   const KIT_MAX = 1;           // сколько советов «типовой набор» может быть в блоке
   const KIT_TO_CLIENT = true;  // показывать «комплект» клиенту сразу; false — только после решения менеджера
   const VERDICT_SOURCE = { need: "разметка: нужно", kit: "разметка: комплект" };
+  // Товар, проверенный для класса: разметчик судил не пару с конкретным товаром клиента, а «подходит ли товар Б
+  // любому товару класса А» (или только товарам того же производителя). Совет слабее проверенной пары товаров.
+  const PICK_SOURCE = { need: "разметка класса: нужно", kit: "разметка класса: комплект" };
+  const PICK_CONFIDENCE = { need: 0.7, kit: 0.4 };
   const RENEW_WINDOW = [-60, 120];
   const DAY = 86400000;
 
@@ -122,6 +128,11 @@
         this.classLinks.get(link.src_class).push(link);
       }
       this.classRank = data.class_rank || {};
+      // класс А -> товары, проверенные на пригодность для любого товара этого класса (или своего производителя)
+      this.classProducts = data.class_products || {};
+      // «класс А — товар Б», по которым вердикт уже вынесен (любой): связь классов такой товар не подбирает
+      this.pickJudged = new Set();
+      for (const [a, bs] of Object.entries(data.pick_judged || {})) for (const b of bs) this.pickJudged.add(a + "|" + b);
       // пары товаров с вердиктом «уже есть», «то же самое», «не связано»: такой товар не советуем и по связи классов
       this.veto = new Set((data.veto || []).map((x) => x[0] + "|" + x[1]));
       this.vetoHard = new Set((data.veto || []).filter((x) => x.length < 3 || x[2] === "has" || x[2] === "same").map((x) => x[0] + "|" + x[1]));
@@ -283,6 +294,9 @@
       const name = (f) => (g.nodes.get(f) || {}).name || f;
       const q = (x) => { x = String(x || "").trim(); return x.startsWith("«") && x.endsWith("»") ? x : `«${x}»`; };
       const src = q(name(edge.src)), dst = q(name(edge.dst)), t = edge.type, ev = edge.evidence || "";
+      if (edge.source === PICK_SOURCE.need || edge.source === PICK_SOURCE.kit) {
+        return `${ev.replace(/[. ]+$/, "")}.`;       // товар проверен для класса: причина написана для клиента
+      }
       if ((edge.source === VERDICT_SOURCE.need || edge.source === VERDICT_SOURCE.kit) && !edge.class) {
         return `${ev.replace(/[. ]+$/, "")}.`;       // пара товаров проверена заранее: причина уже написана для клиента
       }
@@ -491,7 +505,7 @@
           const hard = node.kind === "hardware";
           for (let rank = 0; rank < list.length; rank++) {
             const dst = list[rank];
-            if (g.judged.has(fam + "|" + dst)) continue;    // по этой паре товаров есть свой вердикт
+            if (g.judged.has(fam + "|" + dst) || g.pickJudged.has(link.src_class + "|" + dst)) continue;    // свой вердикт уже есть
             if (allowed && !allowed.has(dst)) continue;     // товары этого класса проверяли: берём только подошедшие
             if (hard && (g.nodes.get(dst) || {}).kind === "hardware" && dst.split("/")[0] !== fam.split("/")[0]) continue;   // расходники — только того же вендора
             if (this._banned(client, owned, platforms, dst, t, fam)) continue;
@@ -505,6 +519,30 @@
             };
             push(dst, verdict === "kit" ? "kit" : "missing", (this.w[t] * link.confidence * recency) / (1 + 0.35 * rank), edge);
           }
+        }
+        // товары, проверенные для класса купленного товара: совет есть и там, где своих пар у товара нет
+        const klass = g.klass(fam), order = {};
+        for (const pick of g.classProducts[klass] || []) {
+          const dst = pick[0], verdict = pick[1], scope = pick[2], reason = pick[3], aud = pick[4] || "any";
+          if (dst === fam || g.judged.has(fam + "|" + dst)) continue;       // по этой паре есть свой вердикт: он главнее
+          if (scope === "vendor" && dst.split("/")[0] !== fam.split("/")[0]) continue;   // только своему производителю
+          if (aud !== "any" && aud !== client.type) continue;
+          const key = `cp|${klass}|${dst}`;
+          if (this.rejected.has(key) || PICK_CONFIDENCE[verdict] < this.minConfidence) continue;
+          if (this._banned(client, owned, platforms, dst, "complements", fam)) continue;
+          if (verdict === "kit" && !(KIT_TO_CLIENT || this.unverified || this.approved.has(key))) {
+            bans.push({ family: dst, type: "complements", from: fam, reason: PENDING, key });
+            continue;
+          }
+          const dstClass = (g.nodes.get(dst) || {}).cls || "";
+          const edge = {
+            src: fam, dst, type: "complements", source: PICK_SOURCE[verdict], confidence: PICK_CONFIDENCE[verdict],
+            evidence: reason, key, group: dstClass !== klass ? dstClass : "",
+          };
+          // чем дальше товар в списке проверенных для своего класса, тем слабее совет
+          const s = (this.w.complements * PICK_CONFIDENCE[verdict] * recency) / (1 + 0.35 * (order[dstClass] || 0));
+          order[dstClass] = (order[dstClass] || 0) + 1;
+          push(dst, verdict === "kit" ? "kit" : "missing", s, edge);
         }
       }
 

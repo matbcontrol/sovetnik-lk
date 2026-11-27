@@ -128,3 +128,22 @@ def test_advice_is_not_many_times_dearer_than_what_the_client_bought():
     recs, bans = Recommender(Graph(nodes, edges, [], {})).recommend(client, 3, explain_bans=True)
     assert [r.family for r in recs] == ["v/edr"]
     assert [(b["family"], b["reason"]) for b in bans] == [("v/support", "намного дороже прошлых покупок клиента")]
+
+
+def test_product_checked_for_a_class_gives_advice_to_any_product_of_that_class():
+    nodes = {"hp/laptop": dict(node("hp/laptop", "c/laptop"), kind="hardware"),
+             "x/bag": dict(node("x/bag", "c/bag"), kind="hardware"),
+             "hp/dock": dict(node("hp/dock", "c/dock"), kind="hardware"),
+             "dell/dock": dict(node("dell/dock", "c/dock"), kind="hardware")}
+    picks = {"c/laptop": [
+        {"dst": "x/bag", "verdict": "need", "scope": "all", "reason": "Защищает ноутбук в дороге", "audience": "any"},
+        {"dst": "dell/dock", "verdict": "need", "scope": "vendor", "reason": "Фирменная док-станция", "audience": "any"},
+        {"dst": "hp/dock", "verdict": "kit", "scope": "vendor", "reason": "Если ещё нет док-станции: один кабель на всё", "audience": "any"}]}
+    client = Client("b2b", [Purchase("hp/laptop", date(2026, 6, 1), 0)], today=TODAY)
+    recs = Recommender(Graph(nodes, [], [], {}, class_products=picks)).recommend(client, 3)
+    # сумка подходит любому ноутбуку; док-станция Dell — только ноутбукам Dell; док-станция HP — комплектом
+    assert [(r.family, r.slot) for r in recs] == [("x/bag", "missing"), ("hp/dock", "kit")]
+    assert recs[0].why == "Защищает ноутбук в дороге." and recs[0].label == "товар проверен для этого класса: нужно"
+    # своя проверенная пара главнее: если для этого ноутбука сумка отвергнута, совет по классу её не вернёт
+    vetoed = Graph(nodes, [], [], {}, veto=[("hp/laptop", "x/bag", "unrelated")], class_products=picks)
+    assert [r.family for r in Recommender(vetoed).recommend(client, 3)] == ["hp/dock"]

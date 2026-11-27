@@ -115,6 +115,7 @@ class Verdict:
     reason: str = ""        # фраза клиенту — для need и kit; для остальных — пометка менеджеру или пусто
     source: str = FIRST     # «ассистент» или «api:<модель>»
     audience: str = ""      # b2b / b2c / пусто — всем
+    scope: str = ""         # для вердикта «класс — товар»: all — любому товару класса, vendor — только своему производителю
 
     @property
     def shown(self) -> bool:
@@ -237,6 +238,105 @@ def as_family_edges(table: dict[tuple[str, str], Verdict], same_line=None) -> li
     return out
 
 
+PICK_FILE = ROOT / "knowledge" / "class_product_verdicts.csv"
+PICK_CODES = ("N", "K", "NV", "KV", "H", "S", "U")       # V — подходит только товарам того же производителя
+PICK_ROW = re.compile(r"^\s*(\d+)\s+(NV|KV|N|K|H|S|U)(?:\s+(.*))?$")
+
+
+def read_picks(path: Path = PICK_FILE) -> dict[tuple[str, str], Verdict]:
+    """Вердикты «класс А — товар Б»: подходит ли товар Б любому товару класса А (или только своему производителю)."""
+    out: dict[tuple[str, str], Verdict] = {}
+    if path.exists():
+        with path.open(encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                out[(r["a"], r["b"])] = Verdict(r["verdict"], r.get("reason", ""), r.get("source") or FIRST,
+                                                r.get("audience", ""), r.get("scope") or "all")
+    return out
+
+
+def write_picks(table: dict[tuple[str, str], Verdict], path: Path = PICK_FILE) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as f:
+        w = csv.writer(f, lineterminator="\n")
+        w.writerow(["a", "b", "verdict", "scope", "reason", "audience", "source"])
+        for (a, b), v in sorted(table.items()):
+            w.writerow([a, b, v.verdict, v.scope or "all", v.reason, v.audience, v.source])
+
+
+def merge_picks() -> None:
+    """Пачки «класс А — товар Б»: pout_NN.tsv — «номер, код, причина»; коды NV и KV — только тот же производитель."""
+    ids_file = OPEN_WORK / "pick_ids.json"
+    if not ids_file.exists():
+        return
+    ids = {int(k): tuple(v) for k, v in json.loads(ids_file.read_text(encoding="utf-8")).items()}
+    aud = json.loads((OPEN_WORK / "pick_audience.json").read_text(encoding="utf-8")) \
+        if (OPEN_WORK / "pick_audience.json").exists() else {}
+    got: dict[int, Verdict] = {}
+    bad: Counter = Counter()
+    for f in sorted(OPEN_WORK.glob("pout_*.tsv")):
+        for raw in _rows(f):
+            parts = [x.strip() for x in raw.split("\t")]
+            m = PICK_ROW.match(raw)
+            if len(parts) >= 2 and parts[0].isdigit() and parts[1] in PICK_CODES:
+                k, code, reason = int(parts[0]), parts[1], parts[2] if len(parts) > 2 else ""
+            elif m:
+                k, code, reason = int(m.group(1)), m.group(2), m.group(3) or ""
+            else:
+                bad["строка не разобрана"] += 1
+                continue
+            if k not in ids:
+                bad["лишний номер"] += 1
+                continue
+            kind = CODES[code[0]]
+            if kind in SHOWN and not clean(reason):
+                bad["нет причины у N или K"] += 1
+                continue
+            got[k] = Verdict(kind, clean(reason) if kind in SHOWN else "", FIRST, aud.get(ids[k][0] + "|" + ids[k][1], ""),
+                             "vendor" if code.endswith("V") else "all")
+    table = {ids[k]: v for k, v in got.items()}
+    fixed = 0
+    fixes = OPEN_WORK / "pick_fixes.tsv"                 # правки после просмотра: «класс, товар, код, причина[, кому]»
+    if fixes.exists():
+        for raw in _rows(fixes):
+            a, b, code, *rest = raw.split("\t")
+            if (a, b) in table and code in PICK_CODES:
+                kind = CODES[code[0]]
+                who = rest[1].strip() if len(rest) > 1 and rest[1].strip() in ("b2b", "b2c") else table[(a, b)].audience
+                table[(a, b)] = Verdict(kind, clean(rest[0]) if rest and kind in SHOWN else "", FIRST, who,
+                                        "vendor" if code.endswith("V") else "all")
+                fixed += 1
+    write_picks(table)
+    print(f"товары для классов: размечено {len(got)} из {len(ids)}; правок {fixed}; замечания: {dict(bad)}")
+    print("  по вердиктам:", dict(Counter(RU[v.verdict] + ("" if v.scope == "all" or not v.shown else ", свой производитель")
+                                          for v in table.values())))
+
+
+def pick_judged(table: dict[tuple[str, str], Verdict]) -> dict[str, list[str]]:
+    """Все товары, проверенные для класса, с любым вердиктом: {класс А: [товар Б, …]}."""
+    out: dict[str, list[str]] = defaultdict(list)
+    for a, b in sorted(table):
+        out[a].append(b)
+    return dict(out)
+
+
+def as_class_products(table: dict[tuple[str, str], Verdict], nodes: dict[str, dict],
+                      rank: dict[str, list[str]]) -> dict[str, list[dict]]:
+    """Товары, проверенные для класса: {класс А: [совет, …]}, «нужно» раньше «комплекта», затем по месту на витрине."""
+    out: dict[str, list[dict]] = defaultdict(list)
+    for (a, b), v in table.items():
+        if v.shown and b in nodes:
+            out[a].append({"dst": b, "verdict": v.verdict, "scope": v.scope or "all", "reason": v.reason,
+                           "audience": v.audience or "any"})
+
+    def pos(b: str) -> int:
+        r = rank.get(nodes[b].get("class") or "", [])
+        return r.index(b) if b in r else 10 ** 6
+
+    for lst in out.values():
+        lst.sort(key=lambda x: (x["verdict"] != "need", pos(x["dst"]), x["dst"]))
+    return dict(sorted(out.items()))
+
+
 def class_picks(table: dict[tuple[str, str], Verdict], nodes: dict[str, dict]) -> dict[str, list[str]]:
     """«класс А|класс Б» -> товары класса Б, которые подошли хотя бы одному проверенному товару класса А.
 
@@ -321,6 +421,7 @@ def _fixes(path: Path, table: dict[tuple[str, str], Verdict]) -> int:
 
 def merge() -> None:
     sys.stdout.reconfigure(encoding="utf-8")
+    merge_picks()
     # линейки из продаж (закрыто) и семейства открытого каталога: нумерованные пачки
     for title, folder, ids_name, pattern, path in (
             ("линейки из продаж", WORK, "ids.json", "out_*.tsv", LINE_FILE),

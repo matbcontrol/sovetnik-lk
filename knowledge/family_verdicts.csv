@@ -759,6 +759,8 @@ aktiv/rutoken-otr,aktiv/rutoken-etsp-30-3120,unrelated,,,ассистент
 aktiv/rutoken-vcr,aktiv/rutoken-etsp-30-3120,unrelated,,,ассистент
 aktiv/smart-karta-rutoken-etsp-30-nfc-3100-tag,aktiv/rutoken-etsp-30-3120,same,,,ассистент
 akvis-1/alivecolors,huion/h1060p-221253,need,Рисование и ретушь пером с учётом силы нажатия вместо мыши,,ассистент
+algorius-software/algorius-net-viewer,south-river-technologies/south-river-cornerstone-mft,unrelated,,,ассистент
+algorius-software/algorius-net-viewer,tsentr-bezopasnosti-informatsii-tsbi/tsbi-revizor-seti,unrelated,,,ассистент
 alpinagpt/alpinagpt-korporativnaia-platforma-vnedreniia-iskusstvennogo-int,tehnologii-upravleniya-i-razvitiya/ii-agenty-dlia-biznesa,unrelated,,,ассистент
 alpinagpt/alpinagpt-korporativnaia-platforma-vnedreniia-iskusstvennogo-int,tehnologii-upravleniya-i-razvitiya/ucebno-prakticeskii-paket-po-ii,kit,Если ещё не обучали сотрудников: научатся ставить задачи нейросети и проверять ответы,,ассистент
 alt-n-technologies-ltd/activesync-for-mdaemon,alt-n-technologies-ltd/alt-n-technologies-mdaemon-email-server,has,,,ассистент
@@ -787,6 +789,8 @@ alt-n-technologies-ltd/mdaemon,pro32/pro32-endpoint-security,kit,"Если ещ�
 alt-n-technologies-ltd/mdaemon,pro32/pro32-endpoint-security-standard,kit,Если ещё нет антивируса на компьютерах: защита рабочих станций Windows от вложений и загрузок,,ассистент
 alt-n-technologies-ltd/mdaemon-antivirus,alt-n-technologies-ltd/alt-n-technologies-mdaemon-email-server,has,,,ассистент
 alt-n-technologies-ltd/security-gateway-for-email-servers,alt-n-technologies-ltd/alt-n-technologies-mdaemon-email-server,unrelated,,,ассистент
+alteks-soft/redcheck,pro32/pro32-endpoint-security,kit,"Если ещё нет антивируса на рабочих станциях: сканер найдёт уязвимости, а заражение остановит антивирус",,ассистент
+alteks-soft/redcheck,pro32/pro32-endpoint-security-standard,kit,"Если ещё нет антивируса на рабочих станциях: сканер найдёт уязвимости, а заражение остановит антивирус",,ассистент
 altova/altova-ai-subscription,altova/altova-xmlspy,has,,,ассистент
 altova/altova-authentic,altova/altova-xmlspy,unrelated,,,ассистент
 altova/altova-databasespy,altova/altova-xmlspy,unrelated,,,ассистент
@@ -894,6 +898,8 @@ appius/appius-plm-upravlenie-zhiznennym-tsiklom-izdeliya,hp/2y9h0a-b19-503206,un
 appius/bim-plm,appius/appius-plm-upravlenie-zhiznennym-tsiklom-izdeliya,unrelated,,,ассистент
 appius/bim-plm,canon/6246c003-465297,unrelated,,,ассистент
 appius/bim-plm,hp/2y9h0a-b19-503206,unrelated,,,ассистент
+archiware/archiware-p5,pro32/pro32-endpoint-security,unrelated,,,ассистент
+archiware/archiware-p5,pro32/pro32-endpoint-security-standard,unrelated,,,ассистент
 aros/aros-invest,aros/aros-lider,unrelated,,,ассистент
 aros/aros-invest,cyberprotect/kiber-bekap,unrelated,,,ассистент
 aros/aros-invest,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
@@ -924,6 +930,7 @@ aros/raschetnye-indeksy-perescheta-stoimosti-smr-k-ter-2001,cyberprotect/kiber-b
 aros/territorialnaya-smetno-normativnaya-baza-tsnb-ter-2001,aros/aros-lider,unrelated,,,ассистент
 aros/territorialnaya-smetno-normativnaya-baza-tsnb-ter-2001,cyberprotect/kiber-bekap,unrelated,,,ассистент
 aros/territorialnaya-smetno-normativnaya-baza-tsnb-ter-2001,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
+arsenalesystems/arsenale-dataplane-for-jira,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 artechscan/scanimager,canon/6246c003-465297,unrelated,,,ассистент
 artechscan/scanimager,hp/2y9h0a-b19-503206,unrelated,,,ассистент
 ascon/3d-storage,ascon/kompas-3d,unrelated,,,ассистент
@@ -1275,6 +1282,8 @@ autosoft/internet-magazin,autosoft/autosoft-avtokatalog-6120252,unrelated,,,ас
 autosoft/normyvremeni-10,autosoft/autosoft-avtokatalog-6120252,unrelated,,,ассистент
 autosoft/servis-sklad-10,autosoft/autosoft-avtokatalog-6120252,unrelated,,,ассистент
 autosoft/sms-integrator,autosoft/autosoft-avtokatalog-6120252,unrelated,,,ассистент
+ayteg/aytoschema,avision/000-0870-02g-432933,unrelated,,,ассистент
+ayteg/aytoschema,avision/000-1003-02g-535856,unrelated,,,ассистент
 basealt/alt-domen,basealt/alt-sp-10,unrelated,,,ассистент
 basealt/alt-domen,drweb/drweb-desktop-security-suite,unrelated,,,ассистент
 basealt/alt-domen,kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirennyiy,unrelated,,,ассистент
@@ -1354,6 +1363,7 @@ basealt/alt-virtualizatsiya-11,kaspersky/kaspersky-endpoint-security-dlya-biznes
 basealt/alt-virtualizatsiya-11,kaspersky/kaspersky-endpoint-security-dlya-biznesa-standartnyiy,kit,Если ещё нет антивируса: лицензия покрывает гостевые машины на Windows и Linux,,ассистент
 basealt/alt-virtualizatsiya-11,pro32/pro32-endpoint-security,unrelated,,,ассистент
 basealt/alt-virtualizatsiya-11,pro32/pro32-endpoint-security-standard,unrelated,,,ассистент
+basegroup-labs/analiticheskaya-platforma-loginom,cyberprotect/kiber-bekap-rasshirennaya,kit,Если ещё нет резервного копирования: сервер с моделями и данными аналитики можно восстановить после сбоя,,ассистент
 beardyugin/geo-cartograma,acer/um-hb7cd-g04-488249,unrelated,,,ассистент
 beardyugin/geo-cartograma,acer/um-hx2cd-306-486427,unrelated,,,ассистент
 beardyugin/geo-cartograma,acer/um-ke1cd-601-505686,unrelated,,,ассистент
@@ -1431,12 +1441,18 @@ businessstudio/business-studio,cyberprotect/kiber-bekap-rasshirennaya,unrelated,
 businessstudio/business-studio,novosoft/novosoft-handy-backup,unrelated,,,ассистент
 businessstudio/business-studio,paragon/paragon-vm-backup-for-esx,unrelated,,,ассистент
 businessstudio/business-studio,wondershare/wondershare-mobiletrans,unrelated,,,ассистент
+byteplant-gmbh-software-solutions-consulting/byteplant-phone-validation,smartsoft/kaspersky-gate-antivirus-dlya-traffic-inspector,unrelated,,,ассистент
+byteplant-gmbh-software-solutions-consulting/byteplant-phone-validation,smartsoft/traffic-inspector-gold,unrelated,,,ассистент
 cadsofttools/cst-cad-navigator,cadsofttools/inventory,unrelated,,,ассистент
 cadsofttools/cst-cad-navigator,huion/h1060p-221253,unrelated,,,ассистент
 cadsofttools/inventory,cadsofttools/cst-cad-navigator,unrelated,,,ассистент
 cadsofttools/inventory,huion/h1060p-221253,unrelated,,,ассистент
 cadsofttools/plan-evakuatsii,cadsofttools/cst-cad-navigator,unrelated,,,ассистент
 cadsofttools/plan-evakuatsii,huion/h1060p-221253,unrelated,,,ассистент
+cauchotechnology/caucho-resin,2bt/rusbss,kit,Если ещё нет резервного копирования: сервер приложений с настройками и веб-приложениями вернётся после сбоя,,ассистент
+cauchotechnology/caucho-resin,drweb/drweb-desktop-security-suite,unrelated,,,ассистент
+cauchotechnology/caucho-resin,kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirennyiy,unrelated,,,ассистент
+cauchotechnology/caucho-resin,novosoft/novosoft-handy-backup,kit,Если ещё нет резервного копирования: Linux-сервер приложений с настройками вернётся после сбоя,,ассистент
 cebas/cebas-finalfluid,cebas/cebas-finalrender,unrelated,,,ассистент
 cebas/cebas-finalfluid,gigabyte/gv-n3060wf2oc-12gd-403360,unrelated,,,ассистент
 cebas/cebas-finalfluid,msi/rtx-3060-ventus-2x-12g-oc-431827,unrelated,,,ассистент
@@ -1469,6 +1485,8 @@ cervenka-consulting/cervenka-gid,hp/2y9h0a-b19-503206,unrelated,,,ассисте
 cervenka-consulting/cervenka-sara,canon/6246c003-465297,unrelated,,,ассистент
 cervenka-consulting/cervenka-sara,cervenka-consulting/cervenka-atena,has,,,ассистент
 cervenka-consulting/cervenka-sara,hp/2y9h0a-b19-503206,unrelated,,,ассистент
+cetest/sistema-kontrolya-kachestva-znaniy,ipsechinsky/uchebnyy-komplekt-kvadrosim,unrelated,,,ассистент
+cetest/sistema-kontrolya-kachestva-znaniy,ksplus/sike-elektronnyy-kurs-stroenie-i-kristallizatsiya-metallov,unrelated,,,ассистент
 cloudiway/cloud-migration-solutions,2bt/rusbss,unrelated,,,ассистент
 cloudiway/cloud-migration-solutions,cloudiway/cloudiway-managed-migrations,same,,,ассистент
 cloudiway/cloud-migration-solutions,cyberprotect/kiber-bekap,unrelated,,,ассистент
@@ -1600,6 +1618,8 @@ cronos/cronosprocros,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,асси
 cronos/cronosprocros,novosoft/novosoft-handy-backup,kit,"Если ещё нет резервного копирования: копии баз Кронос по расписанию, есть версия для Linux",,ассистент
 cronos/cronosprocros,paragon/paragon-vm-backup-for-esx,unrelated,,,ассистент
 cronos/cronosprocros,wondershare/wondershare-mobiletrans,unrelated,,,ассистент
+cryptex/cryptexpert,pro32/pro32-endpoint-security,kit,Если ещё нет антивируса: шифрование дисков не спасёт от вредоносной программы на том же компьютере,,ассистент
+cryptex/cryptexpert,pro32/pro32-endpoint-security-standard,kit,Если ещё нет антивируса: шифрование дисков не спасёт от вредоносной программы на том же компьютере,,ассистент
 cryptocom/magpro-kriptopaket,cryptocom/magpro-openvpn-gost,need,Строит VPN-туннели с ГОСТ-шифрованием на той же криптобиблиотеке,,ассистент
 cryptocom/magpro-kriptotunnel,cryptocom/magpro-kriptopaket,unrelated,,,ассистент
 cryptocom/magpro-openvpn-gost,cryptocom/magpro-kriptopaket,has,,,ассистент
@@ -1927,6 +1947,10 @@ d5render/d5-render,patriotmemory/pv316g160c9k-189871,unrelated,,,ассисте�
 d5render/d5-render,patriotmemory/pv316g186c0k-384529,unrelated,,,ассистент
 d5render/d5-render,patriotmemory/pv38g160c9k-77745,unrelated,,,ассистент
 d5render/d5-render,philips/24e2g2200-502616,unrelated,,,ассистент
+deerfield/deerfield-dns2go,2bt/rusbss,unrelated,,,ассистент
+deerfield/deerfield-dns2go,drweb/drweb-desktop-security-suite,unrelated,,,ассистент
+deerfield/deerfield-dns2go,kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirennyiy,unrelated,,,ассистент
+deerfield/deerfield-dns2go,novosoft/novosoft-handy-backup,unrelated,,,ассистент
 digital_rebellion/digital-rebellion-cineplay,digital_rebellion/digital-rebellion-pro-media-tools,unrelated,,,ассистент
 digital_rebellion/digital-rebellion-pro-maintenance-tools,a-data/ahd650-4tu31-cbk-256297,unrelated,,,ассистент
 digital_rebellion/digital-rebellion-pro-maintenance-tools,a-data/ahd710p-1tu31-cyl-256290,unrelated,,,ассистент
@@ -1944,6 +1968,8 @@ digt/digt-trusted-java,digt/kriptoarm-gost-versii-3,unrelated,,,ассистен
 digt/kriptoarm-gost-versii-3,digt/kriptoarm-standart-plyus-versii-5,same,,,ассистент
 digt/kriptoarm-standart-plyus-versii-5,digt/kriptoarm-gost-versii-3,same,,,ассистент
 digt/kriptoarm-vipnet,digt/kriptoarm-gost-versii-3,same,,,ассистент
+docshell/docshell,pro32/pro32-endpoint-security,unrelated,,,ассистент
+docshell/docshell,pro32/pro32-endpoint-security-standard,unrelated,,,ассистент
 drweb/drweb-curenet,cyberprotect/kiber-bekap,unrelated,,,ассистент
 drweb/drweb-curenet,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 drweb/drweb-curenet,drweb/drweb-security-space,unrelated,,,ассистент
@@ -2042,6 +2068,7 @@ drweb/drweb-server-security-suite-1,smartsoft/traffic-inspector-gold,kit,"Есл
 drweb/komplekt-drweb-malyiy-biznes,cyberprotect/kiber-bekap,kit,Если ещё нет резервного копирования: копии компьютеров Windows вернут данные после заражения,,ассистент
 drweb/komplekt-drweb-malyiy-biznes,cyberprotect/kiber-bekap-rasshirennaya,kit,"Если ещё нет резервного копирования: антивирус не вернёт файлы, испорченные шифровальщиком",,ассистент
 drweb/komplekt-drweb-malyiy-biznes,drweb/drweb-security-space,unrelated,,,ассистент
+ducalis/ducalis-user,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 easypano/easypano-panoweaver,easypano/easypano-studio,need,Собирает из готовых панорам виртуальный тур с переходами и точками интереса,,ассистент
 easypano/easypano-studio,easypano/easypano-panoweaver,same,,,ассистент
 easypano/easypano-tourweaver,a-data/ahd650-4tu31-cbk-256297,unrelated,,,ассистент
@@ -2086,6 +2113,7 @@ eligovision/ev-toolbox,cebas/cebas-thinkingparticles,unrelated,,,ассисте�
 eligovision/ev-toolbox,d5render/d5-render,unrelated,,,ассистент
 elma/elma365,cyberprotect/kiber-bekap,unrelated,,,ассистент
 elma/elma365,cyberprotect/kiber-bekap-rasshirennaya,kit,Если ещё нет резервного копирования: база процессов и документов восстановится после сбоя сервера,,ассистент
+emdev/korporativnyy-portal-incomand,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 ems/data-comparer-for-postgresql,ems/ems-advanced-data-export-vcl,unrelated,,,ассистент
 ems/data-export-for-db2,ems/ems-advanced-data-export-vcl,unrelated,,,ассистент
 ems/data-export-for-interbase_firebird,ems/ems-advanced-data-export-vcl,unrelated,,,ассистент
@@ -2248,6 +2276,10 @@ eurosoft/evrosoft-touchat-poseidon,eurosoft/evrosoft-odissey,unrelated,,,асс�
 eurosoft/evrosoft-touchat-poseidon,hp/2y9h0a-b19-503206,unrelated,,,ассистент
 everytag/evriteg-disk,everytag/evriteg-virtualnaia-komnata-dannyx,unrelated,,,ассистент
 everytag/evriteg-virtualnaia-komnata-dannyx,everytag/evriteg-disk,unrelated,,,ассистент
+evolenta/evolenta-uvlekatelnaya-realnost,hypermethod-ibs/hypermethod-eauthorcloud,unrelated,,,ассистент
+evolenta/evolenta-uvlekatelnaya-realnost,hypermethod-ibs/hypermethod-eclass,unrelated,,,ассистент
+evolenta/evolenta-uvlekatelnaya-realnost,sunrav/sunrav-testofficepro,unrelated,,,ассистент
+evolenta/evolenta-uvlekatelnaya-realnost,sunrav/sunrav-web-class,unrelated,,,ассистент
 examenmedia/biblioteka-elektronnykh-obrazovatelnykh-resursov-beor,examenmedia/obzh-5-11-klassy,unrelated,,,ассистент
 examenmedia/dni-russkoy-boevoy-slavy,examenmedia/obzh-5-11-klassy,unrelated,,,ассистент
 examenmedia/gosudarstvennye-simvoly-rossii,examenmedia/obzh-5-11-klassy,unrelated,,,ассистент
@@ -2324,6 +2356,7 @@ fast-reports/moiotchety-oblako,fast-reports/fastreportnet,unrelated,,,ассис
 fast-reports/moiotchety-oblako,fast-reports/moiotcety-korporativnyi-server,same,,,ассистент
 fast-reports/moiotchety-oblako,fast-reports/moiotchety-publikator,same,,,ассистент
 fast-reports/moiotchety-publikator,fast-reports/moiotchety-oblako,has,,,ассистент
+fingrad/fingrad,cyberprotect/kiber-bekap-rasshirennaya,kit,Если ещё нет резервного копирования: база бюджетов и планов восстановится после сбоя сервера,,ассистент
 formula/fx-550-425100,formula/fx-600-427312,same,,,ассистент
 formula/fx-550-425100,powercom/mac-10k-521216,unrelated,,,ассистент
 formula/fx-550-425100,powercom/spd-1100u-lcd-345910,kit,Если ещё нет ИБП: компьютер не выключится при скачке напряжения или отключении сети,,ассистент
@@ -2461,6 +2494,8 @@ icubevisualization/igrass,icubevisualization/aerial-textures,unrelated,,,асс�
 icubevisualization/madcar-3,icubevisualization/aerial-textures,unrelated,,,ассистент
 icubevisualization/multiscatter,icubevisualization/aerial-textures,unrelated,,,ассистент
 icubevisualization/vrayscatter-for-maya,icubevisualization/aerial-textures,unrelated,,,ассистент
+ideco/ideco-ngfw-novum,smartsoft/kaspersky-gate-antivirus-dlya-traffic-inspector,unrelated,,,ассистент
+ideco/ideco-ngfw-novum,smartsoft/traffic-inspector-gold,same,,,ассистент
 ilada/ruli-gis,ilada/ruli24-zakaznoe-proizvodstvo,unrelated,,,ассистент
 ilada/ruli24-predpriiatie,ilada/ruli-gis,unrelated,,,ассистент
 ilada/ruli24-process,ilada/ruli-gis,unrelated,,,ассистент
@@ -2556,6 +2591,7 @@ insider/insayder-oblako-business-cloud,insider/insayder,same,,,ассистен�
 insider/insayder-oblako-expert-cloud,insider/insayder,same,,,ассистент
 insider/insayder-oblako-lite-cloud,insider/insayder,same,,,ассистент
 insider/insayder-oblako-standard-cloud,insider/insayder,same,,,ассистент
+intaver/intaver-riskyproject,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 integral/atp-ekolog,integral/programmyi-serii-ekolog,unrelated,,,ассистент
 integral/avtomatizirovannoe-rabochee-mesto-ekologa,integral/programmyi-serii-ekolog,kit,Если ещё нет расчётов по отходам: проект нормативов образования отходов — отдельный обязательный документ,,ассистент
 integral/ekolog-shum,integral/programmyi-serii-ekolog,unrelated,,,ассистент
@@ -2574,6 +2610,8 @@ integral/programmyi-serii-ekolog,integral/projig-rdtt-na-ispyitatelnom-stende,un
 integral/programmyi-serii-ekolog,integral/uprza-ekolog,kit,Если ещё нет: расчёт рассеивания выбросов в атмосфере для проекта нормативов ПДВ,,ассистент
 integral/projig-rdtt-na-ispyitatelnom-stende,integral/programmyi-serii-ekolog,unrelated,,,ассистент
 integral/uprza-ekolog,integral/programmyi-serii-ekolog,kit,Если ещё нет расчётов по отходам: проект нормативов образования отходов — отдельный обязательный документ,,ассистент
+integrationobjects/opc-easy-archiver,2bt/rusbss,unrelated,,,ассистент
+integrationobjects/opc-easy-archiver,novosoft/novosoft-handy-backup,unrelated,,,ассистент
 integro/gis-ingeo,canon/6246c003-465297,kit,Если ещё нет плоттера: карты и планы крупных форматов печатаются только на широкоформатной технике,,ассистент
 integro/gis-ingeo,hp/2y9h0a-b19-503206,kit,Если ещё нет плоттера: карты крупных форматов печатаются только на широкоформатной технике,,ассистент
 intel/srmbe-459761,ablecom/acl-s20070-515968,unrelated,,,ассистент
@@ -2618,12 +2656,16 @@ iobit/iobit-start-menu-dlya-windows-8-i-10,iobit/iobit-driver-booster-pro,unrela
 iobit/iobit-uninstaller,iobit/iobit-driver-booster-pro,unrelated,,,ассистент
 ipchigakov/qpile-master,ipchigakov/scanitto-lite,unrelated,,,ассистент
 ipchigakov/scanitto-lite,ipchigakov/qpile-master,unrelated,,,ассистент
+ipdolgushev/almagrid,2bt/rusbss,unrelated,,,ассистент
+ipdolgushev/almagrid,novosoft/novosoft-handy-backup,unrelated,,,ассистент
 ipi-soft/ipi-motion-capture-1,acer/um-hb7cd-g04-488249,unrelated,,,ассистент
 ipi-soft/ipi-motion-capture-1,acer/um-hx2cd-306-486427,unrelated,,,ассистент
 ipi-soft/ipi-motion-capture-1,acer/um-ke1cd-601-505686,unrelated,,,ассистент
 ipi-soft/ipi-motion-capture-1,dell/p2425h-463974,unrelated,,,ассистент
 ipi-soft/ipi-motion-capture-1,msi/9s6-3pc0cm-014-455131,unrelated,,,ассистент
 ipi-soft/ipi-motion-capture-1,philips/24e2g2200-502616,unrelated,,,ассистент
+ipicasoftware/ip-video-system-design-tool,asus/90ix01t4-bw3s00-498095,unrelated,,,ассистент
+ipicasoftware/ip-video-system-design-tool,asustor/as6804t-541260,unrelated,,,ассистент
 ippekshev/modplus-autocad,canon/6246c003-465297,unrelated,,,ассистент
 ippekshev/modplus-autocad,csoft-development/csoft-rasterdesk,unrelated,,,ассистент
 ippekshev/modplus-autocad,csoft-development/csoft-rasterid,unrelated,,,ассистент
@@ -2668,10 +2710,15 @@ ippekshev/modplus-revit,ippekshev/modplus-renga,unrelated,,,ассистент
 ippekshev/modplus-revit,msi/9s6-3pc0cm-014-455131,unrelated,,,ассистент
 ippekshev/modplus-revit,philips/24e2g2200-502616,unrelated,,,ассистент
 ippekshev/modplus-revit,scad-soft/scad-konsul,unrelated,,,ассистент
+ipsechinsky/uchebnyy-komplekt-kvadrosim,hypermethod-ibs/hypermethod-eauthorcloud,unrelated,,,ассистент
+ipsechinsky/uchebnyy-komplekt-kvadrosim,hypermethod-ibs/hypermethod-eclass,unrelated,,,ассистент
+ipsechinsky/uchebnyy-komplekt-kvadrosim,sunrav/sunrav-testofficepro,unrelated,,,ассистент
+ipsechinsky/uchebnyy-komplekt-kvadrosim,sunrav/sunrav-web-class,unrelated,,,ассистент
 ipsergeev/upravdolg-kalkuliator-penei-za-uslugi-zkx,ipsergeev/upravdolg-programma-dlia-iurista-zkx,need,Ведёт должников целиком: от расчёта пеней до претензий и исковых заявлений,,ассистент
 ipsergeev/upravdolg-programma-dlia-iurista-zkx,ipsergeev/upravdolg-kalkuliator-penei-za-uslugi-zkx,same,,,ассистент
 ipzerkaliy/botmek,ipzerkaliy/keyran,same,,,ассистент
 ipzerkaliy/keyran,ipzerkaliy/botmek,same,,,ассистент
+ipzhukovets/novapress,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 isbc/ds-d100ikwf-b-542342,dahua/dh-hap120-541148,unrelated,,,ассистент
 isbc/ds-d100ikwf-b-542342,dahua/dh-hap120-v-541147,unrelated,,,ассистент
 isbc/ds-d100ikwf-b-542342,dahua/dh-lr1002-428243,unrelated,,,ассистент
@@ -2705,6 +2752,9 @@ ituniverse/layerpie,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-rab
 ituniverse/layerpie,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-starto,unrelated,,,ассистент
 ituniverse/layerpie,yandex/yandeks-360,unrelated,,,ассистент
 ituniverse/layerpie,yandex/yandeks-360-dlya-biznesa-tarif-osnovnoy,unrelated,,,ассистент
+itv/integrirovannaya-sistema-bezopasnosti-intellekt,dahua/dh-ipc-hdw1230t1p-zs-s5-439257,need,"Камера даёт видеопоток, который система выводит на мониторы охраны и записывает в архив",,ассистент
+itv/integrirovannaya-sistema-bezopasnosti-intellekt,dahua/dhi-asi6213j-mw-v1-541125,unrelated,,,ассистент
+itv/integrirovannaya-sistema-bezopasnosti-intellekt,hikvision/ds-2cd2h23g2-izs-406054,need,"Камера даёт видеопоток, который система выводит на мониторы охраны и записывает в архив",,ассистент
 jijitechnologies/apps4pro-planner-migrator,jijitechnologies/planner-manager,unrelated,,,ассистент
 jijitechnologies/planner-gantt,jijitechnologies/apps4pro-planner-migrator,unrelated,,,ассистент
 jijitechnologies/planner-gantt,jijitechnologies/planner-manager,unrelated,,,ассистент
@@ -3606,8 +3656,15 @@ ksplus/sike-slesar-remontnik-toir-trebovaniya-predyavlyaemye-k-ekspluat,ksplus/s
 lab50/gosjava,lab50/mono,unrelated,,,ассистент
 lab50/mono,lab50/gosjava,unrelated,,,ассистент
 lab50/okulyar-gost,lab50/gosjava,unrelated,,,ассистент
+labmedia/labmedia-elektronnyy-kurs,hypermethod-ibs/hypermethod-eauthorcloud,unrelated,,,ассистент
+labmedia/labmedia-elektronnyy-kurs,hypermethod-ibs/hypermethod-eclass,kit,"Если ещё нет системы дистанционного обучения: курс назначается сотрудникам, а прохождение учитывается",,ассистент
+labmedia/labmedia-elektronnyy-kurs,sunrav/sunrav-testofficepro,unrelated,,,ассистент
+labmedia/labmedia-elektronnyy-kurs,sunrav/sunrav-web-class,unrelated,,,ассистент
+lanagent/lanagent-enterprise-1,pro32/pro32-endpoint-security,kit,"Если ещё нет антивируса: мониторинг сотрудников покажет нарушение, но не остановит заражение компьютера",,ассистент
+lanagent/lanagent-enterprise-1,pro32/pro32-endpoint-security-standard,kit,"Если ещё нет антивируса: мониторинг сотрудников покажет нарушение, но не остановит заражение компьютера",,ассистент
 lanagent/lanagent-standard-1,pro32/pro32-endpoint-security,kit,Если ещё нет антивируса: контроль сотрудников не защищает их компьютеры от вредоносных программ,,ассистент
 lanagent/lanagent-standard-1,pro32/pro32-endpoint-security-standard,kit,Если ещё нет антивируса: контроль сотрудников не защищает их компьютеры от вредоносных программ,,ассистент
+liquid/digital-signage,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 lira-sapr/lira-sapfir-2026,canon/6246c003-465297,unrelated,,,ассистент
 lira-sapr/lira-sapfir-2026,hp/2y9h0a-b19-503206,unrelated,,,ассистент
 lirasoft/lira-106,acer/um-hb7cd-g04-488249,unrelated,,,ассистент
@@ -3636,6 +3693,10 @@ lissisoft/tsentr-vyidachi-i-upravleniya-sertifikatami-fox-xca,lissisoft/programm
 logic-software-inc/birdview-projects,logic-software-inc/easy-projects,same,,,ассистент
 logic-software-inc/birdview-psa,logic-software-inc/easy-projects,same,,,ассистент
 logic-software-inc/easy-projects,logic-software-inc/birdview-projects,same,,,ассистент
+loginventory/loginventory-litsenzii,kaspersky/kaspersky-premium,unrelated,,,ассистент
+loginventory/loginventory-litsenzii,kaspersky/kaspersky-standard,unrelated,,,ассистент
+lookout/lookout-officecalendar,drweb/drweb-security-space,unrelated,,,ассистент
+lookout/lookout-officecalendar,kaspersky/kaspersky-plus,unrelated,,,ассистент
 machsol/machpanel-multi-cloud-service-orchestration-delivery-platform-ms,machsol/machsol-adsync,unrelated,,,ассистент
 machsol/machsol-active-directory-management,machsol/machsol-adsync,unrelated,,,ассистент
 machsol/machsol-adsync,machsol/machsol-work-folders,unrelated,,,ассистент
@@ -3882,6 +3943,8 @@ microsoft/microsoft-windows-professional-11,microsoft/microsoft-visio-standard-2
 microsoft/microsoft-windows-professional-11,microsoft/microsoft-windows-11-home,same,,,ассистент
 mindcraft/jay-copilot,mindcraft/jay-copilot-s-jay-guard,need,"Добавляет фильтр, который не пускает персональные и коммерческие данные в запросы к нейросети",,ассистент
 mindcraft/jay-copilot-s-jay-guard,mindcraft/jay-copilot,same,,,ассистент
+mirapolis/mirapolis-hcm,ipsechinsky/uchebnyy-komplekt-kvadrosim,unrelated,,,ассистент
+mirapolis/mirapolis-hcm,ksplus/sike-elektronnyy-kurs-stroenie-i-kristallizatsiya-metallov,unrelated,,,ассистент
 mobilesystems/file-commander,mobilesystems/officesuite-personalnyy,unrelated,,,ассистент
 mobilesystems/mobioffice,drweb/drweb-security-space,unrelated,,,ассистент
 mobilesystems/mobioffice,kaspersky/kaspersky-plus,unrelated,,,ассистент
@@ -3963,6 +4026,8 @@ mst/fireguard,mst/fenix,same,,,ассистент
 mst/fireguard,mst/fenix-server,unrelated,,,ассистент
 mst/fireguard,mst/firerisks,same,,,ассистент
 mst/firerisks,mst/fireguard,same,,,ассистент
+mymeetai/mymeetai-lite,tehnologii-upravleniya-i-razvitiya/ucebno-prakticeskii-paket-po-ii,unrelated,,,ассистент
+mymeetai/mymeetai-pro,tehnologii-upravleniya-i-razvitiya/ucebno-prakticeskii-paket-po-ii,unrelated,,,ассистент
 nanosoft/nano360,cyberprotect/kiber-bekap,unrelated,,,ассистент
 nanosoft/nano360,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 nanosoft/nano360,nanosoft/platforma-nanocad,unrelated,,,ассистент
@@ -4216,6 +4281,10 @@ nanosoft/platforma-nanocad,philips/24e2g2200-502616,unrelated,,,ассистен
 nanosoft/tdms-farvater,cyberprotect/kiber-bekap,kit,Если ещё нет резервного копирования: данные о ходе проектирования вернутся после сбоя сервера,,ассистент
 nanosoft/tdms-farvater,cyberprotect/kiber-bekap-rasshirennaya,kit,Если ещё нет резервного копирования: данные о ходе проектирования вернутся после сбоя сервера,,ассистент
 nanosoft/tdms-farvater,nanosoft/platforma-nanocad,kit,"Если ещё нет САПР: листы, созданные в ней, попадают в учёт проекта без ручной выгрузки",,ассистент
+nativerest/nativerest,2bt/rusbss,unrelated,,,ассистент
+nativerest/nativerest,drweb/drweb-desktop-security-suite,unrelated,,,ассистент
+nativerest/nativerest,kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirennyiy,unrelated,,,ассистент
+nativerest/nativerest,novosoft/novosoft-handy-backup,unrelated,,,ассистент
 navicat/navicat-bi,navicat/navicat-cloud,need,Хранит рабочие файлы BI в облаке и даёт коллегам работать с ними вместе,,ассистент
 navicat/navicat-charts-creator,navicat/navicat-cloud,need,Хранит файлы диаграмм в облаке и даёт коллегам работать с ними вместе,,ассистент
 navicat/navicat-cloud,navicat/navicat-for-mysql,unrelated,,,ассистент
@@ -4325,6 +4394,10 @@ netsoftware-1/net-control-pro,mirapolis/mirapolis-hcm,unrelated,,,ассисте
 netsoftware-1/net-control-pro,netsoftware-1/net-control-classroom,same,,,ассистент
 netsoftware-1/net-control-pro,netsoftware-1/net-control-smallclass,same,,,ассистент
 netsoftware-1/net-control-smallclass,netsoftware-1/net-control-classroom,same,,,ассистент
+netwin/netwin-surgemail,2bt/rusbss,kit,Если ещё нет резервного копирования: почтовые ящики и настройки сервера вернутся после сбоя,,ассистент
+netwin/netwin-surgemail,drweb/drweb-desktop-security-suite,unrelated,,,ассистент
+netwin/netwin-surgemail,kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirennyiy,unrelated,,,ассистент
+netwin/netwin-surgemail,novosoft/novosoft-handy-backup,kit,Если ещё нет резервного копирования: почтовые ящики на Linux-сервере вернутся после сбоя,,ассистент
 nextgis/nextgis,canon/6246c003-465297,unrelated,,,ассистент
 nextgis/nextgis,hp/2y9h0a-b19-503206,unrelated,,,ассистент
 nextgis/nextgis,nextgis/nextgis-geoservices,need,"Подложки, геокодирование и данные OSM прямо в проекте без самостоятельной подготовки",,ассистент
@@ -4337,6 +4410,8 @@ nextgis/nextgis-toolbox,nextgis/nextgis,has,,,ассистент
 nextgis/nextgis-web,canon/6246c003-465297,unrelated,,,ассистент
 nextgis/nextgis-web,hp/2y9h0a-b19-503206,unrelated,,,ассистент
 nextgis/nextgis-web,nextgis/nextgis,unrelated,,,ассистент
+niicentr/rebus-sov,pro32/pro32-endpoint-security,kit,Если ещё нет антивируса на компьютерах: обнаружение вторжений в сети не лечит заражённые файлы,,ассистент
+niicentr/rebus-sov,pro32/pro32-endpoint-security-standard,kit,Если ещё нет антивируса на компьютерах: обнаружение вторжений в сети не лечит заражённые файлы,,ассистент
 northwoodssoftware/northwoods-software-godiagram,northwoodssoftware/northwoods-software-gojs,same,,,ассистент
 northwoodssoftware/northwoods-software-godiagram,northwoodssoftware/northwoods-software-goxam,same,,,ассистент
 northwoodssoftware/northwoods-software-gojs,northwoodssoftware/northwoods-software-godiagram,same,,,ассистент
@@ -4490,6 +4565,7 @@ oviont/programma-dlya-evm-balans-2-formirovanie-uvedomleniya-o-kontroli,oviont/w
 oviont/programma-dlya-evm-balans-2-klient-edo,oviont/web-servis-proverka-tin,unrelated,,,ассистент
 oviont/programmnyy-modul-balans-2-faylovyy-arkhiv-elektronnykh-dokument,oviont/web-servis-proverka-tin,unrelated,,,ассистент
 oviont/web-servis-proverka-tin,oviont/programmnyy-modul-balans-2-faylovyy-arkhiv-elektronnykh-dokument,unrelated,,,ассистент
+palex/verifika,contentai/abbyy-lingvo-x6-european,kit,"Если ещё нет словаря: проверка отметит спорный термин, а словарь подскажет верный перевод",,ассистент
 paragon/paragon-file-system-link-business-suite,paragon/paragon-hard-disk-manager-business-1,unrelated,,,ассистент
 paragon/paragon-hard-disk-manager-business-1,paragon/paragon-file-system-link-business-suite,unrelated,,,ассистент
 paragon/paragon-hard-disk-manager-business-1,paragon/paragon-hfs-for-windows,unrelated,,,ассистент
@@ -4512,6 +4588,21 @@ parentalcontrol/kroha-snimki-ekrana,kaspersky/kaspersky-premium,unrelated,,,ас
 parentalcontrol/kroha-snimki-ekrana,kaspersky/kaspersky-safe-kids-1,same,,,ассистент
 parentalcontrol/kroha-snimki-ekrana,kaspersky/kaspersky-standard,kit,Если ещё нет антивируса: защищает детские устройства от вредоносных сайтов и приложений,,ассистент
 parentalcontrol/kroha-snimki-ekrana,pro32/pro32-total-security,unrelated,,,ассистент
+pccooler/paladin-ex400-542361,chieftec/apb-500b8-321954,kit,Если ещё нет блока питания: 500 Вт хватит процессору с мощным охлаждением в сборке,,ассистент
+pccooler/paladin-ex400-542361,foxline/tfx300s-446423,unrelated,,,ассистент
+pccooler/paladin-ex400-542361,fractal-design/fd-c-tor1a-01-394575,kit,Если ещё нет корпуса: в просторном корпусе высокий башенный кулер встанет без ограничений,,ассистент
+pccooler/paladin-ex400-542361,kingston/sa400s37-480g-269273,kit,Если ещё нет SSD: системный диск для собираемого компьютера,,ассистент
+pccooler/paladin-ex400-542361,netac/nt01nv5000-500-e4x-404593,kit,Если ещё нет SSD: системный диск для собираемого компьютера,,ассистент
+pccooler/paladin-ex400-542361,zalman/s3-290987,kit,Если ещё нет корпуса: башенный кулер высотой 157 мм в нём помещается,,ассистент
+perfect-soft/perfect-streamer,2bt/rusbss,unrelated,,,ассистент
+perfect-soft/perfect-streamer,drweb/drweb-desktop-security-suite,unrelated,,,ассистент
+perfect-soft/perfect-streamer,kaspersky/kaspersky-endpoint-security-dlya-biznesa-rasshirennyiy,unrelated,,,ассистент
+perfect-soft/perfect-streamer,novosoft/novosoft-handy-backup,unrelated,,,ассистент
+perfectsoft/printstore-pro,peredovietechnologii/rudesktop,unrelated,,,ассистент
+perfectsoft/printstore-pro,tektonit/remote-manipulator-system,unrelated,,,ассистент
+photograv/litsenziya-photograv,a-data/ahd650-2tu31-cbl-256294,unrelated,,,ассистент
+photograv/litsenziya-photograv,a-data/ahd650-4tu31-cbk-256297,unrelated,,,ассистент
+photograv/litsenziya-photograv,huion/h1060p-221253,unrelated,,,ассистент
 pixso/pixso-20-dizain-v-kod,pixso/pixso-enterprise,has,,,ассистент
 pixso/pixso-ai,pixso/pixso-enterprise,has,,,ассистент
 pixso/pixso-boardmix-enterprise,pixso/pixso-enterprise,unrelated,,,ассистент
@@ -4690,6 +4781,7 @@ procad-software/procad-plant-design-suite,procad-software/procad-3dsmart,has,,,�
 procad-software/procad-spoolcad-1,canon/6246c003-465297,kit,Если ещё нет плоттера: чертежи монтажных узлов трубопроводов печатаются на листах большого формата,,ассистент
 procad-software/procad-spoolcad-1,hp/2y9h0a-b19-503206,kit,Если ещё нет плоттера: чертежи монтажных узлов трубопроводов печатаются на листах большого формата,,ассистент
 procad-software/procad-spoolcad-1,procad-software/procad-plant-design-suite,need,"Добавляет 3D-компоновку и изометрию, из которых берутся данные для деления на узлы",,ассистент
+projecto/projecto,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 promt/promt-expert-nmt,contentai/abbyy-lingvo-x6-english,unrelated,,,ассистент
 promt/promt-expert-nmt,contentai/abbyy-lingvo-x6-european,kit,Если ещё нет словаря: проверить термин и найти точный вариант после машинного перевода,,ассистент
 promt/promt-expert-nmt,contentai/abbyy-lingvo-x6-multiligual,unrelated,,,ассистент
@@ -4758,6 +4850,8 @@ prostoy-soft/upravlenie-proektami,prostoy-soft/psmobile,unrelated,,,ассист
 prostoy-soft/upravlenie-proektami,prostoy-soft/psmobilescan,unrelated,,,ассистент
 prostoy-soft/upravlenie-proektami,prostoy-soft/psphone,unrelated,,,ассистент
 prostoy-soft/upravlenie-proektami,prostoy-soft/uchet-posetiteley,unrelated,,,ассистент
+proteqta/platforma-pozitsionirovaniya-personala-proteqta,pro32/pro32-endpoint-security,unrelated,,,ассистент
+proteqta/platforma-pozitsionirovaniya-personala-proteqta,pro32/pro32-endpoint-security-standard,unrelated,,,ассистент
 radiantq/jquery-gantt-package,radiantq/sharepoint-gantt-webpart-,unrelated,,,ассистент
 radiantq/sharepoint-gantt-webpart-,radiantq/wpf-gantt-package,unrelated,,,ассистент
 radiantq/silverlight-gantt-package,radiantq/sharepoint-gantt-webpart-,unrelated,,,ассистент
@@ -4841,6 +4935,9 @@ renga/renga-standard,canon/6246c003-465297,kit,Если ещё нет плотт
 renga/renga-standard,csoft-development/csoft-rasterdesk,unrelated,,,ассистент
 renga/renga-standard,csoft-development/csoft-rasterid,unrelated,,,ассистент
 renga/renga-standard,hp/2y9h0a-b19-503206,kit,Если ещё нет плоттера: архитектурные и конструктивные листы из BIM-модели печатаются на А1–А0,,ассистент
+reon/datareon-platform,cyberprotect/kiber-bekap-rasshirennaya,kit,Если ещё нет резервного копирования: сервер шины интеграции и её настройки восстановятся после сбоя,,ассистент
+repostor/dataprotector,2bt/rusbss,same,,,ассистент
+repostor/dataprotector,novosoft/novosoft-handy-backup,same,,,ассистент
 revision-effects/revision-effects-color-genius,a-data/ahd650-4tu31-cbk-256297,unrelated,,,ассистент
 revision-effects/revision-effects-color-genius,a-data/ahd710p-1tu31-cyl-256290,unrelated,,,ассистент
 revision-effects/revision-effects-color-genius,revision-effects/revision-effects-regrade,unrelated,,,ассистент
@@ -4926,6 +5023,9 @@ rpintegra/dogovor-partner,rpintegra/dokpartner,unrelated,,,ассистент
 rpintegra/dokpartner,rpintegra/klient-plyus,unrelated,,,ассистент
 rpintegra/klient-plyus,rpintegra/dokpartner,unrelated,,,ассистент
 rpintegra/otdel-kadrov-plyus,rpintegra/dokpartner,unrelated,,,ассистент
+rubber_monkey/rubber-monkey-filmconvert,a-data/ahd650-2tu31-cbl-256294,unrelated,,,ассистент
+rubber_monkey/rubber-monkey-filmconvert,a-data/ahd650-4tu31-cbk-256297,unrelated,,,ассистент
+rubber_monkey/rubber-monkey-filmconvert,huion/h1060p-221253,unrelated,,,ассистент
 ryabinov/topografiya,canon/6246c003-465297,kit,Если ещё нет плоттера: топопланы крупных форматов печатаются только на широкоформатной технике,,ассистент
 ryabinov/topografiya,hp/2y9h0a-b19-503206,kit,Если ещё нет плоттера: топографические планы А1–А0 печатаются только на широкоформатной технике,,ассистент
 sarsys/ipvideorecord,sarsys/sprecord-voip,unrelated,,,ассистент
@@ -4950,12 +5050,17 @@ sarsys/sprecord-voip,yeastar/ta1610-336553,unrelated,,,ассистент
 sarsys/sprecord-voip,yeastar/ta410-336549,unrelated,,,ассистент
 sarsys/sprecord-voip,yeastar/ta810-336551,unrelated,,,ассистент
 sarsys/sprobot,sarsys/sprecord-voip,unrelated,,,ассистент
+sawmill/sawmill-enterprise,south-river-technologies/south-river-cornerstone-mft,unrelated,,,ассистент
+sawmill/sawmill-enterprise,tsentr-bezopasnosti-informatsii-tsbi/tsbi-revizor-seti,unrelated,,,ассистент
+sawmill/sawmill-lite,south-river-technologies/south-river-cornerstone-mft,unrelated,,,ассистент
+sawmill/sawmill-lite,tsentr-bezopasnosti-informatsii-tsbi/tsbi-revizor-seti,unrelated,,,ассистент
 sawmill/sawmill-professional,cryptocom/magpro-openvpn-gost,unrelated,,,ассистент
 sawmill/sawmill-professional,endian/endian-utm-software-appliance,unrelated,,,ассистент
 sawmill/sawmill-professional,npo-echelon/eshelon-skaner-vs,unrelated,,,ассистент
 sawmill/sawmill-professional,south-river-technologies/south-river-cornerstone-mft,unrelated,,,ассистент
 sawmill/sawmill-professional,tsentr-bezopasnosti-informatsii-tsbi/tsbi-revizor-seti,unrelated,,,ассистент
 sawmill/sawmill-professional,vamsoft/orf,unrelated,,,ассистент
+sboard/sboard,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 scad-soft/scad,canon/6246c003-465297,unrelated,,,ассистент
 scad-soft/scad,csoft-development/csoft-rasterdesk,unrelated,,,ассистент
 scad-soft/scad,csoft-development/csoft-rasterid,unrelated,,,ассистент
@@ -5126,6 +5231,9 @@ silaunion/sila-union-modeler,silaunion/sila-union-viewer,need,Даёт колл�
 silaunion/sila-union-viewer,silaunion/sila-union-modeler,need,"Позволяет не только смотреть, но и создавать и править модели процессов",,ассистент
 sitnisati/sitni-sati-fumefx,gigabyte/gv-n3060wf2oc-12gd-403360,unrelated,,,ассистент
 sitnisati/sitni-sati-fumefx,msi/rtx-3060-ventus-2x-12g-oc-431827,unrelated,,,ассистент
+skd/revers-8000,dahua/dh-ipc-hdw1230t1p-zs-s5-439257,unrelated,,,ассистент
+skd/revers-8000,dahua/dhi-asi6213j-mw-v1-541125,unrelated,,,ассистент
+skd/revers-8000,hikvision/ds-2cd2h23g2-izs-406054,unrelated,,,ассистент
 sltechnicaldirect/sertifikat-na-texniceskuiu-podderzku-oborudovaniia-it-ekspert-ri,sltechnicaldirect/sertifikat-na-texniceskuiu-podderzku-subd,unrelated,,,ассистент
 sltechnicaldirect/sertifikat-na-texniceskuiu-podderzku-oborudovaniia-it-ekspert-ri,sltechnicaldirect/servis-nepreryvnogo-obsledovaniia-softline-high-safety,unrelated,,,ассистент
 sltechnicaldirect/sertifikat-na-texniceskuiu-podderzku-oborudovaniia-it-ekspert-ri,sltechnicaldirect/vaucer-softline-uslugi-po-infrastrukture-zakazcika,unrelated,,,ассистент
@@ -5139,6 +5247,7 @@ sltechnicaldirect/vaucer-softline-uslugi-po-infrastrukture-zakazcika,sltechnical
 sm/saynklik,sm/saynkval,same,,,ассистент
 sm/saynkval,sm/saynklik,same,,,ассистент
 sm/saynsmart,sm/saynklik,same,,,ассистент
+smartservice/myqrcards,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 smartsoft/kaspersky-gate-antivirus-dlya-traffic-inspector,pro32/pro32-endpoint-security,kit,Если ещё нет антивируса на рабочих местах: шлюз не видит заражение с флешек,,ассистент
 smartsoft/kaspersky-gate-antivirus-dlya-traffic-inspector,pro32/pro32-endpoint-security-standard,kit,Если ещё нет антивируса на рабочих местах: шлюз не видит заражение с флешек,,ассистент
 smartsoft/kaspersky-gate-antivirus-dlya-traffic-inspector,smartsoft/netpolice,need,Блокирует сайты по категориям — контентная фильтрация на том же шлюзе,,ассистент
@@ -5221,6 +5330,8 @@ softprogramm/ithelper-versiia-optimizer-dlia-biznesa,wondershare/wondershare-mob
 softprogramm/ithelper-versiia-optimizer-s-gpt,softprogramm/ithelper-versiia-optimizer,same,,,ассистент
 softprogramm/neiroset-lika-maksimum,softprogramm/ithelper-versiia-optimizer,unrelated,,,ассистент
 softprogramm/neiroset-lika-standart,softprogramm/ithelper-versiia-optimizer,unrelated,,,ассистент
+solarsecurity/solar-webproxy,pro32/pro32-endpoint-security,kit,Если ещё нет антивируса на рабочих местах: прокси не проверит флешки и почтовые вложения,,ассистент
+solarsecurity/solar-webproxy,pro32/pro32-endpoint-security-standard,kit,Если ещё нет антивируса на рабочих местах: прокси не проверит флешки и почтовые вложения,,ассистент
 sotbit/sotbit-b2b,sotbit/sotbit-srm,unrelated,,,ассистент
 sotbit/sotbit-marketpleys,sotbit/sotbit-b2b,unrelated,,,ассистент
 sotbit/sotbit-srm,sotbit/sotbit-b2b,unrelated,,,ассистент
@@ -5234,9 +5345,15 @@ south-river-technologies/titan-mft,south-river-technologies/south-river-cornerst
 south-river-technologies/titan-neo,south-river-technologies/south-river-cornerstone-mft,same,,,ассистент
 south-river-technologies/titan-sftp,south-river-technologies/south-river-cornerstone-mft,same,,,ассистент
 south-river-technologies/titan-syslog,south-river-technologies/south-river-cornerstone-mft,unrelated,,,ассистент
+soyuzpravoinform/ips-zakonodatelstvo-stran-sng,avision/000-0870-02g-432933,unrelated,,,ассистент
+soyuzpravoinform/ips-zakonodatelstvo-stran-sng,avision/000-1003-02g-535856,unrelated,,,ассистент
+spamfighter/spamfighter-exchange,smartsoft/kaspersky-gate-antivirus-dlya-traffic-inspector,unrelated,,,ассистент
+spamfighter/spamfighter-exchange,smartsoft/traffic-inspector-gold,kit,Если ещё нет межсетевого экрана: модуль для Exchange не закрывает остальной трафик в интернет,,ассистент
 specsoft/spetssoft-fitnes,specsoft/spetssoft-spa-salon,unrelated,,,ассистент
 specsoft/spetssoft-salon-krasoty,specsoft/spetssoft-spa-salon,same,,,ассистент
 specsoft/spetssoft-spa-salon,specsoft/spetssoft-salon-krasoty,same,,,ассистент
+stakhanovets/kompleks-staxanovec,pro32/pro32-endpoint-security,kit,"Если ещё нет антивируса: контроль сотрудников не блокирует вирусы, которые они приносят на флешках",,ассистент
+stakhanovets/kompleks-staxanovec,pro32/pro32-endpoint-security-standard,kit,"Если ещё нет антивируса: контроль сотрудников не блокирует вирусы, которые они приносят на флешках",,ассистент
 steema-software/steema-teechart-for-javascript,steema-software/teechart-pro-activex,unrelated,,,ассистент
 steema-software/steema-teechart-for-net,steema-software/teechart-pro-activex,unrelated,,,ассистент
 steema-software/steema-teechart-net-for-maui,steema-software/teechart-pro-activex,unrelated,,,ассистент
@@ -5376,6 +5493,12 @@ teslascada/teslascada2,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,асс
 teslascada/teslascada2,novosoft/novosoft-handy-backup,unrelated,,,ассистент
 teslascada/teslascada2,paragon/paragon-vm-backup-for-esx,unrelated,,,ассистент
 teslascada/teslascada2,wondershare/wondershare-mobiletrans,unrelated,,,ассистент
+thermalright/axp-90-x47-542360,chieftec/apb-500b8-321954,unrelated,,,ассистент
+thermalright/axp-90-x47-542360,foxline/tfx300s-446423,kit,Если ещё нет блока питания: компактный блок TFX подходит к тонкой сборке с низкопрофильным кулером,,ассистент
+thermalright/axp-90-x47-542360,fractal-design/fd-c-tor1a-01-394575,unrelated,,,ассистент
+thermalright/axp-90-x47-542360,kingston/sa400s37-480g-269273,kit,"Если ещё нет SSD: системный диск 2,5 дюйма для компактной сборки",,ассистент
+thermalright/axp-90-x47-542360,netac/nt01nv5000-500-e4x-404593,kit,Если ещё нет SSD: системный диск M.2 без кабелей для компактной сборки,,ассистент
+thermalright/axp-90-x47-542360,zalman/s3-290987,unrelated,,,ассистент
 titanoptima/akhov,titanoptima/volna,unrelated,,,ассистент
 titanoptima/deflagratsiya,titanoptima/volna,unrelated,,,ассистент
 titanoptima/fakel-litsenziya,titanoptima/volna,unrelated,,,ассистент
@@ -5446,6 +5569,8 @@ turbosoft/turboftp-server,turbosoft/turboftp,need,Клиент для сотру
 turbosoft/turboftp-server,turbosoft/turboftp-sdk,unrelated,,,ассистент
 turbosoft/turboftp-server,turbosoft/turbopgp,unrelated,,,ассистент
 turbosoft/turbopgp,turbosoft/turboftp-server,unrelated,,,ассистент
+ubiquiti/amo-5g13-487490,hikvision/las30-57cn-rj45-267326,unrelated,,,ассистент
+ubiquiti/amo-5g13-487490,hikvision/las60-57cn-rj45-267469,unrelated,,,ассистент
 ubitech/ublinux-desktop-enterprise,astralinux/workspad,unrelated,,,ассистент
 ubitech/ublinux-desktop-enterprise,cyberprotect/kiber-bekap,unrelated,,,ассистент
 ubitech/ublinux-desktop-enterprise,cyberprotect/kiber-bekap-rasshirennaya,kit,Если ещё нет резервного копирования: система и данные восстановятся после сбоя диска,,ассистент
@@ -5482,11 +5607,15 @@ uncom/uncom-os-home,kod-bezopasnosti/kod-bezopasnosti-pak-sobol,unrelated,,,ас
 uncom/uncom-os-home,kripto-pro/cryptopro-csp,kit,Если ещё нет криптопровайдера: без него электронная подпись на домашнем Linux не заработает,,ассистент
 uncom/uncom-os-home,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,unrelated,,,ассистент
 uncom/uncom-os-home,yandex/yandeks-360,unrelated,,,ассистент
+unicraftec/unicraft,ipsechinsky/uchebnyy-komplekt-kvadrosim,unrelated,,,ассистент
+unicraftec/unicraft,ksplus/sike-elektronnyy-kurs-stroenie-i-kristallizatsiya-metallov,unrelated,,,ассистент
 uranium-backup/uranium-backup,synology/rs1221-449258,need,Сетевое хранилище на RAID для копий с нескольких машин по расписанию,,ассистент
 uranium-backup/uranium-backup,synology/rs2423-486952,need,Ёмкое сетевое хранилище с RAID для длинной истории копий серверов,,ассистент
 uranium-backup/uranium-backup,wd/wdbu6y0040bbk-wesn-364242,need,Хранит копии вне компьютера: при поломке диска или шифровальщике архив уцелеет,,ассистент
 valiantys/valiantys-elements,valiantys/valiantys-spreadsheets,unrelated,,,ассистент
 valiantys/valiantys-spreadsheets,valiantys/valiantys-elements,unrelated,,,ассистент
+vamsoft/orf,smartsoft/kaspersky-gate-antivirus-dlya-traffic-inspector,unrelated,,,ассистент
+vamsoft/orf,smartsoft/traffic-inspector-gold,kit,Если ещё нет межсетевого экрана: почтовый фильтр не закрывает остальной трафик в интернет,,ассистент
 varwin/vr-dlya-obrazovaniya,3dio/bonespro,unrelated,,,ассистент
 varwin/vr-dlya-obrazovaniya,3dio/unwrella,unrelated,,,ассистент
 varwin/vr-dlya-obrazovaniya,cebas/cebas-finalfluid,unrelated,,,ассистент
@@ -5606,6 +5735,7 @@ videosoft/movavika-video,wondershare/wondershare-mobiletrans,unrelated,,,асс�
 videosoft/movavika-zapis-ekrana,a-data/ahd650-4tu31-cbk-256297,kit,Если ещё нет внешнего диска: длинные записи экрана быстро занимают место на системном диске,,ассистент
 videosoft/movavika-zapis-ekrana,a-data/ahd710p-1tu31-cyl-256290,kit,Если ещё нет внешнего диска: архив записей экрана можно хранить отдельно от системы,,ассистент
 videosoft/movavika-zapis-ekrana,videosoft/movavika-video,kit,"Если ещё нет видеоредактора: записи экрана можно обрезать, добавить титры и переходы",,ассистент
+virtualtechnologies/sdo-prometey,hypermethod-ibs/hypermethod-elearning-server-5g,same,,,ассистент
 vkworkspace/doska-vk-workspace-interaktivnaia-doska-dlia-vizualizacii-idei-i,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,kit,"Если ещё нет общей рабочей среды: почта, мессенджер и диск сотрудников рядом с доской",,ассистент
 vkworkspace/proekty-vk-workspace-upravlenie-proektami-i-zadacami,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,kit,"Если ещё нет общей рабочей среды: почта, мессенджер и диск рядом с задачами проектов",,ассистент
 vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-bazovy,vkworkspace/vk-workspace-cifrovaia-sreda-dlia-sovmestnoi-raboty-tarif-rassir,need,Расширенный тариф: до 500 пользователей и больше возможностей для растущей компании,,ассистент
@@ -5619,6 +5749,7 @@ webinar/mts-link-standart,webinar/mts-link-optimum-30,same,,,ассистент
 websio/websio-documents-scan-and-ocr,websio/websio-sendmail,unrelated,,,ассистент
 websio/websio-sendmail,websio/websio-documents-scan-and-ocr,unrelated,,,ассистент
 websio/websio-sharepoint-document-preview,websio/websio-sendmail,unrelated,,,ассистент
+weeek/weeek,cyberprotect/kiber-bekap-rasshirennaya,unrelated,,,ассистент
 wondershare/filmora-mobile,wondershare/wondershare-democreator,unrelated,,,ассистент
 wondershare/filmora-mobile,wondershare/wondershare-dr-fone,unrelated,,,ассистент
 wondershare/filmora-mobile,wondershare/wondershare-edrawmax,unrelated,,,ассистент
@@ -5814,3 +5945,5 @@ youngzsoft/youngzsoft-ccproxy,yealink/sip-t30-466789,unrelated,,,ассисте�
 youngzsoft/youngzsoft-ccproxy,yealink/sip-t44u-472637,unrelated,,,ассистент
 youngzsoft/youngzsoft-ccproxy,yeastar/ta1610-336553,unrelated,,,ассистент
 youngzsoft/youngzsoft-ccproxy,yeastar/ta410-336549,unrelated,,,ассистент
+zen-it/zen-nsi,2bt/rusbss,unrelated,,,ассистент
+zen-it/zen-nsi,novosoft/novosoft-handy-backup,unrelated,,,ассистент

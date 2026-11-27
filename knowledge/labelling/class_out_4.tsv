@@ -1,0 +1,102 @@
+3d-oborudovanie/3d-accessories	3d-oborudovanie/3d-scanners	K	Если ещё нет 3D-сканера: он снимает модель реальной детали, чтобы напечатать её копию	b2b
+3d-oborudovanie/3d-accessories	sapr/mashinostroenie	K	Если ещё нет программы моделирования: в КОМПАС-3D готовят модели деталей для печати	
+accessories_comp/akkumulyatory-i-batarei	accessories_comp/istochniki-pitaniya-dlya-noutbukov	K	Если ещё нет запасного блока питания: второй держит ноутбук заряженным и в офисе, и дома	
+accessories_comp/akkumulyatory-i-batarei	portable/powerbank	K	Если ещё нет внешнего аккумулятора: он подзарядит технику в дороге, когда розетки нет	
+accessories_comp/bags_for_notes	accessories_comp/istochniki-pitaniya-dlya-noutbukov	K	Если ещё нет запасного блока питания: он живёт в сумке, и штатный не надо возить из дома	
+accessories_comp/bags_for_notes	portable/powerbank	K	Если ещё нет внешнего аккумулятора: в сумке он подзарядит телефон и ноутбук с USB-C в поездке	
+accessories_comp/bags_for_notes	peripherals/keyboards	K	Если ещё нет компактной мыши: с ней работать с ноутбуком в поездке удобнее, чем с тачпадом	
+accessories_comp/covers_for_tablets	gadgets/zaryadnye-ustroystva	K	Если ещё нет быстрой зарядки: сетевой адаптер USB-C заряжает планшет заметно быстрее	
+accessories_comp/covers_for_tablets	portable/powerbank	K	Если ещё нет внешнего аккумулятора: он подзарядит планшет в дороге	
+accessories_comp/istochniki-pitaniya-dlya-noutbukov	peripherals/voltage_regulator	K	Если ещё нет сетевого фильтра: он защитит блок питания и ноутбук от скачков напряжения	
+accessories_comp/istochniki-pitaniya-dlya-noutbukov	accessories_comp/bags_for_notes	K	Если ещё нет сумки для ноутбука: в ней есть отделение, чтобы носить блок питания с собой	
+accessories_comp/prochee	gadgets/headphones	K	Если собираете игровое место: гарнитура с микрофоном для командной игры и голосового чата	
+accessories_comp/prochee	mebel-tovary-dlya-ofisa/kresla-i-stulya	K	Если собираете игровое место: игровое кресло держит спину в долгих сессиях	
+accessories_comp/usb-hub	parts/cables	K	Если не хватает разъёмов: переходники USB-C и HDMI подключат к хабу старую периферию и монитор	
+accessories_comp/usb-hub	portable-memory/externalhdd	K	Если ещё нет внешнего диска: через хаб он всегда подключён для копий и обмена файлами	
+antivirusi-bezopasnost/kontrol-dostupa	security/ustroystva-kontrolya-dostupa	K	Если ещё нет терминалов на проходной: они считывают карты и лица и передают события в программу СКУД	b2b
+antivirusi-bezopasnost/kontrol-dostupa	security/ip-videocams	K	Если ещё нет камер: интегрированная система безопасности сводит видео с событиями доступа	b2b
+antivirusi-bezopasnost/security-internet-i-set	antivirusi-bezopasnost/antivirusi-organizatsii	K	Если ещё нет защиты рабочих мест: сканер находит уязвимости сети, антивирус ловит вредонос на ПК	b2b
+antivirusi-bezopasnost/security-internet-i-set	antivirusi-bezopasnost/mezhsetevye-ekrany	K	Если ещё нет межсетевого экрана: он закрывает найденные сканером открытые порты на границе сети	b2b
+beauty-and-health/shchiptsy-dlya-zavivki-volos	bytovaya-tekhnika/feny	K	Если ещё нет фена: волосы перед завивкой щипцами сушат феном	b2c
+bytovaya-tekhnika/feny	beauty-and-health/shchiptsy-dlya-zavivki-volos	K	Если ещё нет щипцов: после сушки феном ими делают локоны	b2c
+bytovaya-tekhnika/kholodilniki	bytovaya-tekhnika/posudomoechnye-mashiny	K	Если обставляете кухню: встраиваемая посудомойка ставится в тот же гарнитур	b2c
+bytovaya-tekhnika/kholodilniki	bytovaya-tekhnika/dukhovye-shkafy	K	Если обставляете кухню: встраиваемый духовой шкаф ставится в тот же гарнитур	b2c
+bytovaya-tekhnika/kofemolki	bytovaya-tekhnika/kofemashiny	K	Если ещё нет кофеварки: свежемолотый кофе варят в капельной кофемашине	b2c
+bytovaya-tekhnika/posudomoechnye-mashiny	bytovaya-tekhnika/dukhovye-shkafy	K	Если обставляете кухню: встраиваемый духовой шкаф Bosch ставится в тот же гарнитур	b2c
+bytovaya-tekhnika/posudomoechnye-mashiny	bytovaya-tekhnika/varochnye-paneli	K	Если обставляете кухню: варочная панель встраивается в ту же столешницу	b2c
+bytovaya-tekhnika/shveynye-mashiny	bytovaya-tekhnika/utyugi	K	Если ещё нет утюга: при шитье каждый шов проглаживают, иначе изделие выйдет неровным	b2c
+delovie-programmi/pravovoe-i-kadrovoe-obsluzivanie	antivirusi-bezopasnost/bezopasnost-zaschita-informatsii	K	Если ещё нет средств защиты ПДн: закон о персональных данных требует и технических мер защиты	b2b
+delovie-programmi/uchet-kompyuterov	remote-access/rossiyskie-resheniya-udalennogo-dostupa-importozameshchenie	K	Если ещё нет удалённого доступа: найденные при инвентаризации ПК админ обслужит, не подходя к ним	b2b
+distantsionnoe-obuchenie/edu-internet	obrazovanie-i-nauka/obuchayuschie-programmi	K	Если ещё нет готовых курсов: электронные курсы загружают в систему дистанционного обучения	b2b
+distantsionnoe-obuchenie/edu-upravlenie-v-organizatsii	obrazovanie-i-nauka/obuchayuschie-programmi	K	Если ещё нет готовых курсов: электронные курсы по профессиям загружают в платформу обучения	b2b
+distantsionnoe-obuchenie/infosecurity	antivirusi-bezopasnost/antivirusi-organizatsii	K	Если ещё нет защиты рабочих мест: обучение снижает ошибки людей, антивирус ловит то, что они пропустили	b2b
+dom-i-dacha/generatory	peripherals/ups	K	Если от генератора питаете компьютеры: ИБП держит их, пока генератор запускается	
+dom-i-dacha/generatory	peripherals/voltage_regulator	K	Если ещё нет стабилизатора: он выровняет напряжение генератора для котла и холодильника	
+elektroinstrument/perforatory	bytovaya-tekhnika/pylesosy	K	Если ещё нет строительного пылесоса: он собирает бетонную пыль при сверлении перфоратором	
+elektroinstrument/rubanki	bytovaya-tekhnika/pylesosy	K	Если ещё нет строительного пылесоса: его шланг подключают к рубанку, и стружка не летит по комнате	
+elektroinstrument/shlifovalnye-mashinki	bytovaya-tekhnika/pylesosy	K	Если ещё нет строительного пылесоса: он убирает пыль после резки и шлифовки	
+gadgets/aksessuary	gadgets/zaryadnye-ustroystva	K	Если ещё нет быстрой зарядки: сетевой адаптер USB-C заряжает смартфон заметно быстрее	
+gadgets/aksessuary	portable/powerbank	K	Если ещё нет внешнего аккумулятора: он подзарядит смартфон в дороге	
+gadgets/chekhly-dlya-smartfonov	gadgets/zaryadnye-ustroystva	K	Если ещё нет быстрой зарядки: сетевой адаптер USB-C заряжает смартфон заметно быстрее	
+gadgets/chekhly-dlya-smartfonov	portable/powerbank	K	Если ещё нет внешнего аккумулятора: он подзарядит смартфон в дороге	
+gadgets/headphones	peripherals/keyboards	K	Если собираете игровое место: игровые клавиатура и мышь дополнят гарнитуру	
+gadgets/headphones	gadgets/webcam	K	Если ещё нет вебкамеры: для видеозвонков и стримов к гарнитуре нужна камера	
+gadgets/headphones	parts/zvukovye-karty	K	Если звук с ПК шумит или нет объёмного звука: внешняя звуковая карта улучшит его в наушниках	
+ip-telephonia/accessories_for_phones	ip-telephonia/consoles	K	Если ещё нет консоли расширения: она добавляет к телефону кнопки быстрого набора коллег	b2b
+ip-telephonia/accessories_for_phones	networking/net-equipment	K	Если коммутатор без PoE: инжектор питает телефон и видеотерминал по сетевому кабелю	b2b
+ip-telephonia/consoles	networking/net-equipment	K	Если коммутатор без PoE: инжектор питает IP-телефон по сетевому кабелю, без розетки у стола	b2b
+ip-telephonia/dect	internet-i-set/telefoniya	K	Если ещё нет АТС: SIP-DECT телефонам нужна IP-АТС, программная подойдёт	b2b
+multimedia/konverteri-i-kodirovschiki	multimedia/videoredaktori	K	Если ещё нет видеоредактора: после конвертации ролик можно обрезать и смонтировать	
+multimedia/zapis-cd-i-dvd	parts/odd	N	Для записи дисков нужен привод DVD-RW, в новых ноутбуках и ПК его обычно нет	
+networking/3g-routers	peripherals/ups	K	Если ещё нет ИБП: LTE-роутер останется на связи при отключении света	
+networking/3g-routers	networking/switch	K	Если устройств больше, чем портов роутера: коммутатор раздаст сеть по кабелю	
+networking/adsl	peripherals/ups	K	Если ещё нет ИБП: модем сохранит интернет при коротких отключениях света	
+networking/network-card	networking/switch	K	Если ещё нет гигабитного коммутатора: без него сетевая карта не даст полной скорости	b2b
+networking/network-card	parts/cables	K	Если ещё нет патч-корда: витая пара cat5e подключит карту к коммутатору	
+networking/network-card	networking/transceivers	K	Если оптика приходит на медный коммутатор: медиаконвертер на другом конце линии	b2b
+networking/powerline	networking/switch	K	Если в комнате несколько устройств: коммутатор раздаст сеть от одного адаптера PowerLine	
+networking/powerline	parts/cables	K	Если ещё нет патч-кордов: витая пара подключит ПК и ТВ к адаптеру PowerLine	
+networking/transceivers	networking/switch	K	Если ещё нет коммутатора с SFP-портами: в него ставят трансиверы оптических линий	b2b
+networking/transceivers	parts/cables	K	Если ещё нет патч-кордов: витая пара соединит медиаконвертер с коммутатором и ПК	b2b
+networking/transceivers	peripherals/ups	K	Если ещё нет ИБП: медиаконвертер на удалённом узле не уронит линию при отключении света	b2b
+networking/wifi-adapters	networking/adaptery-bluetooth	K	Если в ПК нет Bluetooth: USB-адаптер подключит беспроводные наушники и мышь	
+networking/wifi-antenna	networking/net-equipment	K	Если ещё нет PoE-инжектора: уличная точка с антенной питается по сетевому кабелю	b2b
+obrazovanie-i-nauka/obrazovanie-i-nauka-testi	obrazovanie-i-nauka/obuchayuschie-programmi	K	Если ещё нет учебных курсов: тестами проверяют знания после электронного курса	b2b
+obrazovanie-i-nauka/obuchayuschie-programmi	distantsionnoe-obuchenie/edu-internet	K	Если учите сотрудников: система дистанционного обучения выдаёт курсы и ведёт учёт прохождения	b2b
+obrazovanie-i-nauka/obuchayuschie-programmi	obrazovanie-i-nauka/obrazovanie-i-nauka-testi	K	Если нужно проверять знания: в конструкторе тестов собирают экзамен по курсу	b2b
+office/accessories_for_office	office/expendables	K	Если запас подходит к концу: картриджи и тонер к тому же аппарату	
+office/expendables	office/accessories_for_office	K	Если аппарат зажёвывает бумагу: сменный ролик подхвата и лотки к той же модели	
+office/schreder	antivirusi-bezopasnost/udalenie-informatsii	K	Если уничтожаете документы: данные на дисках списанных ПК стирают программой удаления информации	b2b
+parts/coolers	parts/psu	K	Если собираете или обновляете компьютер: блок питания с запасом мощности под новую сборку	
+parts/coolers	parts/chassis	K	Если собираете или обновляете компьютер: корпус с хорошим продувом, куда встанут кулер и вентиляторы	
+parts/coolers	parts/ssd	K	Если собираете или обновляете компьютер: SSD ускорит загрузку системы и программ	
+parts/ram	parts/ssd	K	Если собираете или обновляете компьютер: SSD вместо жёсткого диска ускорит загрузку сильнее памяти	
+parts/ram	parts/coolers	K	Если собираете или обновляете компьютер: кулер процессора тише и холоднее штатного	
+parts/ssd	portable-memory/hdd-external-case	K	Если меняете диск ноутбука: в внешнем корпусе старый диск станет переносным хранилищем	
+parts/ssd	parts/ram	K	Если собираете или обновляете компьютер: вместе с SSD часто добавляют оперативную память	
+parts/ssd	parts/hdd	K	Если собираете или обновляете компьютер: жёсткий диск большого объёма для архива рядом с быстрым SSD	
+peripherals/accessoires-pour-ups	peripherals/ups_battery_pack	K	Если батареям ИБП больше трёх лет: сменные батареи вернут прежнее время работы	b2b
+peripherals/silovye-moduli-dlya-ibp	peripherals/accessoires-pour-ups	K	Если ещё нет PDU: блок распределения раздаёт питание от ИБП на оборудование в стойке	b2b
+peripherals/silovye-moduli-dlya-ibp	peripherals/voltage_regulator	K	Если ещё нет сетевого фильтра: он защитит технику за ИБП от помех и скачков в розетке	
+peripherals/ups_battery_pack	peripherals/voltage_regulator	K	Если ещё нет сетевого фильтра: он раздаст питание и защитит технику, которую не держит ИБП	
+peripherals/ups_battery_pack	peripherals/accessoires-pour-ups	K	Если ещё нет PDU: блок распределения раздаёт питание от ИБП на оборудование в стойке	b2b
+photo-video/ekran	photo-video/holders	K	Если ещё нет потолочного кронштейна: он закрепит проектор напротив экрана	
+photo-video/holders	parts/cables	K	Если экран переезжает на стену: кабель HDMI подлиннее дотянется до компьютера или приставки	
+portable-memory/dok-stantsii	parts/hdd	K	Если храните архив на дисках: голые диски 3,5 дешевле внешних и меняются в доке за секунды	
+portable-memory/dok-stantsii	diski-i-fayli/rezervnoe-kopirovanie	K	Если копируете вручную: программа резервного копирования пишет копии на диск в доке по расписанию	
+portable-memory/hdd-external-case	diski-i-fayli/rezervnoe-kopirovanie	K	Если корпус нужен для копий: программа резервного копирования делает их по расписанию	
+portable/accessories_for_tablets	accessories_comp/covers_for_tablets	K	Если ещё нет чехла: он защитит экран планшета, на котором рисуют стилусом	
+portable/powerbank	gadgets/zaryadnye-ustroystva	K	Если ещё нет быстрой зарядки: внешний аккумулятор на 20000 мАч заряжается от неё в разы быстрее	
+programmi-dlya-mobilnih-ustroystv/dlya-smartfonov	torgovoe-oborudovanie/skanery-shtrikhkodov	K	Если товар считаете камерой телефона: сканер штрихкодов ускорит приёмку и продажу	b2b
+san-nas/san-options	diski-i-fayli/rezervnoe-kopirovanie	K	Если ещё нет программы резервного копирования: она пишет копии на ленту по расписанию	b2b
+san-nas/san-options	servers/montazhnye-komplekty-zip	K	Если привод ставят в стойку: монтажный комплект 1U закрепит его рядом с серверами	b2b
+security/domofony	security/ip-videocams	K	Если хотите видеть двор: изображение IP-камеры Dahua выводится на экран видеодомофона	
+security/klaviatura-dlya-upravleniya	security/umnyy-dom	K	Если датчиков мало: датчики движения Dahua той же беспроводной системы 868 МГц	
+security/krepleniya	security/videoregistratory	K	Если записи ещё нет: видеорегистратор хранит видео с камер и показывает архив	
+security/ustroystva-kontrolya-dostupa	antivirusi-bezopasnost/kontrol-dostupa	K	Если терминалов несколько: программа СКУД сводит проходы в общий учёт и отчёты	b2b
+security/ustroystva-kontrolya-dostupa	security/ip-videocams	K	Если ещё нет камеры на проходной: запись покажет, кто прошёл по чужой карте	b2b
+servers/server-options	peripherals/ups	K	Если ещё нет ИБП: резервный блок питания сервера не спасёт при отключении света	b2b
+servers/server-options	peripherals/accessoires-pour-ups	K	Если ещё нет PDU: два блока питания сервера подключают к разным линиям распределения	b2b
+torgovoe-oborudovanie/pos-aksessuary	torgovoe-oborudovanie/printery	K	Если на складе ещё нет принтера этикеток: он печатает метки, которые считывает терминал	b2b
+torgovoe-oborudovanie/printery	grafika-i-dizayn/grafika-i-dizayn-drugie-utiliti	N	Этикетки со штрихкодом и ценой верстают в программе для этикеток, а не в текстовом редакторе	b2b
+torgovoe-oborudovanie/printery	torgovoe-oborudovanie/skanery-shtrikhkodov	K	Если ещё нет сканера штрихкодов: он считывает напечатанные этикетки при приёмке и продаже	b2b

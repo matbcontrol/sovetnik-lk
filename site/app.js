@@ -33,7 +33,7 @@
   function rebuild() {
     const edges = data.edges.filter((e) => votes[ekey(e)] !== "no");
     graph = new E.Graph(Object.assign({}, data, { edges }));
-    const byClass = (v) => new Set(Object.keys(votes).filter((k) => votes[k] === v && /^(c[lr]|pk)\|/.test(k)));
+    const byClass = (v) => new Set(Object.keys(votes).filter((k) => votes[k] === v && /^(c[lrp]|pk)\|/.test(k)));
     approved = byClass("ok");
     rejected = byClass("no");
   }
@@ -544,6 +544,14 @@
                  to: `Класс «${clsName(l.dst_class)}»` + (top ? ` — например, ${nodeNameAll(top)}` : ""),
                  source: labelled ? (l.verdict === "kit" ? "разметка: комплект" : "разметка: нужно") : "модель по API", conf: l.confidence, ev: l.reason || "", auto: false });
   }
+  // товары, проверенные для класса: клиент видит совет сразу, менеджер может отклонить
+  for (const [cid, picks] of Object.entries(data.class_products || {})) {
+    for (const x of picks) {
+      queue.push({ key: `cp|${cid}|${x[0]}`, group: "pick", type: "complements", from: `Класс «${clsName(cid)}»` + (x[2] === "vendor" ? " — товары того же производителя" : ""),
+                   to: nodeNameAll(x[0]), source: E.LABEL[x[1] === "kit" ? "разметка класса: комплект" : "разметка класса: нужно"], conf: x[1] === "kit" ? 0.4 : 0.7,
+                   ev: x[3] || "", auto: true, urlTo: (allNodes.get(x[0]) || {}).url });
+    }
+  }
   for (const [cid, fams] of new E.Graph(data).ruByClass) {
     if (!goneByClass[cid]) continue;
     for (const dst of fams) {
@@ -555,7 +563,7 @@
   const statusOf = (r) => (votes[r.key] === "ok" ? "принято" : votes[r.key] === "no" ? "отклонено" : r.auto ? "показывается клиенту" : "ждёт проверки");
   const types = Array.from(new Set(data.edges.map((e) => e[2])));
   const sources = Array.from(new Set(queue.map((r) => r.source)));
-  $("#f-type").innerHTML = '<option value="pending">ждут проверки менеджера</option><option value="class">связи между классами</option><option value="kit">комплекты к товарам</option><option value="replace">замены по классу</option>'
+  $("#f-type").innerHTML = '<option value="pending">ждут проверки менеджера</option><option value="class">связи между классами</option><option value="kit">комплекты к товарам</option><option value="pick">товары, проверенные для класса</option><option value="replace">замены по классу</option>'
     + '<option value="advice">связи товаров (без «той же линейки»)</option><option value="">все</option>'
     + types.map((t) => `<option value="${esc(t)}">товары: ${esc(E.TYPE_TITLE[t] || t)}</option>`).join("");
   $("#f-source").innerHTML = '<option value="">любой</option>' + sources.map((x) => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
@@ -565,7 +573,7 @@
     return queue.filter((r) => {
       const v = votes[r.key];
       if (t === "pending") { if (r.auto || v) return false; }
-      else if (t === "class" || t === "replace" || t === "kit") { if (r.group !== t) return false; }
+      else if (t === "class" || t === "replace" || t === "kit" || t === "pick") { if (r.group !== t) return false; }
       else if (t === "advice") { if (r.group !== "edge" || r.type === "same_line") return false; }
       else if (t && (r.group !== "edge" || r.type !== t)) return false;
       if (src && r.source !== src) return false;
@@ -583,7 +591,7 @@
     const pages = Math.max(1, Math.ceil(rows.length / PAGE));
     page = Math.min(page, pages - 1);
     const part = rows.slice(page * PAGE, page * PAGE + PAGE);
-    const kind = (r) => (r.group === "class" ? "классы: " : r.group === "replace" ? "" : "") + (E.TYPE_TITLE[r.type] || r.type);
+    const kind = (r) => (r.group === "class" ? "классы: " : r.group === "pick" ? "класс — товар: " : "") + (E.TYPE_TITLE[r.type] || r.type);
     $("#links").innerHTML = '<tr><th>Откуда</th><th>Вид связи</th><th>Куда</th><th>Источник</th><th class="num">Уверенность</th><th>Основание</th><th>Решение</th></tr>' +
       part.map((r) => {
         const v = votes[r.key] || "";
@@ -725,9 +733,10 @@
     const cell = (o, k) => (o ? nf.format(o[k] || 0) : "—");
     let h = `<h3>Проверка пар «купил А — советовать ли Б»</h3>
       <p class="hint">Статистика продаж не отличает «нужно» от «и так есть»: после антивируса чаще всего покупают Windows, потому что её покупают все. Поэтому каждую пару заранее судит модель по правилам хорошего менеджера. В личные советы идёт «нужно» — с фразой «зачем», а за ним не больше одного «комплекта» с условием «если ещё нет…». На истории комплекты пока не сбывались: это совет на вырост, поэтому он стоит последним. На обращение клиента модель не вызывается: вердикт — строка таблицы.</p>
-      <table class="links"><tr><th>Вердикт</th><th class="num">Пары классов каталога</th><th class="num">Пары товаров каталога</th><th class="num">Пары линеек из продаж</th></tr>
-      ${KINDS.map(([k, t]) => `<tr><td>${t}${k === "need" ? " — идёт в личные советы" : k === "kit" ? " — последней карточкой, не больше одной" : ""}</td><td class="num">${cell(vs.classes, k)}</td><td class="num">${cell(vs.families, k)}</td><td class="num">${cell(lines, k)}</td></tr>`).join("")}
-      <tr><td><b>Всего</b></td><td class="num"><b>${nf.format(sum(vs.classes))}</b></td><td class="num"><b>${nf.format(sum(vs.families))}</b></td><td class="num"><b>${lines ? nf.format(sum(lines)) : "—"}</b></td></tr></table>`;
+      <table class="links"><tr><th>Вердикт</th><th class="num">Пары классов каталога</th><th class="num">Товар для класса</th><th class="num">Пары товаров каталога</th><th class="num">Пары линеек из продаж</th></tr>
+      ${KINDS.map(([k, t]) => `<tr><td>${t}${k === "need" ? " — идёт в личные советы" : k === "kit" ? " — последней карточкой, не больше одной" : ""}</td><td class="num">${cell(vs.classes, k)}</td><td class="num">${cell(vs.picks, k)}</td><td class="num">${cell(vs.families, k)}</td><td class="num">${cell(lines, k)}</td></tr>`).join("")}
+      <tr><td><b>Всего</b></td><td class="num"><b>${nf.format(sum(vs.classes))}</b></td><td class="num"><b>${nf.format(sum(vs.picks))}</b></td><td class="num"><b>${nf.format(sum(vs.families))}</b></td><td class="num"><b>${lines ? nf.format(sum(lines)) : "—"}</b></td></tr></table>
+      <p class="hint">«Товар для класса» — проверка для оборудования и малоизвестных программ, у которых своих проверенных пар нет: подходит ли товар любому товару класса или только товарам своего производителя (таких ${nf.format(vs.pick_vendor_only || 0)}). Если совместимость зависит от модели, товар отвергается.</p>`;
     const old = vs.old_links;
     if (old && old.total) {
       h += `<p class="hint">Из ${nf.format(old.total)} связей классов, которые раньше предложила облегчённая модель, проверку прошли ${nf.format((old.need || 0) + (old.kit || 0))}. Остальные сняты: «уже есть» — ${old.has || 0}, «то же самое» — ${old.same || 0}, «не связано» — ${old.unrelated || 0}. Прежняя проверка продажами такие связи подтверждала: самые продаваемые товары встречаются рядом с чем угодно, поэтому мы от неё отказались.</p>`;
@@ -746,6 +755,22 @@
         ${vs.check.map((c) => `<tr><td>${esc(c.model)}</td><td class="num">${c.pairs}</td><td class="num">${pct(c.same_decision)}</td><td class="num">${c.precision == null ? "—" : pct(c.precision)}</td><td>${c.trusted ? "вердикты идут клиенту сразу" : "вердикты ждут менеджера"}</td></tr>`).join("")}</table>`;
     }
     return h;
+  }
+
+  /** Охват: у скольких товаров в продаже есть личный совет и на чём он держится (python -m recsys.eval.coverage). */
+  function coverageHtml(cov) {
+    const row = (title, s, bold) => {
+      const b = (x) => (bold ? `<b>${x}</b>` : x);
+      return `<tr><td>${b(title)}</td><td class="num">${b(nf.format(s.on_sale))}</td><td class="num">${b(nf.format(s.with_advice) + " · " + pct(s.with_advice / s.on_sale, 0))}</td>
+        <td class="num">${nf.format(s.own_need + s.own_kit)}</td><td class="num">${nf.format(s.class_need + s.class_kit)}</td><td class="num">${b(nf.format(s.solo))}</td></tr>`;
+    };
+    const t = cov.total;
+    const top = (cov.solo_classes || []).slice(0, 6).map((x) => `«${esc(x.class)}» — ${nf.format(x.solo)}`).join(", ");
+    return `<h3>У скольких товаров есть личный совет</h3>
+      <p class="hint">Клиент с одной покупкой: товар куплен в марте, сегодня ноябрь. Продление своей же покупки и строка «Часто докупают» личным советом не считаются.</p>
+      <table class="links"><tr><th>Товары в продаже</th><th class="num">Всего</th><th class="num">С личным советом</th><th class="num">по паре с самим товаром</th><th class="num">по проверке товара для класса</th><th class="num">Без совета</th></tr>
+      ${row("Программы", cov.kinds.software)}${row("Оборудование", cov.kinds.hardware)}${row("Всего", t, true)}</table>
+      <p class="hint">Без совета остаются товары, которым ни один проверенный кандидат не подошёл: к оборудованию без знания модели часто добавить нечего, а несовместимое мы не советуем. Больше всего таких в классах: ${top}. Ещё у ${nf.format(t.manager)} товаров подсказка есть, но проверена только связь классов — она ждёт менеджера.</p>`;
   }
 
   function renderNumbers() {
@@ -781,6 +806,7 @@
     }
     const vs = data.meta.verdicts;
     if (vs) html += verdictsHtml(vs);
+    if (report && report.coverage) html += coverageHtml(report.coverage);
     html += `<h3>Очередь менеджера</h3>
       <p class="hint">Сейчас блок построен примерно на 6 000 ручных связок «товар — товар». Здесь клиент сразу видит пары товаров, проверенные заранее: «нужно» — личным советом, «комплект» — последней карточкой; любую из них менеджер отклоняет одним нажатием на вкладке «Связи». Решения менеджера ждёт то, где проверена не сама пара с товаром клиента: связи между классами и замены по классу — сейчас ${nf.format(waitingRows().length)} строк.</p>`;
     $("#numbers").innerHTML = html;

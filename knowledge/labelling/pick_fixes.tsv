@@ -1,0 +1,52 @@
+accessories_comp/docking	acer/um-hx2cd-306-486427	K	Если ещё нет внешнего монитора: он подключается к док-станции и даёт ноутбуку большой экран
+accessories_comp/docking	acer/um-ke1cd-601-505686	K	Если ещё нет внешнего монитора: он подключается к док-станции и даёт ноутбуку большой экран
+accessories_comp/docking	dell/p2425h-463974	K	Если ещё нет внешнего монитора: он подключается к док-станции и даёт ноутбуку большой экран
+accessories_comp/docking	digma/dm24sb05-464285	K	Если ещё нет внешнего монитора: он подключается к док-станции и даёт ноутбуку большой экран
+accessories_comp/docking	digma/dm24vb02-447689	K	Если ещё нет внешнего монитора: он подключается к док-станции и даёт ноутбуку большой экран
+accessories_comp/docking	hp/9d9a7aa-535459	K	Если ещё нет внешнего монитора: он подключается к док-станции и даёт ноутбуку большой экран
+accessories_comp/docking	hp/9d9s0ut-510922	K	Если ещё нет внешнего монитора: он подключается к док-станции и даёт ноутбуку большой экран
+accessories_comp/docking	nerpa/gi25f32fe-540886	K	Если ещё нет внешнего монитора: он подключается к док-станции и даёт ноутбуку большой экран
+accessories_comp/docking	nerpa/gi27q27he-539991	K	Если ещё нет внешнего монитора: он подключается к док-станции и даёт ноутбуку большой экран
+accessories_comp/docking	philips/24e2g2200-502616	K	Если ещё нет внешнего монитора: он подключается к док-станции и даёт ноутбуку большой экран
+accessories_comp/notebook-stand	defender/45804-527458	K	Если ещё нет отдельных клавиатуры и мыши: с ними удобнее работать за ноутбуком на столе
+accessories_comp/notebook-stand	logitech/920-003058-526771	K	Если ещё нет отдельной клавиатуры: с ней удобнее работать за ноутбуком на столе
+accessories_comp/notebook-stand	logitech/920-003169-521130	K	Если ещё нет отдельных клавиатуры и мыши: с ними удобнее работать за ноутбуком на столе
+accessories_comp/notebook-stand	oklick/1011937-362754	K	Если ещё нет отдельной клавиатуры: с ней удобнее работать за ноутбуком на столе
+antivirusi-bezopasnost/antivirusi-organizatsii	2bt/rusbss	U
+buhgalteriya-sklad-kadry/finansi	2bt/rusbss	U
+buhgalteriya-sklad-kadry/skladskie-programmi	m3-mobile/l2kx4c-t2cwas-hf-01-502289	K	Если ещё нет терминалов сбора данных: с ними товар принимают и считают по штрихкодам у стеллажа	b2b
+buhgalteriya-sklad-kadry/skladskie-programmi	m3-mobile/pc100c-t2ffs0-hf-503434	K	Если ещё нет терминалов сбора данных: с ними товар принимают и считают по штрихкодам у стеллажа	b2b
+buhgalteriya-sklad-kadry/skladskie-programmi	mertech/m-er9050-382864	K	Если ещё нет терминалов сбора данных: с ними товар принимают и считают по штрихкодам у стеллажа	b2b
+buhgalteriya-sklad-kadry/skladskie-programmi	urovo/dt40-lite12u4401x-t-476854	K	Если ещё нет терминалов сбора данных: с ними товар принимают и считают по штрихкодам у стеллажа	b2b
+computers/all-in-ones	astralinux/workspad	U
+computers/desktop	astralinux/workspad	U
+computers/nettop	astralinux/workspad	U
+computers/notebook	astralinux/workspad	U
+elektroinstrument/rubanki	karcher/1-628-170-0-468537	K	Если ещё нет строительного пылесоса: он соберёт стружку и пыль после работы рубанком
+internet-i-set/pochtovie-programmi	2bt/rusbss	U
+internet-i-set/servernoe-po	2bt/rusbss	U
+parts/ram	netac/nt01n5m-256g-m3x-390058	U
+peripherals/keyboards	acer/um-hx2cd-306-486427	U
+peripherals/keyboards	acer/um-ke1cd-601-505686	U
+peripherals/keyboards	asus/90lm03i1-b01370-375780	U
+peripherals/keyboards	dell/p2425h-463974	U
+peripherals/keyboards	philips/24e2g2200-502616	U
+peripherals/silovye-moduli-dlya-ibp	ippon/bk-6-eu-1-8-10-b-470665	U
+peripherals/silovye-moduli-dlya-ibp	ippon/bk-6-eu-1-8-16-b-457176	U
+peripherals/silovye-moduli-dlya-ibp	pilot/pilot-s7m-82530	U
+peripherals/silovye-moduli-dlya-ibp	powercom/sp-06w-462082	U
+peripherals/silovye-moduli-dlya-ibp	powercom/sp-08-usb03ab-462083	U
+peripherals/silovye-moduli-dlya-ibp	powercube/spg-b-15-white-82598	U
+peripherals/ups_battery_pack	ippon/bk-6-eu-1-8-10-b-470665	U
+peripherals/ups_battery_pack	ippon/bk-6-eu-1-8-16-b-457176	U
+peripherals/ups_battery_pack	pilot/pilot-s7m-82530	U
+peripherals/ups_battery_pack	powercube/spg-b-15-white-82598	U
+portable-memory/dok-stantsii	cyberprotect/kiber-bekap	K	Если копируете вручную: программа сама по расписанию пишет резервные копии на подключённый диск	b2b
+portable-memory/dok-stantsii	cyberprotect/kiber-bekap-rasshirennaya	K	Если копируете вручную: программа сама по расписанию пишет резервные копии на подключённый диск	b2b
+portable-memory/externalhdd	cyberprotect/kiber-bekap	K	Если копируете вручную: программа сама по расписанию сохранит файлы на внешний диск	b2b
+portable-memory/externalhdd	cyberprotect/kiber-bekap-rasshirennaya	K	Если копируете вручную: программа сама по расписанию сохранит файлы на внешний диск	b2b
+portable-memory/hdd-external-case	cyberprotect/kiber-bekap	K	Если копируете вручную: программа сама по расписанию сохранит файлы на диск в корпусе	b2b
+portable-memory/hdd-external-case	cyberprotect/kiber-bekap-rasshirennaya	K	Если копируете вручную: программа сама по расписанию сохранит файлы на диск в корпусе	b2b
+sistemnie-programmi/virtualizatsiya	astralinux/astra-infrastructure-cloud	S
+sistemnie-programmi/virtualizatsiya	astralinux/vmmanager	S
+sistemnie-programmi/virtualizatsiya	basealt/alt-virtualizatsiya-11	S

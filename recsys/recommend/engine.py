@@ -75,6 +75,8 @@ LABEL = {
     "разметка: нужно": "пара проверена заранее: нужно",
     "разметка: комплект": "пара проверена заранее: комплект",
     "разметка по API": "размечено моделью по API, ждёт проверки менеджером",
+    "разметка класса: нужно": "товар проверен для этого класса: нужно",
+    "разметка класса: комплект": "товар проверен для этого класса: комплект",
     "менеджер": "принято менеджером",
     "витрина": "порядок витрины магазина",
 }
@@ -89,6 +91,11 @@ PENDING = "ждёт проверки менеджером"
 KIT_MAX = 1                  # сколько советов «типовой набор» может быть в блоке
 KIT_TO_CLIENT = True         # показывать «комплект» клиенту сразу; False — только после решения менеджера
 VERDICT_SOURCE = {"need": "разметка: нужно", "kit": "разметка: комплект"}
+# Товар, проверенный для класса: разметчик судил не пару с конкретным товаром клиента, а «подходит ли товар Б
+# любому товару класса А» (или только товарам того же производителя). Так получают совет оборудование и
+# малоизвестные программы, у которых своих проверенных пар нет. Совет слабее проверенной пары товаров.
+PICK_SOURCE = {"need": "разметка класса: нужно", "kit": "разметка класса: комплект"}
+PICK_CONFIDENCE = {"need": 0.7, "kit": 0.4}
 RENEW_WINDOW = (-60, 120)  # дней до конца срока: от «просрочено два месяца» до «осталось четыре»
 
 
@@ -158,8 +165,14 @@ class Graph:
                  class_links: list[dict] | None = None, class_rank: dict[str, list[str]] | None = None,
                  popular: dict[str, list[dict]] | None = None, class_names: dict[str, str] | None = None,
                  veto: list | None = None, class_block: list | None = None,
-                 class_picks: dict[str, list[str]] | None = None, class_veto: list | None = None):
+                 class_picks: dict[str, list[str]] | None = None, class_veto: list | None = None,
+                 class_products: dict[str, list[dict]] | None = None,
+                 pick_judged: dict[str, list[str]] | None = None):
         self.nodes = nodes
+        # «класс А — товар Б», по которым вердикт уже вынесен (любой): связь классов такой товар не подбирает
+        self.pick_judged: set[tuple[str, str]] = {(a, b) for a, bs in (pick_judged or {}).items() for b in bs}
+        # класс А -> товары, проверенные на пригодность для любого товара этого класса (или своего производителя)
+        self.class_products: dict[str, list[dict]] = class_products or {}
         # пары классов с вердиктом «уже есть» или «то же самое»: такое не идёт и в строку «часто берут»
         self.class_veto: set[tuple[str, str]] = {(a, b) for a, b in (class_veto or [])}
         # «класс А|класс Б» -> товары класса Б, прошедшие проверку пары с ходовым товаром класса А
@@ -239,8 +252,9 @@ class Graph:
             p = folder / name
             return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
-        from recsys.llm.pair_verdicts import (CLASS_FILE, FAMILY_FILE, as_class_links, as_family_edges, class_blocks,
-                                              class_picks, read)
+        from recsys.llm.pair_verdicts import (CLASS_FILE, FAMILY_FILE, as_class_links, as_class_products,
+                                              as_family_edges, class_blocks, class_picks, pick_judged, read,
+                                              read_picks)
 
         nodes = {r["family"]: r for r in rows("graph_nodes.csv")}
         # связи классов — из таблицы вердиктов; прежняя разметка облегчённой моделью (class_links.csv) остаётся
@@ -261,7 +275,9 @@ class Graph:
         classes = read(CLASS_FILE) if CLASS_FILE.exists() else {}
         class_veto = sorted(p for p, v in classes.items() if v.verdict in ("has", "same"))
         return cls(nodes, edges, links, obj("class_rank.json"), obj("popular.json") or None, obj("class_names.json"),
-                   veto, class_blocks(families, nodes), class_picks(families, nodes), class_veto)
+                   veto, class_blocks(families, nodes), class_picks(families, nodes), class_veto,
+                   as_class_products(read_picks(), nodes, obj("class_rank.json")),
+                   pick_judged(read_picks()))
 
     def klass(self, family: str) -> str:
         n = self.nodes.get(family) or {}
@@ -467,6 +483,8 @@ class Recommender:
         src = _q(self.g.nodes.get(edge["src"], {}).get("name", edge["src"]))
         dst = _q(self.g.nodes.get(edge["dst"], {}).get("name", edge["dst"]))
         t, ev = edge["type"], edge.get("evidence", "")
+        if edge.get("source") in PICK_SOURCE.values():
+            return f"{ev.rstrip('. ')}."                 # товар проверен для класса: причина написана для клиента
         if edge.get("source") in VERDICT_SOURCE.values() and not edge.get("class"):
             return f"{ev.rstrip('. ')}."                 # пара товаров проверена заранее: причина уже написана для клиента
         if edge.get("class"):
@@ -652,8 +670,8 @@ class Recommender:
                 allowed = self.g.class_picks.get(f"{link['src_class']}|{link['dst_class']}")
                 hard = node.get("kind") == "hardware"
                 for rank, dst in enumerate(self.g.class_rank.get(link["dst_class"], ())[:10]):
-                    if (fam, dst) in self.g.judged:
-                        continue                        # по этой паре товаров есть свой вердикт
+                    if (fam, dst) in self.g.judged or (link["src_class"], dst) in self.g.pick_judged:
+                        continue                        # по этой паре товаров или по товару для класса есть свой вердикт
                     if allowed is not None and dst not in allowed:
                         continue                        # товары этого класса проверяли: берём только подошедшие
                     if hard and (self.g.nodes.get(dst) or {}).get("kind") == "hardware" \
@@ -673,6 +691,33 @@ class Recommender:
                     # чем ниже товар на витрине своего класса, тем слабее совет
                     push(dst, "kit" if verdict == "kit" else "missing",
                          self.w[t] * link["confidence"] * recency / (1 + 0.35 * rank), edge, p)
+
+            # товары, проверенные для класса купленного товара: совет есть и там, где своих пар у товара нет
+            klass, order = self.g.klass(fam), Counter()
+            for pick in self.g.class_products.get(klass, ()):
+                dst, verdict = pick["dst"], pick["verdict"]
+                if dst == fam or (fam, dst) in self.g.judged:
+                    continue                            # по этой паре товаров есть свой вердикт: он главнее
+                if pick["scope"] == "vendor" and dst.split("/")[0] != fam.split("/")[0]:
+                    continue                            # подходит только товарам своего производителя
+                if pick.get("audience", "any") not in ("any", "", client.client_type):
+                    continue
+                key = f"cp|{klass}|{dst}"
+                if key in self.rejected or PICK_CONFIDENCE[verdict] < self.min_confidence:
+                    continue
+                if self._banned(client, owned, platforms, dst, "complements", fam):
+                    continue
+                if verdict == "kit" and not (KIT_TO_CLIENT or self.unverified or key in self.approved):
+                    bans.append({"family": dst, "type": "complements", "from": fam, "reason": PENDING, "key": key})
+                    continue
+                dst_class = (self.g.nodes.get(dst) or {}).get("class") or ""
+                edge = {"src": fam, "dst": dst, "type": "complements", "source": PICK_SOURCE[verdict],
+                        "confidence": PICK_CONFIDENCE[verdict], "evidence": pick["reason"], "key": key,
+                        "group": dst_class if dst_class != klass else ""}
+                # чем дальше товар в списке проверенных для своего класса, тем слабее совет
+                s = self.w["complements"] * PICK_CONFIDENCE[verdict] * recency / (1 + 0.35 * order[dst_class])
+                order[dst_class] += 1
+                push(dst, "kit" if verdict == "kit" else "missing", s, edge, p)
 
         recs = []
         for (dst, slot), c in cands.items():

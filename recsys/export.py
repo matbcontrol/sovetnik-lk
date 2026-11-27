@@ -149,9 +149,10 @@ def verdict_summary() -> dict:
     import csv
     from collections import Counter
 
-    from recsys.llm.pair_verdicts import CLASS_FILE, FAMILY_FILE, REPORT, TRUST, read
+    from recsys.llm.pair_verdicts import CLASS_FILE, FAMILY_FILE, REPORT, TRUST, read, read_picks
 
     cls, fam = read(CLASS_FILE), read(FAMILY_FILE)
+    picks = read_picks()
     old = Counter()
     p = INTERIM / "class_links.csv"
     if p.exists():                                       # прежние связи классов, предложенные облегчённой моделью
@@ -167,6 +168,9 @@ def verdict_summary() -> dict:
         "class_sources": len({a for (a, _), v in cls.items() if v.shown}),
         "families": dict(Counter(v.verdict for v in fam.values())),
         "family_sources": len({a for (a, _), v in fam.items() if v.shown}),
+        "picks": dict(Counter(v.verdict for v in picks.values())),
+        "pick_vendor_only": sum(1 for v in picks.values() if v.shown and v.scope == "vendor"),
+        "pick_classes": len({a for (a, _), v in picks.items() if v.shown}),
         "old_links": dict(old), "trust": TRUST,
         "check": [{"model": m, "pairs": r["pairs"], "same_decision": r["same_decision"],
                    "precision": r["api_would_show"]["precision"], "recall": r["assistant_would_show"]["recall"],
@@ -206,6 +210,9 @@ def main() -> None:
         "class_veto": sorted([a, b] for a, b in g.class_veto),
         "class_block": sorted([a, c] for a, c in g.class_block),
         "class_picks": {k: sorted(v) for k, v in sorted(g.class_picks.items())},
+        "class_products": {k: [[x["dst"], x["verdict"], x["scope"], x["reason"], x["audience"]] for x in v]
+                           for k, v in g.class_products.items()},
+        "pick_judged": {a: sorted(b for x, b in g.pick_judged if x == a) for a in sorted({x for x, _ in g.pick_judged})},
         "class_rank": {k: v[:12] for k, v in g.class_rank.items()},
         "popular": g.popular,
     }
