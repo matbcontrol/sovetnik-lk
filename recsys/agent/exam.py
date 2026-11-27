@@ -157,6 +157,7 @@ def main() -> None:
                            "agent_or_rule": sum(r["found_with_rules"] for r in part)}
                     for kind in ("дополнение", "линейка") if (part := [r for r in rel if r["kind"] == kind])},
     }
+    summary["without_cache"] = journal_costs()
     print(f"\nпрогонов {n}: класс точно {summary['class_exact']:.0%}, в той же категории {summary['class_category']:.0%}; "
           + (f"связанный товар найден в {summary['related_found']:.0%} из {len(rel)}; " if rel else "")
           + f"в среднем {summary['requests_per_run']:.1f} запроса и {summary['seconds_per_run']:.0f} с на товар; "
@@ -165,6 +166,36 @@ def main() -> None:
     out = ROOT / "reports" / f"agent_exam{suffix}.json"
     out.write_text(json.dumps({"summary": summary, "runs": rows}, ensure_ascii=False, indent=1), encoding="utf-8")
     print("отчёт:", out)
+
+
+def journal_costs() -> dict:
+    """Расход исходных вызовов агента без кеша — по журналу data/interim/llm_calls.jsonl.
+
+    Повторный экзамен берёт ответы модели из кеша, поэтому время и токены его прогонов нулевые. Чтобы в отчёте
+    стояла настоящая цена, здесь средние по всем некешированным вызовам шага агента и критика из журнала.
+    """
+    path = ROOT / "data" / "interim" / "llm_calls.jsonl"
+    if not path.exists():
+        return {}
+    acc: dict[str, list[float]] = {}
+    with path.open(encoding="utf-8") as f:
+        for line in f:
+            try:
+                c = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if c.get("cached") or c.get("purpose") not in ("агент: шаг", "агент: критик"):
+                continue
+            a = acc.setdefault(c["purpose"], [0, 0, 0, 0.0])
+            a[0] += 1
+            a[1] += c.get("tokens_in", 0)
+            a[2] += c.get("tokens_out", 0)
+            a[3] += c.get("seconds", 0) or 0
+    out = {name: {"calls": int(n), "tokens_in": round(ti / n), "tokens_out": round(to / n), "seconds": round(s / n, 1)}
+           for name, (n, ti, to, s) in acc.items() if n}
+    out["note"] = ("Ответы экзамена взяты из кеша, поэтому время и токены прогонов в нём нулевые; здесь — средние "
+                   "исходных вызовов без кеша по журналу llm_calls.jsonl")
+    return out
 
 
 if __name__ == "__main__":
