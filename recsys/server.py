@@ -172,9 +172,21 @@ class Handler(SimpleHTTPRequestHandler):
         events.append(ev)
         self._json(200, {"ok": True})
 
+    def _advice(self) -> None:
+        """Встраивание: кабинет шлёт историю покупок — получает блок советника (recsys/recommend/block.py)."""
+        from recsys.recommend.block import advice
+        try:
+            size = min(int(self.headers.get("Content-Length") or 0), 50000)
+            res = advice(json.loads(self.rfile.read(size).decode("utf-8") or "{}"))
+        except ValueError as e:                            # и испорченный JSON, и ошибка в полях покупки
+            return self._json(400, {"error": str(e)[:300]})
+        self._json(200, res)
+
     def do_POST(self) -> None:
         if self.path.startswith("/api/event"):
             return self._event()
+        if self.path.startswith("/api/advice"):
+            return self._advice()
         if self.path.startswith("/api/hole"):
             return self._hole()
         if not self.path.startswith("/api/place"):
