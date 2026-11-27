@@ -111,24 +111,22 @@
   };
   const score = (v) => (v == null ? "—" : Number(v).toFixed(2).replace(".", ","));
   function judgeHtml(j) {
-    const pr = shares(j && j.prefer);
-    if (!pr) return "";
-    const grp = Object.entries(j.by_group || {}).map(([g, v]) => {
-      const s = shares(v.prefer) || {};
-      return `<tr><td>${g === "B2B" ? "Организации" : g === "B2C" ? "Частные лица" : esc(g)}</td><td class="sim-ours">${pct(s.ours, 0)}</td><td>${pct(s.base, 0)}</td><td>${pct(s.tie, 0)}</td>
-        <td>${score((v.scores || {}).ours)} / ${score((v.scores || {}).base)}</td></tr>`;
-    }).join("");
+    if (!j || !j.by_group) return "";
+    const n0 = (v) => (v == null ? "—" : nf.format(v));
+    const row = (title, v) => {
+      if (!v) return "";
+      const p = v.prefer || {}, s = v.scores || {}, u = v.useless || {}, b = v.bought || {};
+      const n = v.judgments || (p.ours || 0) + (p.base || 0) + (p.tie || 0);
+      return `<tr><td>${title} <small>(${n} оценок)</small></td><td class="sim-ours">${n0(p.ours)}</td><td>${n0(p.base)}</td><td>${n0(p.tie)}</td>
+        <td>${score(s.ours)} / ${score(s.base)}</td><td>${pct(u.ours, 0)} / ${pct(u.base, 0)}</td><td>${n0(b.ours)} / ${n0(b.base)}</td></tr>`;
+    };
+    const intro = j.how || `${j.clients || "—"} клиентов группы A, ${j.judges || 2} оценщика в роли клиента: видят историю покупок и два набора — наш и «совместные покупки», — не зная, где чей.`;
     return `<h3>Слепая оценка ИИ-клиентами</h3>
-      <p class="hint" style="max-width:none">${j.clients || "—"} клиентов группы A, ${j.judges || 2} оценщика в роли клиента: видят историю покупок и два набора — наш и «совместные покупки», — не зная, где чей.${j.how ? " " + esc(j.how) : ""}</p>
-      <p class="sim-big">Наш набор выбран в <b>${pct(pr.ours, 0)}</b> оценок, набор совместных покупок — в ${pct(pr.base, 0)}, поровну — ${pct(pr.tie, 0)}.</p>
-      <table class="sim-table"><tr><th></th><th>Выбрали наш</th><th>Выбрали базовый</th><th>Поровну</th><th>Польза 0–2: наш / базовый</th></tr>
-        <tr><td><b>Все</b></td><td class="sim-ours">${pct(pr.ours, 0)}</td><td>${pct(pr.base, 0)}</td><td>${pct(pr.tie, 0)}</td><td>${score((j.scores || {}).ours)} / ${score((j.scores || {}).base)}</td></tr>
-        ${grp}</table>
-      <ul class="sim-list">
-        ${j.useless ? `<li>Совет, бесполезный для клиента (оценка 0): у нас ${pct(j.useless.ours, 0)}, у совместных покупок ${pct(j.useless.base, 0)}.</li>` : ""}
-        ${j.agreement != null ? `<li>Оба оценщика выбрали одно и то же у ${pct(j.agreement, 0)} клиентов.</li>` : ""}
-        ${j.note ? `<li>${esc(j.note)}</li>` : ""}
-      </ul>`;
+      <p class="hint" style="max-width:none">${esc(intro)}</p>
+      <table class="sim-table"><tr><th></th><th>Выбрали наш набор</th><th>Выбрали совместные покупки</th><th>Поровну</th><th>Польза 0–2: наш / базовый</th><th>Ненужных советов: наш / базовый</th><th>Купили на деле: из нашего / из базового</th></tr>
+        ${row("Организации", j.by_group.B2B)}${row("Частные лица", j.by_group.B2C)}</table>
+      ${j.note ? `<p class="sim-note">${esc(j.note)}</p>` : ""}
+      ${j.agreement != null ? `<p class="hint">Оба оценщика выбрали одно и то же у ${pct(j.agreement, 0)} клиентов.</p>` : ""}`;
   }
   function renderExtras() {
     const w = whyHtml(report.why), j = judgeHtml(report.ai_judge);
