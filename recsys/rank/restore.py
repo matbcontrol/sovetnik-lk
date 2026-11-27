@@ -275,8 +275,13 @@ def measure(path: Path) -> None:
     total = sum(task.clients.get(c, {}).get("lk_access") == "да" for c in now.history)
     w, g, b, m = count(was, owners), count(gone, owners), count(back, owners), count(maybe, owners)
     lost, returned, with_manager = w["all"] - g["all"], b["all"] - g["all"], m["all"] - g["all"]
+    waiting = sum(not x[3] for x in links)                # связи без дословной цитаты: ждут менеджера
+    silent = len(tried) - len({a for a, *_ in links})      # товары, по которым агент ответил «связи нет»
+    note = (f"Разница между «вернул сам» и «с менеджером» — связи без дословной цитаты ({waiting}): агент их "
+            f"назвал, но в граф не поставил. " if waiting else "В очередь менеджера агент ничего не отправил. ")
+    note += f"По {silent} товарам из {len(tried)} агент ответил «обоснованной связи нет»."
     measured = {
-        "links_file": path.name, "products": len(tried),
+        "links_file": path.name, "products": len(tried), "note": note,
         "products_with_agent_link": len({a for a, *_ in links}),
         "owners_with_access": len(owners), "clients_with_access": total,
         # restored — только связи с дословной цитатой (идут в граф сами); proposed — вместе с теми, что ждут менеджера

@@ -18,6 +18,7 @@
  "measured": {
   "links_file": "agent_restore.csv",
   "products": 6,
+  "note": "Разница между «вернул сам» и «с менеджером» — связи без дословной цитаты (1): агент их назвал, но в граф не поставил. По 3 товарам из 6 агент ответил «обоснованной связи нет».",
   "products_with_agent_link": 3,
   "owners_with_access": 1031,
   "clients_with_access": 4324,
@@ -78,6 +79,7 @@
  "measured_wide": {
   "links_file": "agent_restore_wide.csv",
   "products": 26,
+  "note": "В очередь менеджера агент ничего не отправил. По 19 товарам из 26 агент ответил «обоснованной связи нет».",
   "products_with_agent_link": 7,
   "owners_with_access": 1666,
   "clients_with_access": 4324,
