@@ -21,6 +21,7 @@
   const report = await getJson("data/report.json");
   const priv = await getJson("data/private.json");
   const agent = await getJson("data/agent_runs.json");
+  const holesData = await getJson("data/agent_holes.json");
 
   // ---- решения менеджера по связям: хранятся в браузере, отклонённая связь сразу выпадает из советов
   const VOTES_KEY = "sovetnik.votes.v1";
@@ -36,6 +37,22 @@
   let agentStore = {};
   try { agentStore = JSON.parse(localStorage.getItem(AGENT_KEY) || "{}"); } catch (e) { agentStore = {}; }
   const nodeIds = new Set(data.nodes.map((n) => n.id));
+  // связь агента, закрывшего дыру: «нужно», «комплект» или редакция — от вида зависят источник и уверенность ребра
+  const holeEdge = (src, l) => [src, l.dst, l.type || "complements", l.kind === "kit" ? "агент каталога: комплект" : "агент каталога",
+                                l.confidence || (l.kind === "kit" ? 0.5 : l.kind === "need" ? 0.75 : 0.7), l.evidence || l.reason || ""];
+  const holesOf = (d) => { const h = Array.isArray(d) ? d : ((d && d.holes) || []); return Array.isArray(h) ? h : Object.values(h); };
+  // Связи агента, которых ещё нет в собранном графе: живой запуск на этой странице или запуск после последней
+  // сборки данных. Клиент видит их сразу; без цитаты связь идёт только в очередь менеджера.
+  const liveEdges = [], liveQuotes = {}, liveQueue = [];
+  {
+    const known = new Set(data.edges.map((e) => `${e[0]}|${e[1]}`));
+    for (const h of holesOf(holesData)) for (const l of h.links || []) {
+      if (!nodeIds.has(h.family) || !nodeIds.has(l.dst) || known.has(`${h.family}|${l.dst}`)) continue;
+      const e = holeEdge(h.family, l);
+      if (l.status === "graph") { liveEdges.push(e); if (l.quote) liveQuotes[ekey(e)] = l.quote; }
+      else liveQueue.push({ src: e[0], dst: e[1], type: e[2], confidence: e[4], evidence: e[5], quote: l.quote || "" });
+    }
+  }
   function rebuild() {
     const edges = data.edges.filter((e) => votes[ekey(e)] !== "no");
     const newNodes = new Map(), newEdges = [];
@@ -44,7 +61,7 @@
       if (p.node && !nodeIds.has(p.node.id)) newNodes.set(p.node.id, p.node);
       newEdges.push(p.edge);
     }
-    graph = new E.Graph(Object.assign({}, data, { nodes: data.nodes.concat(Array.from(newNodes.values())), edges: edges.concat(newEdges) }));
+    graph = new E.Graph(Object.assign({}, data, { nodes: data.nodes.concat(Array.from(newNodes.values())), edges: edges.concat(newEdges, liveEdges.filter((e) => votes[ekey(e)] !== "no")) }));
     const byClass = (v) => new Set(Object.keys(votes).filter((k) => votes[k] === v && /^(c[lrp]|pk)\|/.test(k)));
     approved = byClass("ok");
     rejected = byClass("no");
@@ -623,11 +640,16 @@
   const goneByClass = {};
   for (const n of data.nodes) if (n.cls && n.sale !== 1 && n.ru !== 1 && n.kind !== "hardware") goneByClass[n.cls] = (goneByClass[n.cls] || 0) + 1;
   const queue = [];
-  for (const e of data.edges) {
-    const kit = e[3] === "разметка: комплект" || e[3] === "серия в названии" || e[3] === "характеристики каталога: комплект";   // комплект виден клиенту сразу; менеджер может его отклонить
-    queue.push({ key: kit ? `pk|${e[0]}|${e[1]}` : ekey(e), group: kit ? "kit" : "edge", type: e[2], from: nodeNameAll(e[0]), to: nodeNameAll(e[1]), source: E.LABEL[e[3]] || e[3],
-                 conf: e[4], ev: (e[5] || "").replace(/; https?:\S+$/, ""), auto: kit ? E.KIT_TO_CLIENT : true, urlFrom: (allNodes.get(e[0]) || {}).url, urlTo: (allNodes.get(e[1]) || {}).url });
+  /** Строка очереди менеджера для связи «товар — товар». */
+  function edgeRow(e) {
+    const kit = e[3] === "разметка: комплект" || e[3] === "серия в названии" || e[3] === "характеристики каталога: комплект" || e[3] === "агент каталога: комплект";   // комплект виден клиенту сразу; менеджер может его отклонить
+    const byAgent = String(e[3]).startsWith("агент каталога");   // связь нашёл агент и подтвердил цитатой
+    const cited = byAgent && ((data.agent_quotes || {})[ekey(e)] || liveQuotes[ekey(e)]);
+    const evidence = cited ? `${e[5] || ""} Цитата: «${cited}»` : (e[5] || "");
+    return { key: kit ? `pk|${e[0]}|${e[1]}` : ekey(e), group: byAgent ? "agent" : kit ? "kit" : "edge", type: e[2], from: nodeNameAll(e[0]), to: nodeNameAll(e[1]), source: E.LABEL[e[3]] || e[3],
+                 conf: e[4], ev: evidence.replace(/; https?:\S+$/, ""), auto: kit ? E.KIT_TO_CLIENT : true, urlFrom: (allNodes.get(e[0]) || {}).url, urlTo: (allNodes.get(e[1]) || {}).url };
   }
+  for (const e of data.edges.concat(liveEdges)) queue.push(edgeRow(e));
   for (const l of data.class_links || []) {
     const labelled = l.source === "разметка";
     const top = ((data.class_rank || {})[l.dst_class] || [])[0];
@@ -672,7 +694,7 @@
                   from: src === id ? r.card.name : nodeNameAll(src), to: dst === id ? r.card.name : nodeNameAll(dst),
                   source: "агент каталога", conf: 0.75, ev: e.why || "", auto: false,
                   urlFrom: (allNodes.get(src) || {}).url, urlTo: (allNodes.get(dst) || {}).url,
-                  payload: { node, edge: [src, dst, e.type, "агент каталога", 0.75, e.why || ""] } });
+                  payload: { node, edge: [src, dst, e.type, "агент каталога, принято менеджером", 0.75, e.why || ""] } });
     }
     return rows;
   }
@@ -682,6 +704,17 @@
     return added;
   }
   ((agent && agent.runs) || []).forEach(addAgentRows);
+  // предложения агента, закрывавшего дыру, для которых критик не нашёл подтверждающей цитаты: ждут менеджера
+  function addQueueRow(x) {
+    const key = `ag|${x.src}|${x.dst}|${x.type}`;
+    if (queue.some((q) => q.key === key)) return;
+    queue.push({ key, group: "agent", type: x.type, from: nodeNameAll(x.src), to: nodeNameAll(x.dst), source: "агент каталога",
+                 conf: x.confidence || 0.5, ev: (x.evidence || "") + (x.quote ? ` Цитата: «${x.quote}»` : " Подтверждающей цитаты нет."), auto: false,
+                 urlFrom: (allNodes.get(x.src) || {}).url, urlTo: (allNodes.get(x.dst) || {}).url,
+                 payload: { node: null, edge: [x.src, x.dst, x.type, "агент каталога, принято менеджером", x.confidence || 0.5, x.evidence || ""] } });
+  }
+  (data.agent_queue || []).forEach(addQueueRow);
+  liveQueue.forEach(addQueueRow);
   // принятое раньше (например, в живом прогоне до перезагрузки) остаётся в очереди, чтобы его можно было отменить
   for (const [k, p] of Object.entries(agentStore)) {
     if (p && p.edge && !queue.some((q) => q.key === k)) {
@@ -991,24 +1024,215 @@
   }
 
   // =========================== вкладка «Агент» ===========================
-  const TOOL_RU = { find_classes: "поиск класса", search_catalog: "поиск по каталогу", get_product: "карточка товара", class_companions: "спутники класса", "итог": "итог" };
+  const TOOL_RU = { find_classes: "поиск класса", search_catalog: "поиск по каталогу", get_product: "карточка товара", class_companions: "спутники класса",
+                    judged: "что уже рассужено", line: "другие редакции линейки", addons: "дополнения «для товара»", spec: "характеристики из фида", "итог": "итог" };
+  /** Аргументы шага по-человечески: вместо ключа товара или класса — его название. */
+  const argText = (a) => Object.entries(a || {}).filter(([, v]) => v).map(([k, v]) => (k === "id" ? nodeNameAll(v) : k === "class_id" ? clsName(v) : v)).join(", ");
   const LINK_RU = { addon_for: "дополнение к", requires: "нужен для работы", complements: "стоит предложить вместе", upgrade_of: "редакция в линейке с", new_version_of: "версия в линейке с", analog_of: "российский аналог для" };
   let agentIdx = 0;
   function foundText(st) {
-    const r = st.result;
+    let r = st.result;
     if (st.tool === "итог") return "паспорт товара и связи";
+    if (r && Array.isArray(r.pairs)) r = r.pairs;              // «что уже рассужено»: пары с вердиктом
     if (Array.isArray(r)) {
-      if (!r.length) return "ничего не найдено";
-      const names = r.map((x) => x.name).filter(Boolean).slice(0, 4).map((x) => (x.length > 46 ? x.slice(0, 44) + "…" : x));
-      return `найдено ${r.length}: ${names.join("; ")}`;
+      const named = r.filter((x) => x && x.name);
+      if (!named.length) return (r[0] && (r[0].note || r[0].error)) || "ничего не найдено";
+      const names = named.slice(0, 4).map((x) => (x.name.length > 46 ? x.name.slice(0, 44) + "…" : x.name) + (x.verdict ? ` (${x.verdict})` : ""));
+      return `найдено ${named.length}: ${names.join("; ")}`;
     }
     if (r && r.error) return r.error;
+    if (r && r.spec) return String(r.spec).slice(0, 160);
     if (r && r.name) return `${r.name}${r.class ? " · " + r.class : ""}${r.sale ? " · " + r.sale : ""}`;
     return "";
   }
+
+  // ---- агент закрывает «дыры»: товары, владельцу которых блоку нечего посоветовать по делу
+  const OUTCOME = { closed: "закрыта", kit: "найден только комплект", queue: "ждёт менеджера", known: "нового не найдено",
+                    no_grounded_link: "обоснованной связи нет" };
+  // пары, которые граф знал и без агента: повтор такой пары дыру не закрывает
+  const knownPairs = new Set(data.edges.filter((e) => !String(e[3]).startsWith("агент каталога")).map((e) => `${e[0]}|${e[1]}`));
+  const holeNew = (r, l) => !knownPairs.has(`${r.family}|${l.dst}`);
+  /** Итог по дыре в единицах замера показа: дыра закрыта, только если агент дал новый совет сильнее «комплекта».
+      Комплект — совет «если ещё нет», он идёт последней карточкой и обоснованным советом в замере не считается. */
+  function holeResult(r) {
+    const links = r.links || [], fresh = links.filter((l) => l.status === "graph" && holeNew(r, l));
+    if (fresh.some((l) => l.kind !== "kit")) return "closed";
+    if (fresh.length) return "kit";
+    if (links.some((l) => l.status === "queue")) return "queue";
+    return links.length ? "known" : "no_grounded_link";
+  }
+  const holeRuns = holesOf(holesData);
+  const holeBy = new Map(holeRuns.map((h) => [h.family, h]));
+  const holeQueue = (priv && priv.holes) || [];             // очередь с числом клиентов — только в закрытом стенде
+  let holeCur = null, holesLive = false;
+  function holeList() {
+    const seen = new Set(), out = [];
+    for (const q of holeQueue) {
+      if (q.family) seen.add(q.family);
+      out.push({ family: q.family || "", name: q.name || q.family || "", cls: q.cls || "", clients: q.clients || 0, b2b: q.b2b || 0, b2c: q.b2c || 0,
+                 renew: !!q.renew, sale: q.sale !== false, rebuy: q.rebuy, other: q.other, run: (q.family && holeBy.get(q.family)) || null });
+    }
+    for (const h of holeRuns) {
+      if (!seen.has(h.family)) out.push({ family: h.family, name: h.name || nodeNameAll(h.family), cls: h.class || "", clients: null, renew: false, sale: true, run: h });
+    }
+    return out;
+  }
+  /** Агент берёт дыру, если это товар открытого каталога в продаже и ему нужен совет, а не продление. */
+  const holeOpen = (x) => !!x.family && !x.renew && x.sale;
+  const holeState = (x) => (x.run ? OUTCOME[holeResult(x.run)] : x.renew ? "нужно продление, а не совет"
+    : !x.family ? "нет в открытом каталоге" : !x.sale ? "нет в продаже" : "не разобрана");
+  {
+    const all = holeList(), pick = (o) => all.findIndex((x) => x.run && holeResult(x.run) === o);
+    const first = pick("closed") >= 0 ? pick("closed") : pick("kit");
+    if (first >= 0) holeCur = first;                          // вкладка открывается на дыре, где агент что-то нашёл
+  }
+  function renderHoles() {
+    const list = holeList();
+    $("#holes").hidden = !list.length;
+    if (!list.length) return;
+    const done = list.filter((x) => x.run);
+    const n = (o) => done.filter((x) => holeResult(x.run) === o).length;
+    const tally = `закрыто ${n("closed")}, найден только комплект ${n("kit")}, ждёт менеджера ${n("queue")}, нового не найдено ${n("known") + n("no_grounded_link")}`;
+    const sum = (xs) => xs.reduce((t, x) => t + (x.clients || 0), 0);
+    const parts = ["Дыра — товар, за которым стоят клиенты кабинета без совета по делу: им блок показывает только комплект или «Часто докупают»."];
+    if (holeQueue.length) {
+      const open = list.filter((x) => x.clients != null && holeOpen(x)), renew = list.filter((x) => x.renew);
+      const rest = holeQueue.length - open.length - renew.length;
+      const closed = done.filter((x) => holeResult(x.run) === "closed");
+      parts.push(`Дыр в очереди: ${nf.format(holeQueue.length)}, по убыванию числа клиентов кабинета за ними. Агент берёт товары открытого каталога в продаже: таких ${nf.format(open.length)}, клиентов за ними ${nf.format(sum(open))}.`);
+      if (renew.length) parts.push(`Нужно продление, а не совет: ${nf.format(renew.length)} (клиентов ${nf.format(sum(renew))}).`);
+      if (rest > 0) parts.push(`Без карточки в открытом каталоге или не в продаже: ${nf.format(rest)} — наружу их не отправляем.`);
+      parts.push(`Разобрано: ${done.length} — ${tally}.${sum(closed) ? ` Клиентов за закрытыми: ${nf.format(sum(closed))}.` : ""}`);
+    } else {
+      const hs = report && report.holes, wo = hs && hs.without_advice;
+      if (hs && hs.holes && wo) {
+        const rn = hs.renew || {}, renewClients = (rn.clients_b2b || 0) + (rn.clients_b2c || 0);
+        parts.push(`По данным кабинета на ${esc(String(hs.today || "").split("-").reverse().join("."))} таких товаров ${nf.format(hs.holes)}, без обоснованного совета из-за них ${nf.format((wo.B2B || 0) + (wo.B2C || 0))} клиентов`
+          + (rn.holes ? `; из них ${nf.format(renewClients)} стоят за ${nf.format(rn.holes)} товарами, которым нужно продление, а не совет.` : "."));
+      }
+      parts.push(`Агент разобрал: ${done.length} — ${tally}.`);
+    }
+    const bf = report && report.block_fill, was = bf && bf.before_holes;
+    if (was && (was.b2b.own !== bf.b2b.own || was.b2c.own !== bf.b2c.own)) {
+      parts.push(`Обоснованный совет в блоке: у организаций было ${pct(was.b2b.own)}, стало ${pct(bf.b2b.own)}; у частных лиц было ${pct(was.b2c.own)}, стало ${pct(bf.b2c.own)}.`);
+    }
+    $("#holes-sum").innerHTML = parts.join(" ");
+    $("#holes-list").innerHTML = list.slice(0, 90).map((x, i) => `<li data-h="${i}" class="${holeCur === i ? "is-cur" : ""}">${esc(x.name)}
+      <small>${x.clients != null ? `клиентов: ${nf.format(x.clients)} · ` : ""}<span class="mark mark--${x.run && ["closed", "kit"].includes(holeResult(x.run)) ? "yes" : "no"}">${esc(holeState(x))}</span></small></li>`).join("");
+    $$("#holes-list li").forEach((li) => li.addEventListener("click", () => { holeCur = +li.dataset.h; renderHoles(); showHole(list[holeCur]); }));
+  }
+  /** Что блок показывает владельцу товара: расчёт на странице по тому же графу, что и вкладка «Клиент». */
+  function holeCards(x) {
+    const node = graph.nodes.get(x.family);
+    if (!node) return "";
+    const type = x.clients != null ? (x.b2b >= x.b2c ? "b2b" : "b2c") : (node.b2b ? "b2b" : "b2c");
+    const res = new E.Recommender(graph, recOpts({ fill: false, unverified: false }))
+      .recommend({ type, today: state.today, purchases: [{ family: x.family, date: isoShift(state.today, -2), term: null }] }, 5);
+    const recs = res.recs.filter((r) => r.slot !== "renew").slice(0, 3);
+    const who = type === "b2b" ? "организации" : "частному лицу";
+    if (!recs.length) return `<p class="hint">Блок ничего не советует ${who} с одним этим товаром: дыра остаётся.</p>`;
+    const notes = [`Клиент — ${type === "b2b" ? "организация" : "частное лицо"} с одним этим товаром. Совет считается на странице, модель не вызывается.`];
+    // совет по делу у владельца одного товара есть, а дыра всё равно числится: она про клиентов, у которых советуемое уже куплено
+    if (x.clients && recs.some((r) => r.slot !== "kit")) notes.push("Владельцу одного этого товара совет по делу есть. Дыра — про клиентов кабинета, у которых советуемое уже куплено или не подходит им по типу: им нужна ещё одна связь.");
+    const fresh = ((x.run && x.run.links) || []).filter((l) => l.status === "graph" && holeNew(x.run, l));
+    const lost = fresh.filter((l) => !recs.some((r) => r.family === l.dst));
+    if (lost.length) notes.push(`Совет агента «${lost.map((l) => l.dst_name || nodeNameAll(l.dst)).join("», «")}» в эти три карточки не попал: комплект в блоке один, и место занято парой, проверенной заранее.`);
+    return `<p class="hint small">${notes.map(esc).join(" ")}</p>
+      <div class="cards">${recs.map((r) => {
+        const m = graph.nodes.get(r.family) || {};
+        return `<article class="card" style="--slot:${slotVar(r.slot)}"><div class="card__slot"><i class="dot"></i>${esc(r.slotTitle)}</div>
+          <div class="card__name">${esc(r.name)}</div><div class="card__vendor">${esc([r.vendor, className(m)].filter(Boolean).join(" · "))}</div>
+          <p class="card__why">${esc(r.why)}</p><div class="card__foot"><span class="chip">${esc(r.label)}</span></div></article>`;
+      }).join("")}</div>`;
+  }
+  function showHole(x) {
+    const view = $("#agent-view"), r = x.run;
+    view.className = "panel agent";
+    const links = ((r && r.links) || []).map((l) => `<li><b>${esc(l.kind ? ({ kit: "комплект", need: "нужно", upgrade: "старшая редакция", new_version: "новая версия" }[l.kind] || l.kind) : (LINK_RU[l.type] || l.type || ""))}</b> «${esc(l.dst_name || nodeNameAll(l.dst))}» — ${esc(l.evidence || l.reason || "")}
+      ${l.quote ? `<span class="chip">цитата: «${esc(String(l.quote).slice(0, 110))}»</span>` : '<span class="chip">цитаты нет</span>'}
+      <br><small style="color:var(--muted)">${l.status !== "graph" ? "в очереди менеджера: без цитаты клиент совет не увидит" : holeNew(r, l) ? "в графе: клиент видит совет сразу, менеджер может отклонить" : "эта пара уже была в разметке: агент её повторил, нового совета нет"}${l.critic ? " · критик: " + esc(l.critic) : ""}</small></li>`).join("");
+    let ask = -1;
+    const steps = ((r && r.steps) || []).map((st) => {
+      const k = st.ask || 0;
+      const head = k === ask ? "" : `<div class="ask">${k === 0 ? "без модели: что о товаре уже известно" : "запрос к модели № " + k + (st.thought ? " — " + esc(st.thought) : "")}</div>`;
+      ask = k;
+      if (st.tool === "итог") return `<li>${head}<code>итог</code><div class="found">${(r.links || []).length + (r.dropped || []).length ? "агент назвал советы — дальше их проверяют правила в коде и критик" : "агент решил, что обоснованного совета нет"}</div></li>`;
+      const args = argText(st.args);
+      return `<li>${head}<code>${esc(TOOL_RU[st.tool] || st.tool || "")}</code>${args ? " «" + esc(args) + "»" : ""}<div class="found">${esc(foundText(st))}</div></li>`;
+    }).join("");
+    const cost = r ? [r.model, r.model_requests ? `запросов к модели: ${r.model_requests}` : "", r.tokens ? `токенов ${nf.format((r.tokens.in || 0) + (r.tokens.out || 0))}` : "", r.seconds != null ? `${Math.round(r.seconds)} с` : ""].filter(Boolean).join(" · ") : "";
+    const cut = ((r && r.dropped) || []).map((l) => `<li>«${esc(l.dst_name || nodeNameAll(l.dst || ""))}» — ${esc(l.why || l.critic || l.reason || "")}</li>`).join("");
+    const why = x.renew ? `Агент такую дыру не берёт: ту же линейку снова купили ${pct(x.rebuy || 0, 0)} её владельцев, что-то другое — ${pct(x.other || 0, 0)}. Им нужно продление, а для него в кабинете есть свой сценарий.`
+      : !x.family ? "У товара нет карточки в открытом каталоге: агент по API его не берёт — данные задачи наружу не уходят."
+      : !x.sale ? "Товара нет в продаже: агент его не берёт." : "";
+    const result = r ? holeResult(r) : "";
+    const canRun = holesLive && holeOpen(x) && result !== "closed";
+    const verdict = { closed: "Агент нашёл новый совет и подтвердил его цитатой: владелец товара теперь получает совет по делу.",
+                      kit: "Комплект — совет «если ещё нет», он идёт последней карточкой. По строгому счёту дыра остаётся: совета «нужно» к этому товару агент не нашёл.",
+                      queue: "Цитаты в карточках товаров не нашлось: совет ждёт решения менеджера, клиент его не видит.",
+                      known: "Агент пришёл к паре, которая уже была в разметке: нового совета не прибавилось." }[result] || "";
+    view.innerHTML = `
+      <div class="panel__head"><h2>${esc(x.name)}</h2><span class="cost">${esc(cost)}</span></div>
+      <div class="agent__card"><b>Дыра.</b> ${x.cls ? esc(x.cls) + ". " : ""}${x.clients != null ? `Клиентов кабинета, которым из-за неё нечего посоветовать по делу: ${nf.format(x.clients)} (организаций ${nf.format(x.b2b)}, частных лиц ${nf.format(x.b2c)}). ` : ""}${r ? `Итог: <b>${esc(OUTCOME[result])}</b>. ${esc(verdict)}` : why ? "" : "Агент её ещё не разбирал."}</div>
+      ${why ? `<p class="hint" style="margin-top:8px">${esc(why)}</p>` : ""}
+      ${r && r.explanation ? `<p class="hint" style="margin-top:8px">Почему связи нет: ${esc(r.explanation)}</p>` : ""}
+      ${canRun ? `<button class="btn" id="hole-run" style="margin-top:12px">${r ? "Разобрать заново" : "Закрыть дыру агентом"}</button><p class="hint small" id="hole-status"></p><ul class="steps" id="hole-live"></ul>` : ""}
+      ${links ? `<h3>Что нашёл агент</h3><ul class="kept">${links}</ul>` : ""}
+      ${cut ? `<h3>Что снято правилами и критиком</h3><ul class="cut">${cut}</ul>` : ""}
+      ${x.family && nodeIds.has(x.family) && !x.renew ? `<h3>Что блок показывает владельцу одного этого товара</h3>${holeCards(x)}` : ""}
+      ${steps ? `<h3>Шаги агента</h3><ul class="steps">${steps}</ul>` : ""}`;
+    const btn = $("#hole-run");
+    if (btn) btn.addEventListener("click", () => runHole(x));
+  }
+  async function runHole(x) {
+    const btn = $("#hole-run"), status = $("#hole-status"), live = $("#hole-live");
+    btn.disabled = true;
+    const t0 = performance.now();
+    // шаги показываем по мере работы: сервер отдаёт то, что агент уже сделал
+    const stepLine = (st) => (st.ask ? `<li><div class="ask">${esc(st.ask)}</div></li>`
+      : `<li><code>${esc(TOOL_RU[st.tool] || st.tool || "")}</code>${argText(st.args) ? " «" + esc(argText(st.args)) + "»" : ""}<div class="found">${esc(st.found || "")}</div></li>`);
+    const timer = setInterval(async () => {
+      status.textContent = `Агент работает: ${Math.round((performance.now() - t0) / 1000)} с. Одна дыра — от половины минуты до трёх минут.`;
+      const p = await getJson("api/hole/progress");
+      if (p && p.family === x.family && !p.done) live.innerHTML = p.steps.map(stepLine).join("");
+    }, 1000);
+    const ctl = new AbortController();
+    const stop = setTimeout(() => ctl.abort(), 300000);
+    try {
+      const resp = await fetch("api/hole", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ family_id: x.family }), signal: ctl.signal });
+      const res = await resp.json();
+      if (!resp.ok) throw new Error(res.error || "ошибка агента");
+      res.family = res.family || x.family;
+      const at = holeRuns.findIndex((h) => h.family === res.family);
+      if (at >= 0) holeRuns.splice(at, 1);
+      holeRuns.unshift(res);
+      holeBy.set(res.family, res);
+      for (const l of res.links || []) {
+        if (!nodeIds.has(l.dst)) continue;
+        const edge = holeEdge(res.family, l);
+        if (l.status !== "graph") { addQueueRow({ src: edge[0], dst: edge[1], type: edge[2], confidence: edge[4], evidence: edge[5], quote: l.quote || "" }); continue; }
+        if (data.edges.concat(liveEdges).some((e) => e[0] === edge[0] && e[1] === edge[1])) continue;
+        liveEdges.push(edge);                               // клиент видит совет сразу, менеджер может отклонить
+        if (l.quote) liveQuotes[ekey(edge)] = l.quote;
+        queue.push(edgeRow(edge));
+      }
+      rebuild(); render(true);
+      const list = holeList();
+      holeCur = list.findIndex((h) => h.family === res.family);
+      renderHoles(); showHole(list[holeCur]);
+    } catch (err) {
+      status.textContent = "Не получилось: " + (err.name === "AbortError" ? "агент не уложился в пять минут" : err.message);
+      btn.disabled = false;
+    } finally {
+      clearInterval(timer); clearTimeout(stop);
+    }
+  }
   function renderAgent() {
+    renderHoles();
     const view = $("#agent-view");
+    const hole = holeCur != null ? holeList()[holeCur] : null;   // выбрана дыра: справа она, а не прогон экзамена
     if (!agent || !agent.runs.length) {
+      if (hole) return showHole(hole);
       view.innerHTML = '<p class="note">Журналов агента пока нет: <code>python -m recsys.agent.exam</code>, затем <code>python -m recsys.agent.site</code>.</p>';
       return;
     }
@@ -1031,10 +1255,11 @@
     $("#agent-runs").innerHTML = agent.runs.map((r, i) => {
       const t = r.truth || {};
       const okClass = t.class && r.passport.class_name === t.class;
-      return `<li data-i="${i}" class="${i === agentIdx ? "is-cur" : ""}">${esc(r.card.name)}
+      return `<li data-i="${i}" class="${i === agentIdx && !hole ? "is-cur" : ""}">${esc(r.card.name)}
         <small>${t.kind ? esc(t.kind) + " · " : ""}${r.truth ? `<span class="mark mark--${okClass ? "yes" : "no"}">${okClass ? "класс совпал" : "класс другой"}</span>` : '<span class="mark mark--yes">живой запуск</span>'} · связей ${r.links.length} · ${r.requests || "?"} запр., ${r.seconds >= 0.5 ? Math.round(r.seconds) + " с" : "ответы из кеша"}</small></li>`;
     }).join("");
-    $$("#agent-runs li").forEach((li) => li.addEventListener("click", () => { agentIdx = +li.dataset.i; renderAgent(); }));
+    $$("#agent-runs li").forEach((li) => li.addEventListener("click", () => { agentIdx = +li.dataset.i; holeCur = null; renderAgent(); }));
+    if (hole) return showHole(hole);
     const r = agent.runs[agentIdx], t = r.truth || {}, p = r.passport;
     let ask = -1;
     const steps = r.steps.map((st) => {
@@ -1116,6 +1341,7 @@
   (async function setupLive() {
     const ping = await getJson("api/ping");
     if (!ping) return;                                    // стенд открыт без сервера: живого запуска нет
+    holesLive = !!(ping.agent && ping.holes);
     if (!ping.agent) {
       // сервер есть, но модель недоступна: говорим прямо, а не показываем форму, которая упадёт
       $("#agent-live").hidden = false;

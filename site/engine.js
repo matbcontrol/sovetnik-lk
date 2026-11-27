@@ -56,7 +56,9 @@
     "разметка класса: нужно": "товар проверен для этого класса: нужно",
     "разметка класса: комплект": "товар проверен для этого класса: комплект",
     "менеджер": "принято менеджером",
-    "агент каталога": "предложено агентом каталога, принято менеджером",
+    "агент каталога": "найдено агентом каталога, подтверждено цитатой",
+    "агент каталога: комплект": "найдено агентом каталога: комплект",
+    "агент каталога, принято менеджером": "предложено агентом каталога, принято менеджером",
     "витрина": "порядок витрины магазина",
   };
   const TYPE_TITLE = {
@@ -77,7 +79,9 @@
   const SERIES_SOURCE = "серия в названии";
   // Совместимость, проверенная по характеристикам каталога: сокет, тип памяти, форм-фактор.
   const SPEC_SOURCE = "характеристики каталога", SPEC_KIT = "характеристики каталога: комплект";
-  const isKit = (source) => source === VERDICT_SOURCE.kit || source === SERIES_SOURCE || source === SPEC_KIT;
+  // Связь, которую нашёл агент каталога, закрывая «дыру»: подтверждена цитатой, причина написана для клиента.
+  const AGENT_SOURCE = "агент каталога", AGENT_KIT = "агент каталога: комплект";
+  const isKit = (source) => source === VERDICT_SOURCE.kit || source === SERIES_SOURCE || source === SPEC_KIT || source === AGENT_KIT;
   // Товар, проверенный для класса: разметчик судил не пару с конкретным товаром клиента, а «подходит ли товар Б
   // любому товару класса А» (или только товарам того же производителя). Совет слабее проверенной пары товаров.
   const PICK_SOURCE = { need: "разметка класса: нужно", kit: "разметка класса: комплект" };
@@ -306,7 +310,7 @@
       if (edge.source === PICK_SOURCE.need || edge.source === PICK_SOURCE.kit) {
         return `${ev.replace(/[. ]+$/, "")}.`;       // товар проверен для класса: причина написана для клиента
       }
-      if ((edge.source === VERDICT_SOURCE.need || isKit(edge.source)) && !edge.class) {
+      if ((edge.source === VERDICT_SOURCE.need || edge.source === AGENT_SOURCE || isKit(edge.source)) && !edge.class) {
         return `${ev.replace(/[. ]+$/, "")}.`;       // пара товаров проверена заранее: причина уже написана для клиента
       }
       if (edge.class) {
@@ -441,7 +445,7 @@
           if (!g.onSale(e.dst)) s *= 0.8;
           direct = direct || t === "analog_ru";
           if (t === "upgrade" || t === "new_version") e = Object.assign({}, e, { group: "next:" + fam });   // на одну покупку — одна «следующая ступень»
-          if (t === "complements" && (e.source === VERDICT_SOURCE.need || e.source === VERDICT_SOURCE.kit || e.source === SPEC_SOURCE)) {
+          if (t === "complements" && (e.source === VERDICT_SOURCE.need || e.source === VERDICT_SOURCE.kit || e.source === SPEC_SOURCE || e.source === AGENT_SOURCE)) {
             // проверенная пара товаров: из чужого класса в блоке один совет (два антивируса к одной системе
             // не нужны). В своём классе у продукта бывает несколько разных дополнений: их не склеиваем.
             const dstClass = (g.nodes.get(e.dst) || {}).cls || "";

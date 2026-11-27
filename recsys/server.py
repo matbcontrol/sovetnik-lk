@@ -42,19 +42,68 @@ def agent_ready() -> dict:
     free = [m for m in llm.models if llm.exhausted.get(m) != today]
     if not free:
         return {"agent": False, "why": "суточный лимит модели исчерпан: стенд показывает записанные прогоны агента"}
-    return {"agent": True, "model": free[0]}
+    try:
+        import recsys.agent.holes  # noqa: F401 — режим «закрыть дыру» есть не в каждой сборке
+        holes = True
+    except Exception:                                  # модуля нет или он ещё не дописан: стенд работает без него
+        holes = False
+    return {"agent": True, "model": free[0], "holes": holes}
+
+
 STATE: dict = {}
+PROGRESS: dict = {"family": "", "steps": [], "done": True}   # что агент делает прямо сейчас: страница читает по ходу работы
 
 
 def catalog() -> Catalog:
+    """Каталог для агента. Если подключён режим «закрыть дыру», берём его расширенный каталог: один объект на оба режима."""
     if "cat" not in STATE:
-        STATE["cat"] = Catalog()
+        try:
+            from recsys.agent.holes import HoleTools
+            STATE["cat"] = HoleTools()
+        except Exception:                              # режима нет или его данные не собраны: «вынь и вставь» работает и без него
+            STATE["cat"] = Catalog()
     return STATE["cat"]
+
+
+def brief(result: object) -> str:
+    """Одна строка о том, что вернул инструмент: для показа шага на странице, пока агент ещё работает."""
+    if isinstance(result, dict) and isinstance(result.get("pairs"), list):
+        result = result["pairs"]
+    if isinstance(result, list):
+        names = [str(x.get("name", ""))[:46] for x in result if isinstance(x, dict) and x.get("name")]
+        notes = [str(x.get("note", "")) for x in result if isinstance(x, dict) and x.get("note")]
+        return f"найдено {len(names)}: " + "; ".join(names[:4]) if names else (notes[0] if notes else "ничего не найдено")
+    if isinstance(result, dict):
+        return str(result.get("error") or " · ".join(str(result[k]) for k in ("name", "class", "sale") if result.get(k)))[:160]
+    return ""
+
+
+class Watched:
+    """Обёртка над каталогом или моделью: каждое обращение агента сразу попадает в PROGRESS.
+
+    Сам агент об этом не знает — он вызывает те же call и json; остальные поля и методы отдаются как есть.
+    """
+
+    def __init__(self, inner: object) -> None:
+        self._inner = inner
+
+    def __getattr__(self, name: str):
+        return getattr(self._inner, name)
+
+    def call(self, tool: str, args: dict) -> object:
+        result = self._inner.call(tool, args)
+        PROGRESS["steps"].append({"tool": tool, "args": args, "found": brief(result)})
+        return result
+
+    def json(self, *args, **kwargs) -> object:
+        critic = "критик" in str(kwargs.get("purpose", ""))
+        PROGRESS["steps"].append({"ask": "критик сверяет советы с цитатами" if critic else "модель решает, что искать дальше"})
+        return self._inner.json(*args, **kwargs)
 
 
 class Handler(SimpleHTTPRequestHandler):
     def log_message(self, fmt: str, *args) -> None:        # в журнал — только обращения к агенту
-        if "/api/" in (args[0] if args else ""):
+        if "/api/" in str(args[0] if args else ""):       # у ответа «файл не найден» первым идёт код, а не строка запроса
             super().log_message(fmt, *args)
 
     def end_headers(self) -> None:                         # данные стенда пересобираются — кеш браузера не нужен
@@ -72,9 +121,44 @@ class Handler(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
         if self.path.startswith("/api/ping"):
             return self._json(200, agent_ready())
+        if self.path.startswith("/api/hole/progress"):     # без LOCK: страница спрашивает, пока агент занят
+            return self._json(200, {"family": PROGRESS["family"], "steps": list(PROGRESS["steps"]), "done": PROGRESS["done"]})
         super().do_GET()
 
+    def _hole(self) -> None:
+        """Агент закрывает «дыру»: ищет связь для товара каталога, которому нечего посоветовать."""
+        try:
+            size = min(int(self.headers.get("Content-Length") or 0), 2000)
+            family = str(json.loads(self.rfile.read(size).decode("utf-8") or "{}").get("family_id", "")).strip()
+        except (ValueError, json.JSONDecodeError):
+            return self._json(400, {"error": "ожидается JSON с полем family_id"})
+        try:
+            from recsys.agent.holes import close_hole     # режим «закрыть дыру» ведёт сессия агента
+        except Exception as e:
+            return self._json(503, {"error": f"режим «закрыть дыру» в этой сборке не подключён ({type(e).__name__})"})
+        with LOCK:
+            cat = catalog()
+            if not hasattr(cat, "line_veto"):              # обычный каталог: данные режима «закрыть дыру» не собраны
+                return self._json(503, {"error": "данные режима «закрыть дыру» не собраны: нужен python -m recsys.export"})
+            if family not in cat.nodes:
+                return self._json(400, {"error": "такого товара в каталоге нет"})
+            PROGRESS.update(family=family, steps=[], done=False)
+            try:
+                # результат агент сам дописывает в knowledge/agent_links.csv и reports/agent_holes.json
+                res = close_hole(Watched(LLM()), Watched(cat), family)
+                from recsys.graph import agent_links
+                agent_links.publish()                      # копия для страницы: после перезагрузки дыра видна разобранной
+            except LLMError as e:
+                return self._json(503, {"error": str(e)[:300]})
+            except Exception as e:                         # любой сбой агента — понятный ответ странице, а не обрыв
+                return self._json(500, {"error": f"сбой агента: {type(e).__name__}: {str(e)[:200]}"})
+            finally:
+                PROGRESS["done"] = True
+        self._json(200, res)
+
     def do_POST(self) -> None:
+        if self.path.startswith("/api/hole"):
+            return self._hole()
         if not self.path.startswith("/api/place"):
             return self._json(404, {"error": "нет такого адреса"})
         try:

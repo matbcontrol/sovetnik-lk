@@ -106,14 +106,26 @@ def main() -> None:
     if p.exists():                                       # показ блока в единицах заказчика (recsys.rank.fill)
         f = json.loads(p.read_text(encoding="utf-8"))
 
-        def group(name: str) -> dict:
-            g = f["groups"][name]
+        def group(name: str, groups: dict | None = None) -> dict:
+            g = (groups or f["groups"])[name]
             n = g["clients"]
             return {"clients": n, "own": g["share_with_own_ground_advice"], "personal": g["share_with_any_personal_advice"],
                     "kit_only": g["by_strongest_advice"]["kit"] / n if n else 0.0}
 
         out["block_fill"] = {"today": f["today"], "now": f["current_block_fill_by_visits"],
                              "b2b": group("с доступом в кабинет: B2B"), "b2c": group("с доступом в кабинет: B2C")}
+        before = f.get("before_holes")                   # тот же расчёт без связей агента: что дал агент, закрывая дыры
+        if isinstance(before, dict) and "с доступом в кабинет: B2B" in before:
+            out["block_fill"]["before_holes"] = {"b2b": group("с доступом в кабинет: B2B", before),
+                                                 "b2c": group("с доступом в кабинет: B2C", before)}
+            out["block_fill"]["agent_links"] = f.get("agent_links_in_verdict_table", 0)
+    p = ROOT / "reports" / "holes.json"
+    if p.exists():                                       # сводка очереди дыр: только числа, без товаров
+        h = json.loads(p.read_text(encoding="utf-8"))
+        kinds = h.get("by_kind", {})
+        out["holes"] = {"today": h.get("today"), "holes": h.get("holes"),
+                        "without_advice": h.get("clients_without_own_ground_advice"),
+                        "agent": kinds.get("закрывает агент"), "renew": kinds.get("нужно продление, а не совет")}
     p = ROOT / "reports" / "coverage.json"
     if p.exists():                                       # у скольких товаров в продаже есть личный совет
         out["coverage"] = json.loads(p.read_text(encoding="utf-8"))

@@ -198,6 +198,9 @@ def main() -> None:
     if p.exists():
         class_names = json.loads(p.read_text(encoding="utf-8"))
     class_links = [link for links in g.class_links.values() for link in links]
+    from recsys.graph import agent_links
+    agent_links.publish()                                     # что агент сделал с каждой разобранной дырой
+    agent_queue = [x for x in agent_links.queue() if x["src"] in g.nodes and x["dst"] in g.nodes]
     data = {
         "meta": {
             "built": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -210,6 +213,8 @@ def main() -> None:
         "classes": class_names,
         "edges": edges,
         "class_links": class_links,
+        # предложения агента каталога без подтверждающей цитаты (ждут менеджера) и цитаты подтверждённых связей
+        "agent_queue": agent_queue, "agent_quotes": agent_links.quotes(),
         "veto": sorted([a, b, "same" if (a, b) in g.veto_same else "has" if (a, b) in g.veto_hard else "unrelated"]
                        for a, b in g.veto),
         "class_veto": sorted([a, b] for a, b in g.class_veto),

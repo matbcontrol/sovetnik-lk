@@ -81,7 +81,9 @@ LABEL = {
     "разметка класса: нужно": "товар проверен для этого класса: нужно",
     "разметка класса: комплект": "товар проверен для этого класса: комплект",
     "менеджер": "принято менеджером",
-    "агент каталога": "предложено агентом каталога, принято менеджером",
+    "агент каталога": "найдено агентом каталога, подтверждено цитатой",
+    "агент каталога: комплект": "найдено агентом каталога: комплект",
+    "агент каталога, принято менеджером": "предложено агентом каталога, принято менеджером",
     "витрина": "порядок витрины магазина",
 }
 # Связь между товарами разных линеек — вывод, а не факт каталога. Клиенту она показывается, если саму пару
@@ -101,8 +103,11 @@ SERIES_SOURCE = "серия в названии"
 # Совместимость, проверенная по характеристикам каталога (recsys.graph.spec_links): сокет, тип памяти,
 # форм-фактор. Какой класс к какому нужен, решила разметка классов; здесь известно, какой товар подходит.
 SPEC_SOURCE, SPEC_KIT = "характеристики каталога", "характеристики каталога: комплект"
-KIT_SOURCES = (VERDICT_SOURCE["kit"], SERIES_SOURCE, SPEC_KIT)
-ONE_PER_CLASS = (*VERDICT_SOURCE.values(), SPEC_SOURCE)     # из чужого класса по такой связи — один совет
+# Связь, которую нашёл агент каталога, закрывая «дыру» (recsys.agent.holes -> knowledge/agent_links.csv):
+# критик подтвердил её дословной цитатой из описания или характеристик. Причина уже написана для клиента.
+AGENT_SOURCE, AGENT_KIT = "агент каталога", "агент каталога: комплект"
+KIT_SOURCES = (VERDICT_SOURCE["kit"], SERIES_SOURCE, SPEC_KIT, AGENT_KIT)
+ONE_PER_CLASS = (*VERDICT_SOURCE.values(), SPEC_SOURCE, AGENT_SOURCE)     # из чужого класса по такой связи — один совет
 # Товар, проверенный для класса: разметчик судил не пару с конкретным товаром клиента, а «подходит ли товар Б
 # любому товару класса А» (или только товарам того же производителя). Так получают совет оборудование и
 # малоизвестные программы, у которых своих проверенных пар нет. Совет слабее проверенной пары товаров.
@@ -300,6 +305,11 @@ class Graph:
         from recsys.graph.spec_links import read as spec_links
         known = {(e["src"], e["dst"]) for e in edges if e["type"] != "same_line"}
         edges += [e for e in spec_links() if e["src"] in nodes and e["dst"] in nodes
+                  and (e["src"], e["dst"]) not in known]
+        # связи, которыми агент каталога закрыл «дыры»: подтверждены цитатой, клиент видит их сразу
+        from recsys.graph.agent_links import read as agent_links
+        known = {(e["src"], e["dst"]) for e in edges if e["type"] != "same_line"}
+        edges += [e for e in agent_links() if e["src"] in nodes and e["dst"] in nodes
                   and (e["src"], e["dst"]) not in known]
         veto = sorted((a, b, v.verdict) for (a, b), v in families.items() if not v.shown)
         classes = read(CLASS_FILE) if CLASS_FILE.exists() else {}
@@ -515,7 +525,8 @@ class Recommender:
         t, ev = edge["type"], edge.get("evidence", "")
         if edge.get("source") in PICK_SOURCE.values():
             return f"{ev.rstrip('. ')}."                 # товар проверен для класса: причина написана для клиента
-        if edge.get("source") in (*VERDICT_SOURCE.values(), SERIES_SOURCE, SPEC_KIT) and not edge.get("class"):
+        if edge.get("source") in (*VERDICT_SOURCE.values(), SERIES_SOURCE, SPEC_KIT, AGENT_SOURCE, AGENT_KIT) \
+                and not edge.get("class"):
             return f"{ev.rstrip('. ')}."                 # пара товаров проверена заранее: причина уже написана для клиента
         if edge.get("class"):
             cname = self.g.class_names.get(edge["class"], edge["class"])

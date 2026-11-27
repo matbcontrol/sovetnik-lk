@@ -649,7 +649,7 @@
    "need": 227,
    "unrelated": 5080,
    "has": 233,
-   "kit": 1026
+   "kit": 1029
   },
   "clients": 302,
   "rows": [
@@ -735,6 +735,39 @@
    "own": 0.5517115804806992,
    "personal": 0.9737800436999272,
    "kit_only": 0.422068463219228
+  },
+  "before_holes": {
+   "b2b": {
+    "clients": 1578,
+    "own": 0.9081115335868187,
+    "personal": 0.9803548795944234,
+    "kit_only": 0.07224334600760456
+   },
+   "b2c": {
+    "clients": 2746,
+    "own": 0.5517115804806992,
+    "personal": 0.9737800436999272,
+    "kit_only": 0.422068463219228
+   }
+  },
+  "agent_links": 1
+ },
+ "holes": {
+  "today": "2026-11-23",
+  "holes": 63,
+  "without_advice": {
+   "B2C": 1231,
+   "B2B": 145
+  },
+  "agent": {
+   "holes": 30,
+   "clients_b2b": 47,
+   "clients_b2c": 95
+  },
+  "renew": {
+   "holes": 2,
+   "clients_b2b": 80,
+   "clients_b2c": 1139
   }
  },
  "coverage": {
@@ -743,15 +776,15 @@
   "kinds": {
    "software": {
     "on_sale": 1817,
-    "with_advice": 1076,
+    "with_advice": 1077,
     "own_need": 189,
-    "own_kit": 375,
+    "own_kit": 376,
     "class_need": 36,
     "class_kit": 476,
-    "solo": 741,
-    "solo_any_client": 728,
+    "solo": 740,
+    "solo_any_client": 727,
     "manager": 11,
-    "judged": 648,
+    "judged": 647,
     "class_only": 1,
     "nothing": 81
    },
@@ -772,15 +805,15 @@
   },
   "total": {
    "on_sale": 8592,
-   "with_advice": 5116,
+   "with_advice": 5117,
    "own_need": 724,
-   "own_kit": 554,
+   "own_kit": 555,
    "class_need": 211,
    "class_kit": 3627,
-   "solo": 3476,
-   "solo_any_client": 3326,
+   "solo": 3475,
+   "solo_any_client": 3325,
    "manager": 391,
-   "judged": 648,
+   "judged": 647,
    "class_only": 1823,
    "nothing": 614
   },

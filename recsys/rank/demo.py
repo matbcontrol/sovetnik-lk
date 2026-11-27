@@ -16,6 +16,7 @@
 """
 from __future__ import annotations
 
+import csv
 import gzip
 import json
 from collections import Counter
@@ -42,6 +43,38 @@ TODAY_SAMPLE = 240
 
 
 PRICE_CAP = 5.0        # во сколько раз совет может быть дороже самой дорогой покупки клиента (режим кабинета)
+
+
+def hole_queue(limit: int = 300) -> list[dict]:
+    """Очередь дыр для закрытого стенда: товар, сколько клиентов кабинета за ним стоит, и его ключ в каталоге.
+
+    Очередь считает recsys.rank.holes по закрытым данным. Ключ каталога ищется так же, как это делает агент
+    (recsys.agent.holes.families_from): без него дыру нельзя отдать агенту — наружу уходит только открытый каталог.
+    """
+    path = DATA / "private" / "task" / "holes.json"
+    if not path.exists():
+        return []
+    listed = json.loads(path.read_text(encoding="utf-8"))
+    rows = listed.get("holes") if isinstance(listed, dict) else listed
+    with (INTERIM / "graph_nodes.csv").open(encoding="utf-8") as f:
+        nodes = {r["family"]: r for r in csv.DictReader(f)}
+    by_id = {r["family_id"]: k for k, r in nodes.items() if r.get("family_id")}
+    out = []
+    for h in sorted(rows, key=lambda x: -(x.get("clients") or 0))[:limit]:
+        key = h.get("family") or ""
+        if key not in nodes:
+            key = by_id.get(str(h.get("family_id") or ""), "")
+        if key not in nodes and h.get("url"):
+            key = h["url"].split("store.softline.ru/")[-1].strip("/")
+        node = nodes.get(key)
+        out.append({
+            "family": key if node else "", "name": (node or {}).get("name") or h.get("catalog_name") or h.get("name") or "",
+            "cls": (node or {}).get("class_name", ""), "sale": bool(node and node.get("on_sale") == "1"),
+            "clients": h.get("clients") or 0, "b2b": h.get("clients_b2b") or 0, "b2c": h.get("clients_b2c") or 0,
+            "renew": h.get("kind") == "нужно продление, а не совет",       # владельцы покупают ту же линейку снова
+            "rebuy": h.get("rebuy_share"), "other": h.get("other_share"),
+        })
+    return out
 
 
 def item_prices(task) -> dict[str, float]:
@@ -277,6 +310,7 @@ def main() -> None:
         "verdicts": dict(Counter(v.verdict for v in verdicts.table.values())),
         "unlabelled_pairs": len(verdicts.missing),
     }
+    data["holes"] = hole_queue()                               # очередь дыр: товары, за которыми клиенты без совета
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"записано: {OUT} ({OUT.stat().st_size / 1e6:.1f} МБ), товаров {len(items)}")

@@ -174,10 +174,21 @@ class Verdicts:
                      "с закрытыми данными (data/private/task/)") if level == "line" else "она лежит в knowledge/"
             raise FileNotFoundError(f"Нет таблицы вердиктов {path}: {where}. Без неё числа блока посчитать нельзя.")
         table = read(path)
+        if level == "line":
+            # Связи, которыми агент каталога закрыл «дыры» (knowledge/agent_links.csv, подтверждены цитатой):
+            # ключ линейки у товара, привязанного к каталогу, — его семейство, поэтому связь ложится в ту же
+            # таблицу. Вердикт разметки по паре главнее: связь агента добавляется, только если пары в таблице нет.
+            from recsys.graph import agent_links
+
+            for e in agent_links.read():
+                pair = (e["src"], e["dst"])
+                if pair not in table:
+                    table[pair] = Verdict("kit" if e["source"] == agent_links.KIT else "need", e["evidence"],
+                                          agent_links.NEED, "")
         if not pending:
             ok = trusted_models()
             table = {p: v for p, v in table.items()
-                     if v.source == FIRST or not v.shown or v.source.removeprefix("api:") in ok}
+                     if v.source in (FIRST, "агент каталога") or not v.shown or v.source.removeprefix("api:") in ok}
         return cls(table)
 
     def get(self, a: str, b: str) -> Verdict | None:
