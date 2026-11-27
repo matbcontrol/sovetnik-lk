@@ -76,14 +76,67 @@
     renderExtras();
   }
 
-  // ---- разбор «почему это работает» и слепая оценка — если основная сессия положила их в отчёт
-  function renderExtras() {
-    const why = report.why, judge = report.ai_judge;
-    $("#sim-why").hidden = !why;
-    $("#sim-judge").hidden = !judge;
-    if (why && window.SimExtras && window.SimExtras.why) $("#sim-why").innerHTML = window.SimExtras.why(why, priv);
-    if (judge && window.SimExtras && window.SimExtras.judge) $("#sim-judge").innerHTML = window.SimExtras.judge(judge, priv);
+  // ---- «почему это работает» (report.why) и слепая оценка ИИ-клиентами (report.ai_judge) — если поля есть в отчёте
+  const times = (a, b) => (b ? `${(a / b).toFixed(1).replace(".", ",")}×` : "—");
+  function whyHtml(w) {
+    const seg = w && w.segments && w.segments["A B2B"];
+    if (!seg || !seg.ours || !seg.copurchase || !seg.popularity) return "";
+    const kinds = [["продление купленного", "Продление того, что у клиента уже есть, — вовремя по сроку лицензии"],
+                   ["другая редакция или версия", "Старшая редакция или новая версия купленного продукта"],
+                   ["вариант той же группы", "Другой вариант той же лицензии: больше мест, другой срок"],
+                   ["новый продукт", "Новый для клиента продукт"]];
+    const cell = (m, k) => nf.format((m.hits || {})[k] || 0);
+    const o = seg.ours, c = seg.copurchase, pp = seg.popularity, b = w.segments["B B2B"] || {};
+    const best = (f) => Math.max(c[f] || 0, pp[f] || 0);
+    const bBest = Math.max((b.copurchase || {}).protocol || 0, (b.popularity || {}).protocol || 0);
+    return `<h3>Почему это работает</h3>
+      <p class="hint" style="max-width:none">Организации группы A: чем оказался совет, который сбылся.</p>
+      <table class="sim-table"><tr><th>Вид попадания</th><th>Наш советник</th><th>Совместные покупки</th><th>Популярность</th></tr>
+        ${kinds.map(([k, label]) => `<tr><td>${esc(label)}</td><td class="sim-ours">${cell(o, k)}</td><td>${cell(c, k)}</td><td>${cell(pp, k)}</td></tr>`).join("")}
+        <tr><td><b>Всего попаданий</b></td><td class="sim-ours">${nf.format(o.hits_total || 0)}</td><td>${nf.format(c.hits_total || 0)}</td><td>${nf.format(pp.hits_total || 0)}</td></tr></table>
+      <ul class="sim-list">
+        <li><b>Советник знает жизненный цикл лицензии:</b> когда истекает срок и что продаётся следом — продление, старшая редакция, новая версия. Совместные покупки смотрят на корзину и не видят времени, популярность не видит клиента: ${pct(o.protocol)} против ${pct(best("protocol"))} у лучшего базового способа — в ${times(o.protocol, best("protocol"))} больше.</li>
+        <li><b>Перевес держится и без продлений:</b> ${pct(o.no_renewals)} против ${pct(best("no_renewals"))}; без продлений и вариантов той же группы — ${pct(o.no_renew_variants)} против ${pct(best("no_renew_variants"))}.</li>
+        <li><b>Холодный старт:</b> у организаций группы B с одной покупкой — ${b.ours ? `${pct(b.ours.protocol)} против ${pct(bBest)}` : "—"}: знания каталога о линейке, редакциях и классе товара работают и без истории.</li>
+        <li><b>Где перевеса нет:</b> совсем новых для клиента продуктов советник угадывает столько же, сколько популярность (${cell(o, "новый продукт")} и ${cell(pp, "новый продукт")}). Здесь блок берёт качеством: каждый совет проверен на паре с товаром клиента и объяснён.</li>
+      </ul>`;
   }
+  const shares = (m) => {                     // {ours, base, tie}: числа оценок или уже доли — привести к долям
+    if (!m) return null;
+    const sum = (m.ours || 0) + (m.base || 0) + (m.tie || 0);
+    return sum > 1.001 ? { ours: (m.ours || 0) / sum, base: (m.base || 0) / sum, tie: (m.tie || 0) / sum, n: sum } : { ...m, n: null };
+  };
+  const score = (v) => (v == null ? "—" : Number(v).toFixed(2).replace(".", ","));
+  function judgeHtml(j) {
+    const pr = shares(j && j.prefer);
+    if (!pr) return "";
+    const grp = Object.entries(j.by_group || {}).map(([g, v]) => {
+      const s = shares(v.prefer) || {};
+      return `<tr><td>${g === "B2B" ? "Организации" : g === "B2C" ? "Частные лица" : esc(g)}</td><td class="sim-ours">${pct(s.ours, 0)}</td><td>${pct(s.base, 0)}</td><td>${pct(s.tie, 0)}</td>
+        <td>${score((v.scores || {}).ours)} / ${score((v.scores || {}).base)}</td></tr>`;
+    }).join("");
+    return `<h3>Слепая оценка ИИ-клиентами</h3>
+      <p class="hint" style="max-width:none">${j.clients || "—"} клиентов группы A, ${j.judges || 2} оценщика в роли клиента: видят историю покупок и два набора — наш и «совместные покупки», — не зная, где чей.${j.how ? " " + esc(j.how) : ""}</p>
+      <p class="sim-big">Наш набор выбран в <b>${pct(pr.ours, 0)}</b> оценок, набор совместных покупок — в ${pct(pr.base, 0)}, поровну — ${pct(pr.tie, 0)}.</p>
+      <table class="sim-table"><tr><th></th><th>Выбрали наш</th><th>Выбрали базовый</th><th>Поровну</th><th>Польза 0–2: наш / базовый</th></tr>
+        <tr><td><b>Все</b></td><td class="sim-ours">${pct(pr.ours, 0)}</td><td>${pct(pr.base, 0)}</td><td>${pct(pr.tie, 0)}</td><td>${score((j.scores || {}).ours)} / ${score((j.scores || {}).base)}</td></tr>
+        ${grp}</table>
+      <ul class="sim-list">
+        ${j.useless ? `<li>Совет, бесполезный для клиента (оценка 0): у нас ${pct(j.useless.ours, 0)}, у совместных покупок ${pct(j.useless.base, 0)}.</li>` : ""}
+        ${j.agreement != null ? `<li>Оба оценщика выбрали одно и то же у ${pct(j.agreement, 0)} клиентов.</li>` : ""}
+        ${j.note ? `<li>${esc(j.note)}</li>` : ""}
+      </ul>`;
+  }
+  function renderExtras() {
+    const w = whyHtml(report.why), j = judgeHtml(report.ai_judge);
+    $("#sim-why").innerHTML = w;
+    $("#sim-why").hidden = !w;
+    $("#sim-judge").innerHTML = j;
+    $("#sim-judge").hidden = !j;
+  }
+  const WINNER = { ours: "выбрал наш набор", base: "выбрал набор совместных покупок", tie: "не выбрал: наборы равны" };
+  const judgeLine = (c) => (Array.isArray(c.ai_judge) && c.ai_judge.length
+    ? `<div class="sim-judge">${c.ai_judge.map((v) => `<div>ИИ-клиент ${esc(v.judge)} ${WINNER[v.winner] || ""}${v.why ? `: «${esc(v.why)}»` : ""}</div>`).join("")}</div>` : "");
 
   if (!tests.length) {
     $("#sim-controls").hidden = true;
@@ -114,7 +167,7 @@
         <div class="sim-col sim-col--ours"><h3>Наш советник на ${fmtDate(trainUntil)}</h3>${c.protocol.map((h) => item(h, "купил")).join("") || '<div class="empty">совета нет</div>'}</div>
         <div class="sim-col"><h3>Совместные покупки на ${fmtDate(trainUntil)} <small>базовый способ организаторов</small></h3>${c.baseline.copurchase.map((h) => item(h, "купил")).join("") || '<div class="empty">по истории этого клиента совместных покупок нет — совета нет</div>'}</div>
       </div>
-      <div class="sim-target">Купил с ${fmtDate(from)} по ${fmtDate(until)}: ${bought || "<i>ничего нового</i>"}</div>`;
+      <div class="sim-target">Купил с ${fmtDate(from)} по ${fmtDate(until)}: ${bought || "<i>ничего нового</i>"}</div>${judgeLine(c)}`;
   }
 
   function counters() {
