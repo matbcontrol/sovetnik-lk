@@ -21,6 +21,12 @@ CURRENT_FILL = 0.556       # доля визитов на главную каб�
 SEGMENTS = ("A B2B", "B B2B")
 
 
+def honest(title: str) -> str:
+    """Режим проверки прячет историю самого товара, а соседние артикулы линейки и каталог остаются:
+    «новичком» это называть нельзя. Отчёты, посчитанные до переименования, показываются с новым названием."""
+    return title.replace("товар-новичок", "товар без своей истории").replace("семейство-новичок", "семейство без своей истории")
+
+
 def part(row: dict) -> dict:
     """Строка разбивки для стенда: попадания и слагаемые Precision@3 по видам целей."""
     return {"clients": row["clients"], "targets": row["targets"], "hits": row["hits"],
@@ -49,7 +55,7 @@ def main() -> None:
         breakdown["наша модель"] = {seg: part(ours[seg]) for seg in SEGMENTS if seg in ours}
     out = {
         "protocol": v["protocol"], "dataset": dataset, "organisers": organisers, "current_fill": CURRENT_FILL,
-        "regimes": {k: {"title": r["title"], "p3": r["precision@3"], "ci": r["ci"]} for k, r in v["regimes"].items()},
+        "regimes": {k: {"title": honest(r["title"]), "p3": r["precision@3"], "ci": r["ci"]} for k, r in v["regimes"].items()},
         "differences": v["differences"], "fill": v["fill"], "fill_all": v["fill_all"],
         "catalog": v["catalog"], "money": v["money"],
         "breakdown": breakdown, "future_information": future,
@@ -77,6 +83,25 @@ def main() -> None:
                 f"{stand['доля сбывшихся новых советов'] * 100:.1f}".replace(".", ","),
                 f"{first['доля сбывшихся новых советов'] * 100:.1f}".replace(".", ",")),
         }
+        # Тройка протокола и блок, который видит клиент, — рядом: сравнение с baseline считается по первой,
+        # а продукт — второй. Состав тройки (продления, варианты) — из recsys.rank.composition.
+        comp = ROOT / "reports" / "top3_composition.json"
+        if comp.exists():
+            p3 = json.loads(comp.read_text(encoding="utf-8"))["precision@3"]
+
+            def triple(name: str) -> dict:
+                ours, base = p3[name]["наша модель"][seg], p3[name]["популярность"][seg]
+                return {"p3": ours["value"], "hits": ours["hits"], "baseline": base["value"]}
+
+            out["shown"] = {
+                "clients": stand["клиентов"], "protocol": triple("как в протоколе"),
+                "no_renewals": triple("без продлений купленного"),
+                "block": {"cards": stand["новых советов"], "hits": stand["новых сбылось"],
+                          "kit_cards": stand.get("вид: kit", 0), "kit_hits": stand.get("сбылось: kit", 0)},
+                "renew": {"cards": stand["продлений"], "hits": stand["продлений сбылось"]},
+                "popular": {"cards": stand["строк «часто докупают»"], "hits": stand["«часто докупают» сбылось"]},
+                "any_hit": stand["клиентов, у кого сбылась хоть одна карточка"],
+            }
     p = ROOT / "reports" / "coverage.json"
     if p.exists():                                       # у скольких товаров в продаже есть личный совет
         out["coverage"] = json.loads(p.read_text(encoding="utf-8"))

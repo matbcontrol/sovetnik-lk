@@ -167,7 +167,13 @@ class Verdicts:
     @classmethod
     def load(cls, level: str, pending: bool = False) -> "Verdicts":
         """pending=True — вместе с вердиктами моделей, которые ещё не прошли сверку (вид менеджера)."""
-        table = read({"class": CLASS_FILE, "family": FAMILY_FILE, "line": LINE_FILE}[level])
+        path = {"class": CLASS_FILE, "family": FAMILY_FILE, "line": LINE_FILE}[level]
+        if not path.exists():
+            # без таблицы блок молча стал бы другим: каждый кандидат получил бы «вердикта нет» и выпал из советов
+            where = ("она строится по данным задачи и в открытый репозиторий не входит — её передают вместе "
+                     "с закрытыми данными (data/private/task/)") if level == "line" else "она лежит в knowledge/"
+            raise FileNotFoundError(f"Нет таблицы вердиктов {path}: {where}. Без неё числа блока посчитать нельзя.")
+        table = read(path)
         if not pending:
             ok = trusted_models()
             table = {p: v for p, v in table.items()

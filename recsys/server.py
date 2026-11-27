@@ -26,6 +26,23 @@ from recsys.agent.tools import Catalog  # noqa: E402
 from recsys.llm.client import LLM, LLMError  # noqa: E402
 
 LOCK = threading.Lock()                            # агент работает по одному запросу за раз
+
+
+def agent_ready() -> dict:
+    """Можно ли прямо сейчас запустить агента: есть ли ключ и модель, у которой не исчерпан суточный лимит."""
+    import time
+
+    try:
+        llm = LLM()
+    except Exception as e:                             # нет файла настроек — агент недоступен, стенд работает без него
+        return {"agent": False, "why": f"модель не настроена: {type(e).__name__}"}
+    if not getattr(llm, "key", ""):
+        return {"agent": False, "why": "нет ключа модели: стенд показывает записанные прогоны агента"}
+    today = time.strftime("%Y-%m-%d")
+    free = [m for m in llm.models if llm.exhausted.get(m) != today]
+    if not free:
+        return {"agent": False, "why": "суточный лимит модели исчерпан: стенд показывает записанные прогоны агента"}
+    return {"agent": True, "model": free[0]}
 STATE: dict = {}
 
 
@@ -54,7 +71,7 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:
         if self.path.startswith("/api/ping"):
-            return self._json(200, {"agent": True})
+            return self._json(200, agent_ready())
         super().do_GET()
 
     def do_POST(self) -> None:

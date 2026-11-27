@@ -82,6 +82,11 @@
     $$(".pane").forEach((p) => p.classList.toggle("is-active", p.id === "pane-" + b.dataset.tab));
     if (b.dataset.tab === "client") drawWhy();
     if (b.dataset.tab === "links") renderLinks();
+    if (b.dataset.tab === "product" && !$("#prod-view").innerHTML.trim()) {
+      // вкладка не открывается пустой: готовый пример — плата, к которой процессор подобран по сокету и чипсету
+      const sample = ["asus/90mb19x0-m0eay0-406930", "kaspersky/kaspersky-standard"].map((f) => graph.nodes.get(f)).find(Boolean);
+      if (sample) showProduct(sample);
+    }
     if (b.dataset.tab === "agent") renderAgent();
     if (b.dataset.tab === "numbers") renderNumbers();
   }));
@@ -741,7 +746,7 @@
       </dl>
       <div class="charts">
         <figure><figcaption>Precision@3, организации (группа A)</figcaption>${chartA}</figure>
-        <figure><figcaption>Если у купленного товара нет истории продаж — «соло» или новинка</figcaption>${chartNew}</figure>
+        <figure><figcaption>Если спрятать историю самого купленного товара (соседние артикулы линейки и каталог остаются)</figcaption>${chartNew}</figure>
       </div>
       <p class="hint">Серые полосы — базовые способы, синие — наша модель; отрезок — 95-процентный интервал. Шкала у обоих графиков одна, от 0 до 20 %.</p>
       <h3>Все группы</h3>
@@ -751,12 +756,14 @@
         ${Object.keys(reg).map((k) => row(reg[k].title[0].toUpperCase() + reg[k].title.slice(1), reg[k].p3, k === "full")).join("")}
       </table></div>
       <p class="hint" style="margin-top:8px">Частных лиц в проверке всего несколько десятков — их цифры шумные, главных выводов по ним не делаем.</p>
+      ${shownHtml(r.shown)}
       ${breakdownHtml(r)}
-      <h3>Охват каталога</h3>
-      <table class="links"><tr><th>Откуда берётся совет</th><th class="num">Товаров в наличии с советом</th><th class="num">Доля от ${nf.format(cat.available)}</th></tr>
+      <h3>Потолок: у скольких артикулов фида есть хоть какая-то опора для совета</h3>
+      <table class="links"><tr><th>На что можно опереться</th><th class="num">Артикулов в наличии</th><th class="num">Доля от ${nf.format(cat.available)}</th></tr>
         <tr><td>История продаж: после товара хотя бы три клиента купили один и тот же другой товар</td><td class="num">${nf.format(cat.history_3)}</td><td class="num">${pct(cat.history_3 / cat.available)}</td></tr>
         <tr><td>Каталог: есть другой товар той же линейки</td><td class="num">${nf.format(cat.line_available)}</td><td class="num">${pct(cat.line_available / cat.available, 0)}</td></tr>
         <tr><td>Каталог: линейка или класс</td><td class="num">${nf.format(cat.line_or_class)}</td><td class="num">${pct(cat.line_or_class / cat.available, 0)}</td></tr></table>
+      <p class="hint" style="margin-top:8px">Это верхняя граница по артикулам фида: сосед по линейке или класс — ещё не совет. Сколько товаров получают личный совет на деле, показано ниже, в таблице «У скольких товаров есть личный совет»: там счёт идёт по товарам (семействам), а не по артикулам.</p>
       <h3>Деньги за угаданными покупками, на 100 организаций</h3>
       <table class="links"><tr><th>Способ</th><th class="num">Угадано покупок</th><th class="num">Сумма по ценам витрины</th></tr>
         ${Object.entries(m).filter(([k]) => k !== "all_targets").map(([k, v]) => `<tr><td>${esc(k[0].toUpperCase() + k.slice(1))}</td><td class="num">${v.hits}</td><td class="num">${rub(v.rub_per_100_clients)}</td></tr>`).join("")}
@@ -780,7 +787,7 @@
     const ours = b["наша модель"] && b["наша модель"]["A B2B"], pop = b["популярность"] && b["популярность"]["A B2B"];
     const note = ours && pop
       ? `На новых для клиента продуктах наша модель угадала ${ours.hits["новый продукт"]} покупок из ${targets["новый продукт"]}, популярность — ${pop.hits["новый продукт"]}`
-        + (b["та же линейка"] ? `, правило «та же линейка» — ${b["та же линейка"]["A B2B"].hits["новый продукт"]}. Простое правило почти не уступает модели на продлениях и других вариантах купленного; прибавка модели — новые продукты.` : ".") : "";
+        + (b["та же линейка"] ? `, правило «та же линейка» — ${b["та же линейка"]["A B2B"].hits["новый продукт"]}. Простое правило почти не уступает модели на продлениях и других вариантах купленного. ${ours.hits["новый продукт"] > pop.hits["новый продукт"] ? "Прибавка модели — новые продукты." : "На новых продуктах модель популярность не обгоняет: её прибавка — варианты и версии уже купленного."}` : ".") : "";
     const future = r.future_information || [];
     return `<h3>Из чего состоят попадания, организации (группа A)</h3>
       <p class="hint">Разные артикулы одного продукта в проверке считаются разными товарами, поэтому попадание бывает трёх видов. В ячейке — число угаданных покупок и их вклад в Precision@3; вклады в сумме дают общую цифру.</p>
@@ -791,6 +798,22 @@
       ${future.length ? `<h3>Что в расчёте может знать о будущем</h3>
         <p class="hint">Снимка каталога на дату разреза нет, поэтому часть сведений о товаре взята из сегодняшнего каталога:</p>
         <ul class="hint">${future.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}`;
+  }
+
+  /** Тройка протокола и блок, который видит клиент, — рядом: по первой сравниваемся с baseline, вторая — продукт. */
+  function shownHtml(s) {
+    if (!s) return "";
+    const share = (a, b) => (b ? pct(a / b) : "—");
+    const places = s.clients * 3;
+    return `<h3>Что считает протокол и что видит клиент, организации (группа A)</h3>
+      <table class="links"><tr><th></th><th class="num">Мест или карточек</th><th class="num">Сбылось</th><th class="num">Доля</th></tr>
+        <tr><td>Тройка протокола — по ней сравнение с baseline (у популярности ${pct(s.protocol.baseline)})</td><td class="num">${nf.format(places)}</td><td class="num">${s.protocol.hits}</td><td class="num">${pct(s.protocol.p3)}</td></tr>
+        <tr><td>Та же тройка без продлений уже купленного (у популярности ${pct(s.no_renewals.baseline)})</td><td class="num">${nf.format(places)}</td><td class="num">${s.no_renewals.hits}</td><td class="num">${pct(s.no_renewals.p3)}</td></tr>
+        <tr><td><b>Блок кабинета: личные советы</b></td><td class="num"><b>${nf.format(s.block.cards)}</b></td><td class="num"><b>${s.block.hits}</b></td><td class="num"><b>${share(s.block.hits, s.block.cards)}</b></td></tr>
+        <tr><td>&nbsp;&nbsp;из них «комплект» — совет на вырост</td><td class="num">${nf.format(s.block.kit_cards)}</td><td class="num">${s.block.kit_hits}</td><td class="num">${share(s.block.kit_hits, s.block.kit_cards)}</td></tr>
+        <tr><td>Полоса «Пора продлить» — отдельно от советов</td><td class="num">${nf.format(s.renew.cards)}</td><td class="num">${s.renew.hits}</td><td class="num">${share(s.renew.hits, s.renew.cards)}</td></tr>
+        <tr><td>Строка «Часто докупают» — не личный совет</td><td class="num">${nf.format(s.popular.cards)}</td><td class="num">${s.popular.hits}</td><td class="num">${share(s.popular.hits, s.popular.cards)}</td></tr></table>
+      <p class="hint" style="margin-top:8px">Продукт — это блок кабинета, а не тройка протокола. Тройка нужна, чтобы сравниться с baseline по правилам организаторов; около половины её попаданий — продления уже купленного, а их заказчик просит в блок рекомендаций не ставить. В блоке продления вынесены в отдельную полосу, каждый личный совет проходит проверку пары, а «комплект» на истории пока не сбывался. Хоть одна карточка блока сбылась у ${s.any_hit} клиентов из ${s.clients}.</p>`;
   }
 
   /** Проверка пар «купил А — советовать ли Б»: сколько чего размечено и что это меняет в блоке. */
@@ -1017,7 +1040,13 @@
   // живой запуск агента: доступен, когда стенд открыт через локальный сервер (python -m recsys.server)
   (async function setupLive() {
     const ping = await getJson("api/ping");
-    if (!ping || !ping.agent) return;
+    if (!ping) return;                                    // стенд открыт без сервера: живого запуска нет
+    if (!ping.agent) {
+      // сервер есть, но модель недоступна: говорим прямо, а не показываем форму, которая упадёт
+      $("#agent-live").hidden = false;
+      $("#agent-live").innerHTML = `<h3>Завести новый товар</h3><p class="hint small">Живой запуск сейчас недоступен — ${esc(ping.why || "модель не отвечает")}. Ниже записанные прогоны: каждый шаг агента в них настоящий.</p>`;
+      return;
+    }
     $("#agent-live").hidden = false;
     $("#a-run").addEventListener("click", async () => {
       const body = { name: $("#a-name").value.trim(), vendor: $("#a-vendor").value.trim(), description: $("#a-text").value.trim() };
@@ -1026,7 +1055,17 @@
       const t0 = performance.now();
       const timer = setInterval(() => { $("#a-status").textContent = `Агент работает: ${Math.round((performance.now() - t0) / 1000)} с…`; }, 500);
       try {
-        const resp = await fetch("api/place", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+        // агент делает до десятка запросов к модели; дольше полутора минут не ждём — на демо это пауза, а не ответ
+        const ctl = new AbortController();
+        const stop = setTimeout(() => ctl.abort(), 90000);
+        let resp;
+        try {
+          resp = await fetch("api/place", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctl.signal });
+        } catch (e) {
+          throw new Error(e.name === "AbortError" ? "модель не ответила за 90 секунд. Ниже — записанные прогоны агента" : e.message);
+        } finally {
+          clearTimeout(stop);
+        }
         const res = await resp.json();
         if (!resp.ok) throw new Error(res.error || "ошибка агента");
         const run = { card: res.card, truth: null, passport: res.passport, steps: res.steps, links: res.links, edges: res.edges || [],
