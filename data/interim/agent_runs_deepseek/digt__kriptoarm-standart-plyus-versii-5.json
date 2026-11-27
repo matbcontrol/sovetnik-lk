@@ -1,0 +1,397 @@
+{
+ "card": {
+  "name": "КриптоАРМ Стандарт Плюс версии 5",
+  "vendor": "Digt",
+  "description": "«КриптоАРМ Стандарт Плюс 5» – это универсальная программа для шифрования и электронной подписи файлов. Программа предназначена для защиты корпоративной и личной информации, передаваемой по сети Интернет, электронной почте и на съемных носителях (USB-токенах, смарт-картах). «КриптоАРМ Стандарт Плюс 5» представляет собой расширенную версию программы КриптоАРМ. В отличие базовой версии, в ней поддерживается взаимодействие с ключевыми носителями (токенами, смарт-картами) с аппаратной реализацией криптографии. Работа с такими устройствами осуществляется через интерфейс PKCS#11."
+ },
+ "passport": {
+  "class_id": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+  "class_name": "Программы для защиты информации",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "Программы для защиты информации",
+  "neighbors": {
+   "class_id": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+   "name": "Программы для защиты информации",
+   "confidence": 1.0,
+   "similarity": 0.67,
+   "near": [
+    {
+     "id": "digt/kriptoarm-gost-versii-3",
+     "name": "КриптоАРМ ГОСТ версии 3",
+     "class": "Программы для защиты информации"
+    },
+    {
+     "id": "digt/digt-kriptoarm",
+     "name": "Digt КриптоАРМ",
+     "class": "Программы для защиты информации"
+    },
+    {
+     "id": "digt/digt-kriptoarm-gost",
+     "name": "КриптоАРМ ГОСТ",
+     "class": "Программы для защиты информации"
+    }
+   ]
+  },
+  "does": "Программа для шифрования и электронной подписи файлов с поддержкой аппаратных ключевых носителей.",
+  "needs": [],
+  "audience": "any"
+ },
+ "links": [
+  {
+   "dst": "digt/digt-kriptoarm",
+   "type": "upgrade_of",
+   "reason": "Расширенная версия базовой программы КриптоАРМ",
+   "quote": "представляет собой расширенную версию программы КриптоАРМ",
+   "dst_name": "Digt КриптоАРМ",
+   "critic": "В описании указано, что это расширенная версия КриптоАРМ"
+  }
+ ],
+ "edges": [
+  {
+   "src": "digt/digt-kriptoarm",
+   "dst": "new",
+   "type": "same_line",
+   "why": "Расширенная версия базовой программы КриптоАРМ"
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [
+  {
+   "dst": "digt/kriptoarm-gost-versii-3",
+   "type": "new_version_of",
+   "reason": "Более новая версия линейки КриптоАРМ",
+   "quote": "КриптоАРМ Стандарт Плюс версии 5",
+   "dst_name": "КриптоАРМ ГОСТ версии 3",
+   "why": "критик: Нет данных о том, что это новая версия именно ГОСТ версии 3"
+  }
+ ],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "КриптоАРМ Стандарт Плюс версии 5"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "digt/kriptoarm-gost-versii-3",
+     "name": "КриптоАРМ ГОСТ версии 3",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "digt/digt-kriptoarm",
+     "name": "Digt КриптоАРМ",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "webinar/mts-link-standart",
+     "name": "МТС Линк Стандарт",
+     "vendor": "МТС Линк",
+     "class": "Связь",
+     "sale": "в продаже"
+    },
+    {
+     "id": "digt/kriptoarm-mobile",
+     "name": "КриптоАРМ Mobile",
+     "vendor": "",
+     "class": "Программы для защиты информации",
+     "sale": "по запросу"
+    },
+    {
+     "id": "digt/digt-kriptoarm-gost",
+     "name": "КриптоАРМ ГОСТ",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "digt/kriptoarm-vipnet",
+     "name": "КриптоАРМ ViPNet",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "softprogramm/neiroset-lika-standart",
+     "name": "Нейросеть ЛИКА. стандарт",
+     "vendor": "ООО «Софт Программ»",
+     "class": "Готовые ИИ-модели и алгоритмы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "relex/subd-linter-standart",
+     "name": "СУБД Линтер Стандарт",
+     "vendor": "",
+     "class": "Российские базы данных (Импортозамещение)",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "Программы для защиты информации"
+   },
+   "thought": "Нужно определить класс и связи. Класс уже известен из подсказки: Программы для защиты информации. Найду точный код класса через find_classes и проверю связи с найденными товарами.",
+   "result": [
+    {
+     "class_id": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+     "name": "Программы для защиты информации",
+     "examples": [
+      "Программа КриптоПро CSP 5.0",
+      "Код безопасности: Secret Net Studio 8",
+      "Криптоком «МагПро КриптоПакет»"
+     ]
+    },
+    {
+     "class_id": "antivirusi-bezopasnost/udalenie-informatsii",
+     "name": "Программы для удаления информации",
+     "examples": [
+      "ItHelper версия Optimizer",
+      "ItHelper версия Optimizer для бизнеса",
+      "ItHelper версия Optimizer с GPT"
+     ]
+    },
+    {
+     "class_id": "distantsionnoe-obuchenie/infosecurity",
+     "name": "Курсы по информационной безопасности",
+     "examples": [
+      "Kaspersky Express Course",
+      "QMULO Base",
+      "QMULO Pro"
+     ]
+    },
+    {
+     "class_id": "antivirusi-bezopasnost/zashchita-informatsii-dlya-smartfonov",
+     "name": "Защита информации для смартфонов",
+     "examples": [
+      "Kaspersky Secure Mobility Management",
+      "Secret MDM",
+      "ShieldApps Mobile Cyber Privacy Suite"
+     ]
+    },
+    {
+     "class_id": "obrazovanie-i-nauka/nauchnie-rascheti",
+     "name": "Программы для научных расчетов",
+     "examples": [
+      "Программы серии «Эколог» по разработке проекта нор",
+      "FRP Designer",
+      "Унифицированная программа расчета загрязнений атмо"
+     ]
+    },
+    {
+     "class_id": "antivirusi-bezopasnost/drugie-programmi",
+     "name": "Другие программы",
+     "examples": [
+      "Arcserve Replication and High Availability 18.0",
+      "Neurocore",
+      "SAINT ASV"
+     ]
+    },
+    {
+     "class_id": "grafika-i-dizayn/programmi-prosmotra",
+     "name": "Программы просмотра",
+     "examples": [
+      "IrfanView",
+      "ABViewer"
+     ]
+    },
+    {
+     "class_id": "diski-i-fayli/rabota-s-cd",
+     "name": "Программы для работы с CD",
+     "examples": [
+      "Alcohol 52%"
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "digt/digt-kriptoarm"
+   },
+   "thought": "Нужно определить класс и связи. Класс уже известен из подсказки: Программы для защиты информации. Найду точный код класса через find_classes и проверю связи с найденными товарами.",
+   "result": {
+    "id": "digt/digt-kriptoarm",
+    "name": "Digt КриптоАРМ",
+    "vendor": "Digt",
+    "class": "Программы для защиты информации",
+    "sale": "в продаже",
+    "class_id": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+    "description": "Программное обеспечение Digt «КриптоАРМ» является приложением для шифрования и электронной подписи файлов любого формата и размера. «КриптоАРМ» позволяет эффективно защищать конфиденциальную информацию в государственных и коммерческих информационных системах при ее передаче по незащищенным каналам связи (Интернету, электронной почте) и на съемных носителях (дискете, диске, USB). «КриптоАРМ» осуществляет шифрование/дешифрацию личных и корпоративных данных (документов и файлов) и присваивает документам электронную цифровую подпись, гарантирующую их юридическую и правовую значимость. «КриптоАРМ» ",
+    "links": []
+   },
+   "ask": 1
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "digt/kriptoarm-gost-versii-3"
+   },
+   "thought": "Нужно определить класс и связи. Класс уже известен из подсказки: Программы для защиты информации. Найду точный код класса через find_classes и проверю связи с найденными товарами.",
+   "result": {
+    "id": "digt/kriptoarm-gost-versii-3",
+    "name": "КриптоАРМ ГОСТ версии 3",
+    "vendor": "Digt",
+    "class": "Программы для защиты информации",
+    "sale": "в продаже",
+    "class_id": "antivirusi-bezopasnost/bezopasnost-zaschita-informatsii",
+    "description": "КриптоАРМ ГОСТ – это новый уровень развития знакомой многим программы КриптоАРМ. Новое приложение обеспечивает возможность создания и проверки электронной подписи файлов с произвольным расширением на операционных системах Windows, Linux и macOS. КриптоАРМ ГОСТ работает с сертификатами и ключами усиленной квалифицированной электронной подписи и полностью совместим с криптопровайдером СКЗИ КриптоПро CSP начиная с версии 4.0. В приложении поддержаны стандарты для электронной подписи и хеширования ГОСТ Р 34.10-2012 и ГОСТ Р 34.11-2012, которые с 1 января 2019 года должны заменить прекращающие свое",
+    "links": []
+   },
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "КриптоАРМ Стандарт"
+   },
+   "thought": "Определяю класс и связи для КриптоАРМ Стандарт Плюс 5. Класс уже известен из подсказки и find_classes. Нужно найти базовый продукт и другие версии для связей upgrade_of/new_version_of.",
+   "result": [
+    {
+     "id": "digt/digt-kriptoarm",
+     "name": "Digt КриптоАРМ",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "webinar/mts-link-standart",
+     "name": "МТС Линк Стандарт",
+     "vendor": "МТС Линк",
+     "class": "Связь",
+     "sale": "в продаже"
+    },
+    {
+     "id": "digt/kriptoarm-mobile",
+     "name": "КриптоАРМ Mobile",
+     "vendor": "",
+     "class": "Программы для защиты информации",
+     "sale": "по запросу"
+    },
+    {
+     "id": "digt/digt-kriptoarm-gost",
+     "name": "КриптоАРМ ГОСТ",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "digt/kriptoarm-vipnet",
+     "name": "КриптоАРМ ViPNet",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "softprogramm/neiroset-lika-standart",
+     "name": "Нейросеть ЛИКА. стандарт",
+     "vendor": "ООО «Софт Программ»",
+     "class": "Готовые ИИ-модели и алгоритмы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "digt/kriptoarm-gost-versii-3",
+     "name": "КриптоАРМ ГОСТ версии 3",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "relex/subd-linter-standart",
+     "name": "СУБД Линтер Стандарт",
+     "vendor": "",
+     "class": "Российские базы данных (Импортозамещение)",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "КриптоАРМ"
+   },
+   "thought": "Определяю класс и связи для КриптоАРМ Стандарт Плюс 5. Класс уже известен из подсказки и find_classes. Нужно найти базовый продукт и другие версии для связей upgrade_of/new_version_of.",
+   "result": [
+    {
+     "id": "digt/digt-kriptoarm",
+     "name": "Digt КриптоАРМ",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "digt/kriptoarm-mobile",
+     "name": "КриптоАРМ Mobile",
+     "vendor": "",
+     "class": "Программы для защиты информации",
+     "sale": "по запросу"
+    },
+    {
+     "id": "digt/digt-kriptoarm-gost",
+     "name": "КриптоАРМ ГОСТ",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "digt/kriptoarm-vipnet",
+     "name": "КриптоАРМ ViPNet",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "digt/kriptoarm-gost-versii-3",
+     "name": "КриптоАРМ ГОСТ версии 3",
+     "vendor": "Digt",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "digt/obnovlenie-versiy-kriptoarm",
+     "name": "Обновление версий «КриптоАРМ»",
+     "vendor": "",
+     "class": "Программы для защиты информации",
+     "sale": "по запросу"
+    },
+    {
+     "id": "digt/sertifikaty-na-godovuyu-tekhnicheskuyu-podderzhku-kriptoarm",
+     "name": "Сертификаты на годовую техническую поддержку «КриптоАРМ»",
+     "vendor": "",
+     "class": "Программы для защиты информации",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Достаточно данных: класс найден, связанные товары определены.",
+   "result": "паспорт и связи",
+   "ask": 3
+  }
+ ],
+ "seconds": 11.1,
+ "model_requests": 4,
+ "tokens": {
+  "in": 9501,
+  "out": 672
+ },
+ "truth": {
+  "id": "digt/kriptoarm-standart-plyus-versii-5",
+  "class": "Программы для защиты информации",
+  "kind": "обычный",
+  "related": []
+ }
+}

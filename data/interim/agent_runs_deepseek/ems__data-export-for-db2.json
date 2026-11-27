@@ -1,0 +1,535 @@
+{
+ "card": {
+  "name": "EMS Data Export for DB2",
+  "vendor": "EMS",
+  "description": "Программное обеспечение EMS Data Export for DB2 является мощным решением для быстрого экспорта данных DB2 в любой из 20 доступных форматов, включая Microsoft Excel, Microsoft Word (RTF), HTML, XML, PDF, TXT, CSV, DBF, ODF и другие. Data Export for DB2 поддерживает последние версии серверов DB2 и дает возможность экспортировать данные одновременно из нескольких таблиц, представлений или запросов. В состав Data Export for DB2 входит удобный мастер для визуальной установки параметров экспорта из баз данных DB2 (имена конечных файлов, экспортируемые поля, форматы данных и другие) и консольная утилита для быстрого экспорта данных из таблиц DB2 и запросов. Ключевые возможности Data Export for DB2: Экспорт данных в 20 самых популярных форматов: Microsoft Excel, Microsoft Access, Microsoft Word, RTF, HTML, PDF, XML, TXT, DBF, CSV, ODF, SYLK, DIF, LaTeX, SQL, буфер обмена и другие. Одновременный экспорт данных из нескольких таблиц, представлений или запросов. Выбор полей для экспорта и изменение их порядка. Настройка параметров экспорта для каждой таблицы, а также для каждого формата данных. Сохранение всех параметров экспорта активного сеанса в файл конфигурации. Использование комплексной утилиты для автоматизации экспорта данных с помощью файла конфигурации. Поддержка новейших версий DB2. Интуитивно понятный и дружественный интерфейс мастера настройки. Бесплатная подписка на один год сопровождения ПО. Бесплатные обновления на период действия обслуживания. Бесплатная неограниченная т"
+ },
+ "passport": {
+  "class_id": "programmirovanie/bazi-dannih",
+  "class_name": "Программы для работы с базами данных",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "Программы для работы с базами данных",
+  "neighbors": {
+   "class_id": "programmirovanie/bazi-dannih",
+   "name": "Программы для работы с базами данных",
+   "confidence": 1.0,
+   "similarity": 0.71,
+   "near": [
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/data-import-for-db2",
+     "name": "EMS Data Import for DB2",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "class": "Программы для работы с базами данных"
+    }
+   ]
+  },
+  "does": "Экспорт данных из баз данных DB2 в 20 форматов, включая Excel, PDF, XML и другие.",
+  "needs": [
+   "IBM DB2"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "ems/data-import-for-db2",
+   "type": "complements",
+   "reason": "Дополняет экспорт импортом данных",
+   "quote": "EMS Data Import for DB2",
+   "dst_name": "EMS Data Import for DB2",
+   "critic": "Дополняет экспорт импортом данных"
+  },
+  {
+   "dst": "ems/ems-data-pump-for-db2",
+   "type": "complements",
+   "reason": "Инструмент миграции данных для DB2",
+   "quote": "EMS Data Pump for DB2",
+   "dst_name": "EMS Data Pump for DB2",
+   "critic": "Инструмент миграции данных для DB2"
+  }
+ ],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "ems/data-import-for-db2",
+   "type": "complements",
+   "why": "Дополняет экспорт импортом данных"
+  },
+  {
+   "src": "new",
+   "dst": "ems/ems-data-pump-for-db2",
+   "type": "complements",
+   "why": "Инструмент миграции данных для DB2"
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [
+  {
+   "dst": "ems/ems-data-export-for-oracle",
+   "type": "analog_of",
+   "reason": "Аналог для другой СУБД",
+   "quote": "EMS Data Export for Oracle",
+   "dst_name": "EMS Data Export for Oracle",
+   "why": "критик: Аналог для другой СУБД, но не российский аналог"
+  },
+  {
+   "dst": "ems/ems-data-export-for-mysql",
+   "type": "analog_of",
+   "reason": "Аналог для другой СУБД",
+   "quote": "EMS Data Export for MySQL",
+   "dst_name": "EMS Data Export for MySQL",
+   "why": "критик: Аналог для другой СУБД, но не российский аналог"
+  },
+  {
+   "dst": "ems/ems-data-export-for-postgresql",
+   "type": "analog_of",
+   "reason": "Аналог для другой СУБД",
+   "quote": "EMS Data Export for PostgreSQL",
+   "dst_name": "EMS Data Export for PostgreSQL",
+   "why": "критик: Аналог для другой СУБД, но не российский аналог"
+  },
+  {
+   "dst": "ems/ems-data-export-for-sql-server",
+   "type": "analog_of",
+   "reason": "Аналог для другой СУБД",
+   "quote": "EMS Data Export for SQL Server",
+   "dst_name": "EMS Data Export for SQL Server",
+   "why": "критик: Аналог для другой СУБД, но не российский аналог"
+  }
+ ],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS Data Export for DB2"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-import-for-db2",
+     "name": "EMS Data Import for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-oracle",
+     "name": "EMS Data Export for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-mysql",
+     "name": "EMS Data Export for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-postgresql",
+     "name": "EMS Data Export for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-sql-server",
+     "name": "EMS Data Export for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-advanced-data-export-net",
+     "name": "EMS Advanced Data Export .NET",
+     "vendor": "EMS",
+     "class": "Другие библиотеки",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "DB2"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "ems/ems-sql-manager-for-db2",
+     "name": "EMS SQL Manager for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-import-for-db2",
+     "name": "EMS Data Import for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-db2",
+     "name": "EMS SQL Query for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ibm/ibm-db2",
+     "name": "IBM DB2",
+     "vendor": "",
+     "class": "Программы для работы с базами данных",
+     "sale": "по запросу"
+    },
+    {
+     "id": "ems/db-extract-for-db2",
+     "name": "EMS DB Extract for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "niceit/nice-db2-management-pack",
+     "name": "NiCE DB2 Management Pack",
+     "vendor": "",
+     "class": "Программы для работы с базами данных",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS Data Export for DB2"
+   },
+   "thought": "Уже есть похожие товары EMS Data Export для других СУБД и для DB2. Нужно проверить, есть ли базовый продукт или связанные товары, которые можно связать. Поищу точное название и посмотрю карточки похожих.",
+   "result": [
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-import-for-db2",
+     "name": "EMS Data Import for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-oracle",
+     "name": "EMS Data Export for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-mysql",
+     "name": "EMS Data Export for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-postgresql",
+     "name": "EMS Data Export for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-sql-server",
+     "name": "EMS Data Export for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-advanced-data-export-net",
+     "name": "EMS Advanced Data Export .NET",
+     "vendor": "EMS",
+     "class": "Другие библиотеки",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/ems-data-export-for-oracle"
+   },
+   "thought": "Уже есть похожие товары EMS Data Export для других СУБД и для DB2. Нужно проверить, есть ли базовый продукт или связанные товары, которые можно связать. Поищу точное название и посмотрю карточки похожих.",
+   "result": {
+    "id": "ems/ems-data-export-for-oracle",
+    "name": "EMS Data Export for Oracle",
+    "vendor": "EMS",
+    "class": "Программы для работы с базами данных",
+    "sale": "в продаже",
+    "class_id": "programmirovanie/bazi-dannih",
+    "description": "Программное обеспечение EMS Data Export for Oracle является мощным решением для быстрого экспорта данных Oracle в любой из 20 доступных форматов, включая Microsoft Excel, Microsoft Word (RTF), HTML, XML, PDF, TXT, CSV, DBF, ODF и другие. Data Export for Oracle поддерживает последние версии серверов Oracle и дает возможность экспортировать данные одновременно из нескольких таблиц, представлений или запросов. В состав Data Export for Oracle входит удобный мастер для визуальной установки параметров экспорта из баз данных Oracle (имена конечных файлов, экспортируемые поля, форматы данных и другие)",
+    "links": []
+   },
+   "ask": 1
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/ems-data-export-for-mysql"
+   },
+   "thought": "Уже есть похожие товары EMS Data Export для других СУБД и для DB2. Нужно проверить, есть ли базовый продукт или связанные товары, которые можно связать. Поищу точное название и посмотрю карточки похожих.",
+   "result": {
+    "id": "ems/ems-data-export-for-mysql",
+    "name": "EMS Data Export for MySQL",
+    "vendor": "EMS",
+    "class": "Программы для работы с базами данных",
+    "sale": "в продаже",
+    "class_id": "programmirovanie/bazi-dannih",
+    "description": "Программное обеспечение EMS Data Export for MySQL – это удобная система экспорта данных из таблиц MySQL в 20 форматов, включая Microsoft Access, Word и Excel, Adobe PDF, HTML, ODF и многие другие. Data Export for MySQL поддерживает стандарт кодировки Unicode и предлагает инструменты экспорта данных одновременно из нескольких таблиц, запросов и представлений. В состав Data Export for MySQL входит мастер визуальной установки параметров экспорта информации из MySQL (имена конечных файлов, экспортируемые поля, форматы данных и др.), а также консольная утилита для быстрого экспорта информации из та",
+    "links": []
+   },
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS Data Export for DB2"
+   },
+   "thought": "Уже есть класс и похожие товары. Проверю связи для EMS Data Export for DB2: возможно, есть базовый продукт или аналоги. Сделаю поиск по названию и получу карточки похожих товаров для уточнения.",
+   "result": [
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-import-for-db2",
+     "name": "EMS Data Import for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-oracle",
+     "name": "EMS Data Export for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-mysql",
+     "name": "EMS Data Export for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-postgresql",
+     "name": "EMS Data Export for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-sql-server",
+     "name": "EMS Data Export for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-advanced-data-export-net",
+     "name": "EMS Advanced Data Export .NET",
+     "vendor": "EMS",
+     "class": "Другие библиотеки",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/data-import-for-db2"
+   },
+   "thought": "Уже есть класс и похожие товары. Проверю связи для EMS Data Export for DB2: возможно, есть базовый продукт или аналоги. Сделаю поиск по названию и получу карточки похожих товаров для уточнения.",
+   "result": {
+    "id": "ems/data-import-for-db2",
+    "name": "EMS Data Import for DB2",
+    "vendor": "EMS",
+    "class": "Программы для работы с базами данных",
+    "sale": "в продаже",
+    "class_id": "programmirovanie/bazi-dannih",
+    "description": "Программное обеспечение EMS Data Import for DB2 является мощным решением для быстрого импорта данных в таблицы DB2 из файлов Microsoft Excel 97-2007, Microsoft Access, DBF, XML, TXT, CSV, Microsoft Word 2007, RTF, ODF и HTML. Приложение EMS Data Import for DB2 предусматривает настраиваемые параметры импорта, такие как исходные форматы для всех полей, конечные форматы данных DB2 для выбранных полей, параметры фиксации данных, количество пропускаемых записей и многие другие. В состав EMS Data Import for DB2 входит мастер настройки для визуальной установки параметров для различных файлов и консол",
+    "links": []
+   },
+   "ask": 2
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/ems-data-pump-for-db2"
+   },
+   "thought": "Уже есть класс и похожие товары. Проверю связи для EMS Data Export for DB2: возможно, есть базовый продукт или аналоги. Сделаю поиск по названию и получу карточки похожих товаров для уточнения.",
+   "result": {
+    "id": "ems/ems-data-pump-for-db2",
+    "name": "EMS Data Pump for DB2",
+    "vendor": "EMS",
+    "class": "Программы для работы с базами данных",
+    "sale": "в продаже",
+    "class_id": "programmirovanie/bazi-dannih",
+    "description": "Программное обеспечение EMS Data Pump for DB2 является удобным инструментом миграции баз данных и импорта данных из любых ADO-совместимых источников – Microsoft Access, базы данных Microsoft SQL и любых других БД с поддержкой интерфейса ADO – в базы данных IBM DB2. Благодаря простому мастеру настройки EMS Data Pump for DB2 может настраивать строки соединения c ADO, выбирать таблицы, поля и индексы для переноса, просматривать и редактировать SQL-сценарии для построения целевых баз данных DB2, определять условия всего процесса импорта. Решение Data EMS Data Pump for DB2 автоматизирует миграцию д",
+    "links": []
+   },
+   "ask": 2
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS Data Export for DB2"
+   },
+   "thought": "Уже есть класс и похожие товары. Проверю, есть ли в каталоге сам продукт EMS Data Export for DB2, чтобы не пропустить связь с ним.",
+   "result": [
+    {
+     "id": "ems/data-generator-for-db2",
+     "name": "EMS Data Generator for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-import-for-db2",
+     "name": "EMS Data Import for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-pump-for-db2",
+     "name": "EMS Data Pump for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-oracle",
+     "name": "EMS Data Export for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-mysql",
+     "name": "EMS Data Export for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-postgresql",
+     "name": "EMS Data Export for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-sql-server",
+     "name": "EMS Data Export for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-advanced-data-export-net",
+     "name": "EMS Advanced Data Export .NET",
+     "vendor": "EMS",
+     "class": "Другие библиотеки",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 3
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "",
+   "result": "паспорт и связи",
+   "ask": 4
+  }
+ ],
+ "seconds": 18.5,
+ "model_requests": 5,
+ "tokens": {
+  "in": 16207,
+  "out": 1081
+ },
+ "truth": {
+  "id": "ems/data-export-for-db2",
+  "class": "Программы для работы с базами данных",
+  "kind": "дополнение",
+  "related": [
+   "IBM DB2"
+  ]
+ }
+}

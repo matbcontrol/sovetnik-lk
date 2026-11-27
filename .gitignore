@@ -28,6 +28,7 @@ data/interim/*
 !data/interim/llm_calls.jsonl
 !data/interim/agent_runs/
 !data/interim/agent_runs_nohints/
+!data/interim/agent_runs_deepseek/
 
 # локальные базы и кеши
 *.sqlite

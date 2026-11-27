@@ -1,0 +1,233 @@
+{
+ "card": {
+  "name": "CSoft RasterDesk Pro",
+  "vendor": "CSoft Development",
+  "description": "Программное обеспечение CSoft RasterDesk Pro является профессиональным растровым инструментом редактирования и визуализации, предназначенным для работы с отсканированными документами в САПР AutoCAD. Графический редактор CSoft RasterDesk Pro дополняет возможности AutoCAD передовыми средствами работы с растровыми изображениями. Профессиональная версия растрового редактора CSoft RasterDesk Pro добавляет к базовой редакции инструменты автоматической векторизации, автоматической векторной коррекции и модуль распознавания текстов ABBYY FineReader 10. Возможности CSoft RasterDesk Pro: Сканирование. Модуль WiseScan LE дает возможность работать с широкоформатными монохромными и цветными сканерами. Управление сканером выполняется на аппаратном уровне или посредством TWAIN-интерфейса. Фильтрация монохромных изображений. Применение монохромных фильтров помогает повышать качество черно-белой графики и уменьшать объем растровых файлов. Геометрическая коррекция. Редактор позволяет исправлять различные геометрические параметры растрового изображения. Калибровка. При помощи калибровки можно корректировать ошибки сканирования и искажения, возникшие вследствие деформации исходных графических материалов. Цветокоррекция и цветная фильтрация. CSoft RasterDesk содержит следующие процедуры цветокоррекции и фильтрации растровых изображений. Выбор и редактирование растровых объектов. Интеллектуальная объектная технология выбора растровых данных позволяет редактировать растровое изображение методами, а"
+ },
+ "passport": {
+  "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+  "class_name": "Редакторы и векторизаторы",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Редакторы и векторизаторы",
+  "neighbors": {
+   "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+   "name": "Редакторы и векторизаторы",
+   "confidence": 0.45,
+   "similarity": 0.85,
+   "near": [
+    {
+     "id": "csoft-development/csoft-rasterdesk",
+     "name": "CSoft RasterDesk",
+     "class": "Редакторы и векторизаторы"
+    },
+    {
+     "id": "csoft-development/csoft-electrics-professional",
+     "name": "CSoft ElectriCS Professional",
+     "class": "Строительное программное обеспечение"
+    },
+    {
+     "id": "csoft-development/csoft-plantracer-pro-7",
+     "name": "CSoft PlanTracer Pro",
+     "class": "Инфраструктура: изыскания, генплан, транспорт"
+    }
+   ]
+  },
+  "does": "Профессиональный растровый редактор для AutoCAD с автоматической векторизацией и распознаванием текста",
+  "needs": [
+   "AutoCAD"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "csoft-development/csoft-rasterdesk",
+   "type": "upgrade_of",
+   "reason": "Pro-версия добавляет автоматическую векторизацию и распознавание текста к базовой",
+   "quote": "Профессиональная версия растрового редактора CSoft RasterDesk Pro добавляет к базовой редакции инструменты автоматической векторизации",
+   "dst_name": "CSoft RasterDesk",
+   "critic": "Pro-версия является старшей редакцией базового RasterDesk, что подтверждается описанием."
+  }
+ ],
+ "edges": [
+  {
+   "src": "csoft-development/csoft-rasterdesk",
+   "dst": "new",
+   "type": "same_line",
+   "why": "Pro-версия добавляет автоматическую векторизацию и распознавание текста к базовой"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "csoft-development/csoft-rasterdesk",
+   "dst": "new",
+   "type": "same_line",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "CSoft RasterDesk"
+  }
+ ],
+ "dropped": [],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "CSoft RasterDesk Pro"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "csoft-development/csoft-rasterdesk",
+     "name": "CSoft RasterDesk",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-electrics-professional",
+     "name": "CSoft ElectriCS Professional",
+     "vendor": "CSoft Development",
+     "class": "Строительное программное обеспечение",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-plantracer-pro-7",
+     "name": "CSoft PlanTracer Pro",
+     "vendor": "CSoft Development",
+     "class": "Инфраструктура: изыскания, генплан, транспорт",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-spotlight-pro",
+     "name": "CSoft Spotlight Pro",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-plantracer-tehplan-pro",
+     "name": "CSoft PlanTracer ТехПлан Pro",
+     "vendor": "CSoft Development",
+     "class": "Инфраструктура: изыскания, генплан, транспорт",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-geonics",
+     "name": "CSoft GeoniCS",
+     "vendor": "CSoft Development",
+     "class": "Инфраструктура: изыскания, генплан, транспорт",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-tdms",
+     "name": "CSoft TDMS",
+     "vendor": "CSoft Development",
+     "class": "Программы для документооборота",
+     "sale": "в продаже"
+    },
+    {
+     "id": "csoft-development/csoft-spotlight",
+     "name": "CSoft Spotlight",
+     "vendor": "CSoft Development",
+     "class": "Редакторы и векторизаторы",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "растровый редактор векторизатор для AutoCAD"
+   },
+   "thought": "Нужно уточнить класс и найти базовый продукт CSoft RasterDesk для связи upgrade_of или addon_for.",
+   "result": [
+    {
+     "class_id": "sapr/mashinostroenie",
+     "name": "Программы для машиностроения",
+     "examples": [
+      "КОМПАС-3D V25",
+      "КОМПАС-График V25",
+      "КОМПАС-3D HOME"
+     ]
+    },
+    {
+     "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+     "name": "Редакторы и векторизаторы",
+     "examples": [
+      "CSoft RasterDesk",
+      "CSoft RasterID",
+      "CSoft Spotlight"
+     ]
+    },
+    {
+     "class_id": "sapr/arhitektura",
+     "name": "Программы для архитекторов",
+     "examples": [
+      "CSoft Project StudioCS Архитектура",
+      "Archicad 26",
+      "Autodesk AutoCAD Architecture"
+     ]
+    },
+    {
+     "class_id": "text/raspoznavanie-teksta-i-rechi",
+     "name": "Программы для распознавания текста и речи",
+     "examples": [
+      "Wondershare PDFelement",
+      "СЕТЕРЕ Архиватор",
+      "СЕТЕРЕ ПДФ Редактор"
+     ]
+    },
+    {
+     "class_id": "sapr/bazovie-produkti",
+     "name": "Базовые программы",
+     "examples": [
+      "Платформа nanoCAD 26",
+      "GEOBRIDGE Условные Знаки",
+      "PROCAD Plant Design Suite"
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "csoft-development/csoft-rasterdesk"
+   },
+   "thought": "Нужно уточнить класс и найти базовый продукт CSoft RasterDesk для связи upgrade_of или addon_for.",
+   "result": {
+    "id": "csoft-development/csoft-rasterdesk",
+    "name": "CSoft RasterDesk",
+    "vendor": "CSoft Development",
+    "class": "Редакторы и векторизаторы",
+    "sale": "в продаже",
+    "class_id": "sapr/gibridnie-graficheskie-redaktori-i-vektorizatori",
+    "description": "Программное обеспечение CSoft RasterDesk является профессиональным растровым инструментом редактирования и визуализации, предназначенным для работы с отсканированными документами в САПР AutoCAD. Графический редактор CSoft RasterDesk дополняет возможности AutoCAD передовыми средствами работы с растровыми изображениями. Базовая версия растрового редактора CSoft RasterDesk позволяет повышать качество сканированных изображений за счет редактирования графики при помощи инструментов AutoCAD и ее векторизации в полуавтоматическом режиме. Возможности CSoft RasterDesk: Сканирование. Модуль WiseScan LE ",
+    "links": []
+   },
+   "ask": 1
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Уже есть базовый продукт CSoft RasterDesk, нужно проверить, есть ли другие версии или связанные товары, и определить класс.",
+   "result": "паспорт и связи",
+   "ask": 2
+  }
+ ],
+ "seconds": 8.7,
+ "model_requests": 3,
+ "tokens": {
+  "in": 5543,
+  "out": 396
+ },
+ "truth": {
+  "id": "csoft-development/csoft-rasterdesk-pro",
+  "class": "Редакторы и векторизаторы",
+  "kind": "линейка",
+  "related": [
+   "CSoft RasterDesk"
+  ]
+ }
+}

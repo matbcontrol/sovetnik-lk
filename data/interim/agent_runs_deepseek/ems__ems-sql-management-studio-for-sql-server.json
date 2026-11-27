@@ -1,0 +1,655 @@
+{
+ "card": {
+  "name": "EMS SQL Management Studio for SQL Server",
+  "vendor": "EMS",
+  "description": "Программное обеспечение EMS SQL Management Studio for SQL Server является комплексным продуктом для разработки и администрирования баз данных в Microsoft SQL Server. В состав пакета EMS SQL Management Studio for SQL Server входят компоненты, помогающие решать важнейшие задачи по администрированию баз данных SQL-сервера и их объектов, созданию БД, выполнению миграции, извлечению баз, генерации SQL-запросов, импорту, экспорту и сравнению данных. Все инструменты комплекса EMS SQL Management Studio for SQL Server интегрированы в единую удобную рабочую среду, способную функционировать в круглосуточном режиме. Кроме того, EMS SQL Management Studio for SQL Server позволяет автоматизировать некоторые процессы администрирования баз данных на SQL-сервере: миграция, загрузка и синхронизация информации, резервирование и извлечение данных. Компоненты EMS SQL Management Studio for SQL Server: SQL Manager for SQL Server – высокопроизводительная система разработки и администрирования баз данных на SQL-серверах. В состав EMS SQL Manager for SQL Server входят множество полезных инструментов, в том числе визуальный конструктор баз данных, помогающий быстро создавать базы данных SQL Server, визуальный конструктор запросов для построения комплексных запросов к SQL-серверов и множество других полезных средств эффективного администрирования и разработки. Data Export for SQL Server – профессиональная система экспорта данных SQL-сервера в любой из 20 доступных форматов, включая Microsoft Excel и Word"
+ },
+ "passport": {
+  "class_id": "programmirovanie/bazi-dannih",
+  "class_name": "Программы для работы с базами данных",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "Программы для работы с базами данных",
+  "neighbors": {
+   "class_id": "programmirovanie/bazi-dannih",
+   "name": "Программы для работы с базами данных",
+   "confidence": 1.0,
+   "similarity": 0.83,
+   "near": [
+    {
+     "id": "ems/ems-sql-management-studio-for-oracle",
+     "name": "EMS SQL Management Studio for Oracle",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-mysql",
+     "name": "EMS SQL Management Studio for MySQL",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-postgresql",
+     "name": "EMS SQL Management Studio for PostgreSQL",
+     "class": "Программы для работы с базами данных"
+    }
+   ]
+  },
+  "does": "Комплексный инструмент для разработки и администрирования баз данных Microsoft SQL Server, включающий SQL Manager и Data Export.",
+  "needs": [
+   "Microsoft SQL Server"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "ems/ems-sql-manager-for-sql-server",
+   "type": "complements",
+   "reason": "Входит в состав пакета EMS SQL Management Studio for SQL Server как компонент SQL Manager.",
+   "quote": "SQL Manager for SQL Server – высокопроизводительная система разработки и администрирования баз данных на SQL-серверах.",
+   "dst_name": "EMS SQL Manager for SQL Server",
+   "critic": "SQL Manager for SQL Server входит в состав пакета как компонент, указано в описании."
+  },
+  {
+   "dst": "ems/ems-data-export-for-sql-server",
+   "type": "complements",
+   "reason": "Входит в состав пакета EMS SQL Management Studio for SQL Server как компонент Data Export.",
+   "quote": "Data Export for SQL Server – профессиональная система экспорта данных SQL-сервера в любой из 20 доступных форматов.",
+   "dst_name": "EMS Data Export for SQL Server",
+   "critic": "Data Export for SQL Server входит в состав пакета как компонент, указано в описании."
+  }
+ ],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "ems/ems-sql-manager-for-sql-server",
+   "type": "complements",
+   "why": "Входит в состав пакета EMS SQL Management Studio for SQL Server как компонент SQL Manager."
+  },
+  {
+   "src": "new",
+   "dst": "ems/ems-data-export-for-sql-server",
+   "type": "complements",
+   "why": "Входит в состав пакета EMS SQL Management Studio for SQL Server как компонент Data Export."
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [
+  {
+   "dst": "ems/ems-sql-management-studio-for-oracle",
+   "type": "analog_of",
+   "reason": "Аналогичный продукт для другой СУБД (Oracle).",
+   "quote": "",
+   "dst_name": "EMS SQL Management Studio for Oracle",
+   "why": "критик: Связь 'российский аналог' неверна: оба продукта от одного вендора EMS, не являются аналогами, а предназначены для разных СУБД."
+  },
+  {
+   "dst": "ems/ems-sql-management-studio-for-mysql",
+   "type": "analog_of",
+   "reason": "Аналогичный продукт для другой СУБД (MySQL).",
+   "quote": "",
+   "dst_name": "EMS SQL Management Studio for MySQL",
+   "why": "критик: Связь 'российский аналог' неверна: оба продукта от одного вендора EMS, не являются аналогами, а предназначены для разных СУБД."
+  },
+  {
+   "dst": "ems/ems-sql-management-studio-for-postgresql",
+   "type": "analog_of",
+   "reason": "Аналогичный продукт для другой СУБД (PostgreSQL).",
+   "quote": "",
+   "dst_name": "EMS SQL Management Studio for PostgreSQL",
+   "why": "критик: Связь 'российский аналог' неверна: оба продукта от одного вендора EMS, не являются аналогами, а предназначены для разных СУБД."
+  }
+ ],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS SQL Management Studio for SQL Server"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "ems/ems-sql-management-studio-for-oracle",
+     "name": "EMS SQL Management Studio for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-mysql",
+     "name": "EMS SQL Management Studio for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-postgresql",
+     "name": "EMS SQL Management Studio for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/sql-management-studio-for-interbase_firebird",
+     "name": "SQL Management Studio for InterBase/Firebird",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "vendor": "EMS",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-administrator-for-sql-server",
+     "name": "EMS SQL Administrator for SQL Server",
+     "vendor": "EMS",
+     "class": "Серверное ПО",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "SQL Server"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "navicat/navicat-for-sql-server",
+     "name": "Navicat for SQL Server",
+     "vendor": "Navicat",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "vendor": "EMS",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "microsoft/microsoft-sql-server",
+     "name": "Microsoft SQL Server",
+     "vendor": "",
+     "class": "Серверное ПО",
+     "sale": "по запросу"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-administrator-for-sql-server",
+     "name": "EMS SQL Administrator for SQL Server",
+     "vendor": "EMS",
+     "class": "Серверное ПО",
+     "sale": "в продаже"
+    },
+    {
+     "id": "officerecovery/recovery-for-sql-server",
+     "name": "Recovery for SQL Server",
+     "vendor": "",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "по запросу"
+    },
+    {
+     "id": "ems/data-generator-for-sql-server-",
+     "name": "EMS Data Generator for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS SQL Management Studio for SQL Server"
+   },
+   "thought": "Нужно определить класс и связи. Класс уже известен из подсказки: programmirovanie/bazi-dannih. Найду базовый продукт и другие редакции через search_catalog.",
+   "result": [
+    {
+     "id": "ems/ems-sql-management-studio-for-oracle",
+     "name": "EMS SQL Management Studio for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-mysql",
+     "name": "EMS SQL Management Studio for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-postgresql",
+     "name": "EMS SQL Management Studio for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/sql-management-studio-for-interbase_firebird",
+     "name": "SQL Management Studio for InterBase/Firebird",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "vendor": "EMS",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-administrator-for-sql-server",
+     "name": "EMS SQL Administrator for SQL Server",
+     "vendor": "EMS",
+     "class": "Серверное ПО",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS SQL Manager for SQL Server"
+   },
+   "thought": "Нужно определить класс и связи. Класс уже известен из подсказки: programmirovanie/bazi-dannih. Найду базовый продукт и другие редакции через search_catalog.",
+   "result": [
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-oracle",
+     "name": "EMS SQL Manager for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-mysql",
+     "name": "EMS SQL Manager for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-postgresql",
+     "name": "EMS SQL Manager for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-db2",
+     "name": "EMS SQL Manager for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/sql-manager-for-interbase_firebird",
+     "name": "SQL Manager for InterBase/Firebird",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "vendor": "EMS",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS Data Export for SQL Server"
+   },
+   "thought": "Нужно определить класс и связи. Класс уже известен из подсказки: programmirovanie/bazi-dannih. Найду базовый продукт и другие редакции через search_catalog.",
+   "result": [
+    {
+     "id": "ems/ems-data-export-for-sql-server",
+     "name": "EMS Data Export for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-generator-for-sql-server-",
+     "name": "EMS Data Generator for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-import-for-sql-server",
+     "name": "EMS Data Import for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-comparer-for-sql-server",
+     "name": "EMS Data Comparer for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-pump-for-sql-server",
+     "name": "EMS Data Pump for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-oracle",
+     "name": "EMS Data Export for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-mysql",
+     "name": "EMS Data Export for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-postgresql",
+     "name": "EMS Data Export for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS SQL Management Studio for SQL Server"
+   },
+   "thought": "Уже есть класс и похожие товары. Нужно проверить, есть ли в каталоге сам продукт EMS SQL Management Studio for SQL Server (возможно, как отдельный товар) и связать с компонентами, которые входят в его состав.",
+   "result": [
+    {
+     "id": "ems/ems-sql-management-studio-for-oracle",
+     "name": "EMS SQL Management Studio for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-mysql",
+     "name": "EMS SQL Management Studio for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-postgresql",
+     "name": "EMS SQL Management Studio for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/sql-management-studio-for-interbase_firebird",
+     "name": "SQL Management Studio for InterBase/Firebird",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "vendor": "EMS",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-administrator-for-sql-server",
+     "name": "EMS SQL Administrator for SQL Server",
+     "vendor": "EMS",
+     "class": "Серверное ПО",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS SQL Manager for SQL Server"
+   },
+   "thought": "Уже есть класс и похожие товары. Нужно проверить, есть ли в каталоге сам продукт EMS SQL Management Studio for SQL Server (возможно, как отдельный товар) и связать с компонентами, которые входят в его состав.",
+   "result": [
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-oracle",
+     "name": "EMS SQL Manager for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-mysql",
+     "name": "EMS SQL Manager for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-postgresql",
+     "name": "EMS SQL Manager for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-db2",
+     "name": "EMS SQL Manager for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/sql-manager-for-interbase_firebird",
+     "name": "SQL Manager for InterBase/Firebird",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "vendor": "EMS",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS Data Export for SQL Server"
+   },
+   "thought": "Уже есть класс и похожие товары. Нужно проверить, есть ли в каталоге сам продукт EMS SQL Management Studio for SQL Server (возможно, как отдельный товар) и связать с компонентами, которые входят в его состав.",
+   "result": [
+    {
+     "id": "ems/ems-data-export-for-sql-server",
+     "name": "EMS Data Export for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-generator-for-sql-server-",
+     "name": "EMS Data Generator for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-import-for-sql-server",
+     "name": "EMS Data Import for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-comparer-for-sql-server",
+     "name": "EMS Data Comparer for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-pump-for-sql-server",
+     "name": "EMS Data Pump for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-oracle",
+     "name": "EMS Data Export for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-mysql",
+     "name": "EMS Data Export for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-postgresql",
+     "name": "EMS Data Export for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс уже известен из подсказки, нужно определить связи. Товар EMS SQL Management Studio for SQL Server является комплексным пакетом, включающим SQL Manager и Data Export. Найду эти компоненты и свяжу как complements. Также есть аналогичные студии для других СУБД — свяжу как analog_of.",
+   "result": "паспорт и связи",
+   "ask": 3
+  }
+ ],
+ "seconds": 17.0,
+ "model_requests": 4,
+ "tokens": {
+  "in": 12478,
+  "out": 1129
+ },
+ "truth": {
+  "id": "ems/ems-sql-management-studio-for-sql-server",
+  "class": "Программы для работы с базами данных",
+  "kind": "дополнение",
+  "related": [
+   "Microsoft SQL Server",
+   "Microsoft SQL Server Enterprise Edition",
+   "Microsoft SQL Server Standard Edition"
+  ]
+ }
+}

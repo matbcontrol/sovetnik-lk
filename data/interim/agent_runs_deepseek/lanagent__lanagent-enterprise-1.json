@@ -1,0 +1,249 @@
+{
+ "card": {
+  "name": "LanAgent Enterprise",
+  "vendor": "LanAgent",
+  "description": "Программное обеспечение LanAgent Enterprise является комплексной системой по контролю рабочего времени сотрудников и обеспечению информационной безопасности компании. Также как и стандартная версия LanAgent, LanAgent Enterprise направлена на задачи защиты корпоративной информации, а также повышения эффективности работы сотрудников и укрепления трудовой дисциплины. LanAgent Enterprise покажет полную картину рабочего дня подчиненных, по которой будет видно, сколько времени каждый из них тратил на компьютерные игры или на личную переписку в сетях, а сколько – на работу. Это позволит не только повысить трудовую дисциплину, но и оптимизировать рабочий день сотрудников. Также LanAgent Enterprise позволяет взять под контроль основные каналы утечки информации, такие как: съемные носители информации, корпоративную почту, социальные сети, программы обмена мгновенными сообщениями, Skype, печать документов на принтере. Это позволит своевременно обнаружить и предотвратить утечку важной информации. Версия Enterprise выполняет все функции LanAgent Standard и имеет ряд специальных возможностей: она оптимизирована для сбора данных с большого количества компьютеров, ее серверная часть может работать в постоянном круглосуточном режиме. Вход пользователя на сервер при этом не требуется, достаточно, чтобы компьютер просто был включен. Кроме того, в данной версии возможно подключение практически неограниченного количества консолей просмотра данных и для каждого специалиста безопасности гибко задаю"
+ },
+ "passport": {
+  "class_id": "antivirusi-bezopasnost/kontrol-personala",
+  "class_name": "Программное обеспечение для контроля персонала",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Программное обеспечение для контроля персонала",
+  "neighbors": {
+   "class_id": "antivirusi-bezopasnost/kontrol-personala",
+   "name": "Программное обеспечение для контроля персонала",
+   "confidence": 0.62,
+   "similarity": 0.66,
+   "near": [
+    {
+     "id": "lanagent/lanagent-standard-1",
+     "name": "LanAgent Standard",
+     "class": "Программное обеспечение для контроля персонала"
+    },
+    {
+     "id": "lanagent/lanagent-terminal-1",
+     "name": "LanAgent Terminal",
+     "class": "Программное обеспечение для контроля персонала"
+    },
+    {
+     "id": "pixso/pixso-enterprise",
+     "name": "Pixso Enterprise",
+     "class": "Программное обеспечение для управления бизнесом"
+    }
+   ]
+  },
+  "does": "Комплексная система контроля рабочего времени сотрудников и обеспечения информационной безопасности компании",
+  "needs": [],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "lanagent/lanagent-standard-1",
+   "type": "upgrade_of",
+   "reason": "Enterprise — старшая редакция LanAgent Standard с дополнительными возможностями для больших парков компьютеров",
+   "quote": "Версия Enterprise выполняет все функции LanAgent Standard и имеет ряд специальных возможностей",
+   "dst_name": "LanAgent Standard",
+   "critic": "Enterprise является старшей редакцией Standard, что подтверждается описанием."
+  }
+ ],
+ "edges": [
+  {
+   "src": "lanagent/lanagent-standard-1",
+   "dst": "new",
+   "type": "upgrade",
+   "why": "Enterprise — старшая редакция LanAgent Standard с дополнительными возможностями для больших парков компьютеров"
+  }
+ ],
+ "rule_edges": [
+  {
+   "src": "lanagent/lanagent-standard-1",
+   "dst": "new",
+   "type": "upgrade",
+   "why": "та же линейка: совпали вендор и основа названия",
+   "name": "LanAgent Standard"
+  }
+ ],
+ "dropped": [
+  {
+   "dst": "lanagent/lanagent-terminal-1",
+   "type": "complements",
+   "reason": "LanAgent Terminal предназначен для контроля терминальных серверов, а Enterprise — для рабочих станций, вместе покрывают разные сценарии",
+   "quote": "",
+   "dst_name": "LanAgent Terminal",
+   "why": "критик: Связь с Terminal не следует из карточки и не является общеизвестной."
+  }
+ ],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "LanAgent Enterprise"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "lanagent/lanagent-standard-1",
+     "name": "LanAgent Standard",
+     "vendor": "LanAgent",
+     "class": "Программное обеспечение для контроля персонала",
+     "sale": "в продаже"
+    },
+    {
+     "id": "lanagent/lanagent-terminal-1",
+     "name": "LanAgent Terminal",
+     "vendor": "",
+     "class": "Программное обеспечение для контроля персонала",
+     "sale": "по запросу"
+    },
+    {
+     "id": "pixso/pixso-enterprise",
+     "name": "Pixso Enterprise",
+     "vendor": "Pixso",
+     "class": "Программное обеспечение для управления бизнесом",
+     "sale": "в продаже"
+    },
+    {
+     "id": "sawmill/sawmill-enterprise",
+     "name": "Sawmill Enterprise",
+     "vendor": "Sawmill",
+     "class": "Сетевые утилиты",
+     "sale": "в продаже"
+    },
+    {
+     "id": "postgrespro/postgres-pro-enterprise",
+     "name": "Postgres Pro Enterprise",
+     "vendor": "Postgres Professional",
+     "class": "Российские базы данных (Импортозамещение)",
+     "sale": "в продаже"
+    },
+    {
+     "id": "1s-bitriks/1s-bitriks-enterprayz",
+     "name": "1С-Битрикс: Enterprise",
+     "vendor": "1С-Битрикс",
+     "class": "Программное обеспечение для создания сайтов",
+     "sale": "в продаже"
+    },
+    {
+     "id": "postgrespro/postgres-pro-enterprise-dlia-1s",
+     "name": "Postgres Pro Enterprise для 1С",
+     "vendor": "Postgres Professional",
+     "class": "Российские базы данных (Импортозамещение)",
+     "sale": "в продаже"
+    },
+    {
+     "id": "pixso/pixso-boardmix-enterprise",
+     "name": "Pixso BoardMix Enterprise",
+     "vendor": "Pixso",
+     "class": "Программное обеспечение для управления бизнесом",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "контроль персонала"
+   },
+   "thought": "Уже есть результаты поиска, где виден LanAgent Standard и другие товары. Нужно определить класс и связи. Класс из подсказки: 'Программное обеспечение для контроля персонала'. Найду точный код класса через find_classes и проверю карточку LanAgent Standard для связи upgrade_of.",
+   "result": [
+    {
+     "class_id": "antivirusi-bezopasnost/kontrol-personala",
+     "name": "Программное обеспечение для контроля персонала",
+     "examples": [
+      "Octagram Flex",
+      "LanAgent Standard",
+      "ИНСАЙДЕР"
+     ]
+    },
+    {
+     "class_id": "buhgalteriya-sklad-kadry/kadroviy-uchet",
+     "name": "Программы для кадрового учета",
+     "examples": [
+      "e-staff",
+      "БОСС-Кадровик",
+      "OfficeWork OrgChart Professional"
+     ]
+    },
+    {
+     "class_id": "saas/sistemi-avtomatizatsii_saas",
+     "name": "Системы автоматизации (SaaS)",
+     "examples": [
+      "Navicat Cloud",
+      "МоиОтчеты Облако",
+      "МоиОтчеты Публикатор"
+     ]
+    },
+    {
+     "class_id": "bytovaya-tekhnika/kholodilniki",
+     "name": "Холодильники",
+     "examples": [
+      "ATLANT XM-4012-022",
+      "ATLANT XM-6021-031",
+      "Встраиваемый холодильник ELECTROLUX/ Встраиваемый "
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "lanagent/lanagent-standard-1"
+   },
+   "thought": "Уже есть результаты поиска, где виден LanAgent Standard и другие товары. Нужно определить класс и связи. Класс из подсказки: 'Программное обеспечение для контроля персонала'. Найду точный код класса через find_classes и проверю карточку LanAgent Standard для связи upgrade_of.",
+   "result": {
+    "id": "lanagent/lanagent-standard-1",
+    "name": "LanAgent Standard",
+    "vendor": "LanAgent",
+    "class": "Программное обеспечение для контроля персонала",
+    "sale": "в продаже",
+    "class_id": "antivirusi-bezopasnost/kontrol-personala",
+    "description": "Программное обеспечение LanAgent Standard предназначено для контроля действий пользователей компьютеров в организациях с небольшим или средним по величине компьютерным парком. LanAgent Standard решает две важные задачи: повышает эффективность работы сотрудников и защищает компанию от утечек конфиденциальной информации. Достигается это за счет контроля всей активности, производимой на компьютерах в организации. LanAgent покажет полную картину рабочего дня подчиненных, по которой будет видно, сколько времени каждый из них тратил на компьютерные игры или на личную переписку в сетях, а сколько – н",
+    "links": []
+   },
+   "ask": 1
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "lanagent/lanagent-terminal-1"
+   },
+   "thought": "Уже есть класс и базовый продукт LanAgent Standard. Нужно проверить, есть ли другие версии LanAgent (например, Terminal) и связать Enterprise как upgrade_of Standard.",
+   "result": {
+    "id": "lanagent/lanagent-terminal-1",
+    "name": "LanAgent Terminal",
+    "vendor": "",
+    "class": "Программное обеспечение для контроля персонала",
+    "sale": "по запросу",
+    "class_id": "antivirusi-bezopasnost/kontrol-personala",
+    "description": "Программное обеспечение LanAgent Terminal предназначено для работы на терминальном сервере для мониторинга «тонких клиентов» и активности пользователей, подключающихся через удаленный рабочий стол (RDP). Программа LanAgent Terminal состоит из 3 частей – сервер LanAgent, рабочее место специалиста безопасности и рабочее место администратора системы. Серверная часть Устанавливается на терминал-сервер, к которому будут подключаться рабочие станции (тонкие клиенты). Она включает в себя модуль опроса агентов, который производит централизованный сбор информации (логов) с контролируемых рабочих станци",
+    "links": []
+   },
+   "ask": 2
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "Класс уже известен из подсказки и find_classes: antivirusi-bezopasnost/kontrol-personala. Нужно связать с LanAgent Standard как upgrade_of, так как Enterprise выполняет все функции Standard и имеет дополнительные возможности. Также можно связать с LanAgent Terminal как complements, так как оба продукта для контроля персонала, но Terminal для терминальных серверов. Других связей не видно.",
+   "result": "паспорт и связи",
+   "ask": 3
+  }
+ ],
+ "seconds": 13.0,
+ "model_requests": 4,
+ "tokens": {
+  "in": 7977,
+  "out": 647
+ },
+ "truth": {
+  "id": "lanagent/lanagent-enterprise-1",
+  "class": "Программное обеспечение для контроля персонала",
+  "kind": "линейка",
+  "related": [
+   "LanAgent Standard"
+  ]
+ }
+}

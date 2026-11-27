@@ -1,0 +1,524 @@
+{
+ "card": {
+  "name": "EMS Data Export for SQL Server",
+  "vendor": "EMS",
+  "description": "Программное обеспечение EMS Data Export for SQL Server – это профессиональная система экспорта данных SQL-сервера в любой из 20 доступных форматов, включая Microsoft Excel и Word (RTF), HTML, XML, PDF, TXT, CSV, DBF, ODF и другие. Решение EMS Data Export for SQL Server поддерживает Unicode и позволяет экспортировать информацию одновременно из нескольких таблиц, представлений или запросов. В состав Data Export for SQL Server включены удобные мастера для визуальной установки параметров экспорта из баз данных SQL Server (названия конечных файлов, экспортируемые поля, форматы данных и другие) и консольной утилитой для быстрого копирования информации из таблиц SQL Server и запросов. Ключевые возможности EMS Data Export for SQL Server: Экспорт данных в 20 популярных форматов: Microsoft Excel, Access и Word, RTF, HTML, PDF, XML, TXT, DBF, CSV, ODF, SYLK, DIF, LaTeX, SQL, буфер обмена и другие. Одновременный экспорт данных из нескольких таблиц, представлений или запросов. Поддержка кодировки Unicode. Выбор полей для экспорта и изменение их порядка. Настройка параметров экспорта для каждой таблицы, а также для каждого формата данных. Возможность сохранения всех параметров экспорта активного сеанса в файл конфигурации. Автоматизация экспорта данных с помощью файла конфигурации с помощью консольной утилиты. Поддержка новейших версий SQL –сервера от Microsoft. Работа к дружественному интерфейсу мастера настройки. Бесплатная подписка на один год сопровождения ПО. Бесплатные обновления на "
+ },
+ "passport": {
+  "class_id": "programmirovanie/bazi-dannih",
+  "class_name": "Программы для работы с базами данных",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "соседи по каталогу",
+  "class_agent": "Программы для работы с базами данных",
+  "neighbors": {
+   "class_id": "programmirovanie/bazi-dannih",
+   "name": "Программы для работы с базами данных",
+   "confidence": 1.0,
+   "similarity": 0.73,
+   "near": [
+    {
+     "id": "ems/data-generator-for-sql-server-",
+     "name": "EMS Data Generator for SQL Server",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/ems-data-import-for-sql-server",
+     "name": "EMS Data Import for SQL Server",
+     "class": "Программы для работы с базами данных"
+    },
+    {
+     "id": "ems/ems-data-comparer-for-sql-server",
+     "name": "EMS Data Comparer for SQL Server",
+     "class": "Программы для работы с базами данных"
+    }
+   ]
+  },
+  "does": "Экспорт данных из SQL Server в различные форматы",
+  "needs": [
+   "Microsoft SQL Server"
+  ],
+  "audience": "b2b"
+ },
+ "links": [
+  {
+   "dst": "ems/ems-data-import-for-sql-server",
+   "type": "complements",
+   "reason": "Импорт данных в SQL Server дополняет экспорт",
+   "quote": "экспорт данных SQL-сервера",
+   "dst_name": "EMS Data Import for SQL Server",
+   "critic": "Импорт данных дополняет экспорт, оба инструмента для работы с SQL Server"
+  },
+  {
+   "dst": "ems/ems-data-comparer-for-sql-server",
+   "type": "complements",
+   "reason": "Сравнение данных SQL Server дополняет экспорт",
+   "quote": "экспорт данных SQL-сервера",
+   "dst_name": "EMS Data Comparer for SQL Server",
+   "critic": "Сравнение данных дополняет экспорт, оба инструмента для работы с SQL Server"
+  },
+  {
+   "dst": "ems/data-generator-for-sql-server-",
+   "type": "complements",
+   "reason": "Генерация тестовых данных дополняет экспорт",
+   "quote": "экспорт данных SQL-сервера",
+   "dst_name": "EMS Data Generator for SQL Server",
+   "critic": "Генерация тестовых данных дополняет экспорт, оба инструмента для работы с SQL Server"
+  }
+ ],
+ "edges": [
+  {
+   "src": "new",
+   "dst": "ems/ems-data-import-for-sql-server",
+   "type": "complements",
+   "why": "Импорт данных в SQL Server дополняет экспорт"
+  },
+  {
+   "src": "new",
+   "dst": "ems/ems-data-comparer-for-sql-server",
+   "type": "complements",
+   "why": "Сравнение данных SQL Server дополняет экспорт"
+  },
+  {
+   "src": "new",
+   "dst": "ems/data-generator-for-sql-server-",
+   "type": "complements",
+   "why": "Генерация тестовых данных дополняет экспорт"
+  }
+ ],
+ "rule_edges": [],
+ "dropped": [
+  {
+   "dst": "ems/ems-data-export-for-oracle",
+   "type": "analog_of",
+   "reason": "Аналог для Oracle",
+   "quote": "SQL Server",
+   "dst_name": "EMS Data Export for Oracle",
+   "why": "критик: Это не российский аналог, а продукт того же вендора для другой СУБД"
+  },
+  {
+   "dst": "ems/ems-data-export-for-mysql",
+   "type": "analog_of",
+   "reason": "Аналог для MySQL",
+   "quote": "SQL Server",
+   "dst_name": "EMS Data Export for MySQL",
+   "why": "критик: Это не российский аналог, а продукт того же вендора для другой СУБД"
+  },
+  {
+   "dst": "ems/ems-data-export-for-postgresql",
+   "type": "analog_of",
+   "reason": "Аналог для PostgreSQL",
+   "quote": "SQL Server",
+   "dst_name": "EMS Data Export for PostgreSQL",
+   "why": "критик: Это не российский аналог, а продукт того же вендора для другой СУБД"
+  }
+ ],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS Data Export for SQL Server"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "ems/data-generator-for-sql-server-",
+     "name": "EMS Data Generator for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-import-for-sql-server",
+     "name": "EMS Data Import for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-comparer-for-sql-server",
+     "name": "EMS Data Comparer for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-pump-for-sql-server",
+     "name": "EMS Data Pump for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-oracle",
+     "name": "EMS Data Export for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-mysql",
+     "name": "EMS Data Export for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-postgresql",
+     "name": "EMS Data Export for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-export-for-db2",
+     "name": "EMS Data Export for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "SQL Server"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "navicat/navicat-for-sql-server",
+     "name": "Navicat for SQL Server",
+     "vendor": "Navicat",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-manager-for-sql-server",
+     "name": "EMS SQL Manager for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-backup-for-sql-server",
+     "name": "EMS SQL Backup for SQL Server",
+     "vendor": "EMS",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "microsoft/microsoft-sql-server",
+     "name": "Microsoft SQL Server",
+     "vendor": "",
+     "class": "Серверное ПО",
+     "sale": "по запросу"
+    },
+    {
+     "id": "ems/ems-sql-query-for-sql-server",
+     "name": "EMS SQL Query for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-sql-administrator-for-sql-server",
+     "name": "EMS SQL Administrator for SQL Server",
+     "vendor": "EMS",
+     "class": "Серверное ПО",
+     "sale": "в продаже"
+    },
+    {
+     "id": "officerecovery/recovery-for-sql-server",
+     "name": "Recovery for SQL Server",
+     "vendor": "",
+     "class": "Программное обеспечение для восстановления данных",
+     "sale": "по запросу"
+    },
+    {
+     "id": "ems/ems-sql-management-studio-for-sql-server",
+     "name": "EMS SQL Management Studio for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/ems-data-import-for-sql-server"
+   },
+   "thought": "Уже есть класс и похожие товары. Проверю карточки ближайших аналогов, чтобы понять связи.",
+   "result": {
+    "id": "ems/ems-data-import-for-sql-server",
+    "name": "EMS Data Import for SQL Server",
+    "vendor": "EMS",
+    "class": "Программы для работы с базами данных",
+    "sale": "в продаже",
+    "class_id": "programmirovanie/bazi-dannih",
+    "description": "Программное обеспечение EMS Data Import for SQL Server – это мощная система быстрого импорта данных в таблицы SQL-серверов из файлов в форматах Microsoft Excel 97-2007, Word 2007 и Access, DBF, XML, TXT, CSV, RTF, ODF и HTML. Решение EMS Data Import for SQL Server предусматривает возможность настройки параметров импорта, таких как исходные форматы для всех полей, конечные форматы данных SQL Server для выбранных полей, параметры фиксации данных, число пропускаемых записей и многие другие. В состав EMS Data Import for SQL Server входит удобный мастер настройки для визуальной установки параметров",
+    "links": []
+   },
+   "ask": 1
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/ems-data-comparer-for-sql-server"
+   },
+   "thought": "Уже есть класс и похожие товары. Проверю карточки ближайших аналогов, чтобы понять связи.",
+   "result": {
+    "id": "ems/ems-data-comparer-for-sql-server",
+    "name": "EMS Data Comparer for SQL Server",
+    "vendor": "EMS",
+    "class": "Программы для работы с базами данных",
+    "sale": "в продаже",
+    "class_id": "programmirovanie/bazi-dannih",
+    "description": "Программное обеспечение EMS Data Comparer for SQL Server – это мощный инструмент сравнения и синхронизации данных Microsoft SQL Server. Приложение Data Comparer for SQL Server позволяет отображать все различия в сравниваемых таблицах SQL-сервера и запускать автоматический сценарий для устранения этих различий. В решении реализованы гибкие опции настройки функций сравнения и синхронизации данных SQL-сервера, помогающие задавать таблицы и поля для сравнения, выполнять синхронизацию нескольких таблиц одновременно, а также регулировать другие параметры для эффективного сравнения таблиц SQL Server.",
+    "links": []
+   },
+   "ask": 1
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/data-generator-for-sql-server-"
+   },
+   "thought": "Уже есть класс и похожие товары. Проверю карточки ближайших аналогов, чтобы понять связи.",
+   "result": {
+    "id": "ems/data-generator-for-sql-server-",
+    "name": "EMS Data Generator for SQL Server",
+    "vendor": "EMS",
+    "class": "Программы для работы с базами данных",
+    "sale": "в продаже",
+    "class_id": "programmirovanie/bazi-dannih",
+    "description": "Программное обеспечение EMS Data Generator for SQL Server – это мощная система создания тестовых данных для таблиц баз данных Microsoft SQL Server с возможностью сохранения и редактирования сценариев. EMS Data Generator for SQL Server позволяет выполнять моделирование среды рабочей базы данных, одновременное заполнение тестовыми данными нескольких таблиц SQL Server, настройку таблиц для генерации данных. Кроме того, благодаря EMS Data Generator for SQL Server пользователи могут определять диапазоны значений, создавать текстовые поля по маске, задавать списки значений вручную или выбирать их из",
+    "links": []
+   },
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS Data Export for SQL Server"
+   },
+   "thought": "Уже есть класс и похожие товары. Проверю, есть ли в каталоге другие версии или редакции EMS Data Export for SQL Server, и посмотрю карточку базового продукта, если он есть.",
+   "result": [
+    {
+     "id": "ems/data-generator-for-sql-server-",
+     "name": "EMS Data Generator for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-import-for-sql-server",
+     "name": "EMS Data Import for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-comparer-for-sql-server",
+     "name": "EMS Data Comparer for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-pump-for-sql-server",
+     "name": "EMS Data Pump for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-oracle",
+     "name": "EMS Data Export for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-mysql",
+     "name": "EMS Data Export for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-postgresql",
+     "name": "EMS Data Export for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-export-for-db2",
+     "name": "EMS Data Export for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/ems-data-export-for-sql-server"
+   },
+   "thought": "Уже есть класс и похожие товары. Проверю, есть ли в каталоге другие версии или редакции EMS Data Export for SQL Server, и посмотрю карточку базового продукта, если он есть.",
+   "result": {
+    "error": "такого id нет в каталоге"
+   },
+   "ask": 2
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "EMS Data Export for SQL Server"
+   },
+   "thought": "Уже есть класс и похожие товары. Нужно проверить, есть ли в каталоге сам товар EMS Data Export for SQL Server, чтобы не дублировать, и посмотреть связи у аналогов для других СУБД.",
+   "result": [
+    {
+     "id": "ems/data-generator-for-sql-server-",
+     "name": "EMS Data Generator for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-import-for-sql-server",
+     "name": "EMS Data Import for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-comparer-for-sql-server",
+     "name": "EMS Data Comparer for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-pump-for-sql-server",
+     "name": "EMS Data Pump for SQL Server",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-oracle",
+     "name": "EMS Data Export for Oracle",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-mysql",
+     "name": "EMS Data Export for MySQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/ems-data-export-for-postgresql",
+     "name": "EMS Data Export for PostgreSQL",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ems/data-export-for-db2",
+     "name": "EMS Data Export for DB2",
+     "vendor": "EMS",
+     "class": "Программы для работы с базами данных",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 3
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/ems-data-export-for-oracle"
+   },
+   "thought": "Уже есть класс и похожие товары. Нужно проверить, есть ли в каталоге сам товар EMS Data Export for SQL Server, чтобы не дублировать, и посмотреть связи у аналогов для других СУБД.",
+   "result": {
+    "id": "ems/ems-data-export-for-oracle",
+    "name": "EMS Data Export for Oracle",
+    "vendor": "EMS",
+    "class": "Программы для работы с базами данных",
+    "sale": "в продаже",
+    "class_id": "programmirovanie/bazi-dannih",
+    "description": "Программное обеспечение EMS Data Export for Oracle является мощным решением для быстрого экспорта данных Oracle в любой из 20 доступных форматов, включая Microsoft Excel, Microsoft Word (RTF), HTML, XML, PDF, TXT, CSV, DBF, ODF и другие. Data Export for Oracle поддерживает последние версии серверов Oracle и дает возможность экспортировать данные одновременно из нескольких таблиц, представлений или запросов. В состав Data Export for Oracle входит удобный мастер для визуальной установки параметров экспорта из баз данных Oracle (имена конечных файлов, экспортируемые поля, форматы данных и другие)",
+    "links": []
+   },
+   "ask": 3
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/ems-data-export-for-mysql"
+   },
+   "thought": "Уже есть класс и похожие товары. Нужно проверить, есть ли в каталоге сам товар EMS Data Export for SQL Server, чтобы не дублировать, и посмотреть связи у аналогов для других СУБД.",
+   "result": {
+    "id": "ems/ems-data-export-for-mysql",
+    "name": "EMS Data Export for MySQL",
+    "vendor": "EMS",
+    "class": "Программы для работы с базами данных",
+    "sale": "в продаже",
+    "class_id": "programmirovanie/bazi-dannih",
+    "description": "Программное обеспечение EMS Data Export for MySQL – это удобная система экспорта данных из таблиц MySQL в 20 форматов, включая Microsoft Access, Word и Excel, Adobe PDF, HTML, ODF и многие другие. Data Export for MySQL поддерживает стандарт кодировки Unicode и предлагает инструменты экспорта данных одновременно из нескольких таблиц, запросов и представлений. В состав Data Export for MySQL входит мастер визуальной установки параметров экспорта информации из MySQL (имена конечных файлов, экспортируемые поля, форматы данных и др.), а также консольная утилита для быстрого экспорта информации из та",
+    "links": []
+   },
+   "ask": 3
+  },
+  {
+   "tool": "get_product",
+   "args": {
+    "id": "ems/ems-data-export-for-postgresql"
+   },
+   "thought": "Уже есть класс и похожие товары. Нужно проверить, есть ли в каталоге сам товар EMS Data Export for SQL Server, чтобы не дублировать, и посмотреть связи у аналогов для других СУБД.",
+   "result": {
+    "id": "ems/ems-data-export-for-postgresql",
+    "name": "EMS Data Export for PostgreSQL",
+    "vendor": "EMS",
+    "class": "Программы для работы с базами данных",
+    "sale": "в продаже",
+    "class_id": "programmirovanie/bazi-dannih",
+    "description": "Программное обеспечение EMS Data Export for PostgreSQL является мощным инструментом быстрого экспорта данных PostgreSQL в любой из двадцати доступных форматов, включая Microsoft Excel, Microsoft Word (RTF), HTML, XML, PDF, TXT, CSV, DBF, ODF и др. Решение Data Export for PostgreSQL поддерживает стандарт Unicode и позволяет экспортировать данные одновременно из нескольких запросов, представлений или таблиц. В состав Data Export for PostgreSQL входит удобный мастер для визуальной настройки параметров экспорта из баз данных PostgreSQL (имена конечных файлов, экспортируемые поля, форматы данных и ",
+    "links": []
+   },
+   "ask": 3
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "",
+   "result": "паспорт и связи",
+   "ask": 4
+  }
+ ],
+ "seconds": 16.4,
+ "model_requests": 5,
+ "tokens": {
+  "in": 15388,
+  "out": 1152
+ },
+ "truth": {
+  "id": "ems/ems-data-export-for-sql-server",
+  "class": "Программы для работы с базами данных",
+  "kind": "дополнение",
+  "related": [
+   "Microsoft SQL Server",
+   "Microsoft SQL Server Enterprise Edition",
+   "Microsoft SQL Server Standard Edition"
+  ]
+ }
+}

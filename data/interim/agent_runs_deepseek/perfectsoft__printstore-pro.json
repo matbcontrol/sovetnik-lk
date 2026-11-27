@@ -1,0 +1,560 @@
+{
+ "card": {
+  "name": "PrintStore Pro",
+  "vendor": "PerfectSoft",
+  "description": "Программное обеспечение PrintStore Pro представляет собой систему учета расходных материалов и оборудования для крупных компаний. С помощью PrintStore Pro можно отслеживать состояние каждого расходного материала в любом принтере (МФУ, копире, факсе), при этом время тратится только на указание моментов замены расходников. Особое внимание в программе уделено возможности одновременной работы большого количества пользователей, что достигается использованием SQL-сервера для хранения базы данных. Решение использует встроенный редактор шаблонов отчетов, который позволяет изменить внешний вид любого отчета в программе и при необходимости привести его к фирменному стилю компании. Основные возможности: Учет оборудования: приход, перемещение, ремонты, списание. Учет картриджей: приход, перемещение, расход на оборудование, списание, отображение оперативных остатков. Расчет скорости расхода по каждому расходному материалу и времени, на которое хватит существующего запаса, позволяет оптимизировать количества на складах. Мониторинг оборудования: сбор информации с принтеров, МФУ и других сетевых устройств по протоколу SNMP и отображение в реальном времени. Собираются данные по остаткам ресурсов, счетчикам печати, размещению, версии firmware и т.д. Отслеживание счетчиков печати позволяет привязывать информацию о текущем значении счетчика принтера к операциям замены расходных материалов, а также ремонта самого аппарата. Скоро этот функционал будет доработан и данные будут автоматически браться"
+ },
+ "passport": {
+  "class_id": "delovie-programmi/uchet-kompyuterov",
+  "class_name": "Программное обеспечение для учета компьютеров",
+  "class_seen": true,
+  "class_note": "",
+  "class_source": "агент",
+  "class_agent": "Программное обеспечение для учета компьютеров",
+  "neighbors": {
+   "class_id": "internet-i-set/programmi-dlya-seti",
+   "name": "Сетевые утилиты",
+   "confidence": 0.3,
+   "similarity": 0.15,
+   "near": [
+    {
+     "id": "sawmill/sawmill-professional",
+     "name": "Sawmill Professional",
+     "class": "Сетевые утилиты"
+    },
+    {
+     "id": "renga/renga-professional",
+     "name": "Renga Professional",
+     "class": "Базовые программы"
+    },
+    {
+     "id": "netsoftware-1/net-control-pro",
+     "name": "Net Control 2 Pro",
+     "class": "Прочие программы"
+    }
+   ]
+  },
+  "does": "Система учета расходных материалов и оборудования для принтеров и МФУ с мониторингом по SNMP",
+  "needs": [],
+  "audience": "b2b"
+ },
+ "links": [],
+ "edges": [],
+ "rule_edges": [],
+ "dropped": [
+  {
+   "dst": "10-strike-software/uchet-programmnogo-obespecheniya-pro",
+   "type": "complements",
+   "reason": "Обе программы предназначены для учета ИТ-активов и могут использоваться вместе",
+   "quote": "учет расходных материалов и оборудования",
+   "dst_name": "«10-Страйк: Учет Программного Обеспечения Pro»",
+   "why": "критик: Товары не дополняют друг друга, а относятся к разным категориям учета: расходные материалы и оборудование против программного обеспечения"
+  }
+ ],
+ "steps": [
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "PrintStore Pro"
+   },
+   "thought": "без модели: поиск по названию",
+   "result": [
+    {
+     "id": "sawmill/sawmill-professional",
+     "name": "Sawmill Professional",
+     "vendor": "Sawmill",
+     "class": "Сетевые утилиты",
+     "sale": "в продаже"
+    },
+    {
+     "id": "renga/renga-professional",
+     "name": "Renga Professional",
+     "vendor": "Renga",
+     "class": "Базовые программы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "netsoftware-1/net-control-pro",
+     "name": "Net Control 2 Pro",
+     "vendor": "Net Software",
+     "class": "Прочие программы",
+     "sale": "в продаже"
+    },
+    {
+     "id": "postgrespro/postgres-pro-enterprise",
+     "name": "Postgres Pro Enterprise",
+     "vendor": "Postgres Professional",
+     "class": "Российские базы данных (Импортозамещение)",
+     "sale": "в продаже"
+    },
+    {
+     "id": "postgrespro/postgres-pro-standard",
+     "name": "Postgres Pro Standard",
+     "vendor": "Postgres Professional",
+     "class": "Российские базы данных (Импортозамещение)",
+     "sale": "в продаже"
+    },
+    {
+     "id": "ubiquiti/uvc-g5-pro-520443",
+     "name": "Ubiquiti G5 Pro",
+     "vendor": "UBIQUITI",
+     "class": "IP-видеокамеры",
+     "sale": "в продаже"
+    },
+    {
+     "id": "signalcom/file-pro",
+     "name": "File-PRO",
+     "vendor": "SignalCOM",
+     "class": "Программы для защиты информации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "promt/promt-professional-nmt",
+     "name": "PROMT Professional NMT",
+     "vendor": "PROMT",
+     "class": "Переводчики",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "PrintStore Pro Программное обеспечение PrintStore Pro представляет собой систему учета расходных материалов и оборудован"
+   },
+   "thought": "без модели: класс по словам карточки",
+   "result": [
+    {
+     "class_id": "programmirovanie/rossiyskie-bazy-dannykh-importozameshchenie",
+     "name": "Российские базы данных (Импортозамещение)",
+     "examples": [
+      "Postgres Pro Standard",
+      "Postgres Pro Enterprise для 1С",
+      "Postgres Pro Enterprise"
+     ]
+    },
+    {
+     "class_id": "sistemnie-programmi/sistemy-upravleniya-bazami-dannykh-importozameshchenie",
+     "name": "Системы управления базами данных (Импортозамещение)",
+     "examples": [
+      "Postgres Pro Enterprise (сертифицированная версия)",
+      "Postgres Pro Enterprise для 1С:Предприятие (сертиф",
+      "СУБД Ред База Данных"
+     ]
+    },
+    {
+     "class_id": "office/mfu",
+     "name": "Принтеры и МФУ",
+     "examples": [
+      "HP Inc. Designjet T1700",
+      "МФУ Kyocera Ecosys M4125idn с картриджем",
+      "HP Inc. Designjet T1700"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/uchet-kompyuterov",
+     "name": "Программное обеспечение для учета компьютеров",
+     "examples": [
+      "«10-Страйк: Инвентаризация Компьютеров»",
+      "«10-Страйк: Инвентаризация Компьютеров Pro»",
+      "«10-Страйк: Учет Программного Обеспечения Pro»"
+     ]
+    },
+    {
+     "class_id": "operating-systems/windows-11-licenzii-home-i-pro",
+     "name": "Windows 11: лицензии Home и Pro",
+     "examples": [
+      "Microsoft Windows 11 Home (Домашняя)",
+      "Microsoft Windows 11 Pro (Профессиональная)"
+     ]
+    },
+    {
+     "class_id": "buhgalteriya-sklad-kadry/kadroviy-uchet",
+     "name": "Программы для кадрового учета",
+     "examples": [
+      "e-staff",
+      "БОСС-Кадровик",
+      "OfficeWork OrgChart Professional"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/biznes-plan",
+     "name": "Программы для бизнес-планирования",
+     "examples": [
+      "Apps4.Pro Planner Manager",
+      "Apps4.Pro Planner Gantt",
+      "Бизнес-аналитик 2.0"
+     ]
+    },
+    {
+     "class_id": "buhgalteriya-sklad-kadry/torgovlya",
+     "name": "Программное обеспечение для торговли",
+     "examples": [
+      "«СДБ Комплекс»",
+      "Microinvest Barcode Printer Pro",
+      "Microinvest Склад Pro Light"
+     ]
+    }
+   ],
+   "ask": 0
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "учет оборудования расходные материалы"
+   },
+   "thought": "Нужно найти подходящий класс для системы учета расходных материалов и оборудования. Из предыдущего поиска классов есть 'Программное обеспечение для учета компьютеров', но товар шире: учет оборудования и расходников. Поищу классы по словам 'учет оборудования расходные материалы'.",
+   "result": [
+    {
+     "class_id": "servisnye-reseniia/texniceskaia-podderzka-oborudovaniia",
+     "name": "Техническая поддержка оборудования",
+     "examples": [
+      "Сертификат на техническую поддержку оборудования «",
+      "Сертификат на техническую поддержку СХД и серверов",
+      "Сертификат на техническую поддержку сетевого обору"
+     ]
+    },
+    {
+     "class_id": "office/expendables",
+     "name": "Расходные материалы",
+     "examples": [
+      "Картридж пурпурный HP Inc. 712, 3ED78A",
+      "Картридж черный Canon PFI-110, 2363C001",
+      "Картридж пурпурный Canon CLI-42, 6386B001"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/uchet-kompyuterov",
+     "name": "Программное обеспечение для учета компьютеров",
+     "examples": [
+      "«10-Страйк: Инвентаризация Компьютеров»",
+      "«10-Страйк: Инвентаризация Компьютеров Pro»",
+      "«10-Страйк: Учет Программного Обеспечения Pro»"
+     ]
+    },
+    {
+     "class_id": "obrazovanie-i-nauka/meditsina",
+     "name": "Программы для медицины",
+     "examples": [
+      "ПАК «Визионеро»",
+      "Digital Human Organism",
+      "Учет пациентов"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/vedenie-del",
+     "name": "Программное обеспечение для ведения дел",
+     "examples": [
+      "Spider Project",
+      "Учет посетителей",
+      "Управление проектами"
+     ]
+    },
+    {
+     "class_id": "internet-i-set/programmi-dlya-seti",
+     "name": "Сетевые утилиты",
+     "examples": [
+      "Фаматек Radmin 3.5",
+      "Sawmill Professional",
+      "LS Macroscop"
+     ]
+    },
+    {
+     "class_id": "internet-i-set/svyaz",
+     "name": "Связь",
+     "examples": [
+      "VentaFax 7.5",
+      "VentaFax Venta4Net 7.5",
+      "GPS Tracker Data Logger"
+     ]
+    }
+   ],
+   "ask": 1
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "учет расходных материалов оборудование",
+    "class_id": "delovie-programmi/uchet-kompyuterov"
+   },
+   "thought": "Нужно определить класс товара и найти связанные товары. Из карточки видно, что это система учета расходных материалов и оборудования, мониторинг по SNMP. Подходящий класс - 'Программное обеспечение для учета компьютеров'. Поищу похожие товары в этом классе.",
+   "result": [
+    {
+     "id": "prostoy-soft/uchet-kompyuterov",
+     "name": "Учет компьютеров",
+     "vendor": "",
+     "class": "Программное обеспечение для учета компьютеров",
+     "sale": "по запросу"
+    },
+    {
+     "id": "10-strike-software/uchet-programmnogo-obespecheniya-pro",
+     "name": "«10-Страйк: Учет Программного Обеспечения Pro»",
+     "vendor": "10-Strike Software",
+     "class": "Программное обеспечение для учета компьютеров",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "мониторинг принтеров SNMP"
+   },
+   "thought": "Нужно определить класс товара и найти связанные товары. Из карточки видно, что это система учета расходных материалов и оборудования, мониторинг по SNMP. Подходящий класс - 'Программное обеспечение для учета компьютеров'. Поищу похожие товары в этом классе.",
+   "result": [
+    {
+     "id": "elemy/ats-1204-16-416104",
+     "name": "ELEMY ATS, 1U, 220B, 16A, Индикация: OLED-дисплей, Мониторинг: WEB, SNMP, Modbus-TCP, Вход",
+     "vendor": "Elemy",
+     "class": "Аксессуары для ИБП",
+     "sale": "в продаже"
+    },
+    {
+     "id": "elemy/ats-1204-32-416105",
+     "name": "ELEMY ATS, 1U, 220B, 32A, Индикация: OLED-дисплей, Мониторинг: WEB, SNMP, Modbus-TCP, Вход",
+     "vendor": "Elemy",
+     "class": "Аксессуары для ИБП",
+     "sale": "в продаже"
+    },
+    {
+     "id": "printum/monitoring",
+     "name": "Мониторинг",
+     "vendor": "",
+     "class": "Другие графические утилиты",
+     "sale": "по запросу"
+    },
+    {
+     "id": "godex/011-t10092-000-031-t10012-000-498021",
+     "name": "Godex Rewinder GODEX T10, обратный намотчик для любых принтеров GODEX (ширина до 4\")",
+     "vendor": "Godex",
+     "class": "POS-аксессуары",
+     "sale": "в продаже"
+    },
+    {
+     "id": "katyusha/bmm240-1-516932",
+     "name": "Модуль Wi-Fi для принтеров и МФУ Катюша серий M133/M140/M240/M325/M350/M450 (см. BMM240)",
+     "vendor": "КАТЮША",
+     "class": "Аксессуары к офисной технике",
+     "sale": "в продаже"
+    },
+    {
+     "id": "10-strike-software/monitoring-seti",
+     "name": "«10-Страйк: Мониторинг Сети»",
+     "vendor": "10-Strike Software",
+     "class": "Серверное ПО",
+     "sale": "в продаже"
+    },
+    {
+     "id": "10-strike-software/10-strayk-monitoring-seti-pro",
+     "name": "«10-Страйк: Мониторинг Сети Pro»",
+     "vendor": "10-Strike Software",
+     "class": "Серверное ПО",
+     "sale": "в продаже"
+    },
+    {
+     "id": "levl7/monitoring-saytov",
+     "name": "Л7.Мониторинг",
+     "vendor": "",
+     "class": "Интернет и Сеть",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "учет картриджей"
+   },
+   "thought": "Нужно определить класс товара и найти связанные товары. Из карточки видно, что это система учета расходных материалов и оборудования, мониторинг по SNMP. Подходящий класс - 'Программное обеспечение для учета компьютеров'. Поищу похожие товары в этом классе.",
+   "result": [
+    {
+     "id": "kleverens-soft/kleverens-uchet-imushchestva",
+     "name": "Учет 15",
+     "vendor": "Клеверенс Софт",
+     "class": "Системы автоматизации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "prostoy-soft/uchet-posetiteley",
+     "name": "Учет посетителей",
+     "vendor": "Простой Софт",
+     "class": "Программное обеспечение для ведения дел",
+     "sale": "в продаже"
+    },
+    {
+     "id": "10-strike-software/uchet-trafika",
+     "name": "«10-Страйк: Учет Трафика»",
+     "vendor": "10-Strike Software",
+     "class": "Сетевые утилиты",
+     "sale": "в продаже"
+    },
+    {
+     "id": "prostoy-soft/uchet-kompyuterov",
+     "name": "Учет компьютеров",
+     "vendor": "",
+     "class": "Программное обеспечение для учета компьютеров",
+     "sale": "по запросу"
+    },
+    {
+     "id": "usdsoft/uchet-sudebnykh-del",
+     "name": "Учет судебных дел",
+     "vendor": "ООО «УСДСОФТ»",
+     "class": "Системы автоматизации",
+     "sale": "в продаже"
+    },
+    {
+     "id": "10-strike-software/uchet-programmnogo-obespecheniya-pro",
+     "name": "«10-Страйк: Учет Программного Обеспечения Pro»",
+     "vendor": "10-Strike Software",
+     "class": "Программное обеспечение для учета компьютеров",
+     "sale": "в продаже"
+    },
+    {
+     "id": "prostoy-soft/uchet-patsientov",
+     "name": "Учет пациентов",
+     "vendor": "",
+     "class": "Программы для медицины",
+     "sale": "по запросу"
+    },
+    {
+     "id": "prostoy-soft/uchet-knig",
+     "name": "Учет книг",
+     "vendor": "",
+     "class": "Программное обеспечение для ведения дел",
+     "sale": "по запросу"
+    }
+   ],
+   "ask": 2
+  },
+  {
+   "tool": "find_classes",
+   "args": {
+    "query": "учет расходных материалов и оборудования для принтеров"
+   },
+   "thought": "Определяю класс и ищу связанные товары.",
+   "result": [
+    {
+     "class_id": "servisnye-reseniia/texniceskaia-podderzka-oborudovaniia",
+     "name": "Техническая поддержка оборудования",
+     "examples": [
+      "Сертификат на техническую поддержку оборудования «",
+      "Сертификат на техническую поддержку СХД и серверов",
+      "Сертификат на техническую поддержку сетевого обору"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/uchet-kompyuterov",
+     "name": "Программное обеспечение для учета компьютеров",
+     "examples": [
+      "«10-Страйк: Инвентаризация Компьютеров»",
+      "«10-Страйк: Инвентаризация Компьютеров Pro»",
+      "«10-Страйк: Учет Программного Обеспечения Pro»"
+     ]
+    },
+    {
+     "class_id": "obrazovanie-i-nauka/meditsina",
+     "name": "Программы для медицины",
+     "examples": [
+      "ПАК «Визионеро»",
+      "Digital Human Organism",
+      "Учет пациентов"
+     ]
+    },
+    {
+     "class_id": "delovie-programmi/vedenie-del",
+     "name": "Программное обеспечение для ведения дел",
+     "examples": [
+      "Spider Project",
+      "Учет посетителей",
+      "Управление проектами"
+     ]
+    },
+    {
+     "class_id": "internet-i-set/programmi-dlya-seti",
+     "name": "Сетевые утилиты",
+     "examples": [
+      "Фаматек Radmin 3.5",
+      "Sawmill Professional",
+      "LS Macroscop"
+     ]
+    },
+    {
+     "class_id": "office/accessories_for_office",
+     "name": "Аксессуары к офисной технике",
+     "examples": [
+      "КАТЮША Тумба, CBM247p",
+      "Ролик подхвата бумаги Ricoh DGP7491",
+      "Дополнительный лоток на 520 листов с тумбой XEROX "
+     ]
+    },
+    {
+     "class_id": "internet-i-set/svyaz",
+     "name": "Связь",
+     "examples": [
+      "VentaFax 7.5",
+      "VentaFax Venta4Net 7.5",
+      "GPS Tracker Data Logger"
+     ]
+    }
+   ],
+   "ask": 3
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "учет картриджей принтеров",
+    "class_id": "delovie-programmi/uchet-kompyuterov"
+   },
+   "thought": "Определяю класс и ищу связанные товары.",
+   "result": [
+    {
+     "id": "prostoy-soft/uchet-kompyuterov",
+     "name": "Учет компьютеров",
+     "vendor": "",
+     "class": "Программное обеспечение для учета компьютеров",
+     "sale": "по запросу"
+    },
+    {
+     "id": "10-strike-software/uchet-programmnogo-obespecheniya-pro",
+     "name": "«10-Страйк: Учет Программного Обеспечения Pro»",
+     "vendor": "10-Strike Software",
+     "class": "Программное обеспечение для учета компьютеров",
+     "sale": "в продаже"
+    }
+   ],
+   "ask": 3
+  },
+  {
+   "tool": "search_catalog",
+   "args": {
+    "query": "мониторинг принтеров SNMP",
+    "class_id": "delovie-programmi/uchet-kompyuterov"
+   },
+   "thought": "Определяю класс и ищу связанные товары.",
+   "result": [],
+   "ask": 3
+  },
+  {
+   "tool": "итог",
+   "args": {},
+   "thought": "",
+   "result": "паспорт и связи",
+   "ask": 4
+  }
+ ],
+ "seconds": 15.6,
+ "model_requests": 5,
+ "tokens": {
+  "in": 15442,
+  "out": 707
+ },
+ "truth": {
+  "id": "perfectsoft/printstore-pro",
+  "class": "Программное обеспечение для учета компьютеров",
+  "kind": "обычный",
+  "related": []
+ }
+}
