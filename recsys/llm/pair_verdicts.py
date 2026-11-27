@@ -157,6 +157,34 @@ def write(path: Path, table: dict[tuple[str, str], Verdict]) -> None:
             w.writerow([a, b, v.verdict, v.reason, v.audience, v.source])
 
 
+def family_ids(path: Path = INTERIM / "graph_nodes.csv") -> dict[str, str]:
+    """Ключ узла графа «вендор/семейство» -> номер семейства в фиде магазина. Он же ключ линейки у товара датасета,
+    привязанного к каталогу."""
+    if not path.exists():
+        return {}
+    with path.open(encoding="utf-8") as f:
+        return {r["family"]: r["family_id"] for r in csv.DictReader(f) if r.get("family_id")}
+
+
+def add_agent_links(table: dict, links: list[dict], ids: dict[str, str]) -> int:
+    """Дописывает в таблицу вердиктов линеек связи агента каталога (подтверждённые цитатой).
+
+    Связи агента записаны ключами узлов графа, а таблица линеек — номерами семейств фида: без перевода ключей
+    связь не совпала бы ни с одной линейкой и на блок не подействовала бы. Пара без номера семейства пропускается.
+    Вердикт разметки по паре главнее: связь агента добавляется, только если пары в таблице нет.
+    """
+    from recsys.graph import agent_links
+
+    added = 0
+    for e in links:
+        a, b = ids.get(e["src"]), ids.get(e["dst"])
+        if not a or not b or a == b or (a, b) in table:
+            continue
+        table[(a, b)] = Verdict("kit" if e["source"] == agent_links.KIT else "need", e["evidence"], agent_links.NEED, "")
+        added += 1
+    return added
+
+
 class Verdicts:
     """Таблица вердиктов одного уровня и правило, как свести вердикты по всем покупкам клиента."""
 
@@ -175,16 +203,10 @@ class Verdicts:
             raise FileNotFoundError(f"Нет таблицы вердиктов {path}: {where}. Без неё числа блока посчитать нельзя.")
         table = read(path)
         if level == "line":
-            # Связи, которыми агент каталога закрыл «дыры» (knowledge/agent_links.csv, подтверждены цитатой):
-            # ключ линейки у товара, привязанного к каталогу, — его семейство, поэтому связь ложится в ту же
-            # таблицу. Вердикт разметки по паре главнее: связь агента добавляется, только если пары в таблице нет.
+            # связи, которыми агент каталога закрыл «дыры» (knowledge/agent_links.csv, подтверждены цитатой)
             from recsys.graph import agent_links
 
-            for e in agent_links.read():
-                pair = (e["src"], e["dst"])
-                if pair not in table:
-                    table[pair] = Verdict("kit" if e["source"] == agent_links.KIT else "need", e["evidence"],
-                                          agent_links.NEED, "")
+            add_agent_links(table, agent_links.read(), family_ids())
         if not pending:
             ok = trusted_models()
             table = {p: v for p, v in table.items()

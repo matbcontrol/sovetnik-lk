@@ -13,13 +13,16 @@ import sys
 from collections import Counter, defaultdict
 from datetime import date
 
-from recsys.config import ROOT
+from recsys.config import INTERIM, ROOT
 from recsys.recommend.engine import LABEL, PICK_SOURCE, Client, Graph, Purchase, Recommender
 
 BOUGHT, TODAY = date(2026, 3, 1), date(2026, 11, 27)
 OUT = ROOT / "reports" / "coverage.json"
 HOLES = ROOT / "reports" / "catalog_holes.json"     # очередь для агента каталога: товары в продаже без личного совета
 HOLES_TOP = 400
+# что каталожный движок даёт владельцу одного товара: номер семейства фида -> «пусто» | «только комплект» | «совет есть».
+# Читает очередь дыр по клиентам (recsys.rank.holes): агенту сначала идут товары, где блок пуст.
+ADVICE = INTERIM / "hole_catalog_advice.json"
 # С каких товаров агенту начинать: с верхних в своём классе магазина, программы раньше оборудования. При равном месте
 # первыми идут товары, у чьего класса связь с другими классами есть, а подходящего всем товара нет: там нужен подбор
 # под конкретную модель — это и есть работа агента.
@@ -78,6 +81,7 @@ def main() -> None:
     solo_class: Counter = Counter()
     size_class: Counter = Counter()
     holes: list[dict] = []
+    advice: dict[str, str] = {}
     for fam, n in g.nodes.items():
         if n["on_sale"] != "1":
             continue
@@ -87,6 +91,8 @@ def main() -> None:
         s["on_sale"] += 1
         size_class[n.get("class_name") or ""] += 1
         recs = personal(to_client, who, fam)
+        if n.get("family_id"):
+            advice[n["family_id"]] = "пусто" if not recs else "только комплект" if all(x.slot == "kit" for x in recs) else "совет есть"
         if recs:
             s["with_advice"] += 1
             s[tier(recs)] += 1
@@ -122,6 +128,7 @@ def main() -> None:
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     # очередь для агента: открытый каталог, без данных задачи; первыми идут верхние товары своих классов
     holes.sort(key=lambda h: (h["rank"], h["product"] != "software", ORDER[h["why"]], h["class"], h["name"]))
+    ADVICE.write_text(json.dumps(advice, ensure_ascii=False, indent=0), encoding="utf-8")
     HOLES.write_text(json.dumps({"today": TODAY.isoformat(), "total": len(holes), "shown": min(len(holes), HOLES_TOP),
                                  "order": "по месту товара в своём классе магазина; при равном месте — сначала программы, затем товары, у класса которых связь есть, а общего для всех товара нет",
                                  "holes": holes[:HOLES_TOP]}, ensure_ascii=False, indent=1), encoding="utf-8")

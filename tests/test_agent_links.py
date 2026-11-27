@@ -46,3 +46,21 @@ def test_agent_link_is_shown_with_its_own_reason_and_kit_goes_last(tmp_path):
     # вердикт разметки главнее: пара, которую разметчик назвал «то же самое», клиенту не идёт
     vetoed = Graph(nodes, agent_links.read(p), [], {}, veto=[("v/cad", "v/viewer", "same")])
     assert [r.family for r in Recommender(vetoed).recommend(client, 3)] == ["v/archive"]
+
+
+def test_agent_links_enter_the_line_table_under_line_keys(tmp_path):
+    """Таблица линеек живёт на номерах семейств фида: связь агента должна лечь под теми же ключами."""
+    from recsys.llm.pair_verdicts import Verdict, add_agent_links
+
+    p = table(tmp_path, (
+        "v/cad,v/viewer,complements,агент каталога,0.75,Открывает чертежи без лицензии САПР,«просмотр DWG»,graph,m,2026-11-27\n"
+        "v/cad,v/archive,complements,агент каталога: комплект,0.5,Если ещё нет архива: хранит версии чертежей,«архив»,graph,m,2026-11-27\n"
+        "v/cad,v/nofeed,complements,агент каталога,0.75,Товара нет в фиде,«цитата»,graph,m,2026-11-27\n"
+        "v/cad,v/judged,complements,агент каталога,0.75,Разметка уже решила иначе,«цитата»,graph,m,2026-11-27\n"))
+    ids = {"v/cad": "101", "v/viewer": "202", "v/archive": "303", "v/judged": "404"}
+    lines = {("101", "404"): Verdict("unrelated", "не связано", "ассистент", "")}
+    assert add_agent_links(lines, agent_links.read(p), ids) == 2
+    assert lines[("101", "202")].verdict == "need" and lines[("101", "303")].verdict == "kit"
+    assert lines[("101", "202")].source == "агент каталога"
+    assert lines[("101", "404")].verdict == "unrelated"            # вердикт разметки главнее
+    assert not any("v/" in a or "v/" in b for a, b in lines)        # ключей узлов графа в таблице нет

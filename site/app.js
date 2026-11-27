@@ -831,6 +831,7 @@
     ], 0.2);
     const rub = (x) => nf.format(Math.round(x / 1000)) + " тыс. ₽";
     return `${fillHtml(r.block_fill)}
+      ${restoreHtml(r.restore)}
       <h2 style="margin-top:26px">Проверка на истории по протоколу организаторов</h2>
       <p class="hint" style="margin-top:6px">Обезличенный датасет организаторов${r.dataset ? `, версия ${esc(String(r.dataset).replace(/^dataset_v?|\.xlsx$/g, ""))}` : ""}. Советы даны по покупкам до ${esc(r.protocol.train_until)}, засчитываются новые для клиента товары, купленные с ${esc(r.protocol.test_from)}. Модель и её режимы обучались только на периоде до даты разреза.</p>
       <dl class="tiles">
@@ -896,6 +897,29 @@
   }
 
   /** Показ блока в единицах заказчика: какой доле клиентов кабинета есть что посоветовать по делу. */
+  /** Тест «спрятали — вернул»: у товара прячут разметку, агент выводит связи заново; счёт — в клиентах кабинета. */
+  function restoreHtml(r, pending) {
+    if (!r || !r.clients_with_access) return "";
+    const st = r.clients_by_state || {}, q = r.queue || {}, m = r.measured || {};
+    const held = st["держится на вердиктах одного товара"] || 0;
+    const intro = `У ${nf.format(held)} клиентов кабинета из ${nf.format(r.clients_with_access)} совет по делу держится на связках одного товара. Тест: у товара прячут всю разметку, как будто его завели сегодня, — его владельцы теряют совет; агент выводит связи заново по открытому каталогу, и мы считаем, скольким клиентам совет вернулся и совпал ли агент со спрятанной разметкой.`;
+    const w = m.with_own_ground_advice || {}, all = (x) => nf.format((x || {}).all || 0);
+    if (!m.products || !w.before) {
+      if (!pending) return "";                              // замера нет: обещание без числа открытому стенду ни к чему
+      return `<h2>Проверка агента: спрятали — вернул</h2>
+        <p class="hint" style="margin-top:6px">${intro} В очереди теста ${nf.format(q.products || 0)} товаров, за ними ${nf.format(q.clients || 0)} клиентов. Замера ещё нет: агент на сильной модели не запускался.</p>`;
+    }
+    const agree = Object.entries(m.pairs_vs_labelling || {}).map(([k, v]) => `${esc(k)} — ${nf.format(v)}`).join("; ");
+    return `<h2>Проверка агента: спрятали — вернул</h2>
+      <p class="hint" style="margin-top:6px">${intro}</p>
+      <dl class="tiles" style="margin:10px 0 8px">
+        <div class="tile"><dt>Было: клиентов с советом по делу</dt><dd>${all(w.before)}</dd><small>владельцы ${nf.format(m.products)} товаров из теста, вся разметка на месте</small></div>
+        <div class="tile"><dt>Спрятали разметку этих товаров</dt><dd>${all(w.hidden)}</dd><small>совет потеряли ${nf.format(m.lost_when_hidden || 0)} — ${pct(m.lost_share_of_all_clients || 0)} клиентов кабинета</small></div>
+        <div class="tile"><dt>Вернул агент</dt><dd>${all(w.restored)}</dd><small>совет вернулся ${nf.format(m.returned_by_agent || 0)} клиентам${m.share_returned != null ? ` — ${pct(m.share_returned, 0)} потерянного` : ""}</small></div>
+      </dl>
+      <p class="hint">Связей агента ${nf.format(m.agent_links || 0)}, с подтверждающей цитатой ${nf.format(m.agent_links_confirmed || 0)}. Из ${nf.format(m.need_pairs_hidden || 0)} спрятанных пар «нужно» агент нашёл ${nf.format(m.need_pairs_found_by_agent || 0)}.${agree ? ` Сверка с разметкой: ${agree}.` : ""} Комплект агента советом по делу не считается — как и в блоке.</p>`;
+  }
+
   function fillHtml(f) {
     if (!f) return "";
     const b = f.b2b, c = f.b2c;
@@ -1253,6 +1277,9 @@
   }
   function renderAgent() {
     renderHoles();
+    const test = restoreHtml(report && report.restore, holesLive);   // тест «спрятали — вернул» — над разбором дыры
+    $("#restore").hidden = !test;
+    $("#restore").innerHTML = test;
     const view = $("#agent-view");
     const hole = holeCur != null ? holeList()[holeCur] : null;   // выбрана дыра: справа она, а не прогон экзамена
     if (!agent || !agent.runs.length) {

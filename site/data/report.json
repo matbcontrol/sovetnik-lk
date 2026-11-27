@@ -649,7 +649,7 @@
    "need": 227,
    "unrelated": 5080,
    "has": 233,
-   "kit": 1029
+   "kit": 1028
   },
   "clients": 302,
   "rows": [
@@ -769,6 +769,23 @@
    "clients_b2b": 80,
    "clients_b2c": 1139
   }
+ },
+ "restore": {
+  "today": "2026-11-23",
+  "clients_with_access": 4324,
+  "clients_by_state": {
+   "держится на вердиктах одного товара": 922,
+   "совет не зависит от вердиктов": 2017,
+   "обоснованного совета нет": 1376,
+   "«нужно» от нескольких покупок": 9
+  },
+  "queue": {
+   "products": 6,
+   "clients": 913,
+   "clients_b2b": 53,
+   "clients_b2c": 860
+  },
+  "measured": {}
  },
  "coverage": {
   "bought": "2026-03-01",

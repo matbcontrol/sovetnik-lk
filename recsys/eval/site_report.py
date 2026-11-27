@@ -126,6 +126,17 @@ def main() -> None:
         out["holes"] = {"today": h.get("today"), "holes": h.get("holes"),
                         "without_advice": h.get("clients_without_own_ground_advice"),
                         "agent": kinds.get("закрывает агент"), "renew": kinds.get("нужно продление, а не совет")}
+    p = ROOT / "reports" / "restore.json"
+    if p.exists():                                       # тест «спрятали — вернул» (recsys.rank.restore): только сводные числа
+        r = json.loads(p.read_text(encoding="utf-8"))
+        queue = {k: v for k, v in (r.get("queue") or {}).items() if k != "largest_product_clients"}   # число по одному товару наружу не идёт
+        keep = ("products", "owners_with_access", "clients_with_access", "with_own_ground_advice", "lost_when_hidden",
+                "returned_by_agent", "share_returned", "lost_share_of_all_clients", "returned_share_of_all_clients",
+                "agent_links", "agent_links_confirmed", "pairs_vs_labelling", "need_pairs_hidden", "need_pairs_found_by_agent")
+        measured = r.get("measured") or {}
+        out["restore"] = {"today": r.get("today"), "clients_with_access": r.get("clients_with_access"),
+                          "clients_by_state": r.get("clients_by_state") or {}, "queue": queue,
+                          "measured": {k: measured[k] for k in keep if k in measured}}
     p = ROOT / "reports" / "coverage.json"
     if p.exists():                                       # у скольких товаров в продаже есть личный совет
         out["coverage"] = json.loads(p.read_text(encoding="utf-8"))
