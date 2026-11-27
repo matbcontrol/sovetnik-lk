@@ -278,7 +278,7 @@ class Graph:
             p = folder / name
             return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
-        from recsys.llm.pair_verdicts import (CLASS_FILE, FAMILY_FILE, as_class_links, as_class_products,
+        from recsys.llm.pair_verdicts import (CLASS_FILE, FAMILY_FILE, applied, as_class_links, as_class_products,
                                               as_family_edges, class_blocks, class_picks, pick_judged, read,
                                               read_picks)
 
@@ -286,7 +286,8 @@ class Graph:
         # связи классов — из таблицы вердиктов; прежняя разметка облегчённой моделью (class_links.csv) остаётся
         # только как запасной источник там, где таблицы вердиктов нет
         links = as_class_links(read(CLASS_FILE)) if CLASS_FILE.exists() else rows("class_links.csv")
-        families = {p: v for p, v in read(FAMILY_FILE).items() if p[0] in nodes and p[1] in nodes}
+        # только действующие вердикты: вердикт одной модели без доверия ждёт менеджера и не должен попасть в вето
+        families = {p: v for p, v in applied(read(FAMILY_FILE)).items() if p[0] in nodes and p[1] in nodes}
         base = rows("graph_edges.csv")
         known = {(e["src"], e["dst"]) for e in base if e["type"] != "same_line"}
         # проверенная пара добавляется связью, только если у каталога нет своей связи между этими товарами

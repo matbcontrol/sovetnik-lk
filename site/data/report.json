@@ -771,7 +771,7 @@
   }
  },
  "economics": {
-  "model": "deepseek-v4-pro",
+  "model": "deepseek-v4-pro и gemini-3.6-flash",
   "per_request": 0.2641,
   "with_server": 0.45,
   "per_product": 7.93

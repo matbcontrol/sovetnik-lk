@@ -54,7 +54,8 @@ def cost_summary() -> dict:
         return float(s.replace(" ", "").replace(",", ".")) if s else None
 
     out = {
-        "model": find(r"одной модели: ([\w.\-]+)"),
+        # «одной модели: A (…) и B (…)» — названия моделей без пояснений в скобках
+        "model": " и ".join(re.findall(r"([\w.\-]+) \(", find(r"одной модели: ([^;\n]+)") or "")) or find(r"одной модели: ([\w.\-]+)"),
         "per_request": number(find(r"Итого на одно обращение\*\*[^\n]*\*\*([\d,]+)\*\*")),   # модель, ₽ без НДС
         "with_server": number(find(r"обращение стоит около ([\d,]+) ₽")),
         "per_product": number(find(r"— ([\d,]+) ₽ без НДС \(агент с критиком")),
