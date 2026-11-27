@@ -914,10 +914,12 @@
     const kilo = (x) => String((x / 1000).toFixed(1)).replace(".", ",") + " тыс.";
     const ok = (m) => !!(m && m.products && m.with_own_ground_advice && m.with_own_ground_advice.before);
     /** Сверка решений агента с разметкой: сколько пар разметка знает и в скольких решение то же. */
-    const judged = (m) => {
-      const p = m.pairs_vs_labelling || {}, same = p["то же решение"] || 0, other = p["решение другое"] || 0;
-      return { same, known: same + other, fresh: p["пары нет в разметке"] || 0 };
+    const tally = (p) => {
+      const same = (p || {})["то же решение"] || 0, other = (p || {})["решение другое"] || 0;
+      return { same, known: same + other, fresh: (p || {})["пары нет в разметке"] || 0 };
     };
+    const judged = (m) => tally(m.pairs_vs_labelling);                // все предложения агента, включая очередь менеджера
+    const judgedAuto = (m) => (m.pairs_vs_labelling_confirmed ? tally(m.pairs_vs_labelling_confirmed) : null);   // только то, что идёт в граф само
     const hiddenNeed = (m) => (m.need_pairs_hidden_in_catalog != null ? m.need_pairs_hidden_in_catalog : (m.need_pairs_hidden || 0));
     /** Пояснение из отчёта замера: без названий товаров; точку в конце ставим сами. */
     const noteOf = (m) => (m.note ? esc(String(m.note).trim().replace(/[.\s]+$/, "")) + ". " : "");
@@ -940,12 +942,12 @@
     };
     /** Замер в парах — когда владельцы товаров совета не теряют (их держат варианты своей линейки) и клиентский счёт пуст. */
     const byPairs = (m, title) => {
-      const j = judged(m), need = hiddenNeed(m), found = m.need_pairs_found_by_agent || 0;
+      const j = judged(m), ja = judgedAuto(m), need = hiddenNeed(m), found = m.need_pairs_found_by_agent || 0;
       return `<h3>${esc(title)}</h3>
         <dl class="tiles" style="margin:8px 0">
           <div class="tile"><dt>Товаров в выборке</dt><dd>${nf.format(m.products)}</dd><small>связь агент дал к ${nf.format(m.products_with_agent_link || 0)}, к остальным ответил «связи нет»</small></div>
-          <div class="tile"><dt>Связей агента</dt><dd>${nf.format(m.agent_links || 0)}</dd><small>с дословной цитатой из карточки товара — ${nf.format(m.agent_links_confirmed || 0)}</small></div>
-          <div class="tile"><dt>Решение совпало с разметкой</dt><dd>${j.same} из ${j.known}</dd><small>ещё ${nf.format(j.fresh)} пар в разметке нет: их агент предложил сам</small></div>
+          <div class="tile"><dt>Связей агента</dt><dd>${nf.format(m.agent_links || 0)}</dd><small>в граф без менеджера идут ${nf.format(m.agent_links_confirmed || 0)} — те, что подтверждены цитатой из описания; остальные ждут менеджера</small></div>
+          <div class="tile"><dt>Предложения совпали с разметкой</dt><dd>${j.same} из ${j.known}</dd><small>это все предложения агента менеджеру${ja ? `; из связей, которые идут в граф сами, сверить удалось ${ja.known}, совпало ${ja.same}` : ""}. Ещё ${nf.format(j.fresh)} пар в разметке нет</small></div>
           <div class="tile"><dt>Найдено спрятанных «нужно»</dt><dd>${nf.format(found)} из ${nf.format(need)}</dd><small>${need ? pct(found / need) : "—"} — с подтверждением; всего агент назвал ${nf.format(m.need_pairs_proposed_by_agent != null ? m.need_pairs_proposed_by_agent : found)}, остальное ждёт менеджера</small></div>
         </dl>
         <p class="hint">${noteOf(m)}Клиентский счёт у этой выборки пуст: владельцев этих товаров держат советы по вариантам своей линейки, от спрятанной разметки они не зависят (с советом по делу ${all(m.with_own_ground_advice.before)} из ${nf.format(m.owners_with_access || 0)} и до, и после). Поэтому здесь считаются пары.${runLine(m)}</p>`;
@@ -966,13 +968,14 @@
     let verdict = "";
     if (ok(top) && ok(wide)) {
       const j = judged(wide), need = hiddenNeed(wide);
-      verdict = `<p style="margin:8px 0 2px"><b>Итог.</b> На ${nf.format(top.products)} товарах агент настраивался: сам вернул совет ${top.share_returned != null ? pct(top.share_returned, 0) : "—"} клиентов, с согласием менеджера — ${top.share_returned_with_manager != null ? pct(top.share_returned_with_manager, 0) : "—"}. На ${nf.format(wide.products)} остальных он проверялся: связей ${nf.format(wide.agent_links || 0)}, с цитатой ${nf.format(wide.agent_links_confirmed || 0)}, решение совпало с разметкой в ${j.same} случаях из ${j.known}, но из ${nf.format(need)} спрятанных «нужно» он назвал ${nf.format(wide.need_pairs_proposed_by_agent != null ? wide.need_pairs_proposed_by_agent : (wide.need_pairs_found_by_agent || 0))}, с подтверждением — ${nf.format(wide.need_pairs_found_by_agent || 0)}. Агент осторожен и находит мало: разметку он не заменяет, а дополняет.</p>`;
+      const ja = judgedAuto(wide);
+      verdict = `<p style="margin:8px 0 2px"><b>Итог.</b> На ${nf.format(top.products)} товарах агент настраивался: сам вернул совет ${top.share_returned != null ? pct(top.share_returned, 0) : "—"} клиентов, с согласием менеджера — ${top.share_returned_with_manager != null ? pct(top.share_returned_with_manager, 0) : "—"}. На ${nf.format(wide.products)} остальных он проверялся. Агент предлагает связи менеджеру: его предложения совпали с разметкой в ${j.same} случаях из ${j.known}. Без согласия менеджера в граф идёт только то, что подтверждено цитатой из описания, — таких связей ${nf.format(wide.agent_links_confirmed || 0)}${ja ? `, сверить с разметкой удалось ${ja.known}, совпала ${ja.same}` : ""}. Из ${nf.format(need)} спрятанных «нужно» он назвал ${nf.format(wide.need_pairs_proposed_by_agent != null ? wide.need_pairs_proposed_by_agent : (wide.need_pairs_found_by_agent || 0))}, с подтверждением — ${nf.format(wide.need_pairs_found_by_agent || 0)}. Агент — помощник менеджера с предложениями, а не автомат: разметку он не заменяет, а дополняет.</p>`;
     }
     return `<h2>Проверка агента: спрятали — вернул</h2>
       <p class="hint" style="margin-top:6px">${intro}</p>
       ${verdict}
       ${parts.join("")}
-      <p class="hint">Комплект агента советом по делу не считается — как и в блоке. Пробные связи теста лежат отдельно и в граф стенда не попадают.</p>`;
+      <p class="hint">${(() => { const rule = (wide && wide.check_rules) || (top && top.check_rules) || ""; return rule ? "Правила проверки: " + esc(String(rule).trim().replace(/[.\s]+$/, "")) + ". " : ""; })()}Комплект агента советом по делу не считается — как и в блоке. Пробные связи теста лежат отдельно и в граф стенда не попадают.</p>`;
   }
 
   function fillHtml(f) {

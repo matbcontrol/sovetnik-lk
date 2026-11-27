@@ -165,7 +165,9 @@ def main() -> None:
                 "lost_share_of_all_clients", "returned_share_of_all_clients", "agent_links", "agent_links_confirmed",
                 "agent_links_to_products_outside_graph", "pairs_vs_labelling", "need_pairs_hidden", "need_pairs_found_by_agent",
                 "need_pairs_proposed_by_agent", "need_pairs_hidden_in_catalog", "share_of_hidden_need_found", "agent_run",
-                "note")                                  # пояснение без названий товаров, его собирает код замера
+                "note",                                  # пояснение без названий товаров, его собирает код замера
+                "pairs_vs_labelling_confirmed",          # сверка только по связям, которые идут в граф без менеджера
+                "check_rules")                           # по каким правилам связь идёт в граф и когда их ужесточили
 
         def measure(name: str) -> dict:
             m = r.get(name) or {}
