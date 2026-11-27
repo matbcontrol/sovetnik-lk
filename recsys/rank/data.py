@@ -57,6 +57,9 @@ class Task:
     clients: dict[str, dict]
     items: dict[str, dict]                        # item_id -> строка items.csv (семейство, класс, вид лицензии…)
     names: dict[str, str]
+    # product_group организаторов (с версии 5 датасета, колонка G листа «Продажи»): item_id -> группа.
+    # Пусто, если в датасете такой колонки нет. Нужна для разбора «вариант уже купленного / новый продукт».
+    groups: dict[str, str] = field(default_factory=dict)
 
 
 def load_task(dataset: Path = DATASET, items_path: Path = ITEMS) -> Task:
@@ -70,7 +73,8 @@ def load_task(dataset: Path = DATASET, items_path: Path = ITEMS) -> Task:
         with items_path.open(encoding="utf-8") as f:
             items = {r["item_id"]: r for r in csv.DictReader(f)}
     names = dict(zip(sales["item_id"], sales["item_name"]))
-    return Task(rows, {r["client_id"]: r for r in cl.to_dict("records")}, items, names)
+    groups = {i: g for i, g in zip(sales["item_id"], sales["product_group"]) if g}         if "product_group" in sales.columns else {}
+    return Task(rows, {r["client_id"]: r for r in cl.to_dict("records")}, items, names, groups)
 
 
 def make_fold(task: Task, name: str, train_until: str, test_from: str, test_until: str) -> Fold:
