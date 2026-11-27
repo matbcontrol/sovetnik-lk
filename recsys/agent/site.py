@@ -12,9 +12,10 @@ import sys
 
 from recsys.config import INTERIM, ROOT
 
-# Стоимость постановки одного нового товара, ₽ без НДС: 1,04 вызова агента (1 947 / 196 токенов)
-# и 0,75 вызова критика (771 / 90) по ценам Qwen3.6 35B в Yandex AI Studio — 163,93 и 245,90 ₽ за 1 млн.
-COST_PER_PRODUCT = 0.49
+# Стоимость постановки одного нового товара, ₽ без НДС: 3,2 вызова агента (3 077 / 200 токенов) и 1 вызов критика
+# (963 / 123) — экзамен на deepseek-v4-pro без рассуждения (reports/agent_exam_deepseek.json), дневной тариф DeepSeek
+# $1,32 и $3,96 за 1 млн по курсу ЦБ 82,1265 ₽ — 108,41 и 325,22 ₽ за 1 млн (submission/cost.md).
+COST_PER_PRODUCT = 1.42
 
 
 def short(result: object) -> object:
@@ -54,10 +55,10 @@ def main() -> None:
     p = ROOT / "reports" / "agent_exam_nohints.json"
     if p.exists():                                    # тот же экзамен без подсказок кода: модель ищет сама
         exam_nohints = json.loads(p.read_text(encoding="utf-8")).get("summary", {})
-    # Стоимость одного нового товара — по полному замеру без кеша (26.11.2026, 25 вызовов агента и 18 вызовов
-    # критика на 24 товарах; токены посчитаны токенизатором Gemini), цены — Qwen3.6 35B без НДС, см. submission/cost.md.
+    # Стоимость одного нового товара — замер на deepseek-v4-pro (27.11.2026, 77 вызовов агента и 24 вызова критика
+    # на 24 товарах), дневной тариф DeepSeek без НДС, см. submission/cost.md. Прогоны ниже — экзамен на Gemini.
     # Повторные прогоны экзамена берут ответы из кеша и расхода не показывают.
-    per_run = {"price": "оценка по тарифу Qwen3.6 35B без НДС; токены замерены на Gemini", "rub": COST_PER_PRODUCT}
+    per_run = {"price": "замер на deepseek-v4-pro, дневной тариф без НДС", "rub": COST_PER_PRODUCT}
     out = ROOT / "site" / "data" / "agent_runs.json"
     out.write_text(json.dumps({"exam": exam, "exam_nohints": exam_nohints, "per_run": per_run, "runs": runs},
                               ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
