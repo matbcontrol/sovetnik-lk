@@ -134,7 +134,8 @@ def main() -> None:
                 "lost_when_hidden", "returned_by_agent", "share_returned", "returned_with_manager", "share_returned_with_manager",
                 "lost_share_of_all_clients", "returned_share_of_all_clients", "agent_links", "agent_links_confirmed",
                 "agent_links_to_products_outside_graph", "pairs_vs_labelling", "need_pairs_hidden", "need_pairs_found_by_agent",
-                "need_pairs_proposed_by_agent", "need_pairs_hidden_in_catalog", "share_of_hidden_need_found", "agent_run")
+                "need_pairs_proposed_by_agent", "need_pairs_hidden_in_catalog", "share_of_hidden_need_found", "agent_run",
+                "note")                                  # пояснение без названий товаров, его собирает код замера
 
         def measure(name: str) -> dict:
             m = r.get(name) or {}

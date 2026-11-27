@@ -914,6 +914,8 @@
       return { same, known: same + other, fresh: p["пары нет в разметке"] || 0 };
     };
     const hiddenNeed = (m) => (m.need_pairs_hidden_in_catalog != null ? m.need_pairs_hidden_in_catalog : (m.need_pairs_hidden || 0));
+    /** Пояснение из отчёта замера: без названий товаров; точку в конце ставим сами. */
+    const noteOf = (m) => (m.note ? esc(String(m.note).trim().replace(/[.\s]+$/, "")) + ". " : "");
     const runLine = (m) => {
       const run = m.agent_run || {};
       return run.tokens_in ? ` Прогон: обращений модели к инструментам — ${nf.format(run.tool_calls_by_model || 0)}, ${kilo(run.tokens_in)} токенов на вход и ${kilo(run.tokens_out || 0)} на выход, ${nf.format(Math.round(run.seconds || 0))} с.` : "";
@@ -929,7 +931,7 @@
           <div class="tile"><dt>Вернул агент сам</dt><dd>${all(w.restored)}</dd><small>совет вернулся ${nf.format(m.returned_by_agent || 0)} клиентам${m.share_returned != null ? ` — ${pct(m.share_returned, 0)} потерянного` : ""}: связь подтверждена дословной цитатой и идёт в граф сразу</small></div>
           ${withManager ? `<div class="tile"><dt>Вместе с очередью менеджера</dt><dd>${all(w.proposed)}</dd><small>${nf.format(m.returned_with_manager)} клиентов${m.share_returned_with_manager != null ? ` — ${pct(m.share_returned_with_manager, 0)} потерянного` : ""}: агент назвал связь, но дословной цитаты нет, нужно одно согласие менеджера</small></div>` : ""}
         </dl>
-        <p class="hint">Агент дал связь к ${nf.format(m.products_with_agent_link || 0)} товарам из ${nf.format(m.products)}; к остальным ответил «связи нет». Связей ${nf.format(m.agent_links || 0)}, с дословной цитатой ${nf.format(m.agent_links_confirmed || 0)}. Из ${nf.format(hiddenNeed(m))} спрятанных пар «нужно» агент назвал ${nf.format(m.need_pairs_proposed_by_agent != null ? m.need_pairs_proposed_by_agent : (m.need_pairs_found_by_agent || 0))}, с дословной цитатой — ${nf.format(m.need_pairs_found_by_agent || 0)}.${j.known ? ` С разметкой решение совпало в ${j.same} случаях из ${j.known}.` : ""}${runLine(m)}</p>`;
+        <p class="hint">${noteOf(m) || `Агент дал связь к ${nf.format(m.products_with_agent_link || 0)} товарам из ${nf.format(m.products)}; к остальным ответил «связи нет». `}Связей ${nf.format(m.agent_links || 0)}, с дословной цитатой ${nf.format(m.agent_links_confirmed || 0)}. Из ${nf.format(hiddenNeed(m))} спрятанных пар «нужно» агент назвал ${nf.format(m.need_pairs_proposed_by_agent != null ? m.need_pairs_proposed_by_agent : (m.need_pairs_found_by_agent || 0))}, с дословной цитатой — ${nf.format(m.need_pairs_found_by_agent || 0)}.${j.known ? ` С разметкой решение совпало в ${j.same} случаях из ${j.known}.` : ""}${runLine(m)}</p>`;
     };
     /** Замер в парах — когда владельцы товаров совета не теряют (их держат варианты своей линейки) и клиентский счёт пуст. */
     const byPairs = (m, title) => {
@@ -941,7 +943,7 @@
           <div class="tile"><dt>Решение совпало с разметкой</dt><dd>${j.same} из ${j.known}</dd><small>ещё ${nf.format(j.fresh)} пар в разметке нет: их агент предложил сам</small></div>
           <div class="tile"><dt>Найдено спрятанных «нужно»</dt><dd>${nf.format(found)} из ${nf.format(need)}</dd><small>${need ? pct(found / need) : "—"}: агент осторожен и находит мало</small></div>
         </dl>
-        <p class="hint">Клиентский счёт у этой выборки пуст: владельцев этих товаров держат советы по вариантам своей линейки, от спрятанной разметки они не зависят (с советом по делу ${all(m.with_own_ground_advice.before)} из ${nf.format(m.owners_with_access || 0)} и до, и после). Поэтому здесь считаются пары.${runLine(m)}</p>`;
+        <p class="hint">${noteOf(m)}Клиентский счёт у этой выборки пуст: владельцев этих товаров держат советы по вариантам своей линейки, от спрятанной разметки они не зависят (с советом по делу ${all(m.with_own_ground_advice.before)} из ${nf.format(m.owners_with_access || 0)} и до, и после). Поэтому здесь считаются пары.${runLine(m)}</p>`;
     };
     const block = (m, title) => (!ok(m) ? "" : (m.lost_when_hidden ? byClients(m, title) : byPairs(m, title)));
     const top = r.measured, wide = r.measured_wide, think = r.measured_wide_thinking;
