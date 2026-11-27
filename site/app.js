@@ -904,35 +904,67 @@
     if (!r || !r.clients_with_access) return "";
     const st = r.clients_by_state || {}, q = r.queue || {};
     const held = st["держится на вердиктах одного товара"] || 0;
-    const intro = `У ${nf.format(held)} клиентов кабинета из ${nf.format(r.clients_with_access)} совет по делу держится на связках одного товара. Тест: у товара прячут всю разметку, как будто его завели сегодня, — его владельцы теряют совет; агент выводит связи заново по открытому каталогу, и мы считаем, скольким клиентам совет вернулся и совпал ли агент со спрятанной разметкой.`;
+    const intro = `У ${nf.format(held)} клиентов кабинета из ${nf.format(r.clients_with_access)} совет по делу держится на связках одного товара. Тест: у товара прячут всю разметку, как будто его завели сегодня; агент выводит связи заново по открытому каталогу, и мы считаем, скольким клиентам совет вернулся и совпал ли агент со спрятанной разметкой.`;
     const all = (x) => nf.format((x || {}).all || 0);
     const kilo = (x) => String((x / 1000).toFixed(1)).replace(".", ",") + " тыс.";
-    /** Один замер: было → спрятали → вернул агент сам → вместе с очередью менеджера. */
-    const measure = (m, title, note) => {
-      const w = (m && m.with_own_ground_advice) || {};
-      if (!m || !m.products || !w.before) return "";
-      const agree = Object.entries(m.pairs_vs_labelling || {}).map(([k, v]) => `${esc(k)} — ${nf.format(v)}`).join("; ");
+    const ok = (m) => !!(m && m.products && m.with_own_ground_advice && m.with_own_ground_advice.before);
+    /** Сверка решений агента с разметкой: сколько пар разметка знает и в скольких решение то же. */
+    const judged = (m) => {
+      const p = m.pairs_vs_labelling || {}, same = p["то же решение"] || 0, other = p["решение другое"] || 0;
+      return { same, known: same + other, fresh: p["пары нет в разметке"] || 0 };
+    };
+    const hiddenNeed = (m) => (m.need_pairs_hidden_in_catalog != null ? m.need_pairs_hidden_in_catalog : (m.need_pairs_hidden || 0));
+    const runLine = (m) => {
       const run = m.agent_run || {};
+      return run.tokens_in ? ` Прогон: обращений модели к инструментам — ${nf.format(run.tool_calls_by_model || 0)}, ${kilo(run.tokens_in)} токенов на вход и ${kilo(run.tokens_out || 0)} на выход, ${nf.format(Math.round(run.seconds || 0))} с.` : "";
+    };
+    /** Замер в клиентах: было → спрятали → вернул агент сам → вместе с очередью менеджера. */
+    const byClients = (m, title) => {
+      const w = m.with_own_ground_advice, j = judged(m);
       const withManager = w.proposed && m.returned_with_manager != null;
       return `<h3>${esc(title)}</h3>
         <dl class="tiles" style="margin:8px 0">
           <div class="tile"><dt>Было: клиентов с советом по делу</dt><dd>${all(w.before)}</dd><small>владельцы ${nf.format(m.products)} товаров из теста${m.owners_with_access ? ` (клиентов кабинета: ${nf.format(m.owners_with_access)})` : ""}, вся разметка на месте</small></div>
           <div class="tile"><dt>Спрятали разметку этих товаров</dt><dd>${all(w.hidden)}</dd><small>совет потеряли ${nf.format(m.lost_when_hidden || 0)} — ${pct(m.lost_share_of_all_clients || 0)} клиентов кабинета</small></div>
           <div class="tile"><dt>Вернул агент сам</dt><dd>${all(w.restored)}</dd><small>совет вернулся ${nf.format(m.returned_by_agent || 0)} клиентам${m.share_returned != null ? ` — ${pct(m.share_returned, 0)} потерянного` : ""}: связь подтверждена дословной цитатой и идёт в граф сразу</small></div>
-          ${withManager ? `<div class="tile"><dt>Вместе с очередью менеджера</dt><dd>${all(w.proposed)}</dd><small>${nf.format(m.returned_with_manager)} клиентов — ${pct(m.share_returned_with_manager || 0, 0)} потерянного: агент назвал связь, но дословной цитаты нет, нужно одно согласие менеджера</small></div>` : ""}
+          ${withManager ? `<div class="tile"><dt>Вместе с очередью менеджера</dt><dd>${all(w.proposed)}</dd><small>${nf.format(m.returned_with_manager)} клиентов${m.share_returned_with_manager != null ? ` — ${pct(m.share_returned_with_manager, 0)} потерянного` : ""}: агент назвал связь, но дословной цитаты нет, нужно одно согласие менеджера</small></div>` : ""}
         </dl>
-        <p class="hint">${note ? esc(note) + " " : ""}Агент дал связь к ${nf.format(m.products_with_agent_link != null ? m.products_with_agent_link : 0)} товарам из ${nf.format(m.products)}; к остальным ответил «связи нет». Связей ${nf.format(m.agent_links || 0)}, с дословной цитатой ${nf.format(m.agent_links_confirmed || 0)}. Из ${nf.format(m.need_pairs_hidden || 0)} спрятанных пар «нужно» агент назвал ${nf.format(m.need_pairs_proposed_by_agent != null ? m.need_pairs_proposed_by_agent : (m.need_pairs_found_by_agent || 0))}, с дословной цитатой — ${nf.format(m.need_pairs_found_by_agent || 0)}.${agree ? ` Сверка с разметкой: ${agree}.` : ""}${run.tokens_in ? ` Прогон: обращений модели к инструментам — ${nf.format(run.tool_calls_by_model || 0)}, ${kilo(run.tokens_in)} токенов на вход и ${kilo(run.tokens_out || 0)} на выход, ${nf.format(Math.round(run.seconds || 0))} с.` : ""}</p>`;
+        <p class="hint">Агент дал связь к ${nf.format(m.products_with_agent_link || 0)} товарам из ${nf.format(m.products)}; к остальным ответил «связи нет». Связей ${nf.format(m.agent_links || 0)}, с дословной цитатой ${nf.format(m.agent_links_confirmed || 0)}. Из ${nf.format(hiddenNeed(m))} спрятанных пар «нужно» агент назвал ${nf.format(m.need_pairs_proposed_by_agent != null ? m.need_pairs_proposed_by_agent : (m.need_pairs_found_by_agent || 0))}, с дословной цитатой — ${nf.format(m.need_pairs_found_by_agent || 0)}.${j.known ? ` С разметкой решение совпало в ${j.same} случаях из ${j.known}.` : ""}${runLine(m)}</p>`;
     };
-    const wide = measure(r.measured_wide, `Широкая выборка: ${nf.format(((r.measured_wide || {}).products) || 0)} товаров, которые до прогона никто не разглядывал`, "");
-    const top = measure(r.measured, `Товары, на которых держится больше всего клиентов: ${nf.format(((r.measured || {}).products) || 0)}`, "");
-    if (!wide && !top) {
+    /** Замер в парах — когда владельцы товаров совета не теряют (их держат варианты своей линейки) и клиентский счёт пуст. */
+    const byPairs = (m, title) => {
+      const j = judged(m), need = hiddenNeed(m), found = m.need_pairs_found_by_agent || 0;
+      return `<h3>${esc(title)}</h3>
+        <dl class="tiles" style="margin:8px 0">
+          <div class="tile"><dt>Товаров в выборке</dt><dd>${nf.format(m.products)}</dd><small>связь агент дал к ${nf.format(m.products_with_agent_link || 0)}, к остальным ответил «связи нет»</small></div>
+          <div class="tile"><dt>Связей агента</dt><dd>${nf.format(m.agent_links || 0)}</dd><small>с дословной цитатой из карточки товара — ${nf.format(m.agent_links_confirmed || 0)}</small></div>
+          <div class="tile"><dt>Решение совпало с разметкой</dt><dd>${j.same} из ${j.known}</dd><small>ещё ${nf.format(j.fresh)} пар в разметке нет: их агент предложил сам</small></div>
+          <div class="tile"><dt>Найдено спрятанных «нужно»</dt><dd>${nf.format(found)} из ${nf.format(need)}</dd><small>${need ? pct(found / need) : "—"}: агент осторожен и находит мало</small></div>
+        </dl>
+        <p class="hint">Клиентский счёт у этой выборки пуст: владельцев этих товаров держат советы по вариантам своей линейки, от спрятанной разметки они не зависят (с советом по делу ${all(m.with_own_ground_advice.before)} из ${nf.format(m.owners_with_access || 0)} и до, и после). Поэтому здесь считаются пары.${runLine(m)}</p>`;
+    };
+    const block = (m, title) => (!ok(m) ? "" : (m.lost_when_hidden ? byClients(m, title) : byPairs(m, title)));
+    const top = r.measured, wide = r.measured_wide, think = r.measured_wide_thinking;
+    const parts = [
+      block(top, `Товары, на которых держится больше всего клиентов: ${nf.format((top || {}).products || 0)}. На них агент настраивался`),
+      block(wide, `Широкая выборка: ${nf.format((wide || {}).products || 0)} товаров, которые до прогона никто не разглядывал`),
+      block(think, `Та же широкая выборка с рассуждением модели: ${nf.format((think || {}).products || 0)} товаров`),
+    ].filter(Boolean);
+    if (!parts.length) {
       if (!pending) return "";                              // замера нет: обещание без числа открытому стенду ни к чему
       return `<h2>Проверка агента: спрятали — вернул</h2>
         <p class="hint" style="margin-top:6px">${intro} В очереди теста ${nf.format(q.products || 0)} товаров, за ними ${nf.format(q.clients || 0)} клиентов. Замера ещё нет: агент на сильной модели не запускался.</p>`;
     }
+    // общий вывод по обеим выборкам — одной фразой и без округления в свою пользу
+    let verdict = "";
+    if (ok(top) && ok(wide)) {
+      const j = judged(wide), need = hiddenNeed(wide);
+      verdict = `<p style="margin:8px 0 2px"><b>Итог.</b> На ${nf.format(top.products)} товарах агент настраивался: сам вернул совет ${top.share_returned != null ? pct(top.share_returned, 0) : "—"} клиентов, с согласием менеджера — ${top.share_returned_with_manager != null ? pct(top.share_returned_with_manager, 0) : "—"}. На ${nf.format(wide.products)} остальных он проверялся: связей ${nf.format(wide.agent_links || 0)}, с цитатой ${nf.format(wide.agent_links_confirmed || 0)}, решение совпало с разметкой в ${j.same} случаях из ${j.known}, но из ${nf.format(need)} спрятанных «нужно» найдено ${nf.format(wide.need_pairs_found_by_agent || 0)}. Агент точен и осторожен: разметку он пока не заменяет, а дополняет.</p>`;
+    }
     return `<h2>Проверка агента: спрятали — вернул</h2>
       <p class="hint" style="margin-top:6px">${intro}</p>
-      ${wide}${top}
+      ${verdict}
+      ${parts.join("")}
       <p class="hint">Комплект агента советом по делу не считается — как и в блоке. Пробные связи теста лежат отдельно и в граф стенда не попадают.</p>`;
   }
 

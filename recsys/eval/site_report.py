@@ -134,7 +134,7 @@ def main() -> None:
                 "lost_when_hidden", "returned_by_agent", "share_returned", "returned_with_manager", "share_returned_with_manager",
                 "lost_share_of_all_clients", "returned_share_of_all_clients", "agent_links", "agent_links_confirmed",
                 "agent_links_to_products_outside_graph", "pairs_vs_labelling", "need_pairs_hidden", "need_pairs_found_by_agent",
-                "need_pairs_proposed_by_agent", "agent_run")
+                "need_pairs_proposed_by_agent", "need_pairs_hidden_in_catalog", "share_of_hidden_need_found", "agent_run")
 
         def measure(name: str) -> dict:
             m = r.get(name) or {}
@@ -144,7 +144,8 @@ def main() -> None:
                           "clients_by_state": r.get("clients_by_state") or {}, "queue": queue,
                           "queue_wide": r.get("queue_wide") or {},
                           "measured": measure("measured"),           # товары, на которых держится больше всего клиентов
-                          "measured_wide": measure("measured_wide")}   # широкая выборка, которую никто не разглядывал
+                          "measured_wide": measure("measured_wide"),   # широкая выборка, которую никто не разглядывал
+                          "measured_wide_thinking": measure("measured_wide_thinking")}   # она же с рассуждением модели
     p = ROOT / "reports" / "coverage.json"
     if p.exists():                                       # у скольких товаров в продаже есть личный совет
         out["coverage"] = json.loads(p.read_text(encoding="utf-8"))
