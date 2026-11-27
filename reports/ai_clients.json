@@ -1,0 +1,173 @@
+{
+ "clients": 337,
+ "judges": 2,
+ "judgments": 674,
+ "groups": {
+  "B2B": 302,
+  "B2C": 35
+ },
+ "all": {
+  "judgments": 674,
+  "prefer": {
+   "base": 186,
+   "ours": 294,
+   "tie": 194
+  },
+  "ours": {
+   "click": 0.383,
+   "buy": 0.312,
+   "buy_came_true": 0.59,
+   "usefulness": 0.71,
+   "useless_share": 0.426,
+   "empty_sets": 0
+  },
+  "base": {
+   "click": 0.178,
+   "buy": 0.089,
+   "buy_came_true": 0.183,
+   "usefulness": 0.65,
+   "useless_share": 0.404,
+   "empty_sets": 52
+  },
+  "signal": {
+   "would_buy": {
+    "items": 270,
+    "bought": 135,
+    "share": 0.5
+   },
+   "would_not_buy": {
+    "items": 3514,
+    "bought": 295,
+    "share": 0.084
+   },
+   "by_score": {
+    "0": {
+     "items": 1573,
+     "bought": 93,
+     "share": 0.059
+    },
+    "1": {
+     "items": 1832,
+     "bought": 166,
+     "share": 0.091
+    },
+    "2": {
+     "items": 379,
+     "bought": 171,
+     "share": 0.451
+    }
+   }
+  }
+ },
+ "by_group": {
+  "B2B": {
+   "judgments": 604,
+   "prefer": {
+    "base": 150,
+    "ours": 281,
+    "tie": 173
+   },
+   "ours": {
+    "click": 0.411,
+    "buy": 0.334,
+    "buy_came_true": 0.584,
+    "usefulness": 0.75,
+    "useless_share": 0.397,
+    "empty_sets": 0
+   },
+   "base": {
+    "click": 0.167,
+    "buy": 0.093,
+    "buy_came_true": 0.196,
+    "usefulness": 0.66,
+    "useless_share": 0.399,
+    "empty_sets": 52
+   },
+   "signal": {
+    "would_buy": {
+     "items": 258,
+     "bought": 129,
+     "share": 0.5
+    },
+    "would_not_buy": {
+     "items": 3112,
+     "bought": 223,
+     "share": 0.072
+    },
+    "by_score": {
+     "0": {
+      "items": 1341,
+      "bought": 72,
+      "share": 0.054
+     },
+     "1": {
+      "items": 1668,
+      "bought": 117,
+      "share": 0.07
+     },
+     "2": {
+      "items": 361,
+      "bought": 163,
+      "share": 0.452
+     }
+    }
+   }
+  },
+  "B2C": {
+   "judgments": 70,
+   "prefer": {
+    "base": 36,
+    "ours": 13,
+    "tie": 21
+   },
+   "ours": {
+    "click": 0.143,
+    "buy": 0.114,
+    "buy_came_true": 0.75,
+    "usefulness": 0.38,
+    "useless_share": 0.671,
+    "empty_sets": 0
+   },
+   "base": {
+    "click": 0.271,
+    "buy": 0.057,
+    "buy_came_true": 0.0,
+    "usefulness": 0.59,
+    "useless_share": 0.446,
+    "empty_sets": 0
+   },
+   "signal": {
+    "would_buy": {
+     "items": 12,
+     "bought": 6,
+     "share": 0.5
+    },
+    "would_not_buy": {
+     "items": 402,
+     "bought": 72,
+     "share": 0.179
+    },
+    "by_score": {
+     "0": {
+      "items": 232,
+      "bought": 21,
+      "share": 0.091
+     },
+     "1": {
+      "items": 164,
+      "bought": 49,
+      "share": 0.299
+     },
+     "2": {
+      "items": 18,
+      "bought": 8,
+      "share": 0.444
+     }
+    }
+   }
+  }
+ },
+ "agreement": 0.733,
+ "how": "337 клиентов группы A, 2 независимых ИИ-оценщика в роли этих клиентов (агенты в среде разработки; модели по API данные задачи не получают). Каждый видит историю покупок до 31.08.2026 и два набора по три товара — нашу тройку по протоколу и «совместные покупки» из baseline.py — в случайном порядке и только названиями. Вопросы: нажал бы на совет, купил бы его в ближайшие три месяца, польза каждого товара 0–2 и какой набор полезнее.",
+ "note": "click и buy — доля оценок, где ИИ-клиент нажал бы хотя бы на один совет набора или купил бы его; buy_came_true — доля таких «купил бы», которые клиент на деле купил с 07.09 по 23.11.2026. Это намерения языковой модели в роли клиента, а не поведение живых клиентов."
+}
