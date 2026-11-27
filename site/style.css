@@ -277,3 +277,4 @@ textarea { font: inherit; color: var(--ink); border: 1px solid var(--axis); bord
 .status { font-size: 12px; color: var(--muted); white-space: nowrap; }
 .status--wait { color: #9a6700; }
 @media (max-width: 640px) { .renew__row { flex-direction: column; gap: 4px; } }
+.top__link { display: inline-block; margin-top: 8px; font-size: 14px; }

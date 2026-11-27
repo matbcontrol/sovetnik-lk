@@ -102,6 +102,18 @@ def main() -> None:
                 "popular": {"cards": stand["строк «часто докупают»"], "hits": stand["«часто докупают» сбылось"]},
                 "any_hit": stand["клиентов, у кого сбылась хоть одна карточка"],
             }
+    p = ROOT / "reports" / "block_fill.json"
+    if p.exists():                                       # показ блока в единицах заказчика (recsys.rank.fill)
+        f = json.loads(p.read_text(encoding="utf-8"))
+
+        def group(name: str) -> dict:
+            g = f["groups"][name]
+            n = g["clients"]
+            return {"clients": n, "own": g["share_with_own_ground_advice"], "personal": g["share_with_any_personal_advice"],
+                    "kit_only": g["by_strongest_advice"]["kit"] / n if n else 0.0}
+
+        out["block_fill"] = {"today": f["today"], "now": f["current_block_fill_by_visits"],
+                             "b2b": group("с доступом в кабинет: B2B"), "b2c": group("с доступом в кабинет: B2C")}
     p = ROOT / "reports" / "coverage.json"
     if p.exists():                                       # у скольких товаров в продаже есть личный совет
         out["coverage"] = json.loads(p.read_text(encoding="utf-8"))
