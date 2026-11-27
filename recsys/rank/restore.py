@@ -25,7 +25,10 @@
 В неё идут все остальные товары каталога, у которых в разметке есть хотя бы одно «нужно» на другой товар
 каталога (агент может его назвать). Замер по ней:
         python -m recsys.rank.restore --links ПУТЬ --queue data/private/task/restore_wide.json
-Он пишется в отчёт отдельным ключом measured_wide; главное число там — сколько спрятанных «нужно» агент нашёл.
+Он пишется в отчёт отдельным ключом measured_wide (свой ключ задаёт --key ИМЯ — для второго варианта того же
+прогона, например с рассуждением). Владельцы этих товаров держат совет и без их вердиктов (у них есть варианты
+своей линейки), поэтому число клиентов здесь не меняется; главное — сколько спрятанных «нужно» агент нашёл
+и совпадают ли его решения с разметкой.
 """
 from __future__ import annotations
 
@@ -187,12 +190,14 @@ def measure(path: Path) -> None:
 
     qfile = Path(sys.argv[sys.argv.index("--queue") + 1]) if "--queue" in sys.argv else QUEUE
     key = "measured" if qfile.resolve() == QUEUE.resolve() else "measured_wide"
+    if "--key" in sys.argv:                                # второй заранее объявленный вариант той же проверки
+        key = sys.argv[sys.argv.index("--key") + 1]
     if not qfile.exists():
         sys.exit(f"нет очереди ({qfile}): сначала python -m recsys.rank.restore" + (" --wide" if key != "measured" else ""))
     queue = {h["line"]: h for h in json.loads(qfile.read_text(encoding="utf-8"))["holes"]}
     task, attrs, last, cat, uni, verdicts, prices = stand_state()
     now = uni.fold
-    to_id, _ = family_keys()
+    to_id, to_key = family_keys()
     links = []                                # (линейка А, линейка Б, решение, подтверждена ли цитатой, фраза)
     off_graph = 0
     for r in agent_links.rows(path):
@@ -249,7 +254,9 @@ def measure(path: Path) -> None:
                     "with_advice_restored": count(back, own)["all"], "with_advice_proposed": count(maybe, own)["all"],
                     "agent_links": len(mine), "agent_links_confirmed": sum(x[3] for x in mine),
                     "need_pairs_hidden": len(need_was), "need_pairs_found": len(need_was & need_sure),
-                    "need_pairs_proposed": len(need_was & need_any)})
+                    "need_pairs_proposed": len(need_was & need_any),
+                    # агент может назвать только товар открытого каталога: по ним полнота и считается
+                    "need_pairs_hidden_in_catalog": sum(x in to_key for x in need_was)})
 
     # сверка решений агента со спрятанной разметкой по тем же парам
     agree = Counter()
@@ -263,6 +270,7 @@ def measure(path: Path) -> None:
     need_hidden = sum(x["need_pairs_hidden"] for x in per)
     need_found = sum(x["need_pairs_found"] for x in per)
     need_proposed = sum(x["need_pairs_proposed"] for x in per)
+    need_in_catalog = sum(x["need_pairs_hidden_in_catalog"] for x in per)
 
     total = sum(task.clients.get(c, {}).get("lk_access") == "да" for c in now.history)
     w, g, b, m = count(was, owners), count(gone, owners), count(back, owners), count(maybe, owners)
@@ -283,6 +291,8 @@ def measure(path: Path) -> None:
         "pairs_vs_labelling": dict(agree),
         "need_pairs_hidden": need_hidden, "need_pairs_found_by_agent": need_found,
         "need_pairs_proposed_by_agent": need_proposed,
+        "need_pairs_hidden_in_catalog": need_in_catalog,
+        "share_of_hidden_need_found": need_found / need_in_catalog if need_in_catalog else None,
         "agent_run": {k: summary[k] for k in ("tool_calls_by_model", "tokens_in", "tokens_out", "seconds") if k in summary},
     }
     if "--dry-run" not in sys.argv:                        # пробный прогон отчёты не трогает
@@ -302,7 +312,8 @@ def measure(path: Path) -> None:
         print(f"потеряли совет {lost} клиентов ({lost / total:.1%} кабинета); агент вернул сам {returned} "
               f"({returned / lost:.0%}), вместе с предложенным менеджеру {with_manager} ({with_manager / lost:.0%})")
     print(f"связей агента {len(links)}, с цитатой {measured['agent_links_confirmed']}; сверка с разметкой: {dict(agree)}; "
-          f"спрятанных «нужно» {need_hidden}: найдено с цитатой {need_found}, предложено {need_proposed}")
+          f"спрятанных «нужно» {need_hidden} (из них на товары каталога {need_in_catalog}): "
+          f"найдено с цитатой {need_found}, предложено {need_proposed}")
     for x in per:
         print(f"   {x['name'][:52]:52} владельцев {x['owners']:>4}: {x['with_advice_before']} -> {x['with_advice_hidden']} "
               f"-> {x['with_advice_restored']} -> {x['with_advice_proposed']}; «нужно» {x['need_pairs_found']}"

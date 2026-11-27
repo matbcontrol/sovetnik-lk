@@ -61,6 +61,8 @@
   "need_pairs_hidden": 16,
   "need_pairs_found_by_agent": 1,
   "need_pairs_proposed_by_agent": 2,
+  "need_pairs_hidden_in_catalog": 14,
+  "share_of_hidden_need_found": 0.07142857142857142,
   "agent_run": {
    "tool_calls_by_model": 54,
    "tokens_in": 84857,
@@ -72,5 +74,61 @@
   "products": 26,
   "need_pairs_hidden": 54,
   "owners_with_access": 1895
+ },
+ "measured_wide": {
+  "links_file": "agent_restore_wide.csv",
+  "products": 26,
+  "products_with_agent_link": 7,
+  "owners_with_access": 1666,
+  "clients_with_access": 4324,
+  "with_own_ground_advice": {
+   "before": {
+    "all": 1665,
+    "b2b": 1070,
+    "b2c": 595
+   },
+   "hidden": {
+    "all": 1665,
+    "b2b": 1070,
+    "b2c": 595
+   },
+   "restored": {
+    "all": 1665,
+    "b2b": 1070,
+    "b2c": 595
+   },
+   "proposed": {
+    "all": 1665,
+    "b2b": 1070,
+    "b2c": 595
+   }
+  },
+  "lost_when_hidden": 0,
+  "returned_by_agent": 0,
+  "share_returned": null,
+  "returned_with_manager": 0,
+  "share_returned_with_manager": null,
+  "lost_share_of_all_clients": 0.0,
+  "returned_share_of_all_clients": 0.0,
+  "agent_links": 12,
+  "agent_links_confirmed": 12,
+  "agent_links_to_products_outside_graph": 0,
+  "pairs_vs_labelling": {
+   "пары нет в разметке": 5,
+   "то же решение": 6,
+   "тот же вердикт": 3,
+   "решение другое": 1
+  },
+  "need_pairs_hidden": 86,
+  "need_pairs_found_by_agent": 3,
+  "need_pairs_proposed_by_agent": 3,
+  "need_pairs_hidden_in_catalog": 54,
+  "share_of_hidden_need_found": 0.05555555555555555,
+  "agent_run": {
+   "tool_calls_by_model": 230,
+   "tokens_in": 376880,
+   "tokens_out": 19008,
+   "seconds": 366.9
+  }
  }
 }
