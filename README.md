@@ -360,6 +360,16 @@ POST /api/advice
 
 ## Запуск
 
+Проще всего — Docker: в образе нет `.env` и закрытых данных, стенд и API работают на открытых данных.
+
+```
+docker build -t sovetnik .
+docker run -p 8765:8765 sovetnik                                   # стенд и POST /api/advice на http://127.0.0.1:8765
+docker run -p 8765:8765 -e SOVETNIK_CONTROL_SHARE=0.5 sovetnik     # то же с пилотом: половина клиентов — контроль
+```
+
+На каждый коммит GitHub Actions (`.github/workflows/ci.yml`) гоняет тесты, собирает образ, запускает его с пилотом 50 %, спрашивает совет за тестового и контрольного клиента, пишет событие и читает отчёт пилота. Без Docker:
+
 ```
 uv venv .venv --python 3.12
 uv pip install -r requirements.txt --python .venv/Scripts/python.exe
