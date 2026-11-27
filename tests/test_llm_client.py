@@ -63,10 +63,22 @@ def test_response_format_is_dropped_when_unknown(llm):
 
 def test_key_never_reaches_error_text(llm):
     llm.model = "strong-model"
-    llm.http = Http([Reply(401, "Incorrect API key provided: sk-test-0123456789abcdef. Also sk-other-AAAABBBBCCCC")])
+    llm.http = Http([Reply(500, "Internal error for key sk-test-0123456789abcdef. Also sk-other-AAAABBBBCCCC")])
     with pytest.raises(client.LLMError) as e:
         llm._call("system", "user", 0.0)
     assert "sk-" not in str(e.value) and "<ключ>" in str(e.value)
+
+
+def test_bad_key_or_empty_balance_is_not_retried(llm, monkeypatch, tmp_path):
+    """Ключ не принят или кончились деньги: одна попытка и понятная фраза, а не восемь повторов с паузами."""
+    monkeypatch.setattr(client, "CALLS", tmp_path / "calls.jsonl")
+    monkeypatch.setattr(client, "CACHE", tmp_path / "cache")
+    monkeypatch.setattr(client.time, "sleep", lambda s: pytest.fail("повторять нельзя"))
+    for status, word in ((401, "ключ"), (402, "деньги")):
+        llm.http = Http([Reply(status, "Insufficient Balance for sk-test-0123456789abcdef")])
+        with pytest.raises(client.LLMFatal) as e:
+            llm.json("Отвечай JSON.", "user", purpose="тест")
+        assert word in str(e.value) and "sk-" not in str(e.value) and len(llm.http.sent) == 1
 
 
 @pytest.fixture
@@ -123,7 +135,7 @@ def test_json_word_is_added_when_prompt_lacks_it(deepseek):
 
 
 def test_blank_answer_is_retried_warmer(deepseek, monkeypatch, tmp_path):
-    """Сервис вернул одни пробелы вместо JSON: повтор идёт сразу и с температурой выше."""
+    """Сервис вернул одни пробелы вместо JSON: повтор идёт сразу, теплее и без режима JSON-ответа."""
     monkeypatch.setattr(client, "CALLS", tmp_path / "calls.jsonl")
     monkeypatch.setattr(client, "CACHE", tmp_path / "cache")
     monkeypatch.setattr(client.time, "sleep", lambda s: None)
@@ -132,4 +144,5 @@ def test_blank_answer_is_retried_warmer(deepseek, monkeypatch, tmp_path):
     llm.http = Http([blank, OK])
     assert llm.json("Отвечай JSON.", "user", purpose="тест") == {"ok": True}
     assert [b["temperature"] for b in llm.http.sent] == [0.0, 0.2]
+    assert "response_format" in llm.http.sent[0] and "response_format" not in llm.http.sent[1]
     assert '"thinking": "off"' in (tmp_path / "calls.jsonl").read_text(encoding="utf-8")

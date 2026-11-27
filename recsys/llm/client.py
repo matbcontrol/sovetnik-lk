@@ -51,6 +51,17 @@ class LLMError(RuntimeError):
     pass
 
 
+class LLMFatal(LLMError):
+    """Отказ, который повтором не лечится: сервис не принял ключ или на счёте кончились деньги."""
+
+
+FATAL = {
+    401: "Сервис модели не принял ключ (HTTP 401): проверьте LLM_API_KEY в .env.",
+    402: "На счёте сервиса модели кончились деньги (HTTP 402): пополните баланс и запустите снова.",
+    403: "Сервис модели отказал в доступе (HTTP 403): у ключа нет прав на эту модель или сервис недоступен из вашей сети.",
+}
+
+
 class LLM:
     def __init__(self) -> None:
         load_env()
@@ -166,19 +177,24 @@ class LLM:
                 return json.loads(cache_file.read_text(encoding="utf-8"))
         today = time.strftime("%Y-%m-%d")
         queue = [m for m in self.models if self.exhausted.get(m) != today]
-        last, not_json = "", 0
+        last, not_json, plain = "", 0, False
         for attempt in range(retries):
             if not queue:
                 raise LLMError(f"Суточный лимит исчерпан у всех моделей из списка ({purpose}). Последняя ошибка: {last}")
             self.model = queue[0]
             t0 = time.time()
+            text = "?"
             try:
-                # ответ пришёл, но не JSON (у части сервисов — одни пробелы): тот же запрос при той же температуре
-                # вернул бы то же самое, поэтому повтор идёт чуть «теплее»
-                text, t_in, t_out = self._call(system, user, min(0.6, temperature + 0.2 * not_json))
+                # ответ пришёл, но не JSON: тот же запрос при той же температуре вернул бы то же самое, поэтому
+                # повтор идёт чуть «теплее». Одни пробелы — так режим JSON-ответа у DeepSeek затирает текст, который
+                # не разобрал: повторяем без этого режима, формат задан словами запроса.
+                text, t_in, t_out = self._call(system, user, min(0.6, temperature + 0.2 * not_json), plain)
                 data = json.loads(_strip_fence(text))
+            except LLMFatal:
+                raise                                         # ключ или баланс: повторять бесполезно
             except (requests.RequestException, LLMError, json.JSONDecodeError, KeyError, IndexError) as e:
                 last = f"{type(e).__name__}: {str(e)[:900]}"
+                plain = plain or (isinstance(e, json.JSONDecodeError) and not text.strip())
                 if os.environ.get("LLM_DEBUG"):
                     print(f"  [{self.model}, попытка {attempt + 1}] {last[:260]}", file=sys.stderr, flush=True)
                 if "HTTP 429" in last and ("per day" in last or "PerDay" in last):
@@ -201,7 +217,8 @@ class LLM:
             return data
         raise LLMError(f"Модель не ответила после {retries} попыток ({purpose}): {last}")
 
-    def _call(self, system: str, user: str, temperature: float) -> tuple[str, int, int]:
+    def _call(self, system: str, user: str, temperature: float, plain: bool = False) -> tuple[str, int, int]:
+        """plain=True — без режима JSON-ответа у совместимого сервиса: формат задан только словами запроса."""
         if self.provider == "google":
             r = self.http.post(
                 f"{self.base}/models/{self.model}:generateContent",
@@ -225,7 +242,7 @@ class LLM:
         for _ in range(4):
             body = {"model": self.model, "temperature": temperature,
                     "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}
-            if not quirks.get("plain"):
+            if not quirks.get("plain") and not plain:
                 body["response_format"] = {"type": "json_object"}
             thinking = {} if quirks.get("no_thinking") else self._thinking_fields()
             body.update(thinking)
@@ -236,6 +253,8 @@ class LLM:
                                json=body, timeout=300 if self.thinking == "on" else 180)
             if r.status_code == 200:
                 break
+            if r.status_code in FATAL:
+                raise LLMFatal(FATAL[r.status_code])
             text = r.text[:600]
             if r.status_code == 400 and "enable_thinking" in text and quirks.get("enable_thinking") is not False:
                 quirks["enable_thinking"] = False                # ответ целиком, без потока: рассуждения выключаем
