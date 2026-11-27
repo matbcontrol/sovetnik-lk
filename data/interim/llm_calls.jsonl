@@ -393,3 +393,8 @@
 {"time": "2026-11-26T23:50:56", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 4810, "tokens_out": 1706, "seconds": 7.28, "cached": false}
 {"time": "2026-11-26T23:51:25", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 4112, "tokens_out": 1586, "seconds": 28.26, "cached": false}
 {"time": "2026-11-26T23:51:29", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.1-flash-lite", "tokens_in": 1434, "tokens_out": 293, "seconds": 4.33, "cached": false}
+{"time": "2026-11-27T12:07:47", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.6-flash", "tokens_in": 4405, "tokens_out": 1703, "seconds": 49.11, "cached": false}
+{"time": "2026-11-27T12:08:11", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.6-flash", "tokens_in": 4451, "tokens_out": 2371, "seconds": 24.1, "cached": false}
+{"time": "2026-11-27T12:08:39", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.6-flash", "tokens_in": 4159, "tokens_out": 987, "seconds": 27.97, "cached": false}
+{"time": "2026-11-27T12:09:10", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.6-flash", "tokens_in": 4455, "tokens_out": 1153, "seconds": 29.54, "cached": false}
+{"time": "2026-11-27T12:09:20", "purpose": "вердикты пар: class", "provider": "google", "model": "gemini-3.6-flash", "tokens_in": 1546, "tokens_out": 206, "seconds": 10.59, "cached": false}
