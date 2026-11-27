@@ -94,6 +94,29 @@ CRITIC = """Новый товар:
 Ответ: {{"verdicts": [{{"i": 0, "keep": true, "why": "..."}}]}}"""
 
 
+def named_for(name: str, dst_name: str) -> bool:
+    """Новый товар назван «… для X» или «… for X», и X — это товар dst (общее опорное слово названий)."""
+    m = re.search(r"(?:\bдля|\bfor)\s+([^,;()—–]+)", name, re.I)
+    if not m:
+        return False
+    words = {w.lower() for w in re.findall(r"[\wЁё+]{3,}", m.group(1)) if not w.isdigit()}
+    return bool(words & {w.lower() for w in re.findall(r"[\wЁё+]{3,}", dst_name)})
+
+
+def addon_edges(name: str, cat: Catalog, kept: list[dict]) -> list[dict]:
+    """«X для Y», а модель назвала связь только «требует Y»: X ещё и дополнение к Y, его советуют владельцам Y.
+
+    Правило из подсказки агенту («для X» — это дополнение) проверяется кодом: без него у такого товара нет
+    покупателей в графе — советовать его было бы некому.
+    """
+    out = []
+    for link in kept:
+        if link["type"] == "requires" and named_for(name, cat.nodes[link["dst"]]["name"]):
+            out.append({"src": link["dst"], "dst": "new", "type": "complements",
+                        "why": f"Дополнение к «{cat.nodes[link['dst']]['name']}»: {name}"})
+    return out
+
+
 def to_edge(name: str, cat: Catalog, link: dict) -> dict:
     """Связь агента -> ребро графа. «new» — сам новый товар.
 
@@ -266,6 +289,7 @@ def place(llm, cat: Catalog, card: dict, verbose: bool = False, hints: bool = Tr
             kept = []
     rule_edges = cat.line_edges(card.get("name", ""), card.get("vendor", ""))     # линейка — правилом, без модели
     edges = [to_edge(card.get("name", ""), cat, link) for link in kept]
+    edges += addon_edges(card.get("name", ""), cat, kept)         # «для X» — ещё и дополнение к X
     have = {(e["src"], e["dst"]) for e in edges} | {(e["dst"], e["src"]) for e in edges}
     edges += [e for e in rule_edges if (e["src"], e["dst"]) not in have]
     return {

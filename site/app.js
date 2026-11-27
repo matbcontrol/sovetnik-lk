@@ -1190,11 +1190,7 @@
   const holeOpen = (x) => !!x.family && !x.renew && x.sale;
   const holeState = (x) => (x.run ? OUTCOME[holeResult(x.run)] : x.renew ? "нужно продление, а не совет"
     : !x.family ? "нет в открытом каталоге" : !x.sale ? "нет в продаже" : "не разобрана");
-  {
-    const all = holeList(), pick = (o) => all.findIndex((x) => x.run && holeResult(x.run) === o);
-    const first = pick("closed") >= 0 ? pick("closed") : pick("kit");
-    if (first >= 0) holeCur = first;                          // вкладка открывается на дыре, где агент что-то нашёл
-  }
+  // вкладка открывается на прогоне агента: главный сценарий — новый товар; дыру выбирают в списке ниже
   function renderHoles() {
     const list = holeList();
     $("#holes").hidden = !list.length;
@@ -1427,7 +1423,7 @@
       ${cut ? `<ul class="cut">${cut}</ul>` : '<p class="hint">Ничего.</p>'}
       <h3>Кому теперь посоветуем этот товар</h3>
       ${whoGets(r)}
-      ${(() => { const n = agentRowsOf(r).length; return n ? `<p class="hint" style="margin-top:6px">Результат агента не остаётся на этой вкладке: ${n} ${n === 1 ? "связь стоит" : "связей стоят"} в очереди менеджера. После «принять» владелец исходного товара увидит этот товар в личных советах. <button class="linkbtn" data-agent-queue>Открыть очередь</button></p>` : ""; })()}
+      ${(() => { const n = agentRowsOf(r).length; return n ? `<p class="hint" style="margin-top:6px">Результат агента не остаётся на этой вкладке: ${n} ${n % 10 === 1 && n % 100 !== 11 ? "связь стоит" : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? "связи стоят" : "связей стоят"} в очереди менеджера. После «принять» владелец исходного товара увидит этот товар в личных советах. <button class="linkbtn" data-agent-queue>Открыть очередь</button></p>` : ""; })()}
       <h3>Что теперь увидит покупатель этого товара</h3>
       <div class="cards">${afterPlacement(r)}</div>
       <p class="hint" style="margin-top:8px">Так блок будет выглядеть после проверки менеджером: совет посчитан на этой странице по графу, в который товар только что поставлен. Связи по классу, которые менеджер ещё не принял, клиент не видит. Модель при расчёте не вызывается.</p>`;
@@ -1503,8 +1499,10 @@
         agent.runs.unshift(run);
         addAgentRows(run);
         agentIdx = 0;
+        holeCur = null;                                    // справа — только что поставленный товар, а не выбранная дыра
         $("#a-status").textContent = `Готово: ${Math.round(res.seconds)} с, запросов к модели: ${res.model_requests}.`;
         renderAgent();
+        $("#agent-view").scrollIntoView({ behavior: "smooth", block: "start" });   // результат ниже формы: показываем его сразу
       } catch (err) {
         $("#a-status").textContent = "Не получилось: " + err.message;
       } finally {
