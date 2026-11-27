@@ -70,7 +70,7 @@
 uv venv .venv --python 3.12
 uv pip install -r requirements.txt --python .venv/Scripts/python.exe
 .venv/Scripts/python.exe -m recsys.server
-Стенд откроется на http://127.0.0.1:8765. Проверка на данных организаторов: положить dataset_v5.xlsx в data/private/task/, затем python -m recsys.eval.proof (модель обучится заново, счёт — функциями baseline.py, около 80 секунд), python -m recsys.eval.value (все замеры, около 5 минут) и python -m recsys.eval.robust (устойчивость).
+Стенд откроется на http://127.0.0.1:8765. Проверка на данных организаторов: положить dataset_v5.xlsx в data/private/task/, затем python -m recsys.eval.proof (модель обучится заново, счёт — функциями baseline.py, около 95 секунд), python -m recsys.eval.value (все замеры, около 5 минут) и python -m recsys.eval.robust (устойчивость).
 
 Пример запроса: организация; покупки — Kaspersky Endpoint Security Стандартный (11.05.2026, 12 мес.), Adobe Creative Cloud (23.11.2025, 12 мес.), Dr.Web Desktop Security Suite (11.05.2026), Microsoft 365 Personal (30.04.2026); дата 26.11.2026.
 
