@@ -35,7 +35,7 @@ def clean(ev) -> dict | None:
     except (TypeError, ValueError):
         pos = 0
     return {"ts": datetime.now(timezone.utc).isoformat(timespec="seconds"), "kind": kind, "slot": slot, "pos": pos,
-            "item": str(ev.get("item", "")).strip()[:200],
+            "item": str(ev.get("item", "")).strip()[:200], "group": "control" if ev.get("group") == "control" else "test",
             "view": re.sub(r"[^0-9a-z]", "", str(ev.get("view", "")).lower())[:24]}
 
 
@@ -80,3 +80,13 @@ def summarize(events: list[dict]) -> dict:
     total = {k: sum(r[k] for r in rows.values()) for k in ("shows", "clicks", "invoices")}
     return {"total": total, "by_slot": {s: r for s, r in rows.items() if any(r.values())},
             "views": len({e.get("view") for e in events if e.get("kind") == "show"})}
+
+
+def summarize_groups(events: list[dict]) -> dict:
+    """Пилот: тот же подсчёт отдельно для теста и контроля (у старых записей без группы — тест)."""
+    out = {}
+    for g in ("test", "control"):
+        part = [e for e in events if (e.get("group") or "test") == g]
+        if part:
+            out[g] = summarize(part)
+    return out

@@ -1645,20 +1645,37 @@
   async function journal() {
     if (!window.Track) return;
     const s = await window.Track.stats();
-    const key = JSON.stringify(s);
+    const pl = window.Track.pilot ? await window.Track.pilot() : null;
+    const key = JSON.stringify([s, pl]);
     if (key === journalSeen) return;
     journalSeen = key;
     $("#journal-where").textContent = s.where;
     const t = s.total;
     if (!t.shows) {
       $("#journal").innerHTML = `<p class="hint">Пока пусто. Откройте <a href="cabinet.html" target="_blank" rel="noopener">кабинет клиента</a>
-        и нажмите «Подробнее» или «Запросить счёт» — здесь появятся показы, переходы и запросы счёта по видам совета.</p>`;
+        или <a href="embed.html" target="_blank" rel="noopener">страницу встраивания</a> и нажмите «Подробнее» или «Запросить счёт» —
+        здесь появятся показы, переходы и запросы счёта по видам совета, а при пилоте — тест против контроля.</p>`;
       return;
     }
     const row = (name, r) => `<tr><td>${esc(name)}</td><td>${nf.format(r.shows)}</td><td>${share(r.clicks, r.shows)}</td>`
       + `<td>${share(r.invoices, r.shows)}</td><td>${share(r.invoices, r.clicks)}</td></tr>`;
     const rows = Object.keys(JOURNAL_SLOT).filter((k) => s.by_slot[k]).map((k) => row(JOURNAL_SLOT[k], s.by_slot[k])).join("");
-    $("#journal").innerHTML = `<table class="journal"><tr><th>Вид совета</th><th>Показы</th><th>Кликабельность: переходы</th>`
+    let pilotHtml = "";
+    if (pl && pl.groups && pl.groups.test && pl.groups.control) {
+      const pp = (x) => (x * 100).toFixed(1).replace(".", ",");
+      const pv = (p) => (p < 0.001 ? "< 0,001" : p.toFixed(3).replace(".", ","));
+      const line = (name, c) => (!c ? "" : `<tr><td>${name}</td><td>${pp(c.test)} %</td><td>${pp(c.control)} %</td>`
+        + `<td>${c.diff >= 0 ? "+" : ""}${pp(c.diff)} п.п. [${pp(c.ci95[0])}; ${pp(c.ci95[1])}]</td><td>${pv(c.p)}</td></tr>`);
+      pilotHtml = `<h3 style="font-size:14px;margin:14px 0 4px">Пилот: тест против контроля</h3><table class="journal">`
+        + `<tr><th></th><th>Тест: советник</th><th>Контроль: нынешний блок</th><th>Разница, 95 % интервал</th><th>p</th></tr>`
+        + `<tr><td>Показы</td><td>${nf.format(pl.groups.test.shows)}</td><td>${nf.format(pl.groups.control.shows)}</td><td></td><td></td></tr>`
+        + line("Кликабельность", pl.ctr) + line("Конверсия в запрос счёта", pl.conversion) + "</table>"
+        + (pl.needed_per_group ? `<p class="hint">Чтобы заметить такую разницу в конверсии, нужно ${nf.format(pl.needed_per_group)} показов на группу
+          (α = 0,05, мощность 80 %).</p>` : "")
+        + `<p class="hint">Клиента в группу относит псевдоним (хеш с солью), группа не меняется. Встраивание и пилот —
+          <a href="embed.html" target="_blank" rel="noopener">страница встраивания</a>.</p>`;
+    }
+    $("#journal").innerHTML = pilotHtml + `<table class="journal"><tr><th>Вид совета</th><th>Показы</th><th>Кликабельность: переходы</th>`
       + `<th>Конверсия: счета к показам</th><th>Счета к переходам</th></tr>${rows}${row("Всего", t)}</table>`
       + `<p class="hint">Заходов на страницу кабинета: ${nf.format(s.views)}. Показ карточки за один заход считается один раз.
         Действия посетителей стенда, не прогноз продаж. В кабинете Softline те же события дают метки utm_content=sovetnik_&lt;вид совета&gt; в ссылках.</p>`;

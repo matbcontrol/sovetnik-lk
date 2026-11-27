@@ -21,12 +21,15 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:                      # запуск файлом, а не модулем
     sys.path.insert(0, str(ROOT))
 
-from recsys import events  # noqa: E402
+from recsys import events, pilot  # noqa: E402
 from recsys.agent.agent import place  # noqa: E402
 from recsys.agent.tools import Catalog  # noqa: E402
 from recsys.llm.client import LLM, LLMError  # noqa: E402
 
 LOCK = threading.Lock()                            # агент работает по одному запросу за раз
+# адреса, которые кабинет вызывает со своей страницы (другой домен): совет, журнал, отчёт пилота.
+# Агента (/api/place, /api/hole) чужим страницам не открываем — он тратит вызовы модели.
+OPEN = ("/api/advice", "/api/event", "/api/pilot")
 
 
 def agent_ready() -> dict:
@@ -105,7 +108,7 @@ class Watched:
 class Handler(SimpleHTTPRequestHandler):
     def log_message(self, fmt: str, *args) -> None:        # в журнал — только обращения к агенту
         line = str(args[0] if args else "")
-        if "/api/" in line and "/api/event" not in line:   # у ответа «файл не найден» первым идёт код, а не строка запроса
+        if "/api/" in line and "/api/event" not in line and "/api/pilot" not in line:   # журнал и пилот спрашивают часто   # у ответа «файл не найден» первым идёт код, а не строка запроса
             super().log_message(fmt, *args)
 
     def end_headers(self) -> None:                         # данные стенда пересобираются — кеш браузера не нужен
@@ -115,12 +118,28 @@ class Handler(SimpleHTTPRequestHandler):
     def _json(self, code: int, body: dict) -> None:
         data = json.dumps(body, ensure_ascii=False).encode("utf-8")
         self.send_response(code)
+        if self.path.startswith(OPEN):
+            self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(data)))
         self.end_headers()
         self.wfile.write(data)
 
+    def do_OPTIONS(self) -> None:                         # предварительный запрос браузера со страницы кабинета
+        if not self.path.startswith(OPEN):
+            self.send_response(403)
+            self.end_headers()
+            return
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Max-Age", "86400")
+        self.end_headers()
+
     def do_GET(self) -> None:
+        if self.path.startswith("/api/pilot"):              # тест против контроля по журналу кабинета
+            return self._json(200, pilot.report(events.read()))
         if self.path.startswith("/api/ping"):
             return self._json(200, agent_ready())
         if self.path.startswith("/api/events"):             # итог журнала кабинета для панели стенда
@@ -221,10 +240,11 @@ def main() -> None:
     sys.stdout.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8765)
+    ap.add_argument("--host", default="127.0.0.1", help="0.0.0.0 — в контейнере; по умолчанию только этот компьютер")
     args = ap.parse_args()
     handler = partial(Handler, directory=str(ROOT / "site"))
-    srv = ThreadingHTTPServer(("127.0.0.1", args.port), handler)
-    print(f"стенд: http://127.0.0.1:{args.port}  (агент каталога включён)", flush=True)
+    srv = ThreadingHTTPServer((args.host, args.port), handler)
+    print(f"стенд: http://{args.host}:{args.port}  (агент каталога включён)", flush=True)
     srv.serve_forever()
 
 

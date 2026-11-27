@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Встраивание советника в кабинет: один тег script</title>
+<style>
+  body { margin: 0; font: 14px/1.45 "Segoe UI", Roboto, Arial, sans-serif; color: #1d2530; background: #f3f5f8; }
+  header { background: #22303f; color: #fff; padding: 12px 20px; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
+  header b { font-size: 16px; }
+  header a { color: #9fd3ff; }
+  main { max-width: 1080px; margin: 16px auto; padding: 0 16px; display: grid; grid-template-columns: 300px 1fr; gap: 16px; }
+  .box { background: #fff; border: 1px solid #dfe3e8; border-radius: 10px; padding: 14px; }
+  .box h2 { font-size: 15px; margin: 0 0 10px; }
+  label { display: block; font-size: 13px; margin: 8px 0 4px; color: #4a5462; }
+  select, input[type=text] { width: 100%; box-sizing: border-box; padding: 6px 8px; font: inherit; border: 1px solid #c9d0d8; border-radius: 6px; }
+  button.go { margin-top: 12px; width: 100%; padding: 8px; font: inherit; background: #1f5fa8; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
+  pre { background: #f6f8fa; border: 1px solid #e3e7ec; border-radius: 6px; padding: 10px; font-size: 12px; overflow-x: auto; white-space: pre-wrap; }
+  .hint { font-size: 12px; color: #5b6573; }
+  .arm { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; background: #e8f1fb; color: #1f5fa8; }
+  .arm--control { background: #fdf0e1; color: #9a5b12; }
+  @media (max-width: 800px) { main { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <b>Встраивание советника</b>
+  <span>чужая страница кабинета подключает советника одним тегом script — без сборки и без модели на запрос</span>
+  <a href="./">стенд</a><a href="cabinet.html">макет кабинета</a>
+</header>
+<main>
+  <section class="box">
+    <h2>Кто открыл кабинет</h2>
+    <label for="ex">Клиент (примеры стенда)</label>
+    <select id="ex"></select>
+    <label for="cid">Псевдоним клиента — по нему пилот навсегда относит клиента к тесту или контролю</label>
+    <input type="text" id="cid" value="client-001">
+    <label><input type="checkbox" id="pilot" checked> пилот: контроль — половина клиентов</label>
+    <button class="go" id="go">Открыть кабинет</button>
+    <p class="hint">Показы, переходы и «Запросить счёт» уходят в журнал с меткой группы. Итог пилота — тест против
+      контроля с 95 % интервалом — на <a href="./">стенде</a>, вкладка «Клиент», панель «Журнал кабинета».</p>
+  </section>
+  <section>
+    <div class="box">
+      <h2>Вам может подойти <span class="arm" id="arm"></span></h2>
+      <div id="sovetnik"></div>
+      <p class="hint" id="meta"></p>
+    </div>
+    <div class="box" style="margin-top:16px">
+      <h2>Что вставлено в страницу кабинета</h2>
+      <pre id="snippet"></pre>
+      <p class="hint">Контрольной группе виджет ничего не рисует, и кабинет оставляет ей нынешний блок; здесь для наглядности
+        на его месте «Часто докупают» (<code>control: "render"</code>). Без сервера советника (открытый стенд) совет считает
+        тот же движок в браузере, события хранятся в браузере.</p>
+    </div>
+  </section>
+</main>
+<script src="widget.js"></script>
+<script>
+(async function () {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+  const examples = await fetch("data/examples.json").then((r) => r.json()).catch(() => []);
+  $("#ex").innerHTML = examples.map((x, i) => `<option value="${i}">${x.title.replace(/</g, "&lt;")}</option>`).join("");
+  async function open() {
+    const ex = examples[+$("#ex").value];
+    if (!ex) return;
+    const client = Object.assign({}, ex.client, { client_id: $("#cid").value.trim() });
+    if ($("#pilot").checked) client.control_share = 0.5;
+    $("#snippet").textContent = `<div id="sovetnik"></div>\n<script src="${new URL("widget.js", location.href).href}"><\/script>\n`
+      + `<script>Sovetnik.mount("#sovetnik", ${JSON.stringify(client, null, 1)}, { control: "render" });<\/script>`;
+    const res = await window.Sovetnik.mount("#sovetnik", client, { control: "render" });
+    if (!res) return;
+    $("#arm").textContent = res.group === "control" ? "контроль" : "тест";
+    $("#arm").className = "arm" + (res.group === "control" ? " arm--control" : "");
+    $("#meta").textContent = `Ответ: ${res.where}, ${String(res.ms).replace(".", ",")} мс, обращений к модели: ${res.model_calls}.`;
+  }
+  $("#go").addEventListener("click", open);
+  open();
+})();
+</script>
+</body>
+</html>

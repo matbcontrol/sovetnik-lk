@@ -106,5 +106,42 @@
     return Object.assign(summarize(local()), { where: "этот браузер" });
   }
 
-  window.Track = { stats, summarize };
+  // ---- пилот: тест против контроля — как recsys/pilot.py (разница долей, 95 % интервал, z-тест)
+  function erfc(x) {                                   // Абрамовиц и Стиган 7.1.26, x ≥ 0
+    const t = 1 / (1 + 0.3275911 * x);
+    return t * (0.254829592 + t * (-0.284496736 + t * (1.421413741 + t * (-1.453152027 + t * 1.061405429)))) * Math.exp(-x * x);
+  }
+  function compare(ht, nt, hc, nc) {
+    if (!nt || !nc) return null;
+    const pt = ht / nt, pc = hc / nc, d = pt - pc;
+    const se = Math.sqrt(pt * (1 - pt) / nt + pc * (1 - pc) / nc);
+    const pool = (ht + hc) / (nt + nc);
+    const se0 = Math.sqrt(pool * (1 - pool) * (1 / nt + 1 / nc));
+    return { test: pt, control: pc, diff: d, ci95: [d - 1.959964 * se, d + 1.959964 * se], p: se0 ? erfc(Math.abs(d / se0) / Math.SQRT2) : 1 };
+  }
+  function pilotOf(events) {
+    const groups = {};
+    ["test", "control"].forEach((g) => {
+      const part = events.filter((e) => (e.group || "test") === g);
+      if (part.length) { const s = summarize(part); groups[g] = Object.assign({}, s.total, { views: s.views }); }
+    });
+    const out = { groups };
+    if (groups.test && groups.control) {
+      const t = groups.test, c = groups.control;
+      out.ctr = compare(t.clicks, t.shows, c.clicks, c.shows);
+      out.conversion = compare(t.invoices, t.shows, c.invoices, c.shows);
+    }
+    return out;
+  }
+  async function pilot() {
+    if (!STATIC) {
+      try {
+        const r = await fetch("api/pilot", { cache: "no-store" });
+        if (r.ok) return await r.json();
+      } catch (e) { /* сервера нет — считаем по этому браузеру */ }
+    }
+    return pilotOf(local());
+  }
+
+  window.Track = { stats, summarize, pilot };
 })();
