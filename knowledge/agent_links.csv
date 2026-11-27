@@ -1,0 +1,2 @@
+src,dst,type,source,confidence,evidence,quote,status,model,date
+contentai/abbyy-aligner,contentai/abbyy-lingvo-x6-multiligual,complements,агент каталога: комплект,0.5,Если ещё нет электронного словаря: Lingvo поможет точно переводить термины при обработке текстов,позволяет выполнять перевод с 19 языков,graph,gemini-3.6-flash,2026-11-27
