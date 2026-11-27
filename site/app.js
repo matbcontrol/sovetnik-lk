@@ -265,7 +265,10 @@
         .recommend({ type: state.type, today: state.today, purchases: state.purchases }, 10)
         .recs.filter((r) => !have.has(r.family) && pendingOnly(r)).slice(0, 2);
     }
-    renderUnconfirmed(loose.map((r) => ({ name: r.name, text: r.why + " Проверена связь классов, а не эта пара товаров.", url: r.url })));
+    // замена по классу — это «тот же класс из реестра», а не связь классов: подпись у неё своя
+    const unproven = (r) => (r.paths.every((p) => p.type === "analog_class")
+      ? " Тот же класс из реестра; эта пара товаров не проверена." : " Проверена связь классов, а не эта пара товаров.");
+    renderUnconfirmed(loose.map((r) => ({ name: r.name, text: r.why + unproven(r), url: r.url })));
     const waiting = new Set(res.bans.filter((b) => b.reason === E.PENDING).map((b) => b.key)).size;
     const pend = $("#pending");
     pend.hidden = !waiting;

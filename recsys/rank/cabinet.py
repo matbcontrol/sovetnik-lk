@@ -19,6 +19,7 @@
 """
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 
 from recsys.llm.pair_verdicts import SHOWN, Verdicts
@@ -28,6 +29,26 @@ KIT_MAX = 1                  # сколько советов «комплект�
 HORIZON = 15                 # сколько чужих линеек по порядку оценки рассматриваем для одного клиента
 POPULAR_N = None             # товаров в строке «Часто докупают»: один, а если личных советов меньше трёх — по числу свободных мест
 MARK = "вердикт|"            # так помечаются причины отсева, которые дал вердикт пары
+# Платформа, названная в названии товара. Заказчик относит «не подходит платформе клиента» к типичным
+# ошибкам: программу «для Windows» не советуем тому, у кого в названиях покупок названа только другая.
+PLATFORMS = {"Windows": {"windows", "win"}, "Linux": {"linux"}, "macOS": {"mac", "macos"},
+             "Android": {"android"}, "iOS": {"ios"}}
+
+
+# «…для Windows», «…for Linux»: товар рассчитан на платформу. Сама операционная система («Astra Linux»,
+# «Windows 11») под запрет не попадает: её и советуют тому, у кого другой.
+TARGET = re.compile(r"(?:для|for|под)\s[^,;()]{0,40}?\b(windows|linux|mac ?os|android|ios)\b", re.I)
+SPELL = {"windows": "Windows", "linux": "Linux", "macos": "macOS", "mac os": "macOS", "android": "Android", "ios": "iOS"}
+
+
+def platforms(a) -> set[str]:
+    """Платформы, названные в названии товара хоть как-то: по ним судим, что у клиента есть."""
+    return {p for p, words in PLATFORMS.items() if a.toks & words}
+
+
+def target(name: str) -> set[str]:
+    """Платформы, для которых товар предназначен: «Кибер Бэкап для рабочей станции Windows»."""
+    return {SPELL[m.lower()] for m in TARGET.findall(name or "")}
 
 
 @dataclass
@@ -67,7 +88,8 @@ def classify(at: dict, verdicts: Verdicts, history: list[str], s: Scored) -> tup
     return j.verdict or "unknown", j.reason, last.get(j.by, "")
 
 
-def keeper(at: dict, verdicts: Verdicts, allow: tuple[str, ...] = SHOWN, popular: frozenset[str] = frozenset()):
+def keeper(at: dict, verdicts: Verdicts, allow: tuple[str, ...] = SHOWN, popular: frozenset[str] = frozenset(),
+           names: dict[str, str] | None = None):
     """Фильтр новых советов для Unified.cabinet: (история клиента, кандидат) -> (оставить, причина).
 
     popular — продукты, популярные в группе клиента: «комплект» из их числа в личные советы не идёт,
@@ -88,6 +110,11 @@ def keeper(at: dict, verdicts: Verdicts, allow: tuple[str, ...] = SHOWN, popular
                 if foreign.index(ab.line) >= HORIZON:
                     # пары размечаются только для первых HORIZON кандидатов клиента: ниже оценка модели слишком мала
                     return False, "за горизонтом кандидатов: оценка модели слишком низкая"
+        need = target((names or {}).get(s.replaces or s.item, ""))
+        if need:
+            had = set().union(*(platforms(at[a]) for a in history)) if history else set()
+            if had and not (need & had):
+                return False, "не та платформа: " + ", ".join(sorted(need)) + " среди покупок клиента нет"
         tier, _, by = classify(at, verdicts, history, s)
         if tier == "graph":
             group = ("замена" if s.basis == "замена" else "ступень", by)
@@ -133,13 +160,13 @@ def cabinet(uni: Unified, c: str, verdicts: Verdicts | None, prices: dict[str, f
     at, h = uni.at, uni.fold.history[c]
     common = frozenset(uni.popular.get(uni.task.clients.get(c, {}).get("client_group", ""), {})) if popular_row         else frozenset()
     if kit_first:
-        cab = uni.cabinet(c, prices, keeper(at, verdicts, ("need", "kit")))
+        cab = uni.cabinet(c, prices, keeper(at, verdicts, ("need", "kit"), names=uni.task.names))
         new = list(cab["new"])
     else:
-        cab = uni.cabinet(c, prices, keeper(at, verdicts, ("need",)))
+        cab = uni.cabinet(c, prices, keeper(at, verdicts, ("need",), names=uni.task.names))
         new = list(cab["new"])
         if len(new) < NEW_MAX and kit_max:
-            wide = uni.cabinet(c, prices, keeper(at, verdicts, ("need", "kit"), common))
+            wide = uni.cabinet(c, prices, keeper(at, verdicts, ("need", "kit"), common, names=uni.task.names))
             have = {s.item for s in new}
             kits = [s for s in wide["new"] if s.item not in have][:kit_max]
             new += kits[: NEW_MAX - len(new)]
