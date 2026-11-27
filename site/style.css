@@ -327,3 +327,35 @@ h1 { font-size: 32px; line-height: 40px; font-weight: 700; }
 .brief__links a + a { background: #fff; color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 .brief__links span { flex-basis: 100%; color: var(--muted); font-size: 12.5px; }
 @media (max-width: 980px) { .brief { grid-template-columns: 1fr; margin: 0 14px 14px; } }
+
+/* ---- «Коротко» в три опоры и схема «Как это работает» */
+.brief { display: block; }
+.pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pillar { background: #fff; border-radius: 16px; padding: 16px 18px; box-shadow: var(--sl-shadow); }
+.pillar h3 { margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+.pillar__num { display: block; font-size: 40px; line-height: 46px; font-weight: 700; color: var(--accent); margin: 4px 0 2px; }
+.pillar__lead { margin: 0 0 10px; font-size: 14px; }
+.pillar ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
+.pillar li { font-size: 13px; color: var(--ink-2); padding-left: 18px; position: relative; line-height: 1.45; }
+.pillar li::before { content: "✓"; position: absolute; left: 0; color: #006817; font-weight: 700; }
+.pillar q { color: var(--ink); font-weight: 600; }
+.brief .brief__links { margin-top: 14px; }
+.how { margin: 0 28px 18px; padding: 20px 24px; border-radius: 24px; box-shadow: var(--sl-shadow); background: #fff; }
+.how h2 { font-size: 22px; margin: 0 0 14px; }
+.how h2 small { font-size: 14px; font-weight: 400; color: var(--muted); margin-left: 8px; }
+.lanes { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 18px; }
+.lane { border-radius: 16px; padding: 14px; }
+.lane--ai { background: #fbeef1; }
+.lane--fast { background: var(--sl-gray); }
+.lane__title { font-weight: 600; margin-bottom: 10px; }
+.lane__title small { font-weight: 400; color: var(--muted); margin-left: 6px; }
+.flow { display: flex; align-items: stretch; gap: 8px; margin-bottom: 8px; }
+.flow i { align-self: center; font-style: normal; color: var(--muted); font-size: 16px; }
+.flow--col { flex-direction: column; gap: 4px; margin-bottom: 0; }
+.node { flex: 1; background: #fff; border-radius: 10px; padding: 8px 10px; font-size: 13px; font-weight: 600; box-shadow: var(--sl-shadow); }
+.node small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; margin-top: 2px; line-height: 1.4; }
+.node--ai { box-shadow: inset 0 0 0 1.5px var(--accent); }
+.node--key { background: var(--accent); color: #fff; }
+.node--key small { color: #ffe3ea; }
+.how__note { margin: 12px 0 0; font-size: 12.5px; color: var(--muted); }
+@media (max-width: 980px) { .pillars, .lanes { grid-template-columns: 1fr; } .flow { flex-direction: column; } .flow i { transform: rotate(90deg); } .how { margin: 0 14px 14px; } }

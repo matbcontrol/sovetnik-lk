@@ -27,6 +27,37 @@
 
 <section class="brief" id="brief" hidden></section>
 
+<section class="how" id="how" hidden>
+  <h2>Как это работает <small>ИИ трудится заранее, а не на каждом клике</small></h2>
+  <div class="lanes">
+    <div class="lane lane--ai">
+      <div class="lane__title">Заранее — здесь работает ИИ <small>раз в сутки и при появлении нового товара</small></div>
+      <div class="flow"><div class="node">Открытые источники<small>фид магазина, страницы товаров, реестр российского ПО, таблица замещения АРПП</small></div><i>→</i>
+        <div class="node node--key">Граф знаний<small><span id="how-nodes"></span> товаров: редакции, дополнения, совместимость по характеристикам, российские аналоги</small></div></div>
+      <div class="flow"><div class="node">Новый товар<small>карточка из каталога</small></div><i>→</i>
+        <div class="node node--ai">ИИ-агент и критик<small>паспорт, класс, связи с дословной цитатой; 4,2 вызова модели и 1,42 ₽ на товар</small></div><i>→</i>
+        <div class="node">В граф или менеджеру<small>неподтверждённое — в очередь</small></div></div>
+      <div class="flow"><div class="node">Пары «купил А — советовать ли Б»</div><i>→</i>
+        <div class="node node--ai">Две модели и правила менеджера<small>нужно · комплект · уже есть · то же самое · не связано</small></div></div>
+      <div class="flow"><div class="node">История покупок</div><i>→</i>
+        <div class="node node--ai">Модель ранжирования<small>градиентный бустинг, 42 признака пары «клиент — товар»; пересчёт около 2 минут процессора</small></div></div>
+    </div>
+    <div class="lane lane--fast">
+      <div class="lane__title">В визите клиента <small>без нейросети, меньше миллисекунды</small></div>
+      <div class="flow flow--col">
+        <div class="node">Покупки и лицензии клиента</div><i>↓</i>
+        <div class="node">Кандидаты из графа и истории</div><i>↓</i>
+        <div class="node">Запреты и проверка пар<small>не тот тип клиента или платформа, уже куплено, снято с продажи; чужой продукт — только с «нужно»</small></div><i>↓</i>
+        <div class="node">Ранжирование</div><i>↓</i>
+        <div class="node node--key">Три совета с «почему»<small>продление · личные советы · «Часто докупают»</small></div><i>↓</i>
+        <div class="node">Журнал и пилот<small>показы, переходы, запросы счёта; тест против контроля</small></div>
+      </div>
+    </div>
+  </div>
+  <p class="how__note">«В <span id="how-x"></span> раза» — проверка модели ранжирования по протоколу организаторов у клиентов с историей. Для любого клиента кабинета
+    советы считает движок по тому же графу, с теми же запретами и проверкой пар — в браузере или по <code>POST /api/advice</code>, ответ одинаковый.</p>
+</section>
+
 <nav class="tabs" role="tablist">
   <button class="tab is-active" data-tab="client" role="tab">Клиент</button>
   <button class="tab" data-tab="product" role="tab">Товар</button>
