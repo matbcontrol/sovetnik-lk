@@ -33,6 +33,35 @@ def part(row: dict) -> dict:
             "p3": row["precision@3"], "parts": row["precision@3_parts"]}
 
 
+def cost_summary() -> dict:
+    """Главные числа стоимости из submission/cost.md — чтобы на стенде стояло то же, что в расчёте.
+
+    Расчёт ведётся в одном месте; стенд берёт оттуда четыре числа и ничего не считает сам. Не нашли строку —
+    числа нет, стенд обходится без него.
+    """
+    import re
+
+    p = ROOT / "submission" / "cost.md"
+    if not p.exists():
+        return {}
+    text = p.read_text(encoding="utf-8")
+
+    def find(pattern: str):
+        m = re.search(pattern, text)
+        return m.group(1) if m else None
+
+    def number(s: str | None) -> float | None:
+        return float(s.replace(" ", "").replace(",", ".")) if s else None
+
+    out = {
+        "model": find(r"одной модели: ([\w.\-]+)"),
+        "per_request": number(find(r"Итого на одно обращение\*\*[^\n]*\*\*([\d,]+)\*\*")),   # модель, ₽ без НДС
+        "with_server": number(find(r"обращение стоит около ([\d,]+) ₽")),
+        "per_product": number(find(r"— ([\d,]+) ₽ без НДС \(агент с критиком")),
+    }
+    return {k: v for k, v in out.items() if v is not None}
+
+
 def main() -> None:
     v = json.loads((ROOT / "reports" / "value.json").read_text(encoding="utf-8"))
     organisers = {k: dict(seg) for k, seg in ORGANISERS.items()}
@@ -126,6 +155,7 @@ def main() -> None:
         out["holes"] = {"today": h.get("today"), "holes": h.get("holes"),
                         "without_advice": h.get("clients_without_own_ground_advice"),
                         "agent": kinds.get("закрывает агент"), "renew": kinds.get("нужно продление, а не совет")}
+    out["economics"] = cost_summary()                    # стоимость обращения и нового товара — из расчёта в submission/cost.md
     p = ROOT / "reports" / "restore.json"
     if p.exists():                                       # тест «спрятали — вернул» (recsys.rank.restore): только сводные числа
         r = json.loads(p.read_text(encoding="utf-8"))

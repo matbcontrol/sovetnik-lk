@@ -770,6 +770,12 @@
    "clients_b2c": 1139
   }
  },
+ "economics": {
+  "model": "deepseek-v4-pro",
+  "per_request": 0.2262,
+  "with_server": 0.41,
+  "per_product": 6.79
+ },
  "restore": {
   "today": "2026-11-23",
   "clients_with_access": 4324,

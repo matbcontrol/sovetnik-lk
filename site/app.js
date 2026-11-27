@@ -1069,7 +1069,13 @@
         <div class="tile"><dt>Товаров и семейств</dt><dd>${nf.format(data.nodes.length)}</dd><small>из них в продаже ${nf.format(sale.length)}</small></div>
         <div class="tile"><dt>Связей-советов</dt><dd>${nf.format(adviceEdges)}</dd><small>собраны ${esc(built)}</small></div>
         <div class="tile"><dt>Товаров со своей связью</dt><dd>${nf.format(linkedIds.size)}</dd><small>остальным совет даёт линейка и класс</small></div>
-        <div class="tile"><dt>Модель на обращение клиента</dt><dd>0 вызовов</dd><small>с агентом каталога и разметкой пар для новых товаров — около 0,05 ₽ на обращение</small></div>
+        <div class="tile"><dt>Модель на обращение клиента</dt><dd>0 вызовов</dd><small>${(() => {
+          // деньги — из расчёта стоимости (submission/cost.md через отчёт стенда), чтобы на стенде стояло то же число
+          const eco = (report && report.economics) || {}, r2 = (x) => x.toFixed(2).replace(".", ",");
+          return eco.per_request
+            ? `с агентом каталога и разметкой пар для новых товаров — около ${r2(eco.per_request)} ₽ на обращение${eco.with_server ? `, вместе с сервером около ${r2(eco.with_server)} ₽` : ""}${eco.model ? ` (${esc(eco.model)})` : ""}`
+            : "модель нужна только агенту каталога и разметке пар для новых товаров";
+        })()}</small></div>
       </dl>
       <h3>Связи по источникам</h3>
       <table class="links"><tr><th>Источник</th><th class="num">Связей</th></tr>${Object.entries(bySource).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<tr><td>${esc(k)}</td><td class="num">${nf.format(v)}</td></tr>`).join("")}</table>
