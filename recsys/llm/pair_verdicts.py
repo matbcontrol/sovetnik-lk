@@ -35,6 +35,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import random
 import re
 import sys
@@ -59,6 +60,16 @@ LETTER = {v: k for k, v in CODES.items()}
 RU = {"need": "нужно", "kit": "комплект", "has": "уже есть", "same": "то же самое", "unrelated": "не связано"}
 SHOWN = ("need", "kit")
 FIRST = "ассистент"                              # первая разметка: ИИ-ассистент во время разработки
+# Новые пары размечают две модели по API (recsys/eval/consensus.py: на сверке 166 пар обе «не советовать» верны
+# в 68 из 70, обе «советовать» — в 42 из 54). Согласие «не советовать» применяется сразу, остальное ждёт менеджера.
+CONSENSUS = "согласие двух моделей"                # обе за «не советовать»: вердикт действует сразу
+BOTH_FOR = "api:обе модели за"                     # обе за «советовать»: менеджеру первыми, клиенту — после решения
+SPLIT = "api:модели расходятся"                    # менеджеру; одиночное «не советовать» сразу не применяется
+PAIR_MODELS = (                                    # настройки клиента на время разметки; ключи — из .env
+    {"LLM_PROVIDER": "google", "LLM_MODEL": "gemini-3.6-flash", "LLM_MODELS": "gemini-3.6-flash", "LLM_THINKING": "off"},
+    {"LLM_PROVIDER": "openai_compatible", "LLM_BASE_URL": "https://api.deepseek.com", "LLM_MODEL": "deepseek-v4-pro",
+     "LLM_MODELS": "deepseek-v4-pro", "LLM_THINKING": "on"},
+)
 CONFIDENCE = {"need": 0.85, "kit": 0.5}          # сила совета в графе: «нужно» идёт раньше «комплекта»
 REASON_MAX = 140
 # Вердикту модели по API клиент верит сразу, только если на сверке с первой разметкой она дала не меньше
@@ -208,9 +219,7 @@ class Verdicts:
 
             add_agent_links(table, agent_links.read(), family_ids())
         if not pending:
-            ok = trusted_models()
-            table = {p: v for p, v in table.items()
-                     if v.source in (FIRST, "агент каталога") or not v.shown or v.source.removeprefix("api:") in ok}
+            table = applied(table)
         return cls(table)
 
     def get(self, a: str, b: str) -> Verdict | None:
@@ -243,6 +252,48 @@ class Verdicts:
         return Judged("unrelated") if found else Judged("")
 
 
+def applied(table: dict[tuple[str, str], Verdict]) -> dict[tuple[str, str], Verdict]:
+    """Вердикты, которые действуют для клиента: первая разметка, агент каталога, согласие двух моделей и модели,
+    прошедшие сверку. Вердикт одной модели без доверия — и «советовать», и «не советовать» — ждёт менеджера:
+    иначе хорошая пара молча выпала бы из советов, не дойдя до него."""
+    ok = trusted_models()
+    return {p: v for p, v in table.items()
+            if v.source in (FIRST, "агент каталога", CONSENSUS) or v.source.removeprefix("api:") in ok}
+
+
+def combine(first: dict[tuple[str, str], Verdict], second: dict[tuple[str, str], Verdict]) -> dict[tuple[str, str], Verdict]:
+    """Две модели на одних парах. Обе «не советовать» — вердикт второй модели (с рассуждением) действует сразу;
+    обе «советовать» — менеджеру первыми; расходятся — менеджеру с предложенным советом. Пара, на которую
+    ответила одна модель, остаётся без вердикта и вернётся в очередь разметки."""
+    out: dict[tuple[str, str], Verdict] = {}
+    for p in sorted(first.keys() & second.keys()):
+        a, b = first[p], second[p]
+        if not a.shown and not b.shown:
+            out[p] = Verdict(b.verdict, b.reason, CONSENSUS, b.audience)
+        elif a.shown and b.shown:
+            out[p] = Verdict(b.verdict, b.reason, BOTH_FOR, b.audience)
+        else:
+            v = a if a.shown else b
+            out[p] = Verdict(v.verdict, v.reason, SPLIT, v.audience)
+    return out
+
+
+def client_for(cfg: dict[str, str]):
+    """Клиент модели с настройками cfg поверх .env — на время создания клиента."""
+    from recsys.llm.client import LLM
+
+    old = {k: os.environ.get(k) for k in cfg}
+    os.environ.update(cfg)
+    try:
+        return LLM()
+    finally:
+        for k, v in old.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
 def trusted_models() -> set[str]:
     """Модели, чьи вердикты по API показываются клиенту без менеджера: прошли сверку с первой разметкой."""
     if not REPORT.exists():
@@ -256,7 +307,7 @@ def as_class_links(table: dict[tuple[str, str], Verdict]) -> list[dict]:
     return [{"src_class": a, "dst_class": b, "type": "complements", "audience": v.audience or "any",
              "confidence": CONFIDENCE[v.verdict], "reason": v.reason, "verdict": v.verdict,
              "source": "разметка" if v.source == FIRST else "разметка по API"}
-            for (a, b), v in sorted(table.items()) if v.shown]
+            for (a, b), v in sorted(applied(table).items()) if v.shown]       # без вердиктов, ждущих менеджера
 
 
 def as_family_edges(table: dict[tuple[str, str], Verdict], same_line=None) -> list[dict]:
@@ -587,12 +638,10 @@ def ask(llm, level: str, pairs: list[tuple[str, str]], describe: Callable[[str],
 
 
 def label(level: str, limit: int, private: bool) -> None:
-    from recsys.llm.client import LLM
-
     sys.stdout.reconfigure(encoding="utf-8")
-    if level == "line" and not private:
-        sys.exit("Линейки из продаж — данные организаторов. Через API их можно размечать только там, где сервис "
-                 "не обучается на переданных данных; тогда добавьте флаг --private.")
+    if level == "line":
+        sys.exit("Линейки из продаж — данные организаторов. Обе модели разметки (Google, DeepSeek) могут учиться на "
+                 "переданных данных, поэтому линейки по API не размечаются: их размечает менеджер.")
     path = {"class": CLASS_FILE, "family": FAMILY_FILE, "line": LINE_FILE}[level]
     table = read(path)
     todo_file = TODO[level]
@@ -603,12 +652,17 @@ def label(level: str, limit: int, private: bool) -> None:
     print(f"пар без вердикта: {len(todo)}")
     if not todo:
         return
-    llm = LLM()
-    got = ask(llm, level, todo, describer(level), progress=True)
+    describe = describer(level)
+    answers = []
+    for cfg in PAIR_MODELS:
+        llm = client_for(cfg)
+        print(f"модель {llm.model}, рассуждение {cfg.get('LLM_THINKING', 'off')}")
+        answers.append(ask(llm, level, todo, describe, progress=True))
+    got = combine(*answers)
     table.update(got)
     write(path, table)
-    print(f"размечено по API: {len(got)} из {len(todo)}; модель {llm.model}; вердикты:",
-          dict(Counter(RU[v.verdict] for v in got.values())))
+    print(f"размечено двумя моделями: {len(got)} из {len(todo)};",
+          dict(Counter(v.source for v in got.values())))
 
 
 def check(n: int, seed: int, level: str = "class") -> None:
