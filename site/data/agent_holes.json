@@ -436,8 +436,8 @@
    "family": "contentai/abbyy-aligner",
    "name": "ABBYY ​Aligner",
    "class": "Текстовые редакторы",
-   "outcome": "closed",
-   "explanation": "",
+   "outcome": "kit_only",
+   "explanation": "найден только комплект: обоснованного совета сильнее комплекта нет",
    "links": [
     {
      "dst": "contentai/abbyy-lingvo-x6-multiligual",
@@ -7530,7 +7530,7 @@
    "family": "drweb/komplekt-drweb-malyiy-biznes",
    "name": "Dr.Web «Малый бизнес» сертифицированный ФСТЭК России (сертификат №3509)",
    "class": "Антивирусы для организаций",
-   "outcome": "closed",
+   "outcome": "queue",
    "as_new": false,
    "explanation": "",
    "links": [
@@ -7544,8 +7544,8 @@
      "dst_name": "Traffic Inspector",
      "quote": "Traffic Inspector устанавливают на персональном ко",
      "critic": "Межсетевой экран дополняет антивирусную защиту",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "«нужно» без упоминания А в цитате или названии Б — на проверку менеджеру"
     }
    ],
    "dropped": [],
@@ -12426,7 +12426,7 @@
    "family": "idex/impact-lms",
    "name": "iMpact LMS",
    "class": "Программы для бизнес-образования",
-   "outcome": "closed",
+   "outcome": "queue",
    "as_new": false,
    "explanation": "",
    "links": [
@@ -12440,8 +12440,8 @@
      "dst_name": "1С-Битрикс24",
      "quote": "на базе Битрикс24",
      "critic": "В тексте А указано, что iMpact LMS работает на базе Битрикс24, поэтому для использования LMS нужен сам Битрикс24.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "А работает на базе Б: у владельца Б, скорее всего, уже есть"
     }
    ],
    "dropped": [],
@@ -30212,9 +30212,9 @@
    "family": "etersoft/wineetersoft-network",
    "name": "WINE@Etersoft",
    "class": "Расширения системы",
-   "outcome": "closed",
+   "outcome": "kit_only",
    "as_new": false,
-   "explanation": "",
+   "explanation": "найден только комплект: обоснованного совета сильнее комплекта нет",
    "links": [
     {
      "dst": "postgrespro/postgres-pro-enterprise-dlya-1spredpriyatie-sertifitsirovannaya-",
@@ -30226,8 +30226,8 @@
      "dst_name": "Postgres Pro Enterprise для 1С:Предприятие (сертифицированная версия)",
      "quote": "«1С:Предприятие 7.7», «1С:Бухгалтерия 6.0»",
      "critic": "WINE@Etersoft поддерживает 1С:Предприятие, а Postgres Pro Enterprise сертифицирована для 1С:Предприятие.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "«нужно» без упоминания А в цитате или названии Б — на проверку менеджеру"
     },
     {
      "dst": "basealt/alt-server-11",
@@ -33789,9 +33789,9 @@
    "family": "tehnologii-upravleniya-i-razvitiya/bolshaya-biblioteka-biznes-analitika-i-spetsialista-po-biznes-pr",
    "name": "Большая библиотека бизнес-аналитика и специалиста по бизнес-процессам. Версия 4.0",
    "class": "Бизнес-литература",
-   "outcome": "kit_only",
+   "outcome": "queue",
    "as_new": false,
-   "explanation": "найден только комплект: обоснованного совета сильнее комплекта нет",
+   "explanation": "",
    "links": [
     {
      "dst": "inecit/biznes-analitik",
@@ -33803,8 +33803,8 @@
      "dst_name": "Бизнес-аналитик 2.0",
      "quote": "Бизнес-аналитик 2.0 Программы для бизнес-планирования",
      "critic": "Б дополняет А инструментом для финансового анализа и бизнес-планирования",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     },
     {
      "dst": "vkkb/vkkb-biznes-kurs",
@@ -35126,9 +35126,9 @@
    "family": "bosch/pcr9a5i90m-510635",
    "name": "Газовая варочная панель Bosch PCR9A5I90M",
    "class": "Варочные панели",
-   "outcome": "kit_only",
+   "outcome": "queue",
    "as_new": false,
-   "explanation": "найден только комплект: обоснованного совета сильнее комплекта нет",
+   "explanation": "",
    "links": [
     {
      "dst": "bosch/cmg7241b1-448057",
@@ -35140,8 +35140,8 @@
      "dst_name": "Электрический духовой шкаф Bosch CMG7241B1",
      "quote": "Газовая варочная панель Bosch PCR9A5I90M",
      "critic": "Оба товара Bosch, панель и духовой шкаф, совместимы для встраиваемой кухни.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     },
     {
      "dst": "bosch/csg7364b1-448058",
@@ -35153,8 +35153,8 @@
      "dst_name": "Электрический духовой шкаф Bosch CSG7364B1",
      "quote": "Газовая варочная панель Bosch PCR9A5I90M",
      "critic": "Оба товара Bosch, панель и духовой шкаф, совместимы для встраиваемой кухни.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     },
     {
      "dst": "bosch/hba534eb3-536321",
@@ -35166,8 +35166,8 @@
      "dst_name": "Электрический духовой шкаф Bosch HBA534EB3",
      "quote": "Газовая варочная панель Bosch PCR9A5I90M",
      "critic": "Оба товара Bosch, панель и духовой шкаф, совместимы для встраиваемой кухни.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     }
    ],
    "dropped": [],
@@ -35354,9 +35354,9 @@
    "family": "patriot/512309216-349021",
    "name": "Газонокосилка роторная Patriot PT 1433E (512309216) электрическая 1400Вт",
    "class": "Газонокосилки",
-   "outcome": "kit_only",
+   "outcome": "queue",
    "as_new": false,
-   "explanation": "найден только комплект: обоснованного совета сильнее комплекта нет",
+   "explanation": "",
    "links": [
     {
      "dst": "makita/ur3000-348743",
@@ -35368,8 +35368,8 @@
      "dst_name": "Триммер электрический Makita UR3000 450Вт неразбор.штан. реж.эл.:леска",
      "quote": "Триммер электрический Makita UR3000 450Вт неразбор.штан. реж.эл.:леска",
      "critic": "Триммер дополняет газонокосилку для труднодоступных мест.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     }
    ],
    "dropped": [],
@@ -43346,9 +43346,9 @@
    "family": "panasonic/er-gy10cm520-218953",
    "name": "Машинки для стрижки волос Panasonic ER-GY10CM520",
    "class": "Машинки для стрижки волос",
-   "outcome": "kit_only",
+   "outcome": "queue",
    "as_new": false,
-   "explanation": "найден только комплект: обоснованного совета сильнее комплекта нет",
+   "explanation": "",
    "links": [
     {
      "dst": "panasonic/er-gb42-k520-220019",
@@ -43360,8 +43360,8 @@
      "dst_name": "Триммер Panasonic ER-GB42-K520",
      "quote": "Машинки для стрижки волос",
      "critic": "Машинка для волос, триммер для бороды и контуров - дополняют друг друга",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     },
     {
      "dst": "panasonic/er-gn30-k520-220018",
@@ -43373,8 +43373,8 @@
      "dst_name": "Триммер Panasonic ER-GN30-K",
      "quote": "Машинки для стрижки волос",
      "critic": "Машинка для волос, триммер для бороды и контуров - дополняют друг друга",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     },
     {
      "dst": "panasonic/er407k520-220017",
@@ -43386,8 +43386,8 @@
      "dst_name": "Триммер Panasonic ER407",
      "quote": "Машинки для стрижки волос",
      "critic": "Машинка для волос, триммер для бороды и контуров - дополняют друг друга",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     }
    ],
    "dropped": [],
@@ -50119,9 +50119,9 @@
    "family": "philips/bhd500-00-481928",
    "name": "Фены Philips BHD500/00",
    "class": "Фены",
-   "outcome": "kit_only",
+   "outcome": "queue",
    "as_new": false,
-   "explanation": "найден только комплект: обоснованного совета сильнее комплекта нет",
+   "explanation": "",
    "links": [
     {
      "dst": "hyundai/h-hs1415-406142",
@@ -50133,8 +50133,8 @@
      "dst_name": "Щипцы для завивки волос Hyundai H-HS1415",
      "quote": "Щипцы для завивки волос",
      "critic": "Щипцы дополняют фен для создания локонов",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     }
    ],
    "dropped": [],
@@ -51257,7 +51257,7 @@
    "family": "bosch/tsm6a011w-407651",
    "name": "Электрическая кофемолка Bosch TSM6A011",
    "class": "Кофемолки",
-   "outcome": "closed",
+   "outcome": "queue",
    "as_new": false,
    "explanation": "",
    "links": [
@@ -51271,8 +51271,8 @@
      "dst_name": "Автоматическая кофемашина Philips EP2224",
      "quote": "используемый кофе: Зерновой, Молотый",
      "critic": "Товар Б принимает молотый кофе, что подтверждает совет.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "«нужно» без упоминания А в цитате или названии Б — на проверку менеджеру"
     },
     {
      "dst": "delonghi/ecam350-35-w-456347",
@@ -51284,8 +51284,8 @@
      "dst_name": "Автоматическая кофемашина DeLonghi ECAM350.35.W",
      "quote": "используемый кофе: Зерновой, Молотый",
      "critic": "Товар Б принимает молотый кофе, что подтверждает совет.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "«нужно» без упоминания А в цитате или названии Б — на проверку менеджеру"
     },
     {
      "dst": "kitfort/730-406269",
@@ -51297,8 +51297,8 @@
      "dst_name": "Капельная кофемашина KITFORT КТ-730",
      "quote": "используемый кофе: Молотый",
      "critic": "Товар Б принимает молотый кофе, что подтверждает совет.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "«нужно» без упоминания А в цитате или названии Б — на проверку менеджеру"
     }
    ],
    "dropped": [],
@@ -51538,9 +51538,9 @@
    "family": "bosch/cmg7241b1-448057",
    "name": "Электрический духовой шкаф Bosch CMG7241B1",
    "class": "Духовые шкафы",
-   "outcome": "kit_only",
+   "outcome": "queue",
    "as_new": false,
-   "explanation": "найден только комплект: обоснованного совета сильнее комплекта нет",
+   "explanation": "",
    "links": [
     {
      "dst": "bosch/pcr9a5i90m-510635",
@@ -51552,8 +51552,8 @@
      "dst_name": "Газовая варочная панель Bosch PCR9A5I90M",
      "quote": "Электрический духовой шкаф Bosch CMG7241B1",
      "critic": "Духовой шкаф и варочная панель дополняют друг друга для встраиваемой кухни.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     },
     {
      "dst": "bosch/pgp6b6k90r-498061",
@@ -51565,8 +51565,8 @@
      "dst_name": "Газовая варочная панель Bosch PGP6B6K90R",
      "quote": "Электрический духовой шкаф Bosch CMG7241B1",
      "critic": "Духовой шкаф и варочная панель дополняют друг друга для встраиваемой кухни.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     },
     {
      "dst": "bosch/pnp6b6k40-536323",
@@ -51578,8 +51578,8 @@
      "dst_name": "Газовая варочная панель Bosch PNP6B6K40",
      "quote": "Электрический духовой шкаф Bosch CMG7241B1",
      "critic": "Духовой шкаф и варочная панель дополняют друг друга для встраиваемой кухни.",
-     "status": "graph",
-     "quote_note": ""
+     "status": "queue",
+     "quote_note": "цитата — это название или класс товара, а не подтверждение"
     }
    ],
    "dropped": [],
@@ -52338,13 +52338,13 @@
  "summary": {
   "holes": 125,
   "by_outcome": {
-   "closed": 7,
+   "kit_only": 3,
    "no_grounded_link": 107,
-   "kit_only": 7,
-   "queue": 4
+   "queue": 13,
+   "closed": 2
   },
-  "links_to_graph": 23,
-  "links_to_queue": 7,
+  "links_to_graph": 5,
+  "links_to_queue": 25,
   "links_dropped": 21,
   "tool_calls_by_model": 1212,
   "tokens_in": 1736885,
@@ -52354,9 +52354,9 @@
  "gain": {
   "on_sale": 8592,
   "before": 3476,
-  "now": 3465,
-  "gained": 11,
-  "links": 23
+  "now": 3473,
+  "gained": 3,
+  "links": 5
  },
  "queue": [
   {
@@ -52660,5 +52660,5 @@
    "cls": "Другие системные утилиты"
   }
  ],
- "queue_total": 3465
+ "queue_total": 3473
 }

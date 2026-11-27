@@ -707,11 +707,16 @@
   }
   ((agent && agent.runs) || []).forEach(addAgentRows);
   // предложения агента, закрывавшего дыру, для которых критик не нашёл подтверждающей цитаты: ждут менеджера
+  // почему предложение агента ждёт менеджера, а не пошло клиенту: причина записана в отчёте агента
+  const queueWhy = {};
+  for (const h of holesOf(holesData)) for (const l of h.links || []) if (l.status !== "graph" && l.quote_note) queueWhy[`${h.family}|${l.dst}`] = l.quote_note;
   function addQueueRow(x) {
     const key = `ag|${x.src}|${x.dst}|${x.type}`;
     if (queue.some((q) => q.key === key)) return;
+    const why = x.note || queueWhy[`${x.src}|${x.dst}`] || "";
+    const tail = (x.quote ? ` Цитата: «${x.quote}».` : "") + (why ? ` Ждёт менеджера: ${why}.` : (x.quote ? "" : " Подтверждающей цитаты нет."));
     queue.push({ key, group: "agent", type: x.type, from: nodeNameAll(x.src), to: nodeNameAll(x.dst), source: "агент каталога",
-                 conf: x.confidence || 0.5, ev: (x.evidence || "") + (x.quote ? ` Цитата: «${x.quote}»` : " Подтверждающей цитаты нет."), auto: false,
+                 conf: x.confidence || 0.5, ev: (x.evidence || "").replace(/[.\s]+$/, "") + "." + tail, auto: false,
                  urlFrom: (allNodes.get(x.src) || {}).url, urlTo: (allNodes.get(x.dst) || {}).url,
                  payload: { node: null, edge: [x.src, x.dst, x.type, "агент каталога, принято менеджером", x.confidence || 0.5, x.evidence || ""] } });
   }
@@ -1130,7 +1135,8 @@
   const OUTCOME = { closed: "закрыта", kit: "найден только комплект", queue: "ждёт менеджера", known: "нового не найдено",
                     no_grounded_link: "обоснованной связи нет" };
   // пары, которые граф знал и без агента: повтор такой пары дыру не закрывает
-  const knownPairs = new Set(data.edges.filter((e) => !String(e[3]).startsWith("агент каталога")).map((e) => `${e[0]}|${e[1]}`));
+  // «та же линейка» знанием о паре не считается: каталог знает, что товары — соседи, но не знает, какая редакция старше
+  const knownPairs = new Set(data.edges.filter((e) => e[2] !== "same_line" && !String(e[3]).startsWith("агент каталога")).map((e) => `${e[0]}|${e[1]}`));
   const holeNew = (r, l) => !knownPairs.has(`${r.family}|${l.dst}`);
   /** Итог по дыре в единицах замера показа: дыра закрыта, только если агент дал новый совет сильнее «комплекта».
       Комплект — совет «если ещё нет», он идёт последней карточкой и обоснованным советом в замере не считается. */
@@ -1257,7 +1263,7 @@
     view.className = "panel agent";
     const links = ((r && r.links) || []).map((l) => `<li><b>${esc(l.kind ? ({ kit: "комплект", need: "нужно", upgrade: "старшая редакция", new_version: "новая версия" }[l.kind] || l.kind) : (LINK_RU[l.type] || l.type || ""))}</b> «${esc(l.dst_name || nodeNameAll(l.dst))}» — ${esc(l.evidence || l.reason || "")}
       ${l.quote ? `<span class="chip">цитата: «${esc(String(l.quote).slice(0, 110))}»</span>` : '<span class="chip">цитаты нет</span>'}
-      <br><small style="color:var(--muted)">${l.status !== "graph" ? "в очереди менеджера: без цитаты клиент совет не увидит" : holeNew(r, l) ? "в графе: клиент видит совет сразу, менеджер может отклонить" : "эта пара уже была в разметке: агент её повторил, нового совета нет"}${l.critic ? " · критик: " + esc(l.critic) : ""}</small></li>`).join("");
+      <br><small style="color:var(--muted)">${l.status !== "graph" ? "в очереди менеджера: " + esc(l.quote_note || "без цитаты клиент совет не увидит") : holeNew(r, l) ? "в графе: клиент видит совет сразу, менеджер может отклонить" : "эта пара уже была в разметке: агент её повторил, нового совета нет"}${l.critic ? " · критик: " + esc(l.critic) : ""}</small></li>`).join("");
     let ask = -1;
     const steps = ((r && r.steps) || []).map((st) => {
       const k = st.ask || 0;
@@ -1276,7 +1282,7 @@
     const canRun = holesLive && holeOpen(x) && result !== "closed";
     const verdict = { closed: "Агент нашёл новый совет и подтвердил его цитатой: владелец товара теперь получает совет по делу.",
                       kit: "Комплект — совет «если ещё нет», он идёт последней карточкой. По строгому счёту дыра остаётся: совета «нужно» к этому товару агент не нашёл.",
-                      queue: "Цитаты в карточках товаров не нашлось: совет ждёт решения менеджера, клиент его не видит.",
+                      queue: "Строгую проверку связь не прошла: совет ждёт решения менеджера, клиент его не видит. Причина указана у каждой связи.",
                       known: "Агент пришёл к паре, которая уже была в разметке: нового совета не прибавилось." }[result] || "";
     view.innerHTML = `
       <div class="panel__head"><h2>${esc(x.name)}</h2><span class="cost">${esc(cost)}</span></div>
@@ -1317,7 +1323,7 @@
       for (const l of res.links || []) {
         if (!nodeIds.has(l.dst) || vetoPairs.has(`${res.family}|${l.dst}`)) continue;
         const edge = holeEdge(res.family, l);
-        if (l.status !== "graph") { addQueueRow({ src: edge[0], dst: edge[1], type: edge[2], confidence: edge[4], evidence: edge[5], quote: l.quote || "" }); continue; }
+        if (l.status !== "graph") { addQueueRow({ src: edge[0], dst: edge[1], type: edge[2], confidence: edge[4], evidence: edge[5], quote: l.quote || "", note: l.quote_note || "" }); continue; }
         if (data.edges.concat(liveEdges).some((e) => e[0] === edge[0] && e[1] === edge[1])) continue;
         liveEdges.push(edge);                               // клиент видит совет сразу, менеджер может отклонить
         if (l.quote) liveQuotes[ekey(edge)] = l.quote;

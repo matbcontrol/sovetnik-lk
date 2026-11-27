@@ -4,46 +4,46 @@
  "kinds": {
   "software": {
    "on_sale": 1817,
-   "with_advice": 1081,
-   "own_need": 192,
+   "with_advice": 1079,
+   "own_need": 190,
    "own_kit": 377,
    "class_need": 36,
    "class_kit": 476,
-   "solo": 736,
-   "solo_any_client": 723,
+   "solo": 738,
+   "solo_any_client": 725,
    "manager": 11,
-   "judged": 644,
+   "judged": 645,
    "class_only": 1,
-   "nothing": 80
+   "nothing": 81
   },
   "hardware": {
    "on_sale": 6775,
-   "with_advice": 4046,
-   "own_need": 536,
-   "own_kit": 184,
+   "with_advice": 4040,
+   "own_need": 535,
+   "own_kit": 179,
    "class_need": 175,
    "class_kit": 3151,
-   "solo": 2729,
+   "solo": 2735,
    "solo_any_client": 2598,
    "manager": 380,
    "judged": 0,
-   "class_only": 1816,
+   "class_only": 1822,
    "nothing": 533
   }
  },
  "total": {
   "on_sale": 8592,
-  "with_advice": 5127,
-  "own_need": 728,
-  "own_kit": 561,
+  "with_advice": 5119,
+  "own_need": 725,
+  "own_kit": 556,
   "class_need": 211,
   "class_kit": 3627,
-  "solo": 3465,
-  "solo_any_client": 3321,
+  "solo": 3473,
+  "solo_any_client": 3323,
   "manager": 391,
-  "judged": 644,
-  "class_only": 1817,
-  "nothing": 613
+  "judged": 645,
+  "class_only": 1823,
+  "nothing": 614
  },
  "solo_classes": [
   {
@@ -108,10 +108,10 @@
   }
  ],
  "agent": {
-  "links": 23,
-  "products": 14,
-  "gained": 11,
+  "links": 5,
+  "products": 5,
+  "gained": 3,
   "solo_before": 3476,
-  "solo_now": 3465
+  "solo_now": 3473
  }
 }
