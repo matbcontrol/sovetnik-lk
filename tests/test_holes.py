@@ -102,5 +102,23 @@ def test_as_new_hides_labelling(cat):
     assert not any("уже рассужено" in d["why"] for d in res["dropped"])
 
 
+def test_upgrade_to_edition_outside_catalog_line(cat):
+    """Старшая редакция того же производителя и класса проходит, даже если линейка каталога её не связала."""
+    a, b = "microsoft/microsoft-windows-11-home", "microsoft/microsoft-windows-professional-11"
+    if a not in cat.nodes or b not in cat.nodes:
+        pytest.skip("нет товаров в каталоге")
+    assert cat.same_product(a, b) and not cat.same_product(a, "drweb/drweb-security-space")
+    cat.as_new = {a}
+    try:
+        final = {"final": {"links": [{"dst": b, "kind": "upgrade", "reason": "старшая редакция"}]}}
+        critic = {"verdicts": [{"i": 0, "keep": True, "quote": " ".join(cat.text(b).split()[:4]), "why": "ок"}]}
+        look = {"thought": "смотрю", "calls": [{"tool": "get_product", "args": {"id": b}}]}
+        res = close_hole(FakeLLM([look, final, critic]), cat, a, persist=False)
+    finally:
+        cat.as_new = set()
+    assert [(l["dst"], l["kind"], l["status"]) for l in res["links"]] == [(b, "upgrade", "graph")]
+    assert res["outcome"] == "closed"
+
+
 def test_norm_ignores_quotes_case_and_spaces():
     assert norm("  «Позволяет  выполнять» Перевод. ") == "позволяет выполнять перевод"

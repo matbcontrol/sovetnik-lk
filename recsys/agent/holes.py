@@ -52,7 +52,7 @@ KINDS = {                     # вид совета → ребро графа: �
 }
 KIND_HELP = ("need — Б работает вместе с А, защищает, обслуживает или расширяет именно А, а у владельца А его вполне "
              "может не быть; kit — прямой связи нет, но Б из того же типового набора, фраза начинается с «Если ещё нет …»; "
-             "upgrade — старшая редакция того же продукта; new_version — новая версия того же продукта")
+             "upgrade — старшая редакция того же продукта того же производителя; new_version — новая версия того же продукта")
 HOLE_TOOLS = TOOLS_HELP + """
 - spec {"id": "id товара"} — строка характеристик товара из фида магазина (сокет, интерфейс, платформа и т. п.).
 - line {"id": "id товара"} — другие редакции и версии той же линейки, что и товар.
@@ -162,6 +162,16 @@ class HoleTools(Catalog):
         recs = rec.recommend(Client("b2c" if home else "b2b", [Purchase(fam, today - timedelta(days=183))], today=today), k=3)
         return [{"id": r.family, "name": r.name[:70], "kind": "kit" if r.slot == "kit" else r.slot}
                 for r in recs if not r.fallback and r.slot != "renew"]
+
+    def same_product(self, a: str, b: str) -> bool:
+        """Может ли Б быть другой редакцией или версией А: сосед по линейке каталога или программа того же
+        производителя в том же классе. Линейки каталога связывают не все редакции: Windows 11 Home и Pro,
+        Microsoft 365 Personal и Family в них не связаны."""
+        if b in self.line.get(a, ()):
+            return True
+        na, nb = self.nodes.get(a, {}), self.nodes.get(b, {})
+        return (a.split("/")[0] == b.split("/")[0] and bool(na.get("class")) and na.get("class") == nb.get("class")
+                and nb.get("kind", "software") == "software")
 
     def text(self, k: str, limit: int = 1200) -> str:
         """Всё, что о товаре известно из открытого каталога: название, класс, описание, характеристики."""
@@ -305,7 +315,7 @@ def close_hole(llm, cat: HoleTools, fam: str, verbose: bool = False, persist: bo
                "уже рассужено" if dst in cat.line_veto.get(fam, ()) and fam not in cat.as_new else
                "это уже советуется владельцу" if dst in advised else
                "второй комплект клиент не увидит" if kind == "kit" and any(a["kind"] == "kit" for a in now) else
-               "редакция или версия не из линейки товара" if kind in ("upgrade", "new_version") and dst not in cat.line.get(fam, ()) else
+               "редакция или версия не из линейки товара" if kind in ("upgrade", "new_version") and not cat.same_product(fam, dst) else
                "другая редакция той же линейки — это не «нужно»" if kind in ("need", "kit") and dst in cat.line.get(fam, ()) else "")
         reason = re.sub(r"\s+", " ", str(link.get("reason", ""))).strip().rstrip(".")[:160]
         if kind == "kit" and reason and not reason.lower().startswith("если"):
