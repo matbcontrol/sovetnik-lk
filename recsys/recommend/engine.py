@@ -165,6 +165,13 @@ def _q(name: str) -> str:
     return name if name.startswith("«") and name.endswith("»") else f"«{name}»"
 
 
+def _plural(n: int, one: str, few: str, many: str) -> str:
+    """21 отзыв, 43 отзыва, 37 отзывов."""
+    if n % 10 == 1 and n % 100 != 11:
+        return one
+    return few if n % 10 in (2, 3, 4) and n % 100 not in (12, 13, 14) else many
+
+
 def _split(s: str) -> set[str]:
     return {x for x in (s or "").split("|") if x}
 
@@ -243,7 +250,8 @@ class Graph:
 
         def item(n: dict) -> dict:
             return {"family": n["family"], "source": "витрина",
-                    "evidence": f"{reviews(n)} отзывов покупателей в магазине, оценка {n.get('rating') or '—'}"}
+                    "evidence": f"{reviews(n)} {_plural(reviews(n), 'отзыв', 'отзыва', 'отзывов')} покупателей "
+                                f"в магазине, оценка {n.get('rating') or '—'}"}
 
         return {
             "b2b": [item(n) for n in on_sale if _split(n.get("client_types", "")) != {"b2c"}][:60],
