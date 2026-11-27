@@ -242,6 +242,26 @@ def main() -> None:
     unis = {r: Unified(off, models[r], cat, r) for r in REGIMES}
     cold = set(off.fold.group_b)
     cards = [client_card(unis, verdicts, c, "test", c in cold, prices) for c in clients]
+    # тройки базовых способов организаторов (baseline.py) для тех же клиентов: симуляция кабинета на стенде
+    # показывает рядом наш блок и «нынешний» — совместные покупки и популярность — и что клиент купил потом
+    from recsys.eval.official import co_purchase, load as load_official, popularity
+
+    official = load_official()
+    base = {"copurchase": co_purchase(official), "popularity": popularity(official)}
+    for card in cards:
+        c = card["id"]
+        new = official.test.get(c, set()) - official.hist.get(c, set())
+        card["baseline"] = {k: [{"item": i, "hit": i in new} for i in rec(c)] for k, rec in base.items()}
+    # ИИ-тест «слепая оценка» (recsys.eval.ai_judge): что сказали виртуальные клиенты — для симуляции в макете кабинета
+    from recsys.eval import ai_judge
+
+    if (ai_judge.WORK / "cases.json").exists() and any(ai_judge.WORK.glob("judge_*.json")):
+        said: dict[str, list[dict]] = {}
+        for v in ai_judge.verdicts()[1]:
+            said.setdefault(v["client"], []).append({k: v[k] for k in ("judge", "winner", "why", "ours", "base")})
+        for card in cards:
+            if card["id"] in said:
+                card["ai_judge"] = said[card["id"]]
     every = lambda card: card["recs"]["full"] + card["renew"]["full"] + card["popular"]["full"]  # noqa: E731
     hits = sum(any(x["hit"] for x in every(card)) for card in cards)
     shown = sum(len(every(card)) for card in cards)
@@ -279,6 +299,8 @@ def main() -> None:
         for regime in REGIMES:
             used |= {x["item"] for x in card["recs"][regime] + card["renew"][regime] + card["popular"][regime]
                      + card["rejected"][regime] + card["protocol"]}
+        for block in (card.get("baseline") or {}).values():
+            used |= {x["item"] for x in block}
     items = dict(EXTRA)
     for i in used - set(EXTRA):
         r = task.items.get(i) or {}

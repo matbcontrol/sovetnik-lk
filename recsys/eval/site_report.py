@@ -156,6 +156,29 @@ def main() -> None:
                         "without_advice": h.get("clients_without_own_ground_advice"),
                         "agent": kinds.get("закрывает агент"), "renew": kinds.get("нужно продление, а не совет")}
     out["economics"] = cost_summary()                    # стоимость обращения и нового товара — из расчёта в submission/cost.md
+    p = ROOT / "reports" / "top3_composition.json"
+    if p.exists():                                       # откуда берутся попадания: разбор по видам у нас и у базовых способов
+        c = json.loads(p.read_text(encoding="utf-8"))
+        prec, comp = c.get("precision@3", {}), c.get("composition", {})
+        who = {"наша модель": "ours", "совместные покупки": "copurchase", "популярность": "popularity"}
+        filters = {"protocol": "как в протоколе", "no_renewals": "без продлений купленного",
+                   "no_renew_variants": "без продлений и вариантов той же группы"}
+
+        def seg(s: str) -> dict:
+            row = {}
+            for ru, en in who.items():
+                if s not in comp.get(ru, {}):
+                    continue
+                row[en] = {k: (prec.get(f, {}).get(ru, {}).get(s) or {}).get("value") for k, f in filters.items()}
+                row[en]["hits"] = comp[ru][s]["hits"]
+                row[en]["hits_total"] = comp[ru][s]["hits_total"]
+            return row
+
+        out["why"] = {"clients": c.get("groups", {}), "segments": {s: seg(s) for s in ("A B2B", "B B2B", "A B2C")},
+                      "product_group": c.get("product_group", "")}
+    p = ROOT / "reports" / "ai_judge.json"
+    if p.exists():                                       # ИИ-тест: слепая оценка наборов виртуальными клиентами, только сводка
+        out["ai_judge"] = json.loads(p.read_text(encoding="utf-8"))
     p = ROOT / "reports" / "restore.json"
     if p.exists():                                       # тест «спрятали — вернул» (recsys.rank.restore): только сводные числа
         r = json.loads(p.read_text(encoding="utf-8"))

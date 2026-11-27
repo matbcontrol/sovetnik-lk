@@ -860,6 +860,8 @@
       </table></div>
       <p class="hint" style="margin-top:8px">Частных лиц в проверке всего несколько десятков — их цифры шумные, главных выводов по ним не делаем.</p>
       ${shownHtml(r.shown)}
+      ${whyHtml(r.why)}
+      ${judgeHtml(r.ai_judge)}
       ${breakdownHtml(r)}
       <h3>Потолок: у скольких артикулов фида есть хоть какая-то опора для совета</h3>
       <table class="links"><tr><th>На что можно опереться</th><th class="num">Артикулов в наличии</th><th class="num">Доля от ${nf.format(cat.available)}</th></tr>
@@ -993,6 +995,49 @@
         <div class="tile"><dt>То же, частные лица</dt><dd>${pct(c.own, 0)}</dd><small>ещё ${pct(c.kit_only, 0)} получат только «комплект» — совет «если ещё нет…»</small></div>
       </dl>
       <p class="hint" style="margin:6px 0 14px">Клиенты с доступом в кабинет на ${esc(f.today)}: ${nf.format(b.clients)} организаций и ${nf.format(c.clients)} частных лиц. «Обоснованный совет» — карточка с собственным основанием: вердикт «нужно», связь графа (версия, редакция, замена) или другой вариант своей линейки. У организаций ещё ${pct(b.kit_only)} получат только «комплект». Оговорки: у нас доля клиентов, у заказчика — доля визитов; у частных лиц прибавка над нынешним показом держится на «комплекте», который на истории пока не сбывался.</p>`;
+  }
+
+  /** Почему система обгоняет базовые способы организаторов: откуда берутся попадания. */
+  function whyHtml(w) {
+    const seg = w && w.segments && w.segments["A B2B"];
+    if (!seg || !seg.ours || !seg.copurchase || !seg.popularity) return "";
+    const kinds = [["продление купленного", "Продление того, что у клиента уже есть, — вовремя по сроку лицензии"],
+                   ["другая редакция или версия", "Старшая редакция или новая версия купленного продукта"],
+                   ["вариант той же группы", "Другой вариант той же лицензии: больше мест, другой срок"],
+                   ["новый продукт", "Новый для клиента продукт"]];
+    const cell = (m, k) => nf.format((m.hits || {})[k] || 0);
+    const x = (a, b) => (b ? (a / b).toFixed(1).replace(".", ",") + "×" : "—");
+    const rows = kinds.map(([k, label]) => `<tr><td>${esc(label)}</td><td class="num"><b>${cell(seg.ours, k)}</b></td><td class="num">${cell(seg.copurchase, k)}</td><td class="num">${cell(seg.popularity, k)}</td></tr>`).join("");
+    const o = seg.ours, c = seg.copurchase, pp = seg.popularity, b = (w.segments["B B2B"] || {});
+    const best = (f) => Math.max(c[f] || 0, pp[f] || 0);
+    return `<h2 style="margin-top:26px">Почему система обгоняет базовые способы</h2>
+      <p class="hint" style="margin-top:6px">Организации, группа A: ${(() => { const n = (w.clients || {})["A B2B"] || 302, d = n % 10, h = n % 100; return nf.format(n) + (d === 1 && h !== 11 ? " клиент" : d >= 2 && d <= 4 && (h < 12 || h > 14) ? " клиента" : " клиентов"); })()}, по протоколу организаторов (их baseline.py даёт те же числа, что и наша проверка). Попадание — товар, который клиент купил с сентября по ноябрь.</p>
+      <table class="links"><tr><th>Чем оказался совет, который сбылся</th><th class="num">Наша система</th><th class="num">Совместные покупки</th><th class="num">Популярность</th></tr>
+        ${rows}
+        <tr><td><b>Всего попаданий</b></td><td class="num"><b>${nf.format(o.hits_total)}</b></td><td class="num">${nf.format(c.hits_total)}</td><td class="num">${nf.format(pp.hits_total)}</td></tr></table>
+      <ol class="hint" style="margin:10px 0 0 18px;padding:0">
+        <li><b>Система знает жизненный цикл лицензии.</b> Когда истекает срок и что продаётся следом — продление, старшая редакция, новая версия. Совместные покупки смотрят на корзину и не видят времени, популярность не видит клиента. Поэтому по протоколу ${pct(o.protocol)} против ${pct(best("protocol"))} у лучшего базового способа — в ${x(o.protocol, best("protocol"))} больше.</li>
+        <li><b>Перевес держится и без продлений.</b> Продление в кабинете выносится в отдельный сценарий, а не в блок советов. Без продлений купленного — ${pct(o.no_renewals)} против ${pct(best("no_renewals"))} (${x(o.no_renewals, best("no_renewals"))}); без продлений и вариантов той же группы — ${pct(o.no_renew_variants)} против ${pct(best("no_renew_variants"))}.</li>
+        <li><b>Холодный старт.</b> У клиента одна покупка, а знания каталога о линейке, редакциях и классе товара работают и так: ${b.ours ? `${pct(b.ours.protocol)} против ${pct(Math.max((b.copurchase || {}).protocol || 0, (b.popularity || {}).protocol || 0))}` : "—"} у организаций группы B.</li>
+        <li><b>Где перевеса нет.</b> Совсем новых для клиента продуктов система угадывает столько же, сколько популярность (${cell(o, "новый продукт")} и ${cell(pp, "новый продукт")}), а у частных лиц популярность почти так же хороша. Здесь блок берёт не числом, а качеством: каждый совет проверен на паре с товаром клиента и объяснён.</li>
+      </ol>`;
+  }
+
+  /** ИИ-тест: виртуальные клиенты вслепую сравнивают два набора советов. */
+  function judgeHtml(j) {
+    if (!j || !j.cases) return "";
+    const pr = j.prefer || {}, sc = j.scores || {}, ag = j.agreement;
+    const share = (x) => pct(x / j.cases, 0);
+    const avg = (x) => (x == null ? "—" : x.toFixed(2).replace(".", ","));
+    return `<h2 style="margin-top:26px">ИИ-тест: виртуальные клиенты сравнивают вслепую</h2>
+      <p class="hint" style="margin-top:6px">${esc(j.how || "")}</p>
+      <dl class="tiles" style="margin:10px 0 8px">
+        <div class="tile"><dt>Предпочли наш набор</dt><dd>${share(pr.ours || 0)}</dd><small>${nf.format(pr.ours || 0)} оценок из ${nf.format(j.cases)}; совместные покупки — ${nf.format(pr.base || 0)}, равноценны — ${nf.format(pr.tie || 0)}</small></div>
+        <div class="tile"><dt>Средняя польза совета</dt><dd>${avg(sc.ours)}</dd><small>из 2: у совместных покупок ${avg(sc.base)}</small></div>
+        <div class="tile"><dt>Ненужных советов</dt><dd>${j.useless && j.useless.ours != null ? pct(j.useless.ours, 0) : "—"}</dd><small>оценка 0: не по профилю или дубль; у совместных покупок ${j.useless && j.useless.base != null ? pct(j.useless.base, 0) : "—"}</small></div>
+        ${ag != null ? `<div class="tile"><dt>Оценщики согласны</dt><dd>${pct(ag, 0)}</dd><small>два независимых оценщика выбрали один и тот же набор</small></div>` : ""}
+      </dl>
+      ${j.note ? `<p class="hint">${esc(j.note)}</p>` : ""}`;
   }
 
   /** Тройка протокола и блок, который видит клиент, — рядом: по первой сравниваемся с baseline, вторая — продукт. */
