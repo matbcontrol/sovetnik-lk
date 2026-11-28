@@ -142,7 +142,8 @@
     ? `<div class="sim-judge">${c.ai_judge.map((v) => `<div>ИИ-клиент ${esc(v.judge)} ${WINNER[v.winner] || ""}${v.why ? `: «${esc(v.why)}»` : ""}</div>`).join("")}</div>` : "");
 
   if (!tests.length) {
-    $("#sim-controls").hidden = true;
+    // открытый стенд: клиентов нет — без кнопок и пустого счёта, сразу итог по открытому отчёту
+    ["#sim-controls", ".sim-tiles", ".sim-barwrap", "#sim-progress"].forEach((q) => { $(q).hidden = true; });
     $("#sim-stage").innerHTML = "";
     renderFinal();
     return;

@@ -20,6 +20,8 @@
     --accent: var(--red); --accent-2: #fbeef1; --bg: #fff; --card: #fff;
   }
   * { box-sizing: border-box; }
+  /* атрибут hidden прячет всегда, даже у элементов со своим display (окно замены, кнопки симуляции) */
+  [hidden] { display: none !important; }
   body { margin: 0; font: 14px/1.43 Inter, Arial, Tahoma, Helvetica, sans-serif; color: var(--ink); background: #fff; }
   a { color: var(--red); }
   svg.i { width: 20px; height: 20px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -154,7 +156,7 @@
   .st--warn { background: var(--warn-bg); color: var(--warn); border-color: var(--warn-line); }
   .st--bad { background: var(--bad-bg); color: var(--bad); border-color: var(--bad-line); }
   .st--none { background: var(--gray); color: var(--ink-2); }
-  .repl { display: block; margin: 10px 0 0 auto; padding: 12px 14px; border-radius: 12px; background: var(--gray); font-size: 13px; max-width: 380px; text-align: left; }
+  .repl { margin: 10px 0 0 auto; padding: 12px 14px; border-radius: 12px; background: var(--gray); font-size: 13px; max-width: 380px; text-align: left; }
   #licenses td.pact .repl .hint { text-align: left; margin-left: 0; }
   .repl--wait { background: #fff; box-shadow: inset 0 0 0 1px #c9ced6; }
   footer { max-width: 1392px; margin: 0 auto; padding: 18px 24px 30px; font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line); }
