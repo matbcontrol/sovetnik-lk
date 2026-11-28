@@ -1234,6 +1234,7 @@
   function renderNumbers() {
     const sale = data.nodes.filter((n) => n.sale === 1);
     const linkedIds = new Set(data.edges.filter((e) => e[2] !== "same_line").map((e) => e[0]));
+    const adviceEdges = data.edges.filter((e) => e[2] !== "same_line").length;
     const bySource = {};
     for (const e of data.edges) { if (e[2] === "same_line") continue; const k = E.LABEL[e[3]] || e[3]; bySource[k] = (bySource[k] || 0) + 1; }
     const byType = {};
