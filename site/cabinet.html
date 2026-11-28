@@ -58,8 +58,8 @@
   /* кабинет: боковая панель и содержимое */
   .layout { max-width: 1392px; margin: 8px auto 0; padding: 0 24px; display: grid; grid-template-columns: 240px 1fr; gap: 32px; }
   .side__window { background: var(--gray); border-radius: 24px; padding: 24px 16px; margin-bottom: 16px; }
-  .avatar { width: 56px; height: 56px; border-radius: 50%; background: #fff; color: var(--red); display: grid; place-items: center; margin: 0 auto 12px;
-    font: 600 19px/1 Inter, Arial, sans-serif; letter-spacing: .02em; }
+  /* как в настоящем кабинете: портфель в сером круге, под именем — почта */
+  .avatar { width: 64px; height: 64px; border-radius: 50%; background: #e3e5e9; display: grid; place-items: center; margin: 0 auto 12px; }
   .who { text-align: center; margin-bottom: 18px; }
   .who b { display: block; font-size: 16px; font-weight: 600; line-height: 1.3; }
   .who span { display: block; color: var(--ink-2); font-size: 12px; margin-top: 4px; }
@@ -261,7 +261,7 @@
 <div class="layout">
   <aside>
     <div class="side__window">
-      <div class="avatar" id="avatar" aria-hidden="true"></div>
+      <div class="avatar" aria-hidden="true"><svg class="i" style="width:26px;height:26px"><use href="#i-bag"/></svg></div>
       <div class="who" id="who"></div>
       <nav class="menu">
         <a href="#" data-page="home" class="on"><svg class="i"><use href="#i-home"/></svg>Главная</a>

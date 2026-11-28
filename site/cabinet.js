@@ -82,8 +82,6 @@
     const name = /^(Организация|Частное лицо)$/.test(head.trim()) && tail ? tail.trim() : head.trim();
     const title = name.charAt(0).toUpperCase() + name.slice(1);
     $("#who").innerHTML = `<b>${esc(title)}</b><span>${client.type === "b2b" ? "Организация" : "Частное лицо"}</span>`;
-    // инициалы клиента; у примеров стенда без имени («Организация: …») — буква типа клиента
-    $("#avatar").textContent = /^(Организация|Частное лицо)/.test(ex.title) ? (client.type === "b2b" ? "О" : "Ч") : title.split(/\s+/).filter((w) => /^[A-ZА-ЯЁa-zа-яё]/.test(w) && w.length > 2).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
     // виджет «Ключи и дистрибутивы» — как в кабинете: ключи доступны по действующим лицензиям
     const live = client.purchases.filter((p) => !p.term || days(client.today, addMonths(p.date, p.term)) >= 0).length;
     $("#w-keys").textContent = live ? `Доступно по ${live} ${live % 10 === 1 && live % 100 !== 11 ? "продукту" : "продуктам"}` : "Действующих лицензий нет";
