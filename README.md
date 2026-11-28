@@ -6,7 +6,7 @@
 
 Проверить: положить датасет v5 в `data/private/task/` и запустить `python -m recsys.eval.proof` — 14,90 %, отпечаток файла ответов совпадает со стендом (SHA-256 `2e743581…`).
 
-Стенд — https://matbcontrol.github.io/sovetnik-lk/ · макет кабинета — https://matbcontrol.github.io/sovetnik-lk/cabinet.html · встраивание и пилот — https://matbcontrol.github.io/sovetnik-lk/embed.html · видео — после записи.
+Предложение пилота на одной странице — [submission/pilot.md](submission/pilot.md). Стенд — https://matbcontrol.github.io/sovetnik-lk/ · макет кабинета — https://matbcontrol.github.io/sovetnik-lk/cabinet.html · встраивание и пилот — https://matbcontrol.github.io/sovetnik-lk/embed.html · видео — после записи.
 
 ## Как это работает
 
