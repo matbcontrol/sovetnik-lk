@@ -8,7 +8,7 @@
 
 Ещё две проверки: рой из 337 ИИ-агентов вслепую играл реальных покупателей из данных организаторов — у организаций «купил бы» из нашего блока 33 % против 9 % у базового способа; математика — перевес не случаен (95 % интервал бутстрепа +8,2…+12,7 п.п., знаковый тест: лучше у 100 клиентов, хуже у 12), а по расчёту пилота рост кликов с 5 % до 7,5 % виден за 10 дней.
 
-Предложение пилота на одной странице — [submission/pilot.md](submission/pilot.md). Стенд — https://matbcontrol.github.io/sovetnik-lk/ · макет кабинета — https://matbcontrol.github.io/sovetnik-lk/cabinet.html · встраивание и пилот — https://matbcontrol.github.io/sovetnik-lk/embed.html · видео — после записи.
+Предложение пилота на одной странице — [submission/pilot.md](submission/pilot.md). Стенд — https://matbcontrol.github.io/sovetnik-lk/ · макет кабинета — https://matbcontrol.github.io/sovetnik-lk/cabinet.html · встраивание и пилот — https://matbcontrol.github.io/sovetnik-lk/embed.html · видео — https://disk.yandex.com/i/Fldk0PjGMdC24w.
 
 ## Как это работает
 

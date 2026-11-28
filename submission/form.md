@@ -6,7 +6,7 @@
 
 | Поле | Что вставить |
 |---|---|
-| Демо-видео * | ссылка на видео, открывается без запроса доступа — после записи |
+| Демо-видео * | `https://disk.yandex.com/i/Fldk0PjGMdC24w` — открывается без входа (проверено 28.11) |
 | Репозиторий * | `https://github.com/matbcontrol/sovetnik-lk` |
 | Дополнительные материалы | `https://github.com/matbcontrol/sovetnik-lk/blob/main/submission/pilot.md` — предложение пилота на одной странице: что нужно от Softline, как меряем, сколько стоит, риски |
 | 4. Расчёт стоимости эксплуатации * | `https://github.com/matbcontrol/sovetnik-lk/raw/main/submission/calculator-sovetnik-lk.xlsx` — заполненный шаблон в открытом репозитории, скачивается без входа (проверено 28.11) |
