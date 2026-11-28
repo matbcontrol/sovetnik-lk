@@ -113,7 +113,8 @@
     if (document.getElementById("svt-css")) return;
     const s = document.createElement("style");
     s.id = "svt-css";
-    s.textContent = `.svt{font:inherit;color:#121519;line-height:1.45}
+    s.textContent = `.svt{text-align:left;font:14px/1.45 Inter,Arial,Tahoma,Helvetica,sans-serif;color:#121519;letter-spacing:normal;text-transform:none}
+.svt *{box-sizing:border-box}
 .svt-adv{border-top:1px solid #e4e7ec}
 .svt-adv__row{display:grid;grid-template-columns:minmax(170px,.85fr) minmax(0,2fr) minmax(170px,.7fr);gap:28px;padding:20px 4px;border-bottom:1px solid #e4e7ec;align-items:start}
 .svt-adv__basis{font-size:13px;color:#768297}
@@ -137,7 +138,7 @@
 .svt-also__row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:14px 4px;border-top:1px solid #e4e7ec}
 .svt-also__row b{font-weight:500}.svt-also__row span{display:block;margin-top:2px;font-size:13px;color:#768297}
 .svt-note{font-size:13px;color:#768297;margin-top:8px}
-.svt-h2{margin:0;font-size:24px;line-height:32px;font-weight:600}.svt-lead{margin:4px 0 14px;font-size:14px;color:#768297}
+.svt-h2{margin:0 0 12px;font-size:24px;line-height:32px;font-weight:600;color:#121519}
 @media (max-width:760px){.svt-adv__row{grid-template-columns:1fr;gap:10px}.svt-adv__buy{flex-direction:row;flex-wrap:wrap;align-items:center}.svt-also__row{grid-template-columns:1fr}}`;
     document.head.appendChild(s);
   }
@@ -169,8 +170,7 @@
 
   function render(el, res, client, opts) {
     const control = res.group === "control";
-    const head = opts && opts.title === false ? "" : `<h2 class="svt-h2">Вам может подойти</h2>
-      <p class="svt-lead">Подобрано по вашим лицензиям: у каждого совета видно, к какой покупке он и почему.</p>`;
+    const head = opts && opts.title === false ? "" : `<h2 class="svt-h2">Вам может подойти</h2>`;   // как в макете: заголовок без подписи
     let prev = null;
     const rows = res.renew.concat(res.data).map((c, k) => {
       const row = `<article class="svt-adv__row">${basis(client, c, prev)}
