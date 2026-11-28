@@ -140,6 +140,7 @@
     const eco = r.economics || {};
     const rows = (r.verdict_effect || {}).rows || [];
     const before = rows.find((x) => x.title === "Без проверки пар"), now = rows.find((x) => x.stand);
+    const aiC = r.ai_clients || {}, aiB = ((aiC.by_group || {}).B2B) || null;   // слепая симуляция ИИ-покупателей
     // месяц при 300 обращениях в день (условие задачи): модель на обращение × 9 000 + своя ВМ 1 630 ₽ (submission/cost.md)
     const month = eco.per_request ? Math.round((eco.per_request * 9000 + 1630) / 100) * 100 : null;
     const li = (q, text) => `<li>${q ? `<q>${esc(q)}</q> — ` : ""}${esc(text)}</li>`;
@@ -147,7 +148,8 @@
       <p class="pillar__lead">${esc(lead)}</p><ul>${items.filter(Boolean).join("")}</ul></article>`;
     $("#brief").innerHTML = `<div class="pillars">
       ${pillar("Эффективно", `в ${num(ours / best(a))} раза`, `точнее у организаций: ${num(ours)} % против ${num(best(a))} % — скрипт и датасет организаторов`, [
-        li("", `лучше у ${vs.clients_better} клиентов, хуже у ${vs.clients_worse}`),
+        li("", `не случайность: 95 % интервал разницы ${num(vs.ci95_pp[0])}…${num(vs.ci95_pp[1])} п.п., лучше у ${vs.clients_better} клиентов, хуже у ${vs.clients_worse}`),
+        aiB ? li("", `рой из ${aiC.clients} ИИ-агентов вслепую играл покупателей: организации купили бы из нашего блока ${Math.round(aiB.ours.buy * 100)} %, из базового ${Math.round(aiB.base.buy * 100)} %`) : "",
         b ? li("Покупает один продукт и не получает рекомендаций", `с одной покупкой ${num(b["наша система"].p3)} % против ${num(best(b))} %`) : "",
         before && now ? li("Совет, а не реклама", `самый частый совет у ${Math.round(now.top_share * 100)} % организаций вместо ${Math.round(before.top_share * 100)} %`) : "",
       ])}
